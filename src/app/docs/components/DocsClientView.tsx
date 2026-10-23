@@ -151,7 +151,7 @@ export default function DocsClientView({
 			: null;
 
 	return (
-		<div className="h-screen sm:min-h-screen bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] font-sans relative flex flex-col overflow-hidden sm:overflow-visible transition-colors">
+		<div className="h-dvh sm:min-h-screen bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] font-sans relative flex flex-col overflow-hidden sm:overflow-visible transition-colors">
 			{/* 도트 매트릭스 배경 */}
 			<div
 				className="absolute inset-0 pointer-events-none opacity-[0.03] dark:invert"
@@ -161,7 +161,7 @@ export default function DocsClientView({
 				}}
 			/>
 
-			{/* 모바일 독립 스크롤 컨테이너 (하단바 위까지만 높이 제한 & 스크롤바가 하단바를 침범하지 않음) */}
+			{/* 모바일 독립 스크롤 컨테이너 (웨일/모바일 툴바 위까지만 높이 제한 & 스크롤바가 하단바를 침범하지 않음) */}
 			<div
 				id="docs-scroll-container"
 				onScroll={(e) => {

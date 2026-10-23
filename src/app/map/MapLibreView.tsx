@@ -171,10 +171,11 @@ export default function MapLibreView({
 
 	return (
 		<div className="relative w-full h-full">
-			{/* 지도 캔버스 타일 색반전 주입 (마커/오버레이는 영향받지 않도록 캔버스에만 적용) */}
+			{/* 지도 캔버스 타일 및 마커 색반전 주입 */}
 			{isInverted && (
 				<style>{`
-					.maplibregl-canvas {
+					.maplibregl-canvas,
+					.maplibregl-marker {
 						filter: invert(1) hue-rotate(180deg) contrast(0.95);
 					}
 				`}</style>
