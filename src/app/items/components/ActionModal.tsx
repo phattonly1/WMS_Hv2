@@ -78,7 +78,6 @@ export default function ActionModal({
 			subtitle={selectedItem?.name}
 			icon={isReq ? ShoppingCart : LogOut}
 			maxWidth="max-w-sm"
-			sheetClassName="h-auto max-h-[85dvh] rounded-3xl"
 		>
 			<div className="space-y-3">
 				{/* 1. 슬림 탭 전환: 채우기(REQ) / 가져가기(OUT) */}

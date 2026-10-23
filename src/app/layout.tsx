@@ -19,6 +19,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="ko" suppressHydrationWarning className="dark">
 			<head>
+				<link
+					rel="preload"
+					as="style"
+					href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendard-gov-variable.min.css"
+				/>
+				<link
+					rel="stylesheet"
+					href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendard-gov-variable.min.css"
+				/>
 				<script>
 					{`try {
 						var s = localStorage.getItem('wms-theme');

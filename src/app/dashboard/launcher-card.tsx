@@ -112,8 +112,6 @@ export function LauncherCard() {
 				subtitle="WMS 슈퍼 런처"
 				icon={Monitor}
 				maxWidth="max-w-xs"
-				sheetClassName="h-auto max-h-[80dvh] rounded-3xl"
-				containerClassName="z-[1200] p-4 flex items-center justify-center"
 			>
 				<div className="space-y-4 py-2 text-center">
 					<p className="text-sm font-medium text-[#0f172a] dark:text-[#f4f4f5] leading-relaxed break-keep">

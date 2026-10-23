@@ -40,7 +40,7 @@ export function Modal({
 	contentClassName = "",
 	hideHeader = false,
 	containerClassName = "z-[1000] px-3.5 pb-[calc(env(safe-area-inset-bottom)+70px)] sm:p-4 md:p-6",
-	sheetClassName = "h-[80dvh] max-h-[80dvh] sm:h-auto sm:max-h-[85vh] rounded-3xl",
+	sheetClassName = "max-h-[80dvh] sm:max-h-[85vh] rounded-3xl",
 	preventBodyLock = false,
 }: ModalProps) {
 	const dragControls = useDragControls();
