@@ -19,6 +19,7 @@ import {
 } from "./components/VectorMarkers";
 import { MAP_STYLES } from "./mapStyles";
 import { getStationColor, type MapFilters, type Station } from "./stationData";
+import type { MapTileMode } from "./useMapState";
 
 interface MapLibreViewProps {
 	stations: Station[];
@@ -26,6 +27,8 @@ interface MapLibreViewProps {
 	selectedStation: Station | null;
 	setSelectedStation: (station: Station | null) => void;
 	mapRef: React.MutableRefObject<MapRef | null>;
+	mapTileMode?: MapTileMode;
+	isDark?: boolean;
 	isSat?: boolean;
 	// 에디터 모드
 	isEditMode?: boolean;
@@ -50,7 +53,9 @@ export default function MapLibreView({
 	selectedStation,
 	setSelectedStation,
 	mapRef,
-	isSat = false,
+	mapTileMode = "system",
+	isDark = true,
+	isSat: _isSat = false,
 	isEditMode = false,
 	isAddingStation = false,
 	isAddingArrow = false,
@@ -167,6 +172,15 @@ export default function MapLibreView({
 		});
 	}, [stations, filters, isEditMode, selectedStation]);
 
+	// 현재 지도 타일 스타일 결정 (지도만 설정 vs 전체 테마 연동)
+	const currentMapStyle = useMemo(() => {
+		if (mapTileMode === "satellite") return MAP_STYLES.satellite;
+		if (mapTileMode === "midnight") return MAP_STYLES.vworldMidnight;
+		if (mapTileMode === "base") return MAP_STYLES.vworldBase;
+		// system 연동 모드: 전체 테마가 dark면 야간(midnight), light면 일반(base)
+		return isDark ? MAP_STYLES.vworldMidnight : MAP_STYLES.vworldBase;
+	}, [mapTileMode, isDark]);
+
 	return (
 		<div className="relative w-full h-full">
 			<Map
@@ -176,9 +190,7 @@ export default function MapLibreView({
 					latitude: 37.52,
 					zoom: 8.8,
 				}}
-				mapStyle={
-					isSat ? (MAP_STYLES.satellite as any) : (MAP_STYLES.vworldBase as any)
-				}
+				mapStyle={currentMapStyle as any}
 				style={{ width: "100%", height: "100%" }}
 				onClick={handleMapClick}
 				cursor={

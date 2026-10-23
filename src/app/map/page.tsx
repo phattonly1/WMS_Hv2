@@ -7,7 +7,6 @@ import {
 	Crosshair,
 	Database,
 	Eye,
-	Layers,
 	List,
 	Map as MapIcon,
 	MapPin,
@@ -29,6 +28,7 @@ import { StationBottomSheet } from "./components/StationBottomSheet";
 import { RIVER_CONFIG, TYPE_CONFIG } from "./stationData";
 import { useMapState } from "./useMapState";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useTheme } from "@/components/providers/ThemeProvider";
 
 // 지도 컴포넌트 비동기 로드 (SSR 방지 및 번들 최적화)
 const MapLibreView = dynamic(() => import("./MapLibreView"), {
@@ -51,10 +51,15 @@ export default function MapPage() {
 	// 하단 필터 팝오버 상태
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+	const { theme } = useTheme();
+	const isDark = theme === "dark";
+
 	const {
 		searchTerm,
 		setSearchTerm,
 		searchResults,
+		mapTileMode,
+		setMapTileMode,
 		isSat,
 		isTracking,
 		isSidebarOpen,
@@ -66,7 +71,6 @@ export default function MapPage() {
 		filters,
 		setFilters,
 		mapRef,
-		toggleLayer,
 		toggleGPS,
 		moveToStation,
 		// 에디터 상태 및 액션
@@ -321,6 +325,8 @@ export default function MapPage() {
 				selectedStation={selectedStation}
 				setSelectedStation={setSelectedStation}
 				mapRef={mapRef}
+				mapTileMode={mapTileMode}
+				isDark={isDark}
 				isSat={isSat}
 				isEditMode={isEditMode}
 				isAddingStation={isAddingStation}
@@ -398,104 +404,135 @@ export default function MapPage() {
 				icon={Settings}
 				maxWidth="max-w-sm"
 			>
-				<div className="grid grid-cols-2 gap-2.5">
-					{/* 1. 지도 레이어 (위성 / 일반) 토글 */}
-					<button
-						type="button"
-						onClick={() => {
-							toggleLayer();
-							setIsAdminMenuOpen(false);
-						}}
-						className={`aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border transition-all active:scale-95 ${
-							isSat
-								? "bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/20"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white border-[#e2e8f0] dark:border-[#222228]"
-						}`}
-					>
-						<div
-							className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-								isSat
-									? "bg-white/20 text-white"
-									: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-							}`}
-						>
-							<Layers size={16} strokeWidth={2.4} />
-						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								{isSat ? "위성지도" : "일반지도"}
-							</span>
-							<span
-								className={`text-[10px] font-mono block ${isSat ? "text-blue-100" : "text-[#64748b] dark:text-[#a1a1aa]"}`}
+				<div className="space-y-3.5">
+					{/* 지도 배경 스타일 4구 탭 선택기 */}
+					<div className="space-y-1.5">
+						<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block">
+							지도 테마 / 배경 타일
+						</span>
+						<div className="grid grid-cols-4 gap-1.5 p-1 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
+							<button
+								type="button"
+								onClick={() => setMapTileMode("system")}
+								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
+									mapTileMode === "system"
+										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
 							>
-								{isSat ? "ON (일반으로 전환)" : "VWorld 영상 전환"}
-							</span>
-						</div>
-					</button>
+								<span className="text-[11px] font-bold">시스템</span>
+								<span className="text-[9px] font-mono opacity-80">
+									{isDark ? "야간연동" : "주간연동"}
+								</span>
+							</button>
 
-					{/* 2. 측정망 지도 편집 */}
-					<button
-						type="button"
-						onClick={() => {
-							setIsEditMode(true);
-							setIsAdminMenuOpen(false);
-						}}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-					>
-						<div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-							<MapIcon size={16} strokeWidth={2.4} />
-						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								지도 편집
-							</span>
-							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-								위치·각도 조정
-							</span>
-						</div>
-					</button>
+							<button
+								type="button"
+								onClick={() => setMapTileMode("base")}
+								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
+									mapTileMode === "base"
+										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
+							>
+								<span className="text-[11px] font-bold">일반</span>
+								<span className="text-[9px] font-mono opacity-80">라이트</span>
+							</button>
 
-					{/* 3. 측정소 제원 관리 */}
-					<Link
-						href={
-							selectedStation
-								? `/map/stations?id=${selectedStation.id}`
-								: "/map/stations"
-						}
-						onClick={() => setIsAdminMenuOpen(false)}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-					>
-						<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-							<Database size={16} strokeWidth={2.4} />
-						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								제원 관리
-							</span>
-							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-								장비 등록·연혁
-							</span>
-						</div>
-					</Link>
+							<button
+								type="button"
+								onClick={() => setMapTileMode("midnight")}
+								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
+									mapTileMode === "midnight"
+										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
+							>
+								<span className="text-[11px] font-bold">야간</span>
+								<span className="text-[9px] font-mono opacity-80">다크</span>
+							</button>
 
-					{/* 4. 기기 통계 요약 */}
-					<Link
-						href="/map/stations?tab=summary"
-						onClick={() => setIsAdminMenuOpen(false)}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-					>
-						<div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-							<Table2 size={16} strokeWidth={2.4} />
+							<button
+								type="button"
+								onClick={() => setMapTileMode("satellite")}
+								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
+									mapTileMode === "satellite"
+										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
+							>
+								<span className="text-[11px] font-bold">위성</span>
+								<span className="text-[9px] font-mono opacity-80">영상</span>
+							</button>
 						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								기기 통계
-							</span>
-							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-								항목별 집계표
-							</span>
-						</div>
-					</Link>
+					</div>
+
+					{/* 관리 기능 3개 그리드 */}
+					<div className="grid grid-cols-3 gap-2 pt-1 border-t border-[#e2e8f0] dark:border-[#222228]">
+						{/* 1. 측정망 지도 편집 */}
+						<button
+							type="button"
+							onClick={() => {
+								setIsEditMode(true);
+								setIsAdminMenuOpen(false);
+							}}
+							className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
+						>
+							<div className="w-7 h-7 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+								<MapIcon size={15} strokeWidth={2.4} />
+							</div>
+							<div className="text-center">
+								<span className="text-xs font-bold tracking-tight block">
+									지도 편집
+								</span>
+								<span className="text-[9px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+									위치·각도
+								</span>
+							</div>
+						</button>
+
+						{/* 2. 측정소 제원 관리 */}
+						<Link
+							href={
+								selectedStation
+									? `/map/stations?id=${selectedStation.id}`
+									: "/map/stations"
+							}
+							onClick={() => setIsAdminMenuOpen(false)}
+							className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
+						>
+							<div className="w-7 h-7 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+								<Database size={15} strokeWidth={2.4} />
+							</div>
+							<div className="text-center">
+								<span className="text-xs font-bold tracking-tight block">
+									제원 관리
+								</span>
+								<span className="text-[9px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+									장비·연혁
+								</span>
+							</div>
+						</Link>
+
+						{/* 3. 기기 통계 요약 */}
+						<Link
+							href="/map/stations?tab=summary"
+							onClick={() => setIsAdminMenuOpen(false)}
+							className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
+						>
+							<div className="w-7 h-7 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+								<Table2 size={15} strokeWidth={2.4} />
+							</div>
+							<div className="text-center">
+								<span className="text-xs font-bold tracking-tight block">
+									기기 통계
+								</span>
+								<span className="text-[9px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+									집계표
+								</span>
+							</div>
+						</Link>
+					</div>
 				</div>
 			</Modal>
 
