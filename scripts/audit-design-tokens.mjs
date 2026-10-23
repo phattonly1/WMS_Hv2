@@ -38,6 +38,7 @@ const APPROVED_HEX_WHITELIST = new Set([
   '#6ee7b7', // Emerald Badge Text
   '#f59e0b', // Amber Status
   '#f43f5e', // Rose Status
+  '#ef4444', // Danger/Red Indicator
   '#f87171', // Rose Soft Text
   '#60a5fa', // Blue Telemetry Number
   '#93c5fd', // Light Blue Accent

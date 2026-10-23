@@ -7,12 +7,14 @@ import {
 	Crosshair,
 	Database,
 	Eye,
+	Layers,
 	List,
 	Map as MapIcon,
 	MapPin,
 	Search,
 	Settings,
 	SlidersHorizontal,
+	SunMoon,
 	Table2,
 	Trash2,
 	X,
@@ -28,7 +30,6 @@ import { StationBottomSheet } from "./components/StationBottomSheet";
 import { RIVER_CONFIG, TYPE_CONFIG } from "./stationData";
 import { useMapState } from "./useMapState";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { useTheme } from "@/components/providers/ThemeProvider";
 
 // 지도 컴포넌트 비동기 로드 (SSR 방지 및 번들 최적화)
 const MapLibreView = dynamic(() => import("./MapLibreView"), {
@@ -51,16 +52,13 @@ export default function MapPage() {
 	// 하단 필터 팝오버 상태
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-	const { theme } = useTheme();
-	const isDark = theme === "dark";
-
 	const {
 		searchTerm,
 		setSearchTerm,
 		searchResults,
-		mapTileMode,
-		setMapTileMode,
 		isSat,
+		isInverted,
+		toggleInvert,
 		isTracking,
 		isSidebarOpen,
 		setIsSidebarOpen,
@@ -71,6 +69,7 @@ export default function MapPage() {
 		filters,
 		setFilters,
 		mapRef,
+		toggleLayer,
 		toggleGPS,
 		moveToStation,
 		// 에디터 상태 및 액션
@@ -112,6 +111,11 @@ export default function MapPage() {
 			: "측정망 지도 - 한강수계 수질자동측정망";
 	}, [isEditMode]);
 
+	// 모달 또는 시트가 하나라도 열려 있는지 여부
+	const isAnyModalOpen = Boolean(
+		isFilterOpen || isSidebarOpen || isAdminMenuOpen || selectedStation,
+	);
+
 	return (
 		<div
 			id="main-content"
@@ -122,9 +126,9 @@ export default function MapPage() {
 			</div>
 
 			{/* ============================================================ */}
-			{/* 1. 상단 좌측 뒤로가기 버튼 (원래 위치 유지, 상단 비우기)      */}
+			{/* 1. 상단 좌측 뒤로가기 버튼 (모달 열림 시 숨김 처리)          */}
 			{/* ============================================================ */}
-			{!isEditMode && !isUiHidden && (
+			{!isEditMode && !isUiHidden && !isAnyModalOpen && (
 				<div className="absolute top-[calc(env(safe-area-inset-top)+10px)] left-3.5 z-[1100] pointer-events-auto">
 					<Link
 						href="/dashboard"
@@ -146,7 +150,12 @@ export default function MapPage() {
 					<div className="pointer-events-auto w-full max-w-md h-12 rounded-2xl bg-white/80 dark:bg-[#111115]/90 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-black/[0.08] dark:border-white/10 flex items-center px-1.5 gap-1.5">
 						{/* 1. 왼쪽: 필터 버튼 (아이콘 전용) */}
 						<button
-							onClick={() => setIsFilterOpen(!isFilterOpen)}
+							onClick={() => {
+								setIsSidebarOpen(false);
+								setIsAdminMenuOpen(false);
+								setSelectedStation(null);
+								setIsFilterOpen(!isFilterOpen);
+							}}
 							aria-label="레이어 필터 열기"
 							title="필터"
 							className={`w-9 h-9 rounded-xl flex items-center justify-center active:scale-95 transition-all shrink-0 border ${
@@ -160,7 +169,12 @@ export default function MapPage() {
 
 						{/* 2. 중간: 검색창 (바텀시트 요약 칩 스타일) */}
 						<div
-							onClick={() => setIsSidebarOpen(true)}
+							onClick={() => {
+								setIsFilterOpen(false);
+								setIsAdminMenuOpen(false);
+								setSelectedStation(null);
+								setIsSidebarOpen(true);
+							}}
 							className="flex-1 flex items-center gap-1.5 min-w-0 pl-2.5 pr-1.5 h-9 bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 border border-black/[0.06] dark:border-white/10 rounded-xl cursor-text transition-colors"
 						>
 							<Search
@@ -174,11 +188,19 @@ export default function MapPage() {
 								value={searchTerm}
 								onChange={(e) => {
 									setSearchTerm(e.target.value);
+									setIsFilterOpen(false);
+									setIsAdminMenuOpen(false);
+									setSelectedStation(null);
 									setIsSidebarOpen(true);
 								}}
-								onFocus={() => setIsSidebarOpen(true)}
+								onFocus={() => {
+									setIsFilterOpen(false);
+									setIsAdminMenuOpen(false);
+									setSelectedStation(null);
+									setIsSidebarOpen(true);
+								}}
 								placeholder="측정소명/초성 검색"
-								className="w-full bg-transparent border-none outline-none text-[12px] font-black text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 placeholder:font-bold"
+								className="w-full bg-transparent border-none outline-none text-xs font-semibold text-[#0f172a] dark:text-white placeholder:text-[#64748b] dark:placeholder:text-[#a1a1aa]"
 							/>
 							{searchTerm ? (
 								<button
@@ -197,6 +219,9 @@ export default function MapPage() {
 									type="button"
 									onClick={(e) => {
 										e.stopPropagation();
+										setIsFilterOpen(false);
+										setIsAdminMenuOpen(false);
+										setSelectedStation(null);
 										setIsSidebarOpen(true);
 									}}
 									title="측정소 목록"
@@ -212,7 +237,12 @@ export default function MapPage() {
 						<div className="flex items-center gap-1.5 shrink-0">
 							<ThemeToggle />
 							<button
-								onClick={() => setIsAdminMenuOpen(!isAdminMenuOpen)}
+								onClick={() => {
+									setIsFilterOpen(false);
+									setIsSidebarOpen(false);
+									setSelectedStation(null);
+									setIsAdminMenuOpen(!isAdminMenuOpen);
+								}}
 								aria-label="관리 도구 열기"
 								title="관리 도구"
 								className={`w-9 h-9 rounded-xl flex items-center justify-center active:scale-95 transition-all border ${
@@ -325,9 +355,8 @@ export default function MapPage() {
 				selectedStation={selectedStation}
 				setSelectedStation={setSelectedStation}
 				mapRef={mapRef}
-				mapTileMode={mapTileMode}
-				isDark={isDark}
 				isSat={isSat}
+				isInverted={isInverted}
 				isEditMode={isEditMode}
 				isAddingStation={isAddingStation}
 				isAddingArrow={isAddingArrow}
@@ -341,9 +370,9 @@ export default function MapPage() {
 			/>
 
 			{/* ============================================================ */}
-			{/* 4. 우측 플로팅 GPS 버튼                                      */}
+			{/* 4. 우측 플로팅 GPS 버튼 (모달 열림 시 뒤로가기와 동일하게 숨김)*/}
 			{/* ============================================================ */}
-			{!isEditMode && !isUiHidden && (
+			{!isEditMode && !isUiHidden && !isAnyModalOpen && (
 				<div className="absolute bottom-[calc(env(safe-area-inset-bottom)+76px)] right-3.5 z-[1050] flex flex-col items-center gap-2 pointer-events-auto">
 					{/* GPS 내 위치 추적 단독 유지 */}
 					<button
@@ -394,7 +423,7 @@ export default function MapPage() {
 			)}
 
 			{/* ============================================================ */}
-			{/* 5. 관리자 액션 모달 (공통 M3 Modal 규격)                      */}
+			{/* 5. 관리자 액션 모달 (공통 M3 Modal 규격 전역 참조)          */}
 			{/* ============================================================ */}
 			<Modal
 				isOpen={!isEditMode && isAdminMenuOpen}
@@ -402,142 +431,152 @@ export default function MapPage() {
 				title="관리 도구"
 				subtitle="측정망 편집 및 제원 관리 센터"
 				icon={Settings}
-				maxWidth="max-w-sm"
 			>
-				<div className="space-y-3.5">
-					{/* 지도 배경 스타일 4구 탭 선택기 */}
-					<div className="space-y-1.5">
-						<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block">
-							지도 테마 / 배경 타일
-						</span>
-						<div className="grid grid-cols-4 gap-1.5 p-1 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
-							<button
-								type="button"
-								onClick={() => setMapTileMode("system")}
-								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
-									mapTileMode === "system"
-										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
-										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-								}`}
-							>
-								<span className="text-[11px] font-bold">시스템</span>
-								<span className="text-[9px] font-mono opacity-80">
-									{isDark ? "야간연동" : "주간연동"}
-								</span>
-							</button>
-
-							<button
-								type="button"
-								onClick={() => setMapTileMode("base")}
-								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
-									mapTileMode === "base"
-										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
-										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-								}`}
-							>
-								<span className="text-[11px] font-bold">일반</span>
-								<span className="text-[9px] font-mono opacity-80">라이트</span>
-							</button>
-
-							<button
-								type="button"
-								onClick={() => setMapTileMode("midnight")}
-								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
-									mapTileMode === "midnight"
-										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
-										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-								}`}
-							>
-								<span className="text-[11px] font-bold">야간</span>
-								<span className="text-[9px] font-mono opacity-80">다크</span>
-							</button>
-
-							<button
-								type="button"
-								onClick={() => setMapTileMode("satellite")}
-								className={`py-2 px-1 rounded-xl flex flex-col items-center justify-center gap-1 transition-all text-center ${
-									mapTileMode === "satellite"
-										? "bg-white dark:bg-[#222228] text-blue-600 dark:text-blue-400 font-bold shadow-xs border border-black/5 dark:border-white/10"
-										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-								}`}
-							>
-								<span className="text-[11px] font-bold">위성</span>
-								<span className="text-[9px] font-mono opacity-80">영상</span>
-							</button>
+				<div className="grid grid-cols-2 gap-2.5">
+					{/* 1. 지도 레이어 (위성 / 일반) 토글 */}
+					<button
+						type="button"
+						onClick={() => {
+							toggleLayer();
+							setIsAdminMenuOpen(false);
+						}}
+						className={`aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border transition-all active:scale-95 ${
+							isSat
+								? "bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/20"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white border-[#e2e8f0] dark:border-[#222228]"
+						}`}
+					>
+						<div
+							className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+								isSat
+									? "bg-white/20 text-white"
+									: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+							}`}
+						>
+							<Layers size={16} strokeWidth={2.4} />
 						</div>
-					</div>
+						<div className="text-center">
+							<span className="text-xs font-bold tracking-tight block">
+								{isSat ? "위성지도" : "일반지도"}
+							</span>
+							<span
+								className={`text-[10px] font-mono block ${isSat ? "text-blue-100" : "text-[#64748b] dark:text-[#a1a1aa]"}`}
+							>
+								{isSat ? "ON (일반으로 전환)" : "VWorld 영상 전환"}
+							</span>
+						</div>
+					</button>
 
-					{/* 관리 기능 3개 그리드 */}
-					<div className="grid grid-cols-3 gap-2 pt-1 border-t border-[#e2e8f0] dark:border-[#222228]">
-						{/* 1. 측정망 지도 편집 */}
-						<button
-							type="button"
-							onClick={() => {
-								setIsEditMode(true);
-								setIsAdminMenuOpen(false);
-							}}
-							className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-						>
-							<div className="w-7 h-7 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-								<MapIcon size={15} strokeWidth={2.4} />
-							</div>
-							<div className="text-center">
-								<span className="text-xs font-bold tracking-tight block">
-									지도 편집
-								</span>
-								<span className="text-[9px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-									위치·각도
-								</span>
-							</div>
-						</button>
+					{/* 2. 기기 통계 요약 */}
+					<Link
+						href="/map/stations?tab=summary"
+						onClick={() => setIsAdminMenuOpen(false)}
+						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
+					>
+						<div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+							<Table2 size={16} strokeWidth={2.4} />
+						</div>
+						<div className="text-center">
+							<span className="text-xs font-bold tracking-tight block">
+								기기 통계
+							</span>
+							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+								항목별 집계표
+							</span>
+						</div>
+					</Link>
 
-						{/* 2. 측정소 제원 관리 */}
-						<Link
-							href={
-								selectedStation
-									? `/map/stations?id=${selectedStation.id}`
-									: "/map/stations"
-							}
-							onClick={() => setIsAdminMenuOpen(false)}
-							className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-						>
-							<div className="w-7 h-7 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-								<Database size={15} strokeWidth={2.4} />
-							</div>
-							<div className="text-center">
-								<span className="text-xs font-bold tracking-tight block">
-									제원 관리
-								</span>
-								<span className="text-[9px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-									장비·연혁
-								</span>
-							</div>
-						</Link>
+					{/* 3. 측정망 지도 편집 */}
+					<button
+						type="button"
+						onClick={() => {
+							setIsEditMode(true);
+							setIsAdminMenuOpen(false);
+						}}
+						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
+					>
+						<div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+							<MapIcon size={16} strokeWidth={2.4} />
+						</div>
+						<div className="text-center">
+							<span className="text-xs font-bold tracking-tight block">
+								지도 편집
+							</span>
+							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+								위치·각도 조정
+							</span>
+						</div>
+					</button>
 
-						{/* 3. 기기 통계 요약 */}
-						<Link
-							href="/map/stations?tab=summary"
-							onClick={() => setIsAdminMenuOpen(false)}
-							className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-						>
-							<div className="w-7 h-7 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-								<Table2 size={15} strokeWidth={2.4} />
+					{/* 4. 측정소 제원 관리 */}
+					<Link
+						href={
+							selectedStation
+								? `/map/stations?id=${selectedStation.id}`
+								: "/map/stations"
+						}
+						onClick={() => setIsAdminMenuOpen(false)}
+						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
+					>
+						<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+							<Database size={16} strokeWidth={2.4} />
+						</div>
+						<div className="text-center">
+							<span className="text-xs font-bold tracking-tight block">
+								제원 관리
+							</span>
+							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+								장비 등록·연혁
+							</span>
+						</div>
+					</Link>
+
+					{/* 5. 지도 색반전 (브라우저 강제 다크/반전 보정) 토글 - 하단 가로 전폭 배치 */}
+					<button
+						type="button"
+						onClick={toggleInvert}
+						className={`col-span-2 py-3 px-4 rounded-2xl flex items-center justify-between border transition-all active:scale-95 ${
+							isInverted
+								? "bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white border-[#e2e8f0] dark:border-[#222228]"
+						}`}
+					>
+						<div className="flex items-center gap-2.5">
+							<div
+								className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+									isInverted
+										? "bg-white/20 text-white"
+										: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
+								}`}
+							>
+								<SunMoon size={16} strokeWidth={2.4} />
 							</div>
-							<div className="text-center">
+							<div className="text-left">
 								<span className="text-xs font-bold tracking-tight block">
-									기기 통계
+									{isInverted ? "색반전 켜짐 (보정 활성화)" : "지도 색반전"}
 								</span>
-								<span className="text-[9px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-									집계표
+								<span
+									className={`text-[10px] font-mono block ${
+										isInverted ? "text-indigo-100" : "text-[#64748b] dark:text-[#a1a1aa]"
+									}`}
+								>
+									{isInverted ? "클릭 시 원본 색상으로 복원" : "브라우저 강제 반전 보정"}
 								</span>
 							</div>
-						</Link>
-					</div>
+						</div>
+						<span
+							className={`text-xs font-mono font-bold ${
+								isInverted ? "text-white" : "text-indigo-600 dark:text-indigo-400"
+							}`}
+						>
+							{isInverted ? "ON" : "OFF"}
+						</span>
+					</button>
 				</div>
 			</Modal>
 
 			{/* ============================================================ */}
-			{/* 5-1. 표시 레이어 필터 모달 (공통 M3 Modal 규격)              */}
+			{/* 5-1. 표시 레이어 필터 모달 (공통 M3 Modal 규격 전역 참조)    */}
 			{/* ============================================================ */}
 			<Modal
 				isOpen={!isEditMode && isFilterOpen}
@@ -545,7 +584,6 @@ export default function MapPage() {
 				title="표시 레이어 설정"
 				subtitle="지도에 노출할 시설 및 수계 선택"
 				icon={SlidersHorizontal}
-				maxWidth="max-w-sm"
 			>
 				<div className="space-y-4">
 					{/* 1. 시설/망 유형 (3구 타일) */}

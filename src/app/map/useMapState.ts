@@ -9,36 +9,41 @@ import {
 } from "./actions";
 import type { MapFilters, Station } from "./stationData";
 
-export type MapTileMode = "system" | "base" | "midnight" | "satellite";
-
 export function useMapState(
 	stations: Station[],
 	refresh?: () => Promise<any> | undefined,
 ) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchResults, setSearchResults] = useState<Station[]>([]);
-	const [mapTileMode, setMapTileModeState] = useState<MapTileMode>("system");
+	const [isSat, setIsSat] = useState(false);
+	const [isInverted, setIsInverted] = useState(false);
 	const [isTracking, setIsTracking] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [selectedStation, setSelectedStation] = useState<Station | null>(null);
 	const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
 
-	// 지도 전용 테마/타일 설정 로드 (쿠키 & localStorage 연동)
+	// 로컬스토리지에서 지도 색반전 상태 복원
 	useEffect(() => {
 		try {
-			const saved = localStorage.getItem("wms_map_tile_mode") as MapTileMode | null;
-			if (saved && ["system", "base", "midnight", "satellite"].includes(saved)) {
-				setMapTileModeState(saved);
+			const saved = localStorage.getItem("wms_map_inverted");
+			if (saved === "true") {
+				setIsInverted(true);
 			}
-		} catch {}
+		} catch {
+			// ignore
+		}
 	}, []);
 
-	const setMapTileMode = useCallback((mode: MapTileMode) => {
-		setMapTileModeState(mode);
-		try {
-			localStorage.setItem("wms_map_tile_mode", mode);
-			document.cookie = `wms_map_tile_mode=${mode}; path=/; max-age=31536000; SameSite=Lax`;
-		} catch {}
+	const toggleInvert = useCallback(() => {
+		setIsInverted((prev) => {
+			const next = !prev;
+			try {
+				localStorage.setItem("wms_map_inverted", String(next));
+			} catch {
+				// ignore
+			}
+			return next;
+		});
 	}, []);
 
 	// 에디터 모드 상태
@@ -74,10 +79,10 @@ export function useMapState(
 		};
 	}, []);
 
-	// 레이어 토글 (단순 토글이 필요한 경우: 위성 <-> 직전 모드/시스템)
+	// 레이어 토글 (일반 벡터 <-> 위성)
 	const toggleLayer = useCallback(() => {
-		setMapTileMode(mapTileMode === "satellite" ? "system" : "satellite");
-	}, [mapTileMode, setMapTileMode]);
+		setIsSat((prev) => !prev);
+	}, []);
 
 	// GPS 내 위치 추적
 	const toggleGPS = useCallback(() => {
@@ -383,9 +388,9 @@ export function useMapState(
 		searchTerm,
 		setSearchTerm,
 		searchResults,
-		mapTileMode,
-		setMapTileMode,
-		isSat: mapTileMode === "satellite",
+		isSat,
+		isInverted,
+		toggleInvert,
 		isTracking,
 		isSidebarOpen,
 		setIsSidebarOpen,

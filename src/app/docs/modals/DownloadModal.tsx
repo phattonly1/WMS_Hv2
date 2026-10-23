@@ -12,7 +12,6 @@ import {
 	FolderDown,
 	Home,
 	Loader2,
-	Search,
 } from "lucide-react";
 import React, { useEffect, useMemo, useState, useTransition } from "react";
 import { Modal } from "@/components/ui/modal";
@@ -24,6 +23,7 @@ import {
 interface DownloadModalProps {
 	isOpen: boolean;
 	onClose: () => void;
+	sharedSearchQuery?: string;
 }
 
 function formatBytes(bytes?: number): string {
@@ -58,12 +58,18 @@ function getFileIcon(name: string, isFolder: boolean) {
 	return <File className="w-4 h-4 text-[#a1a1aa]" />;
 }
 
-export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
+export default function DownloadModal({
+	isOpen,
+	onClose,
+	sharedSearchQuery = "",
+}: DownloadModalProps) {
 	const [currentPath, setCurrentPath] = useState("");
 	const [items, setItems] = useState<StorageItem[]>([]);
 	const [bucketName, setBucketName] = useState("Manual");
-	const [searchQuery, setSearchQuery] = useState("");
+	const [localSearchQuery, setLocalSearchQuery] = useState("");
 	const [isPending, startTransition] = useTransition();
+
+	const searchQuery = sharedSearchQuery || localSearchQuery;
 
 	useEffect(() => {
 		if (!isOpen) return;
@@ -92,7 +98,7 @@ export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
 			if (result.success) {
 				setItems(result.items);
 				setCurrentPath(targetPath);
-				setSearchQuery("");
+				setLocalSearchQuery("");
 			}
 		});
 	};
@@ -139,23 +145,8 @@ export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
 			title="파일 다운로드 보관함"
 			subtitle="SUPABASE CLOUD STORAGE"
 			icon={FolderDown}
-			maxWidth="max-w-2xl"
 		>
 			<div className="space-y-3.5">
-				{/* 검색 및 경로 바 */}
-				<div className="flex items-center gap-2">
-					<div className="relative flex-1 flex items-center h-10 px-3 bg-[#f8fafc] dark:bg-[#09090b] rounded-xl border border-[#e2e8f0] dark:border-[#222228] focus-within:border-blue-500/50">
-						<Search size={14} className="text-[#64748b] dark:text-[#a1a1aa] shrink-0 mr-2" />
-						<input
-							type="text"
-							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
-							placeholder="파일 검색..."
-							className="w-full bg-transparent text-xs text-[#0f172a] dark:text-white placeholder-[#64748b] dark:placeholder-[#a1a1aa] focus:outline-none"
-						/>
-					</div>
-				</div>
-
 				{/* 브레드크럼 */}
 				<div className="flex items-center gap-1.5 px-1 text-xs text-[#64748b] dark:text-[#a1a1aa] overflow-x-auto whitespace-nowrap">
 					<button
@@ -181,7 +172,7 @@ export default function DownloadModal({ isOpen, onClose }: DownloadModalProps) {
 				</div>
 
 				{/* 파일 목록 */}
-				<div className="max-h-[50vh] overflow-y-auto space-y-1.5 pr-1">
+				<div className="space-y-1.5 pr-1">
 					{isPending ? (
 						<div className="py-12 flex flex-col items-center justify-center text-xs text-[#64748b] dark:text-[#a1a1aa] gap-2">
 							<Loader2 size={18} className="animate-spin text-blue-500 dark:text-blue-400" />

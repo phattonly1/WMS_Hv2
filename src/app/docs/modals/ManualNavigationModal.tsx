@@ -6,9 +6,8 @@ import {
 	Folder,
 	FolderOpen,
 	FolderTree,
-	Search,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { matchChosung } from "@/utils/hangul";
 import type { ManualCategory, ManualItem } from "../types";
@@ -27,7 +26,7 @@ interface ManualNavigationModalProps {
 	activeCategoryId: string;
 	activeItemId: string | null;
 	onSelectItem: (categoryId: string, itemId: string) => void;
-	initialSearchMode?: boolean;
+	sharedSearchQuery?: string;
 }
 
 export default function ManualNavigationModal({
@@ -37,10 +36,9 @@ export default function ManualNavigationModal({
 	activeCategoryId,
 	activeItemId,
 	onSelectItem,
-	initialSearchMode = false,
+	sharedSearchQuery = "",
 }: ManualNavigationModalProps) {
-	const [query, setQuery] = useState("");
-	const inputRef = useRef<HTMLInputElement>(null);
+	const query = sharedSearchQuery;
 
 	const [openFolders, setOpenFolders] = useState<Record<string, boolean>>(
 		() => {
@@ -51,16 +49,6 @@ export default function ManualNavigationModal({
 			return initial;
 		},
 	);
-
-	useEffect(() => {
-		if (isOpen) {
-			if (initialSearchMode) {
-				setTimeout(() => inputRef.current?.focus(), 80);
-			}
-		} else {
-			setQuery("");
-		}
-	}, [isOpen, initialSearchMode]);
 
 	const toggleFolder = (id: string) => {
 		setOpenFolders((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -116,25 +104,9 @@ export default function ManualNavigationModal({
 			title="매뉴얼 목차 및 검색"
 			subtitle="WMS STANDARD MANUAL"
 			icon={FolderTree}
-			maxWidth="max-w-2xl"
 		>
-			<div className="space-y-4">
-				{/* 검색창 */}
-				<div className="relative flex items-center w-full h-11 px-3.5 bg-[#f8fafc] dark:bg-[#09090b] rounded-xl border border-[#e2e8f0] dark:border-[#222228] focus-within:border-blue-500/50">
-					<Search size={15} className="text-[#64748b] dark:text-[#a1a1aa] shrink-0 mr-2" />
-					<input
-						ref={inputRef}
-						type="text"
-						value={query}
-						onChange={(e) => setQuery(e.target.value)}
-						placeholder="제목, 키워드, 초성 검색 (예: ㅂㅅ, VPN)..."
-						className="w-full bg-transparent text-xs text-[#0f172a] dark:text-white placeholder-[#64748b] dark:placeholder-[#a1a1aa] focus:outline-none"
-					/>
-				</div>
-
-				{/* 본문: 검색 모드 or 트리 모드 */}
-				<div className="max-h-[55vh] overflow-y-auto space-y-2 pr-1">
-					{isSearching ? (
+			<div className="space-y-2 pr-1">
+				{isSearching ? (
 						<div>
 							<p className="text-[11px] font-mono text-[#64748b] dark:text-[#a1a1aa] mb-2 px-1">
 								검색 결과:{" "}
@@ -266,7 +238,6 @@ export default function ManualNavigationModal({
 						</div>
 					)}
 				</div>
-			</div>
 		</Modal>
 	);
 }

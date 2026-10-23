@@ -78,111 +78,121 @@ export default function ActionModal({
 			subtitle={selectedItem?.name}
 			icon={isReq ? ShoppingCart : LogOut}
 			maxWidth="max-w-sm"
+			sheetClassName="h-auto max-h-[85dvh] rounded-3xl"
 		>
-			<div className="space-y-4">
-				{/* 탭 전환: 채우기(REQ) / 가져가기(OUT) */}
-				<div className="grid grid-cols-2 p-1 bg-[#f1f5f9] dark:bg-[#16161c] rounded-2xl border border-[#e2e8f0] dark:border-[#222228]">
+			<div className="space-y-3">
+				{/* 1. 슬림 탭 전환: 채우기(REQ) / 가져가기(OUT) */}
+				<div className="grid grid-cols-2 p-1 bg-[#f1f5f9] dark:bg-[#16161c] rounded-xl border border-[#e2e8f0] dark:border-[#222228]">
 					<button
 						type="button"
 						onClick={() => setActionType("REQ")}
-						className={`py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+						className={`py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
 							isReq
-								? "bg-blue-600 text-white shadow-sm"
+								? "bg-blue-600 text-white shadow-xs"
 								: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 						}`}
 					>
-						<ShoppingCart size={14} /> 채우기 (입고)
+						<ShoppingCart size={13} /> 입고 (채우기)
 					</button>
 					<button
 						type="button"
 						onClick={() => setActionType("OUT")}
-						className={`py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+						className={`py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
 							!isReq
-								? "bg-amber-600 text-white shadow-sm"
+								? "bg-amber-600 text-white shadow-xs"
 								: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 						}`}
 					>
-						<LogOut size={14} /> 가져가기 (불출)
+						<LogOut size={13} /> 출고 (불출)
 					</button>
 				</div>
 
-				{/* 수량 조절 카드 */}
-				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-4 rounded-2xl border border-[#e2e8f0] dark:border-[#222228] space-y-3">
-					<p className="text-center text-[11px] font-mono uppercase tracking-widest text-[#64748b] dark:text-[#a1a1aa]">
-						수량 조절
-					</p>
-					<div className="flex items-center justify-center gap-4">
+				{/* 2. 올인원 인라인 스텝퍼 + 퀵 버튼 */}
+				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-2.5 rounded-2xl border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between gap-2">
+					{/* 수량 감소 / 표시 / 증가 */}
+					<div className="flex items-center gap-1.5">
 						<button
 							type="button"
 							onClick={() => setActionQty((prev) => Math.max(1, prev - 1))}
-							className="w-11 h-11 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
+							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
 							aria-label="수량 감소"
 						>
-							<Minus size={18} />
+							<Minus size={14} />
 						</button>
-						<div className="text-3xl font-mono font-black text-[#0f172a] dark:text-white w-20 text-center tracking-tight">
+						<div className="min-w-[42px] text-center font-mono font-black text-xl text-[#0f172a] dark:text-white">
 							{actionQty}
 						</div>
 						<button
 							type="button"
 							onClick={() => setActionQty((prev) => prev + 1)}
-							className="w-11 h-11 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
+							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
 							aria-label="수량 증가"
 						>
-							<Plus size={18} />
+							<Plus size={14} />
 						</button>
-					</div>
-					<div className="text-center">
-						<span className="px-2.5 py-0.5 rounded-md bg-[#e2e8f0] dark:bg-[#222228] text-[10px] font-mono text-[#475569] dark:text-[#a1a1aa]">
-							단위: {selectedItem?.unit || "EA"}
+						<span className="text-[11px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] ml-1">
+							{selectedItem?.unit || "EA"}
 						</span>
+					</div>
+
+					{/* 퀵 추가 칩 (+1, +5, +10) */}
+					<div className="flex items-center gap-1">
+						{[1, 5, 10].map((add) => (
+							<button
+								key={add}
+								type="button"
+								onClick={() => setActionQty((prev) => prev + add)}
+								className="px-2 py-1 rounded-lg bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-[11px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] hover:text-blue-600 dark:hover:text-blue-400 active:scale-95 transition-all shadow-2xs"
+							>
+								+{add}
+							</button>
+						))}
 					</div>
 				</div>
 
-				{/* 사용자 이름 & 비고 */}
-				<div className="space-y-3">
-					<div className="space-y-1.5">
+				{/* 3. 사용자 이름 & 사유 (2열 인라인 또는 컴팩트 그리드) */}
+				<div className="grid grid-cols-2 gap-2">
+					<div className="space-y-1">
 						<label
 							htmlFor="action-user"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[10px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block truncate"
 						>
-							사용자 이름 <span className="text-rose-500 dark:text-rose-400">*</span>
+							담당자 <span className="text-rose-500 dark:text-rose-400">*</span>
 						</label>
 						<input
 							id="action-user"
 							name="action-user"
-							placeholder="이름을 입력하세요"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-11 px-3.5 text-center font-bold text-[#0f172a] dark:text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							placeholder="이름 입력"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-9 px-2.5 text-center font-bold text-[#0f172a] dark:text-white text-xs focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 							value={actionUser}
 							onChange={(e) => setActionUser(e.target.value)}
 						/>
 					</div>
-					<div className="space-y-1.5">
+
+					<div className="space-y-1">
 						<label
 							htmlFor="action-note"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[10px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block truncate"
 						>
-							특이사항 / 사유
+							사유 / 목적
 						</label>
 						<input
 							id="action-note"
 							name="action-note"
-							placeholder={
-								isReq ? "입고 / 구매 사유 등" : "사용 측정소 및 목적 등"
-							}
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-11 px-3.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							placeholder={isReq ? "입고 사유" : "사용 목적"}
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-9 px-2.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 							value={actionNote}
 							onChange={(e) => setActionNote(e.target.value)}
 						/>
 					</div>
 				</div>
 
-				{/* 버튼 */}
-				<div className="flex gap-2.5 pt-2">
+				{/* 4. 액션 버튼 */}
+				<div className="flex gap-2 pt-1">
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex-1 h-12 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-sm transition-all border border-[#e2e8f0] dark:border-[#222228]"
+						className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#e2e8f0] dark:border-[#222228] active:scale-98"
 					>
 						취소
 					</button>
@@ -190,10 +200,10 @@ export default function ActionModal({
 						type="button"
 						onClick={handleSubmit}
 						disabled={isSubmitting}
-						className={`flex-[2] h-12 rounded-xl font-bold text-sm text-white transition-all active:scale-[0.98] disabled:opacity-50 ${
+						className={`flex-[2] h-10 rounded-xl font-bold text-xs text-white transition-all active:scale-98 disabled:opacity-50 ${
 							isReq
-								? "bg-blue-600 hover:bg-blue-500 shadow-[0_0_20px_rgba(37,99,235,0.3)]"
-								: "bg-amber-600 hover:bg-amber-500 shadow-[0_0_20px_rgba(217,119,6,0.3)]"
+								? "bg-blue-600 hover:bg-blue-500 shadow-sm"
+								: "bg-amber-600 hover:bg-amber-500 shadow-sm"
 						}`}
 					>
 						{isSubmitting ? "처리 중..." : isReq ? "수량 채우기" : "불출 확인"}

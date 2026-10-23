@@ -30,10 +30,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 	const setTheme = (newTheme: Theme) => {
 		setThemeState(newTheme);
-		try {
-			localStorage.setItem("wms-theme", newTheme);
-			document.cookie = `wms-theme=${newTheme}; path=/; max-age=31536000; SameSite=Lax`;
-		} catch {}
+		localStorage.setItem("wms-theme", newTheme);
 		document.documentElement.classList.toggle("dark", newTheme === "dark");
 	};
 

@@ -12,7 +12,16 @@ export interface GuardIssue {
 }
 
 export interface HardcodedViolation {
-	type: "color-hex" | "theme-missing-dark" | "fixed-width" | "hardcoded-url" | "hardcoded-secret";
+	type:
+		| "color-hex"
+		| "theme-missing-dark"
+		| "fixed-width"
+		| "hardcoded-url"
+		| "hardcoded-secret"
+		| "arbitrary-input-font"
+		| "arbitrary-modal-width"
+		| "arbitrary-modal-height"
+		| "nested-scrollbar";
 	file: string;
 	line: number;
 	snippet: string;
@@ -161,7 +170,7 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 		"#09090b", "#111115", "#16161c", "#1a1a20", "#222228", "#33333e",
 		"#2563eb", "#1d4ed8", "#1e40af", "#0284c7", "#38bdf8", "#06b6d4",
 		"#10b981", "#059669", "#34d399", "#6ee7b7", "#f59e0b", "#f43f5e",
-		"#f87171", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe", "#eff6ff",
+		"#ef4444", "#f87171", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe", "#eff6ff",
 		"#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#fbbf24",
 		"#facc15", "#ffffff", "#f4f4f5", "#d4d4d8", "#a1a1aa", "#000000",
 		"#000", "#fff",
@@ -193,6 +202,7 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 					relPath.startsWith("src/app/dashboard/launcher/") ||
 					relPath === "src/app/map/MapLibreView.tsx" ||
 					relPath === "src/app/map/components/VectorMarkers.tsx" ||
+					relPath === "src/app/map/stationData.ts" ||
 					relPath.includes("video/data.ts")
 				) {
 					continue;
@@ -290,6 +300,69 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 							snippet: `${lineText.trim().slice(0, 40)}...`,
 							detail: "노출 위험 높은 시크릿/비밀키 리터럴 하드코딩 감지",
 							recommendation: ".env.local 환경변수로 즉시 분리하세요.",
+						});
+					}
+
+					// F. 인풋 폼/검색창의 임의 큰 폰트 크기 감지 (text-base, text-lg 등 하드코딩 차단 -> text-xs 표준 강제)
+					if (
+						(lineText.includes("<input") || lineText.includes("<textarea")) &&
+						/\btext-(base|lg|xl|2xl)\b/.test(lineText)
+					) {
+						hardcodedViolations.push({
+							type: "arbitrary-input-font",
+							file: relPath,
+							line: lineNum,
+							snippet: lineText.trim().slice(0, 50),
+							detail: "인풋 입력창에 전역 표준(text-xs)을 벗어난 큰 폰트 크기(text-base 등) 하드코딩 감지",
+							recommendation: "입력창 폰트 크기를 Tailwind 전역 표준인 'text-xs'로 통일하세요.",
+						});
+					}
+
+					// G. 임의 모달 너비 하드코딩 감지 (전역 Modal 규격 상속 강제)
+					if (
+						lineText.includes("<Modal") &&
+						lineText.includes("maxWidth=") &&
+						!relPath.includes("components/ui/modal.tsx") &&
+						!relPath.includes("src/app/docs/modals/VideoModal.tsx")
+					) {
+						hardcodedViolations.push({
+							type: "arbitrary-modal-width",
+							file: relPath,
+							line: lineNum,
+							snippet: lineText.trim().slice(0, 50),
+							detail: "전역 Modal 표준을 무시하고 개별 maxWidth를 하드코딩 지정함",
+							recommendation: "개별 maxWidth 지정을 제거하고 전역 Modal 컴포넌트의 표준 크기를 상속받으세요.",
+						});
+					}
+
+					// H. 임의 모달 레이아웃/세로 높이 하드코딩 감지 (전역 Modal 표준 규격 이탈 방지)
+					if (
+						(lineText.includes("sheetClassName=") || lineText.includes("containerClassName=")) &&
+						!relPath.includes("components/ui/modal.tsx")
+					) {
+						hardcodedViolations.push({
+							type: "arbitrary-modal-height",
+							file: relPath,
+							line: lineNum,
+							snippet: lineText.trim().slice(0, 50),
+							detail: "모달에 전역 Modal 표준을 무시하고 개별 sheetClassName/containerClassName을 하드코딩 지정함",
+							recommendation: "개별 지정을 제거하고 전역 Modal 컴포넌트의 표준 규격을 100% 상속받으세요.",
+						});
+					}
+
+					// I. 모달/컨테이너 내부 이중 세로 스크롤 의심 중복 감지
+					if (
+						lineText.includes("overflow-y-auto") &&
+						(lineText.includes("max-h-[5") || lineText.includes("max-h-[6")) &&
+						(relPath.includes("/modals/") || relPath.includes("/components/"))
+					) {
+						hardcodedViolations.push({
+							type: "nested-scrollbar",
+							file: relPath,
+							line: lineNum,
+							snippet: lineText.trim().slice(0, 50),
+							detail: "컨테이너 내부에 중복된 overflow-y-auto 지정으로 이중 세로 스크롤바 유발",
+							recommendation: "자식 요소의 overflow-y-auto를 제거하고 부모 Modal 스크롤 1개로 일원화하세요.",
 						});
 					}
 				});

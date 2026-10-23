@@ -31,31 +31,7 @@ export const MAP_STYLES = {
 		],
 	} as StyleSpecification,
 
-	// 2. 브이월드 야간 배경지도 (Midnight) - 눈부심 없는 야간 관제 전용 다크 타일
-	vworldMidnight: {
-		version: 8,
-		sources: {
-			"vworld-midnight": {
-				type: "raster",
-				tiles: [
-					`https://api.vworld.kr/req/wmts/1.0.0/${VWORLD_KEY}/midnight/{z}/{y}/{x}.png`,
-				],
-				tileSize: 256,
-				attribution: "&copy; 공간정보 오픈플랫폼 브이월드(VWorld)",
-			},
-		},
-		layers: [
-			{
-				id: "vworld-midnight-layer",
-				type: "raster",
-				source: "vworld-midnight",
-				minzoom: 0,
-				maxzoom: 19,
-			},
-		],
-	} as StyleSpecification,
-
-	// 3. 브이월드 백지도 (White) - 측정소 마커 및 하천 색상이 가장 돋보이는 모니터링 최적 스타일
+	// 2. 브이월드 백지도 (White) - 측정소 마커 및 하천 색상이 가장 돋보이는 모니터링 최적 스타일
 	vworldWhite: {
 		version: 8,
 		sources: {

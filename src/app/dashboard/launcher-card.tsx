@@ -1,11 +1,13 @@
 "use client";
 
-import { Check, ExternalLink, X } from "lucide-react";
+import { Check, ExternalLink, Monitor, X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { Modal } from "@/components/ui/modal";
 
 export function LauncherCard() {
 	const [showToast, setShowToast] = useState<boolean>(false);
+	const [showMobileNotice, setShowMobileNotice] = useState<boolean>(false);
 	const [remainingMs, setRemainingMs] = useState<number>(5000);
 	const timerRef = useRef<number | null>(null);
 	const TOTAL_MS = 5000;
@@ -53,9 +55,7 @@ export function LauncherCard() {
 				window.matchMedia("(pointer: coarse)").matches);
 
 		if (isMobile) {
-			alert(
-				"WMS 런처는 PC 브라우저(Chrome/Edge 등) 전용입니다.\nF12 개발자 도구 콘솔 실행이 필요하므로 PC에서 접속해 주세요.",
-			);
+			setShowMobileNotice(true);
 			return;
 		}
 
@@ -82,18 +82,18 @@ export function LauncherCard() {
 				onClick={handleCopyLauncher}
 				className="block h-full w-full text-left cursor-pointer"
 			>
-				<div className="group relative flex flex-col items-center justify-between p-6 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] h-full min-h-[200px]">
+				<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] h-full min-h-[160px]">
 					<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
 						<Image
 							src="/icons/icon-chart-bg.png"
 							alt="WMS 슈퍼 런처"
-							width={96}
-							height={96}
-							className="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-2xl select-none"
+							width={80}
+							height={80}
+							className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl select-none"
 						/>
 					</div>
 
-					<div className="text-center w-full mt-2 space-y-1">
+					<div className="text-center w-full mt-1.5 space-y-0.5">
 						<span className="text-base font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-center gap-1 whitespace-nowrap">
 							통합 런처
 						</span>
@@ -103,6 +103,32 @@ export function LauncherCard() {
 					</div>
 				</div>
 			</button>
+
+			{/* 모바일 전용 M3 간결 안내 모달 */}
+			<Modal
+				isOpen={showMobileNotice}
+				onClose={() => setShowMobileNotice(false)}
+				title="PC 전용 기능"
+				subtitle="WMS 슈퍼 런처"
+				icon={Monitor}
+				maxWidth="max-w-xs"
+				sheetClassName="h-auto max-h-[80dvh] rounded-3xl"
+				containerClassName="z-[1200] p-4 flex items-center justify-center"
+			>
+				<div className="space-y-4 py-2 text-center">
+					<p className="text-sm font-medium text-[#0f172a] dark:text-[#f4f4f5] leading-relaxed break-keep">
+						WMS 통합 런처는 PC 버전 브라우저에서 실행해 주세요.
+					</p>
+
+					<button
+						type="button"
+						onClick={() => setShowMobileNotice(false)}
+						className="w-full py-2.5 px-4 rounded-xl font-bold text-xs text-white bg-blue-600 hover:bg-blue-500 active:scale-98 transition-all shadow-md shadow-blue-500/20 flex items-center justify-center cursor-pointer"
+					>
+						확인
+					</button>
+				</div>
+			</Modal>
 
 			{/* 5초 토스트 알림창 */}
 			{showToast && (

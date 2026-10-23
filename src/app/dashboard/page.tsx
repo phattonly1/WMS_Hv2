@@ -90,7 +90,7 @@ export default function DashboardPage() {
 						</div>
 						<div className="min-w-0">
 							<h1 className="text-base sm:text-lg font-bold tracking-tight text-[#0f172a] dark:text-white break-keep">
-								한강수계 국가수질측정망
+								한강수계 수질자동측정망
 							</h1>
 						</div>
 					</div>
@@ -111,17 +111,17 @@ export default function DashboardPage() {
 					<div className="grid grid-cols-2 gap-4 md:gap-6">
 						{NAV_SERVICES.slice(0, 2).map((item) => (
 							<Link key={item.title} href={item.href} className="block h-full">
-								<div className="group relative flex flex-col items-center justify-between p-6 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[200px]">
+								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
 									<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
 										<Image
 											src={item.imgSrc}
 											alt={item.title}
-											width={96}
-											height={96}
-											className="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-2xl select-none"
+											width={80}
+											height={80}
+											className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl select-none"
 										/>
 									</div>
-									<div className="text-center w-full mt-2 space-y-1">
+									<div className="text-center w-full mt-1.5 space-y-0.5">
 										<span className="text-base font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-center gap-1 whitespace-nowrap">
 											{item.title}
 										</span>
@@ -140,17 +140,17 @@ export default function DashboardPage() {
 
 						{NAV_SERVICES.slice(2).map((item) => (
 							<Link key={item.title} href={item.href} className="block h-full">
-								<div className="group relative flex flex-col items-center justify-between p-6 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[200px]">
+								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
 									<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
 										<Image
 											src={item.imgSrc}
 											alt={item.title}
-											width={96}
-											height={96}
-											className="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-2xl select-none"
+											width={80}
+											height={80}
+											className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl select-none"
 										/>
 									</div>
-									<div className="text-center w-full mt-2 space-y-1">
+									<div className="text-center w-full mt-1.5 space-y-0.5">
 										<span className="text-base font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-center gap-1 whitespace-nowrap">
 											{item.title}
 										</span>

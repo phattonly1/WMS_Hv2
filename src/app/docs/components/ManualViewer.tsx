@@ -9,6 +9,7 @@ import type { ManualCategory } from "../types";
 interface MarkdownRendererProps {
 	content: string;
 	onImageClick?: (src: string, alt?: string) => void;
+	fontSizeStep?: number;
 }
 
 const ListContext = React.createContext<{ depth: number; isOrdered: boolean }>({
@@ -26,57 +27,101 @@ function FluidTable({ children }: { children: React.ReactNode }) {
 	);
 }
 
-function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
+function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownRendererProps) {
+	// 폰트 크기 배율 클래스 (Tailwind 기본 텍스트 크기를 단계별로 매핑)
+	const textSize =
+		fontSizeStep === 2
+			? {
+					body: "text-base sm:text-[17px] leading-relaxed",
+					h1: "text-xl sm:text-2xl",
+					h2: "text-lg sm:text-xl",
+					h3: "text-base sm:text-lg",
+					h4: "text-sm sm:text-base",
+					table: "text-sm",
+					badge: "text-xs",
+				}
+			: fontSizeStep === 1
+				? {
+						body: "text-sm sm:text-[15px] leading-relaxed",
+						h1: "text-lg sm:text-xl",
+						h2: "text-base sm:text-lg",
+						h3: "text-sm sm:text-base",
+						h4: "text-xs sm:text-sm",
+						table: "text-xs",
+						badge: "text-[11px]",
+					}
+				: {
+						body: "text-xs sm:text-[13px] leading-relaxed",
+						h1: "text-base",
+						h2: "text-sm sm:text-base",
+						h3: "text-xs sm:text-sm",
+						h4: "text-xs",
+						table: "text-xs",
+						badge: "text-[10px]",
+					};
+
 	return (
-		<div className="w-full text-[#0f172a] dark:text-[#f4f4f5]">
+		<div className="w-full text-[#0f172a] dark:text-[#f4f4f5] transition-all duration-150">
 			<ReactMarkdown
 				remarkPlugins={[remarkGfm]}
 				components={{
 					p({ children }) {
+						// ReactMarkdown에서 이미지가 p 태그로 감싸질 때 하위에 block 요소(figure, div)가 들어가 hydration 오류가 발생하는 것을 방지
+						const hasImageChild = React.Children.toArray(children).some(
+							(child) =>
+								React.isValidElement(child) &&
+								(child.type === "img" ||
+									(typeof child.type === "function" && child.type.name === "img")),
+						);
+
+						if (hasImageChild) {
+							return <div className="my-3">{children}</div>;
+						}
+
 						return (
-							<p className="mb-3 last:mb-0 text-[#64748b] dark:text-[#a1a1aa] break-keep leading-relaxed text-xs sm:text-[13px]">
+							<p className={`mb-3 last:mb-0 text-[#64748b] dark:text-[#a1a1aa] break-keep ${textSize.body}`}>
 								{children}
 							</p>
 						);
 					},
 					h1({ children }) {
 						return (
-							<h1 className="font-bold tracking-tight text-[#0f172a] dark:text-white mt-4 mb-2 text-base break-keep">
+							<h1 className={`font-bold tracking-tight text-[#0f172a] dark:text-white mt-4 mb-2 break-keep ${textSize.h1}`}>
 								{children}
 							</h1>
 						);
 					},
 					h2({ children }) {
 						return (
-							<h2 className="font-bold tracking-tight text-[#0f172a] dark:text-white mt-4 mb-2 text-sm sm:text-base break-keep">
+							<h2 className={`font-bold tracking-tight text-[#0f172a] dark:text-white mt-4 mb-2 break-keep ${textSize.h2}`}>
 								{children}
 							</h2>
 						);
 					},
 					h3({ children }) {
 						return (
-							<h3 className="font-bold tracking-tight text-[#0f172a] dark:text-white mt-3 mb-1.5 text-xs sm:text-sm break-keep">
+							<h3 className={`font-bold tracking-tight text-[#0f172a] dark:text-white mt-3 mb-1.5 break-keep ${textSize.h3}`}>
 								{children}
 							</h3>
 						);
 					},
 					h4({ children }) {
 						return (
-							<h4 className="font-bold text-[#0f172a] dark:text-[#f4f4f5] mt-2 mb-1 text-xs break-keep">
+							<h4 className={`font-bold text-[#0f172a] dark:text-[#f4f4f5] mt-2 mb-1 break-keep ${textSize.h4}`}>
 								{children}
 							</h4>
 						);
 					},
 					h5({ children }) {
 						return (
-							<h5 className="font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider mt-4 mb-2 text-[11px] flex items-center gap-1.5 break-keep">
+							<h5 className={`font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider mt-4 mb-2 flex items-center gap-1.5 break-keep ${textSize.badge}`}>
 								{children}
 							</h5>
 						);
 					},
 					blockquote({ children }) {
 						return (
-							<blockquote className="my-3 p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 text-[#475569] dark:text-[#a1a1aa] text-xs leading-relaxed break-keep">
+							<blockquote className={`my-3 p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 text-[#475569] dark:text-[#a1a1aa] leading-relaxed break-keep ${textSize.body}`}>
 								{children}
 							</blockquote>
 						);
@@ -88,7 +133,7 @@ function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
 									<ListContext.Provider
 										value={{ depth: ctx.depth + 1, isOrdered: false }}
 									>
-										<ul className="my-1.5 space-y-1 pl-0 w-full text-[#64748b] dark:text-[#a1a1aa]">
+										<ul className={`my-1.5 space-y-1 pl-0 w-full text-[#64748b] dark:text-[#a1a1aa] ${textSize.body}`}>
 											{children}
 										</ul>
 									</ListContext.Provider>
@@ -103,7 +148,7 @@ function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
 									<ListContext.Provider
 										value={{ depth: ctx.depth + 1, isOrdered: true }}
 									>
-										<ol className="my-2 space-y-2 list-none pl-0 [counter-reset:step-counter]">
+										<ol className={`my-2 space-y-2 list-none pl-0 [counter-reset:step-counter] ${textSize.body}`}>
 											{children}
 										</ol>
 									</ListContext.Provider>
@@ -117,7 +162,7 @@ function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
 								{(ctx) => {
 									if (ctx.isOrdered && ctx.depth === 1) {
 										return (
-											<li className="relative flex flex-col rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] p-3 text-xs [counter-increment:step-counter]">
+											<li className={`relative flex flex-col rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] p-3 [counter-increment:step-counter] ${textSize.body}`}>
 												<div className="flex items-start gap-2">
 													<span className="flex items-center justify-center w-5 h-5 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 font-mono font-bold text-[10px] shrink-0 before:content-[counter(step-counter)]" />
 													<div className="flex-1 min-w-0 text-[#0f172a] dark:text-[#f4f4f5] break-keep">
@@ -129,7 +174,7 @@ function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
 									}
 
 									return (
-										<li className="flex items-start gap-2 text-[#64748b] dark:text-[#a1a1aa] text-xs py-0.5 break-keep">
+										<li className={`flex items-start gap-2 text-[#64748b] dark:text-[#a1a1aa] py-0.5 break-keep ${textSize.body}`}>
 											<span className="w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400 shrink-0 mt-1.5" />
 											<div className="flex-1 min-w-0">{children}</div>
 										</li>
@@ -150,7 +195,7 @@ function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
 					},
 					th({ children }) {
 						return (
-							<th className="py-2 px-3 font-mono text-[11px] tracking-tight break-keep text-[#64748b] dark:text-[#a1a1aa]">
+							<th className={`py-2 px-3 font-mono tracking-tight break-keep text-[#64748b] dark:text-[#a1a1aa] ${textSize.badge}`}>
 								{children}
 							</th>
 						);
@@ -171,7 +216,7 @@ function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
 					},
 					td({ children }) {
 						return (
-							<td className="py-2 px-3 text-[#334155] dark:text-[#d4d4d8] text-xs leading-relaxed break-keep align-top">
+							<td className={`py-2 px-3 text-[#334155] dark:text-[#d4d4d8] leading-relaxed break-keep align-top ${textSize.table}`}>
 								{children}
 							</td>
 						);
@@ -238,9 +283,10 @@ function MarkdownRenderer({ content, onImageClick }: MarkdownRendererProps) {
 interface ManualViewerProps {
 	category: ManualCategory;
 	activeItemId?: string | null;
+	fontSizeStep?: number;
 }
 
-export function ManualViewer({ category, activeItemId }: ManualViewerProps) {
+export function ManualViewer({ category, activeItemId, fontSizeStep = 0 }: ManualViewerProps) {
 	const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>(
 		() => {
 			const initial: Record<string, boolean> = {};
@@ -352,6 +398,7 @@ export function ManualViewer({ category, activeItemId }: ManualViewerProps) {
 									<MarkdownRenderer
 										content={item.content}
 										onImageClick={(src, alt) => setZoomImage({ src, alt })}
+										fontSizeStep={fontSizeStep}
 									/>
 								</div>
 							)}

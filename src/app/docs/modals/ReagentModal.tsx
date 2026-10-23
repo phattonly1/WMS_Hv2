@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy, FlaskConical, MapPin, Search } from "lucide-react";
+import { Check, Copy, FlaskConical, MapPin } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { matchChosung } from "@/utils/hangul";
@@ -14,15 +14,22 @@ import {
 interface ReagentModalProps {
 	isOpen: boolean;
 	onClose: () => void;
+	sharedSearchQuery?: string;
 }
 
-export default function ReagentModal({ isOpen, onClose }: ReagentModalProps) {
+export default function ReagentModal({
+	isOpen,
+	onClose,
+	sharedSearchQuery = "",
+}: ReagentModalProps) {
 	const [activeTab, setActiveTab] = useState<"stations" | "all">("stations");
-	const [searchTerm, setSearchTerm] = useState("");
+	const [localSearchTerm, setLocalSearchTerm] = useState("");
 	const [selectedStation, setSelectedStation] = useState<StationData | null>(
 		null,
 	);
 	const [copiedId, setCopiedId] = useState<string | null>(null);
+
+	const searchTerm = sharedSearchQuery || localSearchTerm;
 
 	const handleCopyRecipe = (recipe: string, id: string) => {
 		navigator.clipboard.writeText(recipe);
@@ -37,8 +44,23 @@ export default function ReagentModal({ isOpen, onClose }: ReagentModalProps) {
 	}, [searchTerm]);
 
 	const allGroupedReagents = useMemo(() => {
-		return groupAllReagents();
-	}, []);
+		const groups = groupAllReagents();
+		if (!searchTerm.trim()) return groups;
+		const q = searchTerm.trim();
+
+		return groups
+			.map((g) => ({
+				...g,
+				items: g.items.filter(
+					(r) =>
+						matchChosung(r.name, q) ||
+						matchChosung(r.category, q) ||
+						(r.manufacturer && matchChosung(r.manufacturer, q)) ||
+						r.steps.some((step) => matchChosung(step, q)),
+				),
+			}))
+			.filter((g) => g.items.length > 0);
+	}, [searchTerm]);
 
 	const stationReagents = useMemo(() => {
 		if (!selectedStation) return [];
@@ -50,7 +72,7 @@ export default function ReagentModal({ isOpen, onClose }: ReagentModalProps) {
 			isOpen={isOpen}
 			onClose={() => {
 				setSelectedStation(null);
-				setSearchTerm("");
+				setLocalSearchTerm("");
 				onClose();
 			}}
 			title={
@@ -62,13 +84,12 @@ export default function ReagentModal({ isOpen, onClose }: ReagentModalProps) {
 					: "수질자동측정망 시약 조제 매뉴얼"
 			}
 			icon={FlaskConical}
-			maxWidth="max-w-3xl"
 			onBack={selectedStation ? () => setSelectedStation(null) : undefined}
 		>
 			<div className="space-y-4">
 				{selectedStation ? (
 					/* 측정소 상세 시약 목록 */
-					<div className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
+					<div className="space-y-4">
 						{/* 장비 정보 요약 카드 */}
 						<div className="p-3.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
 							<div>
@@ -217,18 +238,7 @@ export default function ReagentModal({ isOpen, onClose }: ReagentModalProps) {
 
 						{activeTab === "stations" ? (
 							<div className="space-y-3">
-								<div className="relative flex items-center w-full h-10 px-3 bg-[#f8fafc] dark:bg-[#09090b] rounded-xl border border-[#e2e8f0] dark:border-[#222228] focus-within:border-blue-500/50">
-									<Search size={14} className="text-[#64748b] dark:text-[#a1a1aa] shrink-0 mr-2" />
-									<input
-										type="text"
-										value={searchTerm}
-										onChange={(e) => setSearchTerm(e.target.value)}
-										placeholder="측정소명 검색 (예: 달천, 평창강, ㄷㅊ)..."
-										className="w-full bg-transparent text-xs text-[#0f172a] dark:text-white placeholder-[#64748b] dark:placeholder-[#a1a1aa] focus:outline-none"
-									/>
-								</div>
-
-								<div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[50vh] overflow-y-auto pr-1">
+								<div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
 									{filteredStations.map((station) => (
 										<button
 											key={station.name}
@@ -247,36 +257,42 @@ export default function ReagentModal({ isOpen, onClose }: ReagentModalProps) {
 								</div>
 							</div>
 						) : (
-							<div className="space-y-4 max-h-[55vh] overflow-y-auto pr-1">
-								{allGroupedReagents.map((group) => (
-									<div key={group.category} className="space-y-2">
-										<h4 className="text-xs font-bold text-[#0f172a] dark:text-white px-1">
-											{group.category} ({group.items.length})
-										</h4>
-										<div className="space-y-2">
-											{group.items.map((r) => (
-												<div
-													key={`${group.category}-${r.name}-${r.manufacturer}`}
-													className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-1.5"
-												>
-													<div className="flex items-center justify-between gap-2">
-														<span className="text-xs font-bold text-[#0f172a] dark:text-white">
-															{r.name}
-														</span>
-														<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
-															{r.manufacturer}
-														</span>
-													</div>
-													<div className="bg-white dark:bg-[#09090b] p-2 rounded-lg text-xs font-mono text-[#334155] dark:text-[#d4d4d8] space-y-0.5 border border-[#e2e8f0] dark:border-[#222228]">
-														{r.steps.map((s) => (
-															<p key={s}>{s}</p>
-														))}
-													</div>
-												</div>
-											))}
-										</div>
+							<div className="space-y-4">
+								{allGroupedReagents.length === 0 ? (
+									<div className="py-12 text-center text-xs text-[#64748b] dark:text-[#a1a1aa] font-mono">
+										일치하는 시약 조제법이 없습니다.
 									</div>
-								))}
+								) : (
+									allGroupedReagents.map((group) => (
+										<div key={group.category} className="space-y-2">
+											<h4 className="text-xs font-bold text-[#0f172a] dark:text-white px-1">
+												{group.category} ({group.items.length})
+											</h4>
+											<div className="space-y-2">
+												{group.items.map((r) => (
+													<div
+														key={`${group.category}-${r.name}-${r.manufacturer}`}
+														className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-1.5"
+													>
+														<div className="flex items-center justify-between gap-2">
+															<span className="text-xs font-bold text-[#0f172a] dark:text-white">
+																{r.name}
+															</span>
+															<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
+																{r.manufacturer}
+															</span>
+														</div>
+														<div className="bg-white dark:bg-[#09090b] p-2 rounded-lg text-xs font-mono text-[#334155] dark:text-[#d4d4d8] space-y-0.5 border border-[#e2e8f0] dark:border-[#222228]">
+															{r.steps.map((s) => (
+																<p key={s}>{s}</p>
+															))}
+														</div>
+													</div>
+												))}
+											</div>
+										</div>
+									))
+								)}
 							</div>
 						)}
 					</div>
