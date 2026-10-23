@@ -185,13 +185,14 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 				// 제외 대상:
 				// 1. audit 자체 및 린터 스크립트
 				// 2. 외부 포털 주입용 standalone 번들 (src/app/dashboard/launcher)
-				// 3. 지도 지리정보 및 백터 렌더링 (src/app/map)
+				// 3. 지도 지리정보 및 백터 렌더링 (단, UI 컴포넌트나 모달은 검증에 포함)
 				// 4. 정적 CDN/SVG 네임스페이스 및 미디어 데이터 (video/data.ts)
 				if (
 					relPath.includes("actions/audit.ts") ||
 					relPath.includes("scripts/audit") ||
 					relPath.startsWith("src/app/dashboard/launcher/") ||
-					relPath.startsWith("src/app/map/") ||
+					relPath === "src/app/map/MapLibreView.tsx" ||
+					relPath === "src/app/map/components/VectorMarkers.tsx" ||
 					relPath.includes("video/data.ts")
 				) {
 					continue;

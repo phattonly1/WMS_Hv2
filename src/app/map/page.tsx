@@ -409,14 +409,14 @@ export default function MapPage() {
 						className={`aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border transition-all active:scale-95 ${
 							isSat
 								? "bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/20"
-								: "bg-[#16161c] hover:bg-white/5 text-white border-[#222228]"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white border-[#e2e8f0] dark:border-[#222228]"
 						}`}
 					>
 						<div
 							className={`w-8 h-8 rounded-xl flex items-center justify-center ${
 								isSat
 									? "bg-white/20 text-white"
-									: "bg-blue-500/10 text-blue-400"
+									: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
 							}`}
 						>
 							<Layers size={16} strokeWidth={2.4} />
@@ -426,7 +426,7 @@ export default function MapPage() {
 								{isSat ? "위성지도" : "일반지도"}
 							</span>
 							<span
-								className={`text-[10px] font-mono block ${isSat ? "text-blue-100" : "text-[#a1a1aa]"}`}
+								className={`text-[10px] font-mono block ${isSat ? "text-blue-100" : "text-[#64748b] dark:text-[#a1a1aa]"}`}
 							>
 								{isSat ? "ON (일반으로 전환)" : "VWorld 영상 전환"}
 							</span>
@@ -440,16 +440,16 @@ export default function MapPage() {
 							setIsEditMode(true);
 							setIsAdminMenuOpen(false);
 						}}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#222228] bg-[#16161c] hover:bg-white/5 text-white transition-all active:scale-95"
+						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
 					>
-						<div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+						<div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
 							<MapIcon size={16} strokeWidth={2.4} />
 						</div>
 						<div className="text-center">
 							<span className="text-xs font-bold tracking-tight block">
 								지도 편집
 							</span>
-							<span className="text-[10px] font-mono text-[#a1a1aa] block">
+							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
 								위치·각도 조정
 							</span>
 						</div>
@@ -463,16 +463,16 @@ export default function MapPage() {
 								: "/map/stations"
 						}
 						onClick={() => setIsAdminMenuOpen(false)}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#222228] bg-[#16161c] hover:bg-white/5 text-white transition-all active:scale-95"
+						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
 					>
-						<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
+						<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
 							<Database size={16} strokeWidth={2.4} />
 						</div>
 						<div className="text-center">
 							<span className="text-xs font-bold tracking-tight block">
 								제원 관리
 							</span>
-							<span className="text-[10px] font-mono text-[#a1a1aa] block">
+							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
 								장비 등록·연혁
 							</span>
 						</div>
@@ -482,16 +482,16 @@ export default function MapPage() {
 					<Link
 						href="/map/stations?tab=summary"
 						onClick={() => setIsAdminMenuOpen(false)}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#222228] bg-[#16161c] hover:bg-white/5 text-white transition-all active:scale-95"
+						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
 					>
-						<div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+						<div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
 							<Table2 size={16} strokeWidth={2.4} />
 						</div>
 						<div className="text-center">
 							<span className="text-xs font-bold tracking-tight block">
 								기기 통계
 							</span>
-							<span className="text-[10px] font-mono text-[#a1a1aa] block">
+							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
 								항목별 집계표
 							</span>
 						</div>
@@ -513,7 +513,7 @@ export default function MapPage() {
 				<div className="space-y-4">
 					{/* 1. 시설/망 유형 (3구 타일) */}
 					<div className="space-y-1.5">
-						<span className="text-[11px] font-mono uppercase tracking-wider text-[#a1a1aa] ml-0.5 block">
+						<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block">
 							측정망 유형
 						</span>
 						<div className="grid grid-cols-3 gap-1.5">
@@ -525,14 +525,14 @@ export default function MapPage() {
 								className={`py-3 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
 									filters.station
 										? "bg-blue-600 text-white border-blue-500 shadow-sm"
-										: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
 								<div
 									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
 										filters.station
 											? "bg-white/20 text-white"
-											: "bg-blue-500/10 text-blue-400"
+											: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
 									}`}
 								>
 									<MapPin size={13} strokeWidth={2.5} />
@@ -548,14 +548,14 @@ export default function MapPage() {
 								className={`py-3 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
 									filters.small
 										? "bg-cyan-600 text-white border-cyan-500 shadow-sm"
-										: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
 								<div
 									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
 										filters.small
 											? "bg-white/20 text-white"
-											: "bg-cyan-500/10 text-cyan-400"
+											: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"
 									}`}
 								>
 									<MapPin size={13} strokeWidth={2.5} />
@@ -571,14 +571,14 @@ export default function MapPage() {
 								className={`py-3 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
 									filters.poi
 										? "bg-rose-600 text-white border-rose-500 shadow-sm"
-										: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
 								<div
 									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
 										filters.poi
 											? "bg-white/20 text-white"
-											: "bg-rose-500/10 text-rose-400"
+											: "bg-rose-500/10 text-rose-600 dark:text-rose-400"
 									}`}
 								>
 									<MapPin size={13} strokeWidth={2.5} />
@@ -590,7 +590,7 @@ export default function MapPage() {
 
 					{/* 2. 하천 흐름 화살표 */}
 					<div className="space-y-1.5">
-						<span className="text-[11px] font-mono uppercase tracking-wider text-[#a1a1aa] ml-0.5 block">
+						<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block">
 							흐름 화살표
 						</span>
 						<div className="grid grid-cols-3 gap-1.5">
@@ -600,10 +600,10 @@ export default function MapPage() {
 								className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
 									filters.arrow === "none"
 										? "bg-[#222228] text-white border-white/20 shadow-sm"
-										: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
-								<div className="w-6 h-6 rounded-lg flex items-center justify-center bg-white/5 text-[#a1a1aa]">
+								<div className="w-6 h-6 rounded-lg flex items-center justify-center bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa]">
 									<X size={12} strokeWidth={2.5} />
 								</div>
 								<span className="text-xs font-bold">숨김</span>
@@ -615,14 +615,14 @@ export default function MapPage() {
 								className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
 									filters.arrow === "no-name"
 										? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
-										: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
 								<div
 									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
 										filters.arrow === "no-name"
 											? "bg-white/20 text-white"
-											: "bg-emerald-500/10 text-emerald-400"
+											: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
 									}`}
 								>
 									<ArrowUp size={13} strokeWidth={3} />
@@ -636,14 +636,14 @@ export default function MapPage() {
 								className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
 									filters.arrow === "name"
 										? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
-										: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
 								<div
 									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
 										filters.arrow === "name"
 											? "bg-white/20 text-white"
-											: "bg-emerald-500/10 text-emerald-400"
+											: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
 									}`}
 								>
 									<ArrowUp size={13} strokeWidth={3} />
@@ -654,9 +654,9 @@ export default function MapPage() {
 					</div>
 
 					{/* 3. 5대 수계 활성화 */}
-					<div className="space-y-1.5 pt-3 border-t border-[#222228]">
+					<div className="space-y-1.5 pt-3 border-t border-[#e2e8f0] dark:border-[#222228]">
 						<div className="flex items-center justify-between px-0.5">
-							<span className="text-[11px] font-mono uppercase tracking-wider text-[#a1a1aa]">
+							<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa]">
 								수계 표시 활성화
 							</span>
 							<button
@@ -674,7 +674,7 @@ export default function MapPage() {
 										},
 									});
 								}}
-								className="text-[10px] font-mono font-bold text-blue-400 hover:text-blue-300"
+								className="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300"
 							>
 								{Object.values(filters.rivers).every(Boolean)
 									? "전체해제"
@@ -713,11 +713,11 @@ export default function MapPage() {
 										className={`py-2 rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 											isActive
 												? "text-white border-transparent shadow-sm"
-												: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+												: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 										}`}
 									>
 										<span
-											className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-white" : "bg-[#52525b]"}`}
+											className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-white" : "bg-[#94a3b8] dark:bg-[#52525b]"}`}
 										/>
 										<span className="text-[10.5px] font-bold tracking-tight truncate w-full px-0.5 text-center">
 											{conf.label.replace("수계", "").replace("본류", "")}
@@ -729,9 +729,9 @@ export default function MapPage() {
 					</div>
 
 					{/* 4. 수계 흐름 강조 */}
-					<div className="space-y-1.5 pt-3 border-t border-[#222228]">
+					<div className="space-y-1.5 pt-3 border-t border-[#e2e8f0] dark:border-[#222228]">
 						<div className="flex items-center justify-between px-0.5">
-							<span className="text-[11px] font-mono uppercase tracking-wider text-[#a1a1aa]">
+							<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa]">
 								수계 흐름 강조 (굵기·채도 극대화)
 							</span>
 							{filters.highlightedRiver && (
@@ -740,7 +740,7 @@ export default function MapPage() {
 									onClick={() =>
 										setFilters({ ...filters, highlightedRiver: null })
 									}
-									className="text-[10px] font-mono text-[#a1a1aa] hover:text-white"
+									className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 								>
 									강조 해제
 								</button>
@@ -779,7 +779,7 @@ export default function MapPage() {
 										className={`py-1.5 rounded-xl text-[10px] font-bold transition-all active:scale-95 border ${
 											isHigh
 												? "shadow-sm ring-1 ring-offset-0"
-												: "bg-[#16161c] hover:bg-white/5 text-[#a1a1aa] border-[#222228]"
+												: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
 										}`}
 									>
 										{conf.label.replace("수계", "").replace("본류", "")}

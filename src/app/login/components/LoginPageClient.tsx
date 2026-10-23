@@ -103,14 +103,14 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 					}`}
 				>
 					<div
-						className={`absolute top-1/2 left-1/2 w-[700px] h-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-colors duration-700 ${
+						className={`absolute top-1/2 left-1/2 w-full max-w-[700px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-colors duration-700 ${
 							isSuccess
 								? "bg-sky-300/40 dark:bg-sky-900/40"
 								: "bg-blue-300/30 dark:bg-blue-900/20"
 						}`}
 					/>
 					<div
-						className={`absolute top-1/2 left-1/2 w-[900px] h-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-colors duration-700 ${
+						className={`absolute top-1/2 left-1/2 w-full max-w-[900px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-colors duration-700 ${
 							isSuccess
 								? "bg-teal-200/30 dark:bg-cyan-950/30"
 								: "bg-sky-200/20 dark:bg-sky-950/20"
