@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한강수계 WMS 측정/장애 이력 자동완성기</title>
+  <!-- INJECTED_STATION_DATA_START -->
+<script>
+  window.STATION_EQUIPMENT_DATA = {"한탄강 측정소":["YSI6600EDS","HATOX-2000","HATA-4000B"],"한탄강":["YSI6600EDS","HATOX-2000","HATA-4000B"],"화천 측정소":["EXO2","HATOX-2000 (X)","Robochem TP-2002","Robochem TN-2060","TOC-4200"],"화천":["EXO2","HATOX-2000 (X)","Robochem TP-2002","Robochem TN-2060","TOC-4200"],"포천 측정소":["EXO2","Clarus 680 (APK2950W)","HATOX-2000 (X)","EasyChem","HATP-4000","HATN-4000","TOC-4200"],"포천":["EXO2","Clarus 680 (APK2950W)","HATOX-2000 (X)","EasyChem","HATP-4000","HATN-4000","TOC-4200"],"영평�� A":[],"원주 측정소":["EXO2","TOC-4200","EasyChem"],"원주":["EXO2","TOC-4200","EasyChem"],"북한 → 한탄강":[],"평창강 측정소":["EXO2","Robochem TP-2002","Robochem TN-2060","HATA-4000","HATOX-2000"],"평창강":["EXO2","Robochem TP-2002","Robochem TN-2060","HATA-4000","HATOX-2000"],"충주 측정소":["YSI600XL","Algae Torch","HATP-4000H","HATN-4000","TOC-4200"],"충주":["YSI600XL","Algae Torch","HATP-4000H","HATN-4000","TOC-4200"],"청미천 측정소":["YSI600XL","Algae Torch","HATP-2000","HATN-2000","TOC-4200"],"청미천":["YSI600XL","Algae Torch","HATP-2000","HATN-2000","TOC-4200"],"능서 측정소":["EXO2","Algae Torch","HATP-2000","HATN-2000","TOC-4200"],"능서":["EXO2","Algae Torch","HATP-2000","HATN-2000","TOC-4200"],"인제 측정소":["EXO2","HATOX-2000 (X)","iTOXcontrol","Robochem TP-2002","Robochem A4-TN","TOC-4200"],"인제":["EXO2","HATOX-2000 (X)","iTOXcontrol","Robochem TP-2002","Robochem A4-TN","TOC-4200"],"오성 측정소(예정)":[],"오성":[],"영평천 B":[],"영평천 C":[],"영평천 D":[],"영평천 F":[],"영평천 E":[],"영평천 → 한탄강":[],"북한 → 임진강":[],"임진강 H":[],"임진강 I":[],"왕숙천 A":[],"왕숙천 B":[],"진위천 측정소(예정)":[],"진위천":[],"한탄강 C":[],"한탄강 G":[],"한탄강 E":[],"한탄강 A":[],"한탄강 D":[],"한탄강 F":[],"한탄강 H":[],"대가리천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"대가리천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"요도천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"요도천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"동진천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"동진천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"한탄강 B":[],"구안천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"구안천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"한강 J":[],"영덕천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"영덕천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"임진강 R":[],"임진강 P":[],"한탄강 K":[],"한탄강 J":[],"임진강 L":[],"한탄강 ← 임진강":[],"임진강 J":[],"임진강 K":[],"임진강 M":[],"임진강 O":[],"임진강 N":[],"임진강 Q":[],"한강 I":[],"한강 K":[],"한강 C":[],"단양 측정소":["YSI600XL","Robochem TP-2002","Robochem TN-2060","TOC-4200"],"단양":["YSI600XL","Robochem TP-2002","Robochem TN-2060","TOC-4200"],"경안천 측정소":["YSI6600EDS","iTOXcontrol","Clarus 680 (APK2950W)","Algae Torch","HATA-4000"],"경안천":["YSI6600EDS","iTOXcontrol","Clarus 680 (APK2950W)","Algae Torch","HATA-4000"],"송전천 A":[],"흥천 측정소":["YSI6600EDS","Daphnia Toximeter (X)","EasyChem","Clarus 680 (APK2950W)","Algae Torch","HATP-2000","HATN-2000","TOC-4110"],"흥천":["YSI6600EDS","Daphnia Toximeter (X)","EasyChem","Clarus 680 (APK2950W)","Algae Torch","HATP-2000","HATN-2000","TOC-4110"],"가평 측정소":["EXO2","HATOX-2000 (X)","iTOXcontrol","Algae Torch","Robochem TP-2002","Robochem TN-2060","TOC-4200"],"가평":["EXO2","HATOX-2000 (X)","iTOXcontrol","Algae Torch","Robochem TP-2002","Robochem TN-2060","TOC-4200"],"유천 측정소(예정)":[],"유천":[],"임진강 A":[],"임진강 S":[],"임진강 B":[],"송전천 B":[],"여주대신하수처리장(흥천 2.7km)":[],"여주대신하수처리장":[],"여주가축분뇨처리시설(흥천 4.5km)":[],"여주가축분뇨처리시설":[],"삼회하수처리장(가평 1.1km)":[],"삼회하수처리장":[],"팔달취수장(경안천 8.7km)":[],"팔달취수장":[],"신천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"신천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"왕숙천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","Oil Moni."],"왕숙천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","Oil Moni."],"조종천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","NH4-N"],"조종천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","NH4-N"],"금남취수장(가평 3.4km)":[],"금남취수장":[],"임진강 → 한강":[],"충주호 → 남한강":[],"임진강 C":[],"임진강 D":[],"임진강 E":[],"임진강 F":[],"장평천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"장평천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"경안하수처리장(경안천 1.1km)":[],"경안하수처리장":[],"곤지암하수처리장+축산폐수분뇨처리장(경안천 7.6km)":[],"곤지암하수처리장+축산폐수분뇨처리장":[],"광주취수장(경안천 6.6km)":[],"광주취수장":[],"광주하수처리장(경안천 4.8km)":[],"광주하수처리장":[],"남한강 → 충주호":[],"동진천 → 달천":[],"평창강 → 남한강":[],"동강 → 남한강":[],"달천 B":[],"충주호 A":[],"남한강 H":[],"달천 A":[],"달천 → 남한강":[],"전천 → 섬강":[],"달천 C":[],"횡성호":[],"섬강 A":[],"섬강 B":[],"주천강 → 평창강":[],"섬강 C":[],"남한강 J":[],"남한강 I":[],"남한강 K":[],"원주천 → 섬강":[],"원곡천, 영덕천 → 남한강":[],"죽당천 → 복하천":[],"평창강 A":[],"평창강 B":[],"복하천 A":[],"주천강 A":[],"동강 A":[],"섬강 D":[],"섬강 → 남한강":[],"복하천 → 남한강":[],"양화천 → 남한강":[],"신둔천 → 복하천":[],"복하천 B":[],"충주호 B":[],"청미천 → 남한강":[],"곤지암천 A":[],"곤지암천 → 경안천":[],"경안천 A":[],"경안천 B":[],"경안�� C":[],"북한 → 인북천":[],"인북천 A":[],"인북천 C":[],"인북천 B":[],"인북천 D":[],"인북천 → 북천":[],"북천 A":[],"북천 → 소양호":[],"소양호 → 소양강":[],"파로호 → 북한강":[],"북한강 → 춘천호":[],"파로호 E":[],"파로호 D":[],"북한강 → 파로호":[],"소양호 B":[],"파로호 C":[],"파로호 B":[],"파로호 A":[],"북한강 B":[],"북한강 A":[],"소양호 E":[],"소양호 D":[],"소양호 C":[],"북한 → 북한강":[],"북한강 D":[],"춘천호 A":[],"춘천호 → 북한강":[],"북한강 → 의암호":[],"소양강 → 의암호":[],"의암호 → 북한강":[],"의암호 A":[],"북한강 C":[],"북한강 E":[],"북한강 F":[],"북한강 G":[],"북한강 H":[],"북한강 → 청평호":[],"소양호 A":[],"홍천강 → 청평호":[],"청평호 A":[],"청평호 B":[],"팔당호 → 한강":[],"청평호 C":[],"청평호 → 북한강":[],"북한강 I":[],"북한강 J":[],"북한강 → 팔당호":[],"한강 A":[],"남한강 → 팔당호":[],"경안천 → 팔당호":[],"경안천 D":[],"한강 B":[],"남한강 C":[],"송전천 C":[],"한강 D":[],"한강 F":[],"한강 E":[],"한강 G":[],"한강 H":[],"남한강 D":[],"남한강 A":[],"남한강 B":[],"남한강 F":[],"남한강 E":[],"남한강 G":[],"충주호 F":[],"충주호 G":[],"충주호 E":[],"충주호 D":[],"충주호 C":[],"남한강 L":[],"남한강 U":[],"충주호 H":[],"북천 B":[],"미산 측정소":["EXO2","HATOX-2000 (X)","iTOXcontrol","Robochem TP-2002","Robochem A4-TN","TOC-4200"],"미산":["EXO2","HATOX-2000 (X)","iTOXcontrol","Robochem TP-2002","Robochem A4-TN","TOC-4200"],"남한강 V":[],"남한강 M":[],"남한강 N":[],"남한강 O":[],"남한강 P":[],"남한강 Q":[],"남한강 R":[],"남한강 S":[],"남한강 T":[],"송전천 → 진위천":[],"구리 측정소":["EXO2","EasyChem","TOC-4200"],"구리":["EXO2","EasyChem","TOC-4200"],"신천 측정소":["YSI600XL","Clarus 680 (APK2950W)","Daphnia Toximeter (X)","iTOXcontrol","TOC-4200"],"남한강 X":[],"남한강 W":[],"진위천B":[],"진위천 C":[],"진위천 E":[],"진위천 D":[],"진위천 B":[],"진위천 H":[],"진위천 G":[],"진위천 F":[],"진위천 I":[],"여주 측정소":["EXO2","Algae Torch","HATP-2000","HATN-2000","HATA-4000B","Daphnia Toximeter"],"여주":["EXO2","Algae Torch","HATP-2000","HATN-2000","HATA-4000B","Daphnia Toximeter"],"원곡천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"원곡천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"앙성천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"앙성천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"복하천 측정소":["YSI600XL","Algae Torch","HATN-2000","HATP-2000","TOC-4200"],"복하천":["YSI600XL","Algae Torch","HATN-2000","HATP-2000","TOC-4200"],"양화천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"양화천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"죽당천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"죽당천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"원주천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","NH4-N"],"원주천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","NH4-N"],"달천 측정소":["EXO2","Algae Torch","HATP-4000H","HATN-4000","HATA-4000B"],"달천":["EXO2","Algae Torch","HATP-4000H","HATN-4000","HATA-4000B"],"강천 측정소":["YSI600XL","Clarus 680 (APK2950W)","Algae Torch","HATA-4000B","HATOX-2000"],"강천":["YSI600XL","Clarus 680 (APK2950W)","Algae Torch","HATA-4000B","HATOX-2000"],"서상 측정소":["YSI6600EDS","Algae Online Analyzer","HATP-2000","Robochem A2-TN","TOC-4200"],"서상":["YSI6600EDS","Algae Online Analyzer","HATP-2000","Robochem A2-TN","TOC-4200"],"의암호 측정소":["YSI6600EDS","Trilux Technologies","Robochem TP","Robochem A2-TN","TOC-4200"],"의암호":["YSI6600EDS","Trilux Technologies","Robochem TP","Robochem A2-TN","TOC-4200"],"양평 측정소":["EXO2","Algae Torch","Moni-TN 5100","Moni-TP 3000","Star TOCk"],"양평":["EXO2","Algae Torch","Moni-TN 5100","Moni-TP 3000","Star TOCk"],"안성천 A":[],"황구지천 E":[],"황구지천 C":[],"황구지천 A":[],"황구지천 B":[],"황구지천 → 진위천":[],"황구지천 D":[],"진위천 → 안성천":[],"안성천 B":[],"안성천 C":[],"안성천 D":[],"신둔천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"신둔천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"황구지천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"황구지천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"곤지암천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"곤지암천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N"],"송전천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","Oil Moni."],"송전천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","Oil Moni."],"전천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","Oil Moni."],"전천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","Oil Moni."],"금사천 감시망":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","NH4-N"],"금사천":["pH","DO","EC","Temp.","Turb.","TOC","NO3-N","NH4-N"],"신천 D":[],"신천 A":[],"신천 B":[],"신천 G":[],"신천 F":[],"신천 H":[],"신천 → 한탄강":[],"한탄강 I":[],"신천 C":[],"신천 E":[],"신천 J":[],"신천 I":[],"임진강 G":[],"안성천 F":[],"안성천 E":[],"안성천 G":[],"안성천 J":[],"안성천 H":[],"안성천 I":[],"안성천 K":[],"안성천 → 평택호":[]};
+  window.STATION_DATA_UPDATED_AT = "2026-10-07 02:35";
+</script>
+<!-- INJECTED_STATION_DATA_END -->
+  <style>
+    * { word-break: keep-all; box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', Roboto, sans-serif; }
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --card-border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-sub: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --accent: #0284c7;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #f43f5e;
+      --input-bg: #f1f5f9;
+      --table-stripe: #f8fafc;
+      --scrollbar-thumb: #cbd5e1;
+    }
+    html.dark {
+      --bg: #09090b;
+      --card: #111115;
+      --card-border: #222228;
+      --text-main: #f4f4f5;
+      --text-sub: #a1a1aa;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --accent: #38bdf8;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --input-bg: #16161c;
+      --table-stripe: #18181b;
+      --scrollbar-thumb: #27272a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 24px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 9999px; }
+    .btn-back {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--card); border: 1px solid var(--card-border);
+      color: var(--text-sub); display: inline-flex; align-items: center; justify-content: center;
+      text-decoration: none; flex-shrink: 0; transition: all 0.2s ease;
+    }
+    .btn-back:hover { color: var(--text-main); border-color: var(--primary); }
+    .btn-theme-toggle {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; height: 40px;
+      border-radius: 9999px; background: var(--card); border: 1px solid var(--card-border);
+      color: var(--text-main); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn-theme-toggle:hover { border-color: var(--primary); }
+
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .title-group h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-offline {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 6px;
+    }
+
+    .title-group p {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff; } .btn-primary:hover { background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: var(--card-border);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    .btn-success {
+      background: #059669;
+      color: #ffffff;
+    }
+    .btn-success:hover {
+      background: var(--success);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    .grid-io {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-io {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    textarea {
+      width: 100%;
+      height: 180px;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text-main);
+      padding: 12px;
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      resize: vertical;
+      line-height: 1.5;
+      white-space: pre;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      max-height: 520px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: var(--input-bg);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #1e293b;
+      position: sticky;
+      top: 0;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--card-border);
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #1e293b;
+      color: #cbd5e1;
+      white-space: nowrap;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    tr:hover {
+      background-color: rgba(56, 189, 248, 0.08);
+    }
+
+    td.highlight {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    td.duration-hl {
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    .badge-period {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-long {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-short {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(37, 99, 235, 0.3);
+    }
+
+    .badge-dash {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .badge-missing {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .badge-warning-item {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      margin-left: 6px;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-sub);
+      padding: 4px 8px;
+      flex-wrap: wrap;
+    }
+
+    .stats-item span {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #10b981;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="/dashboard" class="btn-back" title="대시보드로 돌아가기" aria-label="대시보드로 돌아가기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </a>
+        <div class="title-group">
+        <h1>
+          측정/장애 이력 자동완성기
+          <span class="badge-offline">오프라인 지원</span>
+        </h1>
+        <p>측정소, 측정항목, 발생일시, 종료일시를 붙여넣으면 <strong>[장비모델명]</strong>과 <strong>[지속기간]</strong>을 자동으로 완성합니다.</p>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggleBtn" type="button" class="btn-theme-toggle" onclick="toggleTheme()" aria-label="테마 전환">
+          <span id="themeToggleIcon">🌙</span>
+          <span id="themeToggleText">다크</span>
+        </button>
+        <button class="btn btn-secondary" onclick="loadSampleData()">샘플 데이터 입력</button>
+        <button class="btn btn-danger" onclick="clearAll()">초기화</button>
+      </div>
+    </header>
+
+    <div class="grid-io">
+      <!-- 입력 카드 -->
+      <div class="card">
+        <div class="card-title">
+          <span>1. 엑셀 원본 붙여넣기 (Ctrl+V)</span>
+          <span style="font-size: 11px; font-weight: 700; color: #38bdf8; background: rgba(37, 99, 235, 0.12); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(37, 99, 235, 0.3);">
+            📌 원본 엑셀: <strong style="color: #facc15; font-size: 12px;">E열 ~ I열</strong> 전체 복사
+          </span>
+        </div>
+        <textarea id="rawInput" placeholder="엑셀에서 [E열부터 I열까지] 드래그하여 복사(Ctrl+C)한 뒤 여기에 붙여넣으세요.
+헤더(제목행) 포함 여부 상관없이 자동으로 완벽하게 인식합니다.
+
+예시 (E열~I열):
+평창강	총유기탄소, 총질소, 총인, 생물감시(미생물)		2026-09-02 18:50	2026-09-07 9:55
+강천	휘발성 유기화합물, 총유기탄소, 생물감시(미생물)		2026-09-01 12:25	2026-09-07 11:10
+복하천	전항목		2026-09-01 8:40	2026-09-03 10:20"></textarea>
+        <div style="display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary" onclick="processData()">⚡ 자동 채우기 실행</button>
+        </div>
+      </div>
+
+      <!-- 정보 요약 카드 -->
+      <div class="card" style="justify-content: space-between;">
+        <div class="card-title">
+          <span>2. 처리 및 장비 기준 안내</span>
+          <span id="dataUpdatedLabel" style="font-size: 11px; font-weight: 700; color: #10b981;">최신 장비 DB 동기화</span>
+        </div>
+        <div style="font-size: 12px; color: var(--text-sub); line-height: 1.6;">
+          <p>• <strong>장비모델명 자동 매핑</strong>: 해당 측정소의 사이트 등록 장비 중 측정항목(TOC, TN, TP, 생물, VOCs 등)에 부합하는 장비 모델명을 자동으로 찾아 매핑합니다.</p>
+          <p>• <strong>지속기간 자동 계산</strong>: 발생일시와 종료일시의 시/분 차이를 정밀 계산하여 <code style="color: #38bdf8;">'N일 N시 N분'</code> 또는 <code style="color: #38bdf8;">'N시 N분'</code> 형식으로 자동 산출합니다. (종료일시가 없거나 '-'이면 '-' 유지)</p>
+          <p>• <strong>엑셀 호환</strong>: 완성된 결과는 [엑셀 복사] 버튼으로 복사한 뒤 엑셀에 바로 <kbd>Ctrl+V</kbd> 하시면 됩니다.</p>
+        </div>
+        <div class="stats-bar" style="background: rgba(0,0,0,0.2); border-radius: 8px;">
+          <div class="stats-item">총 데이터: <span id="statCount">0</span>건</div>
+          <div class="stats-item">매핑 성공: <span id="statSuccess">0</span>건</div>
+          <div class="stats-item">미인식/누락: <span id="statMissing" style="color: #f87171;">0</span>건</div>
+          <div class="stats-item">미종료: <span id="statOngoing">0</span>건</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 결과 표 카드 -->
+    <div class="card">
+      <div class="card-title">
+        <span>3. 자동 완성 결과</span>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-primary" onclick="copyToClipboard()">📋 엑셀로 복사</button>
+          <button class="btn btn-secondary" onclick="downloadCSV()">💾 CSV 다운로드</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>측정소</th>
+              <th>측정항목</th>
+              <th>장비모델명 (자동완성)</th>
+              <th>발생일시</th>
+              <th>종료일시</th>
+              <th>지속기간(일) (자동완성)</th>
+              <th>구분 (7일 기준)</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-sub);">
+                데이터를 붙여넣고 [자동 채우기 실행]을 누르세요.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">클립보드에 복사되었습니다! 엑셀에 붙여넣으세요.</div>
+
+  <script>
+    // 사이트 DB 기본 폴백 장비 데이터 (오프라인 단일 파일 배포 시에는 window.STATION_EQUIPMENT_DATA로 주입됨)
+    const DEFAULT_EQUIPMENT_DB = {
+      "한탄강": ["YSI6600EDS", "HATOX-2000", "HATA-4000B"],
+      "화천": ["EXO2", "Robochem TP-2002", "Robochem TN-2060", "TOC-4200"],
+      "포천": ["EXO2", "Clarus 680 (APK2950W)", "EasyChem", "HATP-4000", "HATN-4000", "TOC-4200"],
+      "원주": ["EXO2", "TOC-4200", "EasyChem"],
+      "평창강": ["EXO2", "Robochem TP-2002", "Robochem TN-2060", "HATA-4000", "HATOX-2000"],
+      "충주": ["YSI600XL", "Algae Torch", "HATP-4000H", "HATN-4000", "TOC-4200"],
+      "청미천": ["YSI600XL", "Algae Torch", "HATP-2000", "HATN-2000", "TOC-4200"],
+      "능서": ["EXO2", "Algae Torch", "HATP-2000", "HATN-2000", "TOC-4200"],
+      "인제": ["EXO2", "iTOXcontrol", "Robochem TP-2002", "Robochem A4-TN", "TOC-4200"],
+      "단양": ["YSI600XL", "Robochem TP-2002", "Robochem TN-2060", "TOC-4200"],
+      "경안천": ["YSI6600EDS", "iTOXcontrol", "Clarus 680 (APK2950W)", "Algae Torch", "HATA-4000"],
+      "흥천": ["YSI6600EDS", "EasyChem", "Clarus 680 (APK2950W)", "Algae Torch", "HATP-2000", "HATN-2000", "TOC-4110", "Daphnia Toximeter"],
+      "가평": ["EXO2", "iTOXcontrol", "Algae Torch", "Robochem TP-2002", "Robochem TN-2060", "TOC-4200"],
+      "미산": ["EXO2", "iTOXcontrol", "Robochem TP-2002", "Robochem A4-TN", "TOC-4200"],
+      "구리": ["EXO2", "EasyChem", "TOC-4200"],
+      "신천": ["YSI600XL", "Clarus 680 (APK2950W)", "iTOXcontrol", "TOC-4200"],
+      "여주": ["EXO2", "Algae Torch", "HATP-2000", "HATN-2000", "HATA-4000B", "Daphnia Toximeter"],
+      "복하천": ["YSI600XL", "Algae Torch", "HATN-2000", "HATP-2000", "TOC-4200"],
+      "달천": ["EXO2", "Algae Torch", "HATP-4000H", "HATN-4000", "HATA-4000B"],
+      "강천": ["YSI600XL", "Clarus 680 (APK2950W)", "Algae Torch", "HATA-4000B", "HATOX-2000"],
+      "서상": ["YSI6600EDS", "Algae Online Analyzer", "HATP-2000", "Robochem A2-TN", "TOC-4200"],
+      "의암호": ["YSI6600EDS", "Trilux Technologies", "Robochem TP", "Robochem A2-TN", "TOC-4200"],
+      "양평": ["EXO2", "Algae Torch", "Moni-TN 5100", "Moni-TP 3000", "Star TOCk"]
+    };
+
+    // 장비 모델 카테고리 정의
+    const MODEL_CATEGORIES = {
+      standard: ["YSI6600EDS", "EXO2", "YSI600XL"],
+      toc: ["TOC-4200", "TOC-4110", "HATA-4000", "HATA-4000B", "Star TOCk"],
+      tn: ["HATN-4000", "HATN-2000", "Robochem TN-2060", "Robochem A2-TN", "Robochem A4-TN", "Moni-TN 5100"],
+      tp: ["HATP-4000", "HATP-4000H", "HATP-2000", "Robochem TP-2002", "Robochem TP", "Moni-TP 3000"],
+      bio: ["EasyChem", "iTOXcontrol", "iTOX control", "Daphnia Toximeter", "HATOX-2000"],
+      algae: ["Algae Torch", "Algae Online Analyzer", "Algae Online Anayzer", "Trilux Technologies"],
+      vocs: ["Clarus 680", "Clarus 680 (APK2950W)", "Claus 680(APK2950W)"]
+    };
+
+    let processedRows = [];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.STATION_DATA_UPDATED_AT) {
+        document.getElementById('dataUpdatedLabel').textContent = `장비 DB 기준: ${window.STATION_DATA_UPDATED_AT}`;
+      }
+    });
+
+    // 지속기간 계산 함수
+    function calculateDuration(startStr, endStr) {
+      if (!endStr || endStr.trim() === '-' || endStr.trim() === '') {
+        return { text: '-', totalMinutes: -1, category: '-' };
+      }
+
+      const parseDate = (s) => {
+        if (!s) return null;
+        const clean = s.trim().replace(/\./g, '-').replace(/\s+/g, ' ');
+        const parts = clean.split(' ');
+        if (parts.length < 2) return new Date(clean);
+        const [d, t] = parts;
+        return new Date(`${d}T${t.padStart(5, '0')}:00`);
+      };
+
+      const start = parseDate(startStr);
+      const end = parseDate(endStr);
+
+      if (!start || !end || isNaN(start.getTime()) || isNaN(end.getTime())) {
+        return { text: '-', totalMinutes: -1, category: '-' };
+      }
+
+      let totalMinutes = Math.floor((end.getTime() - start.getTime()) / (1000 * 60));
+      if (totalMinutes < 0) {
+        return { text: '-', totalMinutes: -1, category: '-' };
+      }
+
+      let remaining = totalMinutes;
+      const days = Math.floor(remaining / (24 * 60));
+      remaining %= (24 * 60);
+      const hours = Math.floor(remaining / 60);
+      const minutes = remaining % 60;
+
+      const parts = [];
+      if (days > 0) parts.push(`${days}일`);
+      if (hours > 0) parts.push(`${hours}시`);
+      if (minutes > 0) parts.push(`${minutes}분`);
+
+      const text = parts.length === 0 ? '0분' : parts.join('');
+      // 7일 = 7 * 24 * 60 = 10,080분 이상이면 '장기', 미만이면 '7일 이내'
+      const category = totalMinutes >= (7 * 24 * 60) ? '장기' : '7일 이내';
+
+      return { text, totalMinutes, category };
+    }
+
+    // 측정소명 정규화
+    function normalizeStationName(name) {
+      if (!name) return '';
+      return name.replace(/\([^)]*\)/g, '').replace(/측정소|감시망/g, '').trim();
+    }
+
+    // 측정소 장비 목록 가져오기
+    function getStationEquipments(stationName) {
+      const db = window.STATION_EQUIPMENT_DATA || DEFAULT_EQUIPMENT_DB;
+      const clean = normalizeStationName(stationName);
+
+      if (db[clean]) return db[clean];
+      if (db[stationName]) return db[stationName];
+
+      for (const k of Object.keys(db)) {
+        if (k.includes(clean) || clean.includes(k)) {
+          return db[k];
+        }
+      }
+      return [];
+    }
+
+    // 특정 카테고리에 맞는 측정소 장비 모델 찾기
+    function findModelForCategory(category, stationInsts) {
+      const candidates = MODEL_CATEGORIES[category] || [];
+      const cleanInsts = stationInsts
+        .filter(inst => !inst.includes('(X)') && !inst.includes('(x)'))
+        .map(i => i.trim());
+
+      for (const cand of candidates) {
+        const found = cleanInsts.find(inst => 
+          inst.toLowerCase().replace(/[\s-]/g, '') === cand.toLowerCase().replace(/[\s-]/g, '') ||
+          inst.includes(cand) || cand.includes(inst)
+        );
+        if (found) return found;
+      }
+      return null;
+    }
+
+    // 장비모델명 자동 매핑 함수
+    function mapEquipmentModel(stationName, itemStr) {
+      if (!itemStr) return { model: '-', unmappedItems: [] };
+      const cleanItem = itemStr.trim();
+
+      if (cleanItem === '전항목') {
+        return { model: '전항목', unmappedItems: [] };
+      }
+
+      const stationInsts = getStationEquipments(stationName);
+      if (!stationInsts || stationInsts.length === 0) {
+        return { model: '-', unmappedItems: [cleanItem + '(측정소 미등록)'] };
+      }
+
+      // 쉼표 등으로 구분된 여러 항목 분리
+      const items = cleanItem.split(/[,/]+/).map(s => s.trim()).filter(Boolean);
+      const matchedModels = [];
+      const unmappedItems = [];
+
+      items.forEach(item => {
+        let matched = null;
+
+        if (item.includes('일반')) {
+          matched = findModelForCategory('standard', stationInsts);
+        } else if (item.includes('총유기탄소') || item.includes('TOC')) {
+          matched = findModelForCategory('toc', stationInsts);
+        } else if (item.includes('총질소') || item.includes('TN')) {
+          matched = findModelForCategory('tn', stationInsts);
+        } else if (item.includes('총인') || item.includes('TP')) {
+          matched = findModelForCategory('tp', stationInsts);
+        } else if (item.includes('생물') || item.includes('물벼룩') || item.includes('박테리아') || item.includes('미생물')) {
+          if (item.includes('물벼룩')) {
+            matched = stationInsts.find(i => i.includes('Daphnia')) || 'Daphnia Toximeter';
+          } else if (item.includes('미생물')) {
+            matched = stationInsts.find(i => i.includes('HATOX')) || 'HATOX-2000';
+          } else if (item.includes('발광박테리아') || item.includes('박테리아')) {
+            matched = stationInsts.find(i => i.includes('Easy') || i.includes('iTOX')) || findModelForCategory('bio', stationInsts);
+          } else {
+            matched = findModelForCategory('bio', stationInsts);
+          }
+        } else if (item.includes('클로로필') || item.includes('조류') || item.includes('Algae')) {
+          matched = findModelForCategory('algae', stationInsts);
+        } else if (item.includes('휘발성') || item.includes('VOC')) {
+          matched = findModelForCategory('vocs', stationInsts);
+        }
+
+        if (matched) {
+          matchedModels.push(matched);
+        } else {
+          unmappedItems.push(item);
+        }
+      });
+
+      const uniqueModels = Array.from(new Set(matchedModels));
+      const modelStr = uniqueModels.length > 0 ? uniqueModels.join(', ') : '-';
+
+      return {
+        model: modelStr,
+        unmappedItems: unmappedItems
+      };
+    }
+
+    // 붙여넣은 텍스트 파싱 및 처리
+    function processData() {
+      const text = document.getElementById('rawInput').value.trim();
+      if (!text) {
+        alert('데이터를 입력하거나 붙여넣어 주세요.');
+        return;
+      }
+
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const rows = [];
+
+      lines.forEach((line, idx) => {
+        // 탭 또는 2개 이상의 공백으로 구분
+        let cols = line.split(/\t/).map(c => c.trim());
+        if (cols.length < 3) {
+          cols = line.split(/\s{2,}/).map(c => c.trim());
+        }
+
+        // 헤더 행 건너뛰기
+        if (cols[0] === '측정소' || cols[1] === '측정항목') {
+          return;
+        }
+
+        let station = '', item = '', model = '', start = '', end = '', duration = '';
+
+        // 날짜/시간 형식인지 판별하는 정규식 (예: 2026-09-02 18:50, 2026.09.02 18:50 등)
+        const isDatePattern = (val) => {
+          if (!val) return false;
+          const s = val.trim();
+          return /^\d{4}[-./]\d{1,2}[-./]\d{1,2}/.test(s);
+        };
+
+        const isDashOrEmpty = (val) => {
+          if (!val) return true;
+          return val.trim() === '-' || val.trim() === '';
+        };
+
+        station = cols[0] || '';
+        item = cols[1] || '';
+
+        // cols[2] 이후에서 첫 번째와 두 번째 날짜(또는 '-') 열을 유연하게 탐색
+        let dateIndices = [];
+        for (let i = 2; i < cols.length; i++) {
+          if (isDatePattern(cols[i])) {
+            dateIndices.push(i);
+          }
+        }
+
+        if (dateIndices.length >= 2) {
+          // 날짜 2개가 명확히 발견된 경우 (발생일시, 종료일시)
+          const startIdx = dateIndices[0];
+          const endIdx = dateIndices[1];
+          start = cols[startIdx];
+          end = cols[endIdx];
+          // 발생일시 이전의 열이 있다면 모델명
+          if (startIdx > 2 && cols[2]) {
+            model = cols[2];
+          }
+        } else if (dateIndices.length === 1) {
+          // 날짜가 1개만 발견된 경우 (종료일시가 '-' 이거나 없는 경우)
+          const startIdx = dateIndices[0];
+          start = cols[startIdx];
+          if (startIdx > 2 && cols[2]) {
+            model = cols[2];
+          }
+          // 시작일시 바로 다음 열이 '-' 이거나 공란이면 종료일시로 취급
+          if (cols.length > startIdx + 1) {
+            end = cols[startIdx + 1];
+          } else {
+            end = '-';
+          }
+        } else {
+          // 날짜 정규식에 걸리지 않은 일반 순서 fallback
+          if (cols.length >= 6) {
+            [station, item, model, start, end, duration] = cols;
+          } else if (cols.length === 5) {
+            [station, item, start, end, duration] = cols;
+          } else if (cols.length === 4) {
+            [station, item, start, end] = cols;
+          } else {
+            return;
+          }
+        }
+
+        // 장비모델명이 공란이거나 '-'이면 자동 매핑
+        const mappingResult = mapEquipmentModel(station, item);
+        const autoModel = mappingResult.model;
+        const unmappedItems = mappingResult.unmappedItems || [];
+        const finalModel = (!model || model.trim() === '' || model.trim() === '-') ? autoModel : model;
+        const durationResult = calculateDuration(start, end);
+
+        rows.push({
+          station,
+          item,
+          model: finalModel,
+          unmappedItems: unmappedItems,
+          isMissingModel: finalModel === '-' || unmappedItems.length > 0,
+          start,
+          end: end || '-',
+          duration: durationResult.text,
+          category: durationResult.category
+        });
+      });
+
+      processedRows = rows;
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      if (processedRows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 40px; color: var(--text-sub);">인식된 데이터가 없습니다.</td></tr>`;
+        updateStats();
+        return;
+      }
+
+      let html = '';
+      processedRows.forEach((r, i) => {
+        let badgeClass = 'badge-dash';
+        if (r.category === '장기') {
+          badgeClass = 'badge-long';
+        } else if (r.category === '7일 이내') {
+          badgeClass = 'badge-short';
+        }
+
+        // 장비 모델명 표시 및 미인식 항목 경고 표시
+        let modelHtml = '';
+        if (r.model === '-' || !r.model) {
+          modelHtml = `<span class="badge-missing">⚠️ 미인식 (장비 없음)</span>`;
+        } else {
+          modelHtml = `<span class="highlight">${escapeHtml(r.model)}</span>`;
+          if (r.unmappedItems && r.unmappedItems.length > 0) {
+            modelHtml += `<span class="badge-warning-item" title="일부 항목 매핑 실패">⚠️ 누락: ${escapeHtml(r.unmappedItems.join(', '))}</span>`;
+          }
+        }
+
+        html += `
+          <tr>
+            <td style="color: var(--text-sub);">${i + 1}</td>
+            <td style="font-weight: 700;">${escapeHtml(r.station)}</td>
+            <td>${escapeHtml(r.item)}</td>
+            <td>${modelHtml}</td>
+            <td>${escapeHtml(r.start)}</td>
+            <td>${escapeHtml(r.end)}</td>
+            <td class="duration-hl">${escapeHtml(r.duration)}</td>
+            <td><span class="badge-period ${badgeClass}">${escapeHtml(r.category)}</span></td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = html;
+      updateStats();
+    }
+
+    function updateStats() {
+      document.getElementById('statCount').textContent = processedRows.length;
+      document.getElementById('statSuccess').textContent = processedRows.filter(r => !r.isMissingModel).length;
+      document.getElementById('statMissing').textContent = processedRows.filter(r => r.isMissingModel).length;
+      document.getElementById('statOngoing').textContent = processedRows.filter(r => r.end === '-').length;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // 클립보드에 엑셀용 TSV 복사
+    function copyToClipboard() {
+      if (processedRows.length === 0) {
+        alert('복사할 데이터가 없습니다.');
+        return;
+      }
+
+      const headers = ['측정소', '측정항목', '장비모델명', '발생일시', '종료일시', '지속기간(일)', '구분'];
+      const lines = [headers.join('\t')];
+
+      processedRows.forEach(r => {
+        lines.push([r.station, r.item, r.model, r.start, r.end, r.duration, r.category].join('\t'));
+      });
+
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        showToast();
+      }).catch(err => {
+        alert('복사 실패: ' + err);
+      });
+    }
+
+    // CSV 파일 다운로드
+    function downloadCSV() {
+      if (processedRows.length === 0) {
+        alert('다운로드할 데이터가 없습니다.');
+        return;
+      }
+
+      const headers = ['측정소', '측정항목', '장비모델명', '발생일시', '종료일시', '지속기간(일)', '구분'];
+      const lines = [headers.map(h => `"${h}"`).join(',')];
+
+      processedRows.forEach(r => {
+        lines.push([r.station, r.item, r.model, r.start, r.end, r.duration, r.category].map(v => `"${(v || '').replace(/"/g, '""')}"`).join(','));
+      });
+
+      // 한글 깨짐 방지 BOM (\uFEFF)
+      const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `측정장애이력_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2500);
+    }
+
+    function clearAll() {
+      document.getElementById('rawInput').value = '';
+      processedRows = [];
+      renderTable();
+    }
+
+    function loadSampleData() {
+      const sample = `달천	전항목	2025-08-18 14:05	2026-01-03 08:05
+미산	전항목	2026-01-11 13:35	2026-02-27 12:30
+흥천	생물감시(물벼룩)	2026-01-27 15:05	-
+포천	생물감시(미생물)	2026-01-26 14:10	-
+단양	전항목	2026-01-22 14:15	2026-02-20 10:40
+서상	총유기탄소, 총인, 클로로필-a	2026-02-04 12:35	2026-02-05 12:10
+서상	총유기탄소, 총인	2026-02-06 12:25	2026-02-10 12:45
+한탄강	전항목	2025-07-21 12:35	2026-02-25 13:35
+양평	전항목	2026-03-08 19:10	2026-03-09 19:50
+흥천	총유기탄소, 총질소, 총인, 생물감시(발광박테리아), 휘발성 유기화합물	2026-05-21 14:10	2026-05-27 13:30
+인제	총유기탄소, 총질소, 총인, 생물감시(발광박테리아)	2026-05-21 10:40	2026-05-27 9:25
+강천	총유기탄소, 생물감시(미생물), 휘발성유기화합물	2026-07-14 15:10	2026-07-27 12:20`;
+      document.getElementById('rawInput').value = sample;
+      processData();
+    }
+  </script>
+<script>
+  (function initTheme() {
+    const saved = localStorage.getItem('wms-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = saved ? saved === 'dark' : prefersDark;
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    updateThemeUI(isDark);
+  })();
+
+  function updateThemeUI(isDark) {
+    const icon = document.getElementById('themeToggleIcon');
+    const text = document.getElementById('themeToggleText');
+    if (icon && text) {
+      icon.textContent = isDark ? '☀️' : '🌙';
+      text.textContent = isDark ? '라이트' : '다크';
+    }
+  }
+
+  function toggleTheme() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('wms-theme', isDark ? 'dark' : 'light');
+    updateThemeUI(isDark);
+  }
+</script>
+</body>
+</html>

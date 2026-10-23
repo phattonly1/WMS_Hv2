@@ -1,0 +1,63 @@
+/* [KECO Master v3.2] Shielded Universal Auto-Pilot */
+(function(){
+    console.clear();
+    console.log('%c[KECO] 쉴드 자동화 활성화됨 (v3.2 Shielded)', 'color: #22d3ee; font-weight: bold; font-size: 16px;');
+    console.log('%c주의: 사이트 자체 트래킹 에러(붉은색)는 무시하셔도 됩니다.', 'color: #94a3b8; font-style: italic;');
+    
+    const CONFIG = { SPEED: 2.0, INTERVAL: 3000, COOLDOWN: 5000, STATIC_DELAY: 5000 };
+    let isNavigating = false;
+    let scanCount = 0;
+    const scan = (win) => {
+        try {
+            if (!win.document) return;
+            const videos = win.document.querySelectorAll('video');
+            if (videos.length > 0) {
+                videos.forEach(v => {
+                    v.playbackRate = CONFIG.SPEED;
+                    if (v.paused && !v.ended && v.readyState >= 2) {
+                        try { v.play().catch(e=>{}); } catch(e) {}
+                    }
+                    if (v.ended || (v.duration > 0 && v.currentTime >= v.duration - 1)) {
+                        if (!isNavigating) trigger(win, "Video End");
+                    }
+                });
+            } else {
+                scanCount++;
+                if (scanCount >= (CONFIG.STATIC_DELAY / CONFIG.INTERVAL)) {
+                    if (!isNavigating) trigger(win, "Static Content Skip");
+                }
+            }
+            const frs = win.document.querySelectorAll('iframe, frame');
+            for (let i = 0; i < frs.length; i++) {
+                if (frs[i].contentWindow) scan(frs[i].contentWindow);
+            }
+        } catch (e) {}
+    };
+    const trigger = (ctx, reason) => {
+        isNavigating = true;
+        console.log('%c[KECO] 이동 시도: ' + reason, 'color: #f472b6; font-weight: bold;');
+        const selectors = ['.btn_next', '#btn_next', '.btn-pager-next', 'button.next', 'a.next', 'img[alt="다음"]', '.page-next'];
+        let found = false;
+        try {
+            for (const s of selectors) {
+                const b = ctx.document.querySelector(s);
+                if (b && (b.offsetParent !== null || b.clientWidth > 0)) {
+                    b.click();
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && typeof ctx.fnViewChildMove === 'function') {
+                ctx.fnViewChildMove();
+                found = true;
+            }
+        } catch (err) {
+            console.log('%c[Shield] 사이트 내부 에러 감지됨 (무시됨)', 'color: #64748b;');
+        }
+        setTimeout(() => { isNavigating = false; scanCount = 0; }, CONFIG.COOLDOWN);
+    };
+    setInterval(() => {
+        scan(window);
+        console.log('%c[Active Scan] ' + new Date().toLocaleTimeString(), 'color: #64748b; font-size: 10px;');
+    }, CONFIG.INTERVAL);
+})();
