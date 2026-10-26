@@ -29,6 +29,8 @@ export interface MapSidebarProps {
 	searchTerm?: string;
 	setSearchTerm?: (term: string) => void;
 	searchResults?: Station[];
+	keyboardOffset?: number;
+	visibleHeight?: number | null;
 }
 
 interface CategoryInfo {
@@ -55,6 +57,8 @@ export function MapSidebar({
 	stations,
 	searchTerm = "",
 	searchResults = [],
+	keyboardOffset = 0,
+	visibleHeight = null,
 }: MapSidebarProps) {
 	const [activeCatIndex, setActiveCatIndex] = useState<number>(0);
 
@@ -87,17 +91,31 @@ export function MapSidebar({
 
 	if (!isOpen) return null;
 
+	// 가상 키보드가 올라왔을 때 남은 가용 높이에 맞춰 모달 최대 높이를 동적으로 계산
+	// 하단바 영역(약 66px)과 상단 안전 여백(14px)을 제외한 높이
+	const dynamicHeight =
+		keyboardOffset > 0 && visibleHeight
+			? `${Math.max(200, visibleHeight - 80)}px`
+			: undefined;
+
 	return (
 		<>
 			{/* 배경 클릭 시 닫히는 투명 딤 레이어 (하단바는 z-[1100]이므로 클릭 가능 유지) */}
 			<div
-				className="fixed inset-0 z-[1000] bg-black/40 backdrop-blur-[2px] transition-opacity pointer-events-auto"
+				className="fixed inset-0 z-[1000] bg-black/40 backdrop-blur-[2px] transition-opacity pointer-events-auto touch-none overscroll-none"
 				onClick={onClose}
+				onTouchMove={(e) => e.preventDefault()}
 				aria-hidden="true"
 			/>
 
 			{/* 하단바 바로 윗공간에 안착하는 플로팅 측정소 목록 패널 */}
-			<div className="fixed bottom-[calc(env(safe-area-inset-bottom)+70px)] inset-x-3.5 z-[1050] pointer-events-none flex flex-col items-center">
+			<div
+				style={{
+					bottom:
+						keyboardOffset > 0 ? `${keyboardOffset + 66}px` : undefined,
+				}}
+				className="fixed bottom-[calc(env(safe-area-inset-bottom)+70px)] inset-x-3.5 z-[1050] pointer-events-none flex flex-col items-center transition-[bottom] duration-150 ease-out"
+			>
 				<motion.div
 					drag="y"
 					dragControls={dragControls}
@@ -113,7 +131,11 @@ export function MapSidebar({
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ y: 60, opacity: 0 }}
 					transition={{ type: "spring", damping: 28, stiffness: 320 }}
-					className="pointer-events-auto w-full max-w-md h-[80dvh] max-h-[80dvh] rounded-3xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)] text-[#0f172a] dark:text-[#f4f4f5] flex flex-col overflow-hidden transition-colors"
+					style={{
+						height: dynamicHeight,
+						maxHeight: dynamicHeight,
+					}}
+					className="pointer-events-auto w-full max-w-md h-[80dvh] max-h-[80dvh] rounded-3xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)] text-[#0f172a] dark:text-[#f4f4f5] flex flex-col overflow-hidden overscroll-contain transition-[height,max-height,background-color,border-color] duration-150 ease-out"
 				>
 					{/* 모바일 상단 드래그 핸들 (터치로 쓸어내려 닫기) */}
 					<div
@@ -163,7 +185,7 @@ export function MapSidebar({
 					{isSearching ? (
 						/* 검색 결과 목록 */
 						<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
-							<div className="flex-1 overflow-y-auto p-2.5 space-y-1.5">
+							<div className="flex-1 overflow-y-auto overscroll-contain p-2.5 space-y-1.5">
 								{searchResults.length === 0 ? (
 									<div className="py-20 text-center text-xs text-[#64748b] dark:text-[#71717a] font-mono">
 										'{searchTerm}' 일치하는 측정소가 없습니다.
@@ -286,7 +308,7 @@ export function MapSidebar({
 										</span>
 									</div>
 
-									<div className="flex-1 overflow-y-auto p-1.5 space-y-1">
+									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5 space-y-1">
 										{nationalStations.length === 0 ? (
 											<div className="py-12 text-center text-[11px] font-mono text-[#64748b] dark:text-[#71717a]">
 												해당 없음
@@ -329,7 +351,7 @@ export function MapSidebar({
 										</span>
 									</div>
 
-									<div className="flex-1 overflow-y-auto p-1.5 space-y-1">
+									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5 space-y-1">
 										{smallStations.length === 0 ? (
 											<div className="py-12 text-center text-[11px] font-mono text-[#64748b] dark:text-[#71717a]">
 												해당 없음

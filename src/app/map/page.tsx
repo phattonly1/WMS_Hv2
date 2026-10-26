@@ -94,6 +94,47 @@ export default function MapPage() {
 	// 검색창 포커스 여부
 	const [_isSearchFocused, _setIsSearchFocused] = useState(false);
 
+	// 모바일 가상 키보드 올라올 때 가용 높이 및 하단 키보드 높이 추적
+	const [viewportMetrics, setViewportMetrics] = useState<{
+		keyboardOffset: number;
+		visibleHeight: number | null;
+	}>({
+		keyboardOffset: 0,
+		visibleHeight: null,
+	});
+
+	useEffect(() => {
+		const updateViewport = () => {
+			if (window.visualViewport) {
+				const vv = window.visualViewport;
+				const kbOffset = Math.max(
+					0,
+					window.innerHeight - (vv.height + vv.offsetTop),
+				);
+				setViewportMetrics({
+					keyboardOffset: kbOffset,
+					visibleHeight: vv.height,
+				});
+				if (window.scrollY !== 0) {
+					window.scrollTo(0, 0);
+				}
+			}
+		};
+
+		if (window.visualViewport) {
+			updateViewport();
+			window.visualViewport.addEventListener("resize", updateViewport);
+			window.visualViewport.addEventListener("scroll", updateViewport);
+		}
+
+		return () => {
+			if (window.visualViewport) {
+				window.visualViewport.removeEventListener("resize", updateViewport);
+				window.visualViewport.removeEventListener("scroll", updateViewport);
+			}
+		};
+	}, []);
+
 	// URL 쿼리 파라미터로 edit mode 진입 지원 (?mode=edit)
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -119,7 +160,7 @@ export default function MapPage() {
 	return (
 		<div
 			id="main-content"
-			className="relative w-full h-dvh bg-slate-50 dark:bg-slate-950 overflow-hidden font-sans select-none"
+			className="fixed inset-0 w-full h-dvh bg-slate-50 dark:bg-slate-950 overflow-hidden overscroll-none font-sans select-none"
 		>
 			<div aria-live="polite" aria-atomic="true" className="sr-only">
 				{searchTerm ? `검색 결과 ${searchResults.length}건이 있습니다.` : ""}
@@ -145,7 +186,15 @@ export default function MapPage() {
 			{/* 1-1. 하단 통합 1줄 바 (왼쪽 필터 + 중간 검색 + 오른쪽 목록)   */}
 			{/* ============================================================ */}
 			{!isEditMode && !isUiHidden && (
-				<div className="absolute bottom-[calc(env(safe-area-inset-bottom)+14px)] inset-x-3.5 z-[1100] pointer-events-none flex flex-col items-center">
+				<div
+					style={{
+						bottom:
+							viewportMetrics.keyboardOffset > 0
+								? `${viewportMetrics.keyboardOffset + 10}px`
+								: undefined,
+					}}
+					className="absolute bottom-[calc(env(safe-area-inset-bottom)+14px)] inset-x-3.5 z-[1100] pointer-events-none flex flex-col items-center transition-[bottom] duration-150 ease-out"
+				>
 					{/* 통합 1줄 바 컨테이너 (바텀시트와 동일한 Frosted Island Glass 적용) */}
 					<div className="pointer-events-auto w-full max-w-md h-12 rounded-2xl bg-white/80 dark:bg-[#111115]/90 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-black/[0.08] dark:border-white/10 flex items-center px-1.5 gap-1.5">
 						{/* 1. 왼쪽: 필터 버튼 (아이콘 전용) */}
@@ -1004,6 +1053,8 @@ export default function MapPage() {
 				searchTerm={searchTerm}
 				setSearchTerm={setSearchTerm}
 				searchResults={searchResults}
+				keyboardOffset={viewportMetrics.keyboardOffset}
+				visibleHeight={viewportMetrics.visibleHeight}
 			/>
 
 			{/* ============================================================ */}
