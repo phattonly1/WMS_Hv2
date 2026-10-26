@@ -13,6 +13,29 @@ interface LoginPageClientProps {
 export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [theme, setTheme] = useState<"light" | "dark">("dark");
+	const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+	useEffect(() => {
+		const handleViewportChange = () => {
+			if (window.visualViewport) {
+				// 키패드가 열려 높이가 전체 window 대비 확 줄어들었는지 감지 (모바일 기준)
+				const isShrunk = window.visualViewport.height < window.innerHeight * 0.75;
+				setIsKeyboardOpen(isShrunk);
+			}
+		};
+
+		if (window.visualViewport) {
+			window.visualViewport.addEventListener("resize", handleViewportChange);
+			window.visualViewport.addEventListener("scroll", handleViewportChange);
+		}
+
+		return () => {
+			if (window.visualViewport) {
+				window.visualViewport.removeEventListener("resize", handleViewportChange);
+				window.visualViewport.removeEventListener("scroll", handleViewportChange);
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		const saved = localStorage.getItem("wms-theme");
@@ -48,7 +71,7 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 
 	return (
 		<div
-			className={`min-h-[100dvh] relative flex items-start sm:items-center justify-center pt-2 pb-0 px-4 sm:p-6 overflow-x-hidden font-sans transition-colors duration-700 ${
+			className={`min-h-[100dvh] relative flex items-center justify-center p-4 sm:p-6 overflow-hidden font-sans transition-colors duration-700 ${
 				isSuccess
 					? "bg-sky-50 dark:bg-zinc-950"
 					: "bg-slate-50 dark:bg-[#09090b]"
@@ -107,9 +130,9 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 			</div>
 
 			<div
-				className={`relative z-10 w-full max-w-[460px] transition-transform duration-700 ${
-					isSuccess ? "scale-105" : "scale-100"
-				}`}
+				className={`relative z-10 w-full max-w-[460px] transition-all duration-300 ease-out ${
+					isKeyboardOpen ? "-translate-y-16 sm:translate-y-0" : "translate-y-0"
+				} ${isSuccess ? "scale-105" : "scale-100"}`}
 			>
 				{/* Main Card */}
 				<div className="group relative">
