@@ -48,7 +48,7 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 
 	return (
 		<div
-			className={`min-h-[100dvh] relative flex items-start sm:items-center justify-center pt-2 pb-4 px-4 sm:p-6 overflow-x-hidden font-sans transition-colors duration-700 ${
+			className={`min-h-[100dvh] relative flex items-start sm:items-center justify-center pt-2 pb-0 px-4 sm:p-6 overflow-x-hidden font-sans transition-colors duration-700 ${
 				isSuccess
 					? "bg-sky-50 dark:bg-zinc-950"
 					: "bg-slate-50 dark:bg-[#09090b]"
