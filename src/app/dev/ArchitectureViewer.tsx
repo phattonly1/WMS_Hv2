@@ -86,8 +86,25 @@ export function ArchitectureViewer() {
 	const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 	const didDragRef = useRef<boolean>(false);
 
-	const selectedNode =
-		FILE_DIAGRAM_NODES[selectedId] || FILE_DIAGRAM_NODES.app_dashboard;
+	const fallbackNode: FileNodeStory = {
+		id: "app_dashboard",
+		name: "src/app/dashboard/",
+		path: "src/app/dashboard/",
+		badge: "메인 대시보드",
+		badgeColor: "blue",
+		title: "4대 핵심 서비스 & 실무 메뉴 연결 허브",
+		keyFiles: [
+			{
+				name: "src/app/dashboard/page.tsx",
+				desc: "수질 지도, 자료실, 소모품 등 핵심 업무 화면으로 연결되는 메인 대시보드입니다.",
+			},
+		],
+	};
+
+	const selectedNode: FileNodeStory =
+		FILE_DIAGRAM_NODES[selectedId] ??
+		FILE_DIAGRAM_NODES.app_dashboard ??
+		fallbackNode;
 
 	const handleModeChange = (mode: "summary" | "full") => {
 		setDiagramMode(mode);

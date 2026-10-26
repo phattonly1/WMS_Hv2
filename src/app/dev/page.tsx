@@ -6,7 +6,6 @@ import {
 	CheckCircle2,
 	Code2,
 	FileX,
-	FolderTree,
 	KeyRound,
 	PackageX,
 	Palette,
