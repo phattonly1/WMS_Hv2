@@ -151,7 +151,7 @@ export default function DocsClientView({
 			: null;
 
 	return (
-		<div className="h-dvh sm:min-h-screen bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] font-sans relative flex flex-col overflow-hidden sm:overflow-visible transition-colors">
+		<div className="fixed inset-0 sm:static h-dvh sm:min-h-screen bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] font-sans relative flex flex-col overflow-hidden sm:overflow-visible overscroll-none transition-colors">
 			{/* 도트 매트릭스 배경 */}
 			<div
 				className="absolute inset-0 pointer-events-none opacity-[0.03] dark:invert"
@@ -168,7 +168,11 @@ export default function DocsClientView({
 					const target = e.currentTarget;
 					handleScrollUpdate(target.scrollTop, target.scrollHeight, target.clientHeight);
 				}}
-				className="flex-1 w-full overflow-y-auto sm:overflow-visible relative z-10 sm:pb-12"
+				className={`flex-1 w-full relative z-10 sm:pb-12 overscroll-contain ${
+					isNavOpen || activeModal
+						? "overflow-hidden sm:overflow-visible"
+						: "overflow-y-auto sm:overflow-visible"
+				}`}
 			>
 				<div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 space-y-6">
 					{/* 상단 내비게이션 바 (M3 Surface Container) */}

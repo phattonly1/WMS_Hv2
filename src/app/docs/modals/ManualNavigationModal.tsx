@@ -104,6 +104,7 @@ export default function ManualNavigationModal({
 			title="매뉴얼 목차 및 검색"
 			subtitle="WMS STANDARD MANUAL"
 			icon={FolderTree}
+			sheetClassName="h-[45dvh] max-h-[45dvh] sm:h-auto sm:max-h-[85vh] rounded-3xl"
 		>
 			<div className="space-y-2 pr-1">
 				{isSearching ? (

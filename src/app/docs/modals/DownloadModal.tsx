@@ -145,6 +145,7 @@ export default function DownloadModal({
 			title="파일 다운로드 보관함"
 			subtitle="SUPABASE CLOUD STORAGE"
 			icon={FolderDown}
+			sheetClassName="h-[45dvh] max-h-[45dvh] sm:h-auto sm:max-h-[85vh] rounded-3xl"
 		>
 			<div className="space-y-3.5">
 				{/* 브레드크럼 */}

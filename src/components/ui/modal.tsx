@@ -71,10 +71,10 @@ export function Modal({
 		<div
 			role="dialog"
 			aria-modal="true"
-			className={`fixed inset-0 flex items-end sm:items-center justify-center overflow-hidden ${containerClassName}`}
+			className={`fixed inset-0 flex items-end sm:items-center justify-center overflow-hidden overscroll-none ${containerClassName}`}
 		>
 			<div
-				className="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity pointer-events-auto"
+				className="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity pointer-events-auto touch-none overscroll-none"
 				onClick={onClose}
 				aria-hidden="true"
 			/>
