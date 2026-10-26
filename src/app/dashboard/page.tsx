@@ -98,6 +98,12 @@ export default function DashboardPage() {
 					<div className="flex items-center gap-2">
 						<ThemeToggle />
 						<Link
+							href="/architecture"
+							className="hidden sm:inline-flex px-3.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#2563eb] dark:text-[#60a5fa] hover:underline transition-colors items-center gap-1.5 shadow-sm whitespace-nowrap shrink-0"
+						>
+							<span>구조도 뷰어</span>
+						</Link>
+						<Link
 							href="/dev"
 							className="hidden sm:inline-flex px-3.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors items-center gap-1.5 shadow-sm whitespace-nowrap shrink-0"
 						>

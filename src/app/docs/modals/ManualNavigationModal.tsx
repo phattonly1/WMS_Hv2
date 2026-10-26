@@ -117,7 +117,6 @@ export default function ManualNavigationModal({
 					: "카테고리별 문서 목록"
 			}
 			icon={FolderTree}
-			sheetClassName="h-[45dvh] max-h-[45dvh] sm:h-[75dvh] sm:max-h-[75dvh] rounded-3xl"
 			contentClassName="!p-0 overflow-hidden"
 		>
 			{isSearching ? (

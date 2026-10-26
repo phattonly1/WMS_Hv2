@@ -6,6 +6,7 @@ import {
 	CheckCircle2,
 	Code2,
 	FileX,
+	FolderTree,
 	KeyRound,
 	PackageX,
 	Palette,
@@ -74,23 +75,27 @@ export default function DeploymentGuardPage() {
 
 			<div className="max-w-5xl mx-auto space-y-6 relative z-10">
 				{/* 1. 상단 내비게이션 바 (Surface Container & Tactile) */}
-				<header className="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
+				<header className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
 					<div className="flex items-center gap-3">
 						<Link
 							href="/dashboard"
-							className="p-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5] transition-colors"
+							className="p-2.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5] transition-colors"
 						>
 							<ArrowLeft className="w-4 h-4" />
 						</Link>
 						<div>
-							<h1 className="text-lg font-bold tracking-tight text-[#0f172a] dark:text-[#f4f4f5]">
-								배포 전 무결성 자동 검증기
+							<h1 className="text-base sm:text-lg font-bold tracking-tight text-[#0f172a] dark:text-[#f4f4f5]">
+								배포 무결성 검증기
 							</h1>
+							<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] mt-0.5">
+								미사용 파일 · 패키지 누락 · 디자인 토큰 규칙 검사
+							</p>
 						</div>
 					</div>
 
 					<div className="flex items-center gap-2">
 						<ThemeToggle />
+
 						<button
 							type="button"
 							onClick={checkGuard}

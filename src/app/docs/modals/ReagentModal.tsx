@@ -85,7 +85,6 @@ export default function ReagentModal({
 			}
 			icon={FlaskConical}
 			onBack={selectedStation ? () => setSelectedStation(null) : undefined}
-			sheetClassName="h-[45dvh] max-h-[45dvh] sm:h-auto sm:max-h-[85vh] rounded-3xl"
 		>
 			<div className="space-y-4">
 				{selectedStation ? (

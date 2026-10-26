@@ -95,8 +95,6 @@ export function StationListModal({
 			}
 			icon={List}
 			maxWidth="max-w-md"
-			containerClassName="z-[1050] !items-end px-3.5 pb-[calc(env(safe-area-inset-bottom)+70px)]"
-			sheetClassName="h-[45dvh] max-h-[45dvh] sm:h-[75dvh] sm:max-h-[75dvh] rounded-3xl"
 			contentClassName="!p-0 overflow-hidden"
 		>
 			{/* 본문 영역 */}

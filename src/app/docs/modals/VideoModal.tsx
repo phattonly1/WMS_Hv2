@@ -70,7 +70,6 @@ export default function VideoModal({
 			}
 			icon={Video}
 			maxWidth={selectedVideo ? "max-w-3xl" : "max-w-4xl"}
-			sheetClassName="h-[45dvh] max-h-[45dvh] sm:h-auto sm:max-h-[85vh] rounded-3xl"
 			onBack={
 				selectedVideo
 					? () => setSelectedVideo(null)
