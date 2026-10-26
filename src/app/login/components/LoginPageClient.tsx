@@ -3,7 +3,7 @@
 import { ArrowRight, Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import LoginForm from "./LoginForm";
 
 interface LoginPageClientProps {
@@ -13,18 +13,28 @@ interface LoginPageClientProps {
 export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [theme, setTheme] = useState<"light" | "dark">("dark");
-	const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+	const [shiftY, setShiftY] = useState(0);
+	const cardRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const handleViewportChange = () => {
-			if (window.visualViewport) {
-				// 키패드가 열려 높이가 전체 window 대비 확 줄어들었는지 감지 (모바일 기준)
-				const isShrunk = window.visualViewport.height < window.innerHeight * 0.75;
-				setIsKeyboardOpen(isShrunk);
+			if (window.visualViewport && window.innerWidth < 640) {
+				// 키패드가 열려 높이가 전체 window 대비 줄어들었는지 감지
+				const isShrunk = window.visualViewport.height < window.innerHeight * 0.8;
+				if (isShrunk && cardRef.current) {
+					// 정중앙 기준 원래 카드의 상단 여백(offsetTop)을 측정하여 최상단(8px 여백)까지 정확히 끌어올림
+					const originalTop = cardRef.current.offsetTop;
+					const targetShift = Math.max(0, originalTop - 8);
+					setShiftY(targetShift);
+				} else {
+					setShiftY(0);
+				}
 				// iOS Safari가 포커스 시 임의로 화면을 밀어올리는 현상 복구
 				if (window.scrollY !== 0) {
 					window.scrollTo(0, 0);
 				}
+			} else {
+				setShiftY(0);
 			}
 		};
 
@@ -134,9 +144,13 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 			</div>
 
 			<div
-				className={`relative z-10 w-full max-w-[460px] transition-all duration-300 ease-out ${
-					isKeyboardOpen ? "-translate-y-16 sm:translate-y-0" : "translate-y-0"
-				} ${isSuccess ? "scale-105" : "scale-100"}`}
+				ref={cardRef}
+				style={{
+					transform: `${shiftY > 0 ? `translateY(-${shiftY}px)` : "translateY(0px)"} ${
+						isSuccess ? "scale(1.05)" : "scale(1)"
+					}`,
+				}}
+				className="relative z-10 w-full max-w-[460px] transition-transform duration-300 ease-out"
 			>
 				{/* Main Card */}
 				<div className="group relative">
