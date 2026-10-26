@@ -149,11 +149,11 @@ export default function LoginForm({
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className={`transition-all duration-300 relative min-h-[64px] sm:min-h-[80px] flex items-center justify-center ${error ? "animate-bounce" : ""} ${className}`}
+			className={`transition-all duration-300 relative min-h-[52px] sm:min-h-[80px] flex items-center justify-center ${error ? "animate-bounce" : ""} ${className}`}
 			aria-label="PIN 로그인 폼"
 		>
 			<div
-				className={`flex justify-between gap-3 sm:gap-4 w-full max-w-[280px] mx-auto absolute transition-all duration-300 transform ${
+				className={`flex justify-between gap-2.5 sm:gap-4 w-full max-w-[240px] sm:max-w-[280px] mx-auto absolute transition-all duration-300 transform ${
 					loading || success
 						? "opacity-0 scale-95 pointer-events-none"
 						: "opacity-100 scale-100"
@@ -178,7 +178,7 @@ export default function LoginForm({
 						disabled={loading || success}
 						aria-label={`${index + 1}번째 숫자`}
 						placeholder="•"
-						className={`w-full aspect-square text-center text-xl sm:text-2xl font-black rounded-full transition-all duration-300 outline-none caret-transparent
+						className={`w-full aspect-square text-center text-lg sm:text-2xl font-black rounded-full transition-all duration-300 outline-none caret-transparent
 							${
 								error
 									? "bg-red-500/10 border-2 border-red-500 text-red-500"

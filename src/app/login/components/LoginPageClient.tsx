@@ -48,7 +48,7 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 
 	return (
 		<div
-			className={`min-h-screen relative flex items-center justify-center p-4 sm:p-6 overflow-hidden font-sans transition-colors duration-700 ${
+			className={`min-h-[100dvh] relative flex items-center justify-center p-3 sm:p-6 overflow-hidden font-sans transition-colors duration-700 ${
 				isSuccess
 					? "bg-sky-50 dark:bg-zinc-950"
 					: "bg-slate-50 dark:bg-[#09090b]"
@@ -144,7 +144,7 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 					/>
 
 					<div
-						className={`relative backdrop-blur-md border rounded-3xl p-6 sm:p-14 text-center overflow-hidden transition-all duration-700 ${
+						className={`relative backdrop-blur-md border rounded-2xl sm:rounded-3xl px-4 py-5 sm:p-14 text-center overflow-hidden transition-all duration-700 ${
 							isSuccess
 								? "bg-white/80 dark:bg-[#16161c]/90 border-white/60 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(14,165,233,0.2)]"
 								: "bg-white/70 dark:bg-[#111115]/80 border-slate-200/80 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] dark:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)]"
@@ -152,12 +152,12 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 					>
 						{/* Header Section */}
 						<div
-							className={`space-y-6 sm:space-y-8 mb-8 sm:mb-12 relative z-10 transition-all duration-500 ${
+							className={`space-y-3 sm:space-y-8 mb-4 sm:mb-12 relative z-10 transition-all duration-500 ${
 								isSuccess ? "-translate-y-2" : ""
 							}`}
 						>
-							<div className="mx-auto w-[72px] h-[72px] sm:w-[92px] sm:h-[92px] p-2 bg-white rounded-2xl shadow-xl flex items-center justify-center border border-slate-100 dark:border-white/20 relative overflow-hidden group">
-								<div className="relative w-[44px] h-[44px] sm:w-[56px] sm:h-[56px] transition-transform duration-700 group-hover:scale-110">
+							<div className="mx-auto w-[52px] h-[52px] sm:w-[92px] sm:h-[92px] p-1.5 sm:p-2 bg-white rounded-xl sm:rounded-2xl shadow-md sm:shadow-xl flex items-center justify-center border border-slate-100 dark:border-white/20 relative overflow-hidden group">
+								<div className="relative w-[32px] h-[32px] sm:w-[56px] sm:h-[56px] transition-transform duration-700 group-hover:scale-110">
 									<Image
 										src="/images/gongdan-mark.png"
 										alt="한국환경공단 로고"
@@ -168,9 +168,9 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 								</div>
 							</div>
 
-							<div className="space-y-3 sm:space-y-4">
+							<div className="space-y-1.5 sm:space-y-4">
 								<h1
-									className={`text-2xl sm:text-4xl font-black tracking-tight leading-tight transition-colors duration-700 ${
+									className={`text-xl sm:text-4xl font-black tracking-tight leading-tight transition-colors duration-700 ${
 										isSuccess
 											? "text-slate-800 dark:text-zinc-100"
 											: "text-slate-900 dark:text-white"
@@ -179,15 +179,15 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 									수질자동측정망
 								</h1>
 								<div
-									className={`flex items-center justify-center gap-3 transition-opacity duration-500 ${
+									className={`flex items-center justify-center gap-2.5 sm:gap-3 transition-opacity duration-500 ${
 										isSuccess ? "opacity-0" : "opacity-100"
 									}`}
 								>
-									<div className="h-px w-6 sm:w-8 bg-gradient-to-r from-transparent to-slate-300 dark:to-white/20" />
-									<p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-zinc-400 tracking-widest uppercase">
+									<div className="h-px w-5 sm:w-8 bg-gradient-to-r from-transparent to-slate-300 dark:to-white/20" />
+									<p className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-zinc-400 tracking-wider sm:tracking-widest uppercase">
 										4자리 PIN번호를 입력하세요
 									</p>
-									<div className="h-px w-6 sm:w-8 bg-gradient-to-l from-transparent to-slate-300 dark:to-white/20" />
+									<div className="h-px w-5 sm:w-8 bg-gradient-to-l from-transparent to-slate-300 dark:to-white/20" />
 								</div>
 							</div>
 						</div>
@@ -202,7 +202,7 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 
 						{/* Quick Links Section */}
 						<div
-							className={`mt-6 sm:mt-8 pt-5 sm:pt-6 border-t relative z-10 transition-all duration-500 delay-500 ${
+							className={`mt-4 sm:mt-8 pt-3.5 sm:pt-6 border-t relative z-10 transition-all duration-500 delay-500 ${
 								isSuccess
 									? "border-sky-200/50 opacity-0 scale-95"
 									: "border-slate-200/60 dark:border-white/5 opacity-100 scale-100"
@@ -211,20 +211,20 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 							<div className="flex flex-col items-center">
 								<Link
 									href="/items?quicklink=true"
-									className="group/link relative flex items-center gap-3 px-5 py-3 sm:px-6 sm:py-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 hover:bg-slate-200/80 dark:hover:bg-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-colors duration-300 outline-none cursor-pointer"
+									className="group/link relative flex items-center gap-2.5 sm:gap-3 px-3.5 py-2 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 hover:bg-slate-200/80 dark:hover:bg-white/10 hover:border-slate-300 dark:hover:border-white/20 transition-colors duration-300 outline-none cursor-pointer"
 								>
 									<div className="flex flex-col items-start leading-tight">
-										<span className="text-[9px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-[0.2em] group-hover/link:text-blue-600 dark:group-hover/link:text-blue-400 transition-colors">
+										<span className="text-[8px] sm:text-[9px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-[0.18em] sm:tracking-[0.2em] group-hover/link:text-blue-600 dark:group-hover/link:text-blue-400 transition-colors">
 											Quick Link
 										</span>
 										<span className="text-[11px] sm:text-xs font-bold text-slate-700 dark:text-zinc-300 group-hover/link:text-slate-900 dark:group-hover/link:text-white transition-colors">
 											물품 관리 시스템 바로가기
 										</span>
 									</div>
-									<div className="w-8 h-8 rounded-full bg-blue-500/10 dark:bg-white/5 flex items-center justify-center group-hover/link:bg-blue-500/20 dark:group-hover/link:bg-white/10 transition-colors">
+									<div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-500/10 dark:bg-white/5 flex items-center justify-center group-hover/link:bg-blue-500/20 dark:group-hover/link:bg-white/10 transition-colors">
 										<ArrowRight
 											className="text-blue-600 dark:text-blue-400 group-hover/link:translate-x-0.5 transition-all duration-300"
-											size={16}
+											size={14}
 										/>
 									</div>
 								</Link>
