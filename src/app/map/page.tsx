@@ -24,7 +24,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { useStations } from "@/utils/supabase/hooks";
-import { MapSidebar } from "./components/MapSidebar";
+import { StationListModal } from "./components/StationListModal";
 
 import { StationBottomSheet } from "./components/StationBottomSheet";
 import { RIVER_CONFIG, TYPE_CONFIG } from "./stationData";
@@ -992,9 +992,9 @@ export default function MapPage() {
 			)}
 
 			{/* ============================================================ */}
-			{/* 7. 측정소 사이드바 (필터 & 수계별 목록)                       */}
+			{/* 7. 측정소 목록 및 검색 모달                                  */}
 			{/* ============================================================ */}
-			<MapSidebar
+			<StationListModal
 				isOpen={isSidebarOpen}
 				onClose={() => setIsSidebarOpen(false)}
 				onSelectStation={moveToStation}

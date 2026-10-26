@@ -6,11 +6,10 @@ import {
 	ChevronRight,
 	Eye,
 	List,
-	X,
 } from "lucide-react";
 import type React from "react";
 import { useMemo, useState } from "react";
-import { motion, useDragControls } from "framer-motion";
+import { Modal } from "@/components/ui/modal";
 import {
 	type MapFilters,
 	RIVER_CONFIG,
@@ -19,7 +18,7 @@ import {
 	type Station,
 } from "../stationData";
 
-export interface MapSidebarProps {
+export interface StationListModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	onSelectStation: (station: Station) => void;
@@ -46,16 +45,16 @@ const CATEGORIES: CategoryInfo[] = [
 ];
 
 /**
- * 하단 검색바 위에 플로팅으로 열리는 일체형 측정소 목록/검색 패널
+ * 하단 검색바 위에 플로팅으로 열리는 일체형 측정소 목록/검색 모달
  */
-export function MapSidebar({
+export function StationListModal({
 	isOpen,
 	onClose,
 	onSelectStation,
 	stations,
 	searchTerm = "",
 	searchResults = [],
-}: MapSidebarProps) {
+}: StationListModalProps) {
 	const [activeCatIndex, setActiveCatIndex] = useState<number>(0);
 
 	const allTargetStations = useMemo(() => {
@@ -83,84 +82,25 @@ export function MapSidebar({
 	}, [allTargetStations, activeCategory?.id]);
 
 	const isSearching = searchTerm.trim().length > 0;
-	const dragControls = useDragControls();
-
-	if (!isOpen) return null;
 
 	return (
-		<>
-			{/* 배경 클릭 시 닫히는 투명 딤 레이어 (하단바는 z-[1100]이므로 클릭 가능 유지) */}
-			<div
-				className="fixed inset-0 z-[1000] bg-black/40 backdrop-blur-[2px] transition-opacity pointer-events-auto touch-none overscroll-none"
-				onClick={onClose}
-				aria-hidden="true"
-			/>
-
-			{/* 하단바 바로 윗공간에 안착하는 플로팅 측정소 목록 패널 */}
-			<div className="fixed bottom-[calc(env(safe-area-inset-bottom)+70px)] inset-x-3.5 z-[1050] pointer-events-none flex flex-col items-center">
-				<motion.div
-					drag="y"
-					dragControls={dragControls}
-					dragListener={false}
-					dragConstraints={{ top: 0 }}
-					dragElastic={{ top: 0, bottom: 0.5 }}
-					onDragEnd={(_e, info) => {
-						if (info.offset.y > 70 || info.velocity.y > 350) {
-							onClose();
-						}
-					}}
-					initial={{ y: 60, opacity: 0 }}
-					animate={{ y: 0, opacity: 1 }}
-					exit={{ y: 60, opacity: 0 }}
-					transition={{ type: "spring", damping: 28, stiffness: 320 }}
-					className="pointer-events-auto w-full max-w-md h-[45dvh] max-h-[45dvh] sm:h-[75dvh] sm:max-h-[75dvh] rounded-3xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)] text-[#0f172a] dark:text-[#f4f4f5] flex flex-col overflow-hidden overscroll-contain transition-colors"
-				>
-					{/* 모바일 상단 드래그 핸들 (터치로 쓸어내려 닫기) */}
-					<div
-						onPointerDown={(e) => dragControls.start(e)}
-						onClick={onClose}
-						className="w-full pt-3 pb-1 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing sm:hidden select-none"
-						aria-hidden="true"
-					>
-						<div className="w-10 h-1.5 rounded-full bg-black/20 dark:bg-white/20 hover:bg-black/30 dark:hover:bg-white/30 transition-colors" />
-					</div>
-
-					{/* 패널 헤더 */}
-					<div
-						onPointerDown={(e) => {
-							if ((e.target as HTMLElement).closest("button")) return;
-							dragControls.start(e);
-						}}
-						className="px-4 py-3 border-b border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#16161c] flex items-center justify-between shrink-0 select-none"
-					>
-						<div className="flex items-center gap-2">
-							<div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-								<List size={14} strokeWidth={2.4} />
-							</div>
-							<div>
-								<h3 className="text-xs font-bold text-[#0f172a] dark:text-white tracking-tight">
-									{isSearching ? "측정소 검색 결과" : "측정소 위치 바로가기"}
-								</h3>
-								<p className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
-									{isSearching
-										? `검색어: "${searchTerm}" (${searchResults.length}개소)`
-										: "수계별 측정망 2열 목록"}
-								</p>
-							</div>
-						</div>
-
-						<button
-							type="button"
-							onClick={onClose}
-							aria-label="닫기"
-							className="w-7 h-7 rounded-lg bg-[#f1f5f9] dark:bg-[#111115] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center transition-all active:scale-95"
-						>
-							<X size={14} strokeWidth={2.5} />
-						</button>
-					</div>
-
-					{/* 본문 영역 */}
-					{isSearching ? (
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
+			title={isSearching ? "측정소 검색 결과" : "측정소 위치 바로가기"}
+			subtitle={
+				isSearching
+					? `검색어: "${searchTerm}" (${searchResults.length}개소)`
+					: "수계별 측정망 2열 목록"
+			}
+			icon={List}
+			maxWidth="max-w-md"
+			containerClassName="z-[1050] !items-end px-3.5 pb-[calc(env(safe-area-inset-bottom)+70px)]"
+			sheetClassName="h-[45dvh] max-h-[45dvh] sm:h-[75dvh] sm:max-h-[75dvh] rounded-3xl"
+			contentClassName="!p-0 overflow-hidden"
+		>
+			{/* 본문 영역 */}
+			{isSearching ? (
 						/* 검색 결과 목록 */
 						<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
 							<div className="flex-1 overflow-y-auto overscroll-contain p-2.5 space-y-1.5">
@@ -360,8 +300,6 @@ export function MapSidebar({
 							</div>
 						</div>
 					)}
-				</motion.div>
-			</div>
-		</>
+		</Modal>
 	);
 }

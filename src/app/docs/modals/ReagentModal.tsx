@@ -210,45 +210,43 @@ export default function ReagentModal({
 					/* 메인 탭: 측정소별 or 전체 시약 */
 					<div className="space-y-3.5">
 						{/* 탭 버튼 */}
-						<div className="flex items-center justify-between gap-2">
-							<div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228]">
-								<button
-									type="button"
-									onClick={() => setActiveTab("stations")}
-									className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-										activeTab === "stations"
-											? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-sm"
-											: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-									}`}
-								>
-									측정소별 ({STATIONS.length})
-								</button>
-								<button
-									type="button"
-									onClick={() => setActiveTab("all")}
-									className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-										activeTab === "all"
-											? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-sm"
-											: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-									}`}
-								>
-									전체 시약 조제법
-								</button>
-							</div>
+						<div className="grid grid-cols-2 gap-1.5 p-1 w-full rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228]">
+							<button
+								type="button"
+								onClick={() => setActiveTab("stations")}
+								className={`w-full py-1.5 rounded-lg text-xs font-bold text-center transition-colors ${
+									activeTab === "stations"
+										? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-sm"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
+							>
+								측정소별 ({STATIONS.length})
+							</button>
+							<button
+								type="button"
+								onClick={() => setActiveTab("all")}
+								className={`w-full py-1.5 rounded-lg text-xs font-bold text-center transition-colors ${
+									activeTab === "all"
+										? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-sm"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
+							>
+								전체 시약 조제법
+							</button>
 						</div>
 
 						{activeTab === "stations" ? (
 							<div className="space-y-3">
-								<div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+								<div className="grid grid-cols-3 gap-2">
 									{filteredStations.map((station) => (
 										<button
 											key={station.name}
 											type="button"
 											onClick={() => setSelectedStation(station)}
-											className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-colors flex items-center justify-between"
+											className="px-2.5 py-2.5 sm:p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-colors flex items-center justify-between"
 										>
-											<div className="flex items-center gap-2 min-w-0">
-												<MapPin size={14} className="text-blue-600 dark:text-blue-400 shrink-0" />
+											<div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+												<MapPin size={13} className="text-blue-600 dark:text-blue-400 shrink-0" />
 												<span className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
 													{station.name}
 												</span>

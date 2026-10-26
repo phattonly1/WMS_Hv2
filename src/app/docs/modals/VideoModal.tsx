@@ -1,22 +1,13 @@
 "use client";
 
 import {
-	Activity,
-	Atom,
-	Building2,
 	ChevronLeft,
-	Dna,
 	Film,
-	FlaskConical,
 	Folder,
-	Gauge,
-	Layers,
 	PlayCircle,
-	Sparkles,
-	TestTube2,
 	Video,
 } from "lucide-react";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { matchChosung } from "@/utils/hangul";
 import { VIDEO_CATEGORIES, VIDEO_DATA } from "../video/data";
@@ -26,58 +17,6 @@ interface VideoModalProps {
 	onClose: () => void;
 	sharedSearchQuery?: string;
 }
-
-// 9개 장비 카테고리별 시각적 M3 아이콘 및 색상 메타데이터
-const CATEGORY_META: Record<
-	string,
-	{ icon: React.ElementType; color: string; bg: string }
-> = {
-	"달천측정소 소개": {
-		icon: Building2,
-		color: "text-blue-500 dark:text-blue-400",
-		bg: "bg-blue-500/10 border-blue-500/20",
-	},
-	"일반항목(YSI EXO2)": {
-		icon: Gauge,
-		color: "text-cyan-500 dark:text-cyan-400",
-		bg: "bg-cyan-500/10 border-cyan-500/20",
-	},
-	"일반항목(기술과환경)": {
-		icon: Activity,
-		color: "text-emerald-500 dark:text-emerald-400",
-		bg: "bg-emerald-500/10 border-emerald-500/20",
-	},
-	"TOC(시마즈 TOC)": {
-		icon: TestTube2,
-		color: "text-amber-500 dark:text-amber-400",
-		bg: "bg-amber-500/10 border-amber-500/20",
-	},
-	"TOC(코비 HATA-4000B)": {
-		icon: FlaskConical,
-		color: "text-orange-500 dark:text-orange-400",
-		bg: "bg-orange-500/10 border-orange-500/20",
-	},
-	"T-N(백년기술)": {
-		icon: Dna,
-		color: "text-purple-500 dark:text-purple-400",
-		bg: "bg-purple-500/10 border-purple-500/20",
-	},
-	"T-P(백년기술)": {
-		icon: Sparkles,
-		color: "text-rose-500 dark:text-rose-400",
-		bg: "bg-rose-500/10 border-rose-500/20",
-	},
-	"T-N(H-KORBI)": {
-		icon: Atom,
-		color: "text-indigo-500 dark:text-indigo-400",
-		bg: "bg-indigo-500/10 border-indigo-500/20",
-	},
-	"T-P(H-KORBI)": {
-		icon: Layers,
-		color: "text-teal-500 dark:text-teal-400",
-		bg: "bg-teal-500/10 border-teal-500/20",
-	},
-};
 
 export default function VideoModal({
 	isOpen,
@@ -282,42 +221,32 @@ export default function VideoModal({
 						</span>
 					</div>
 
-					<div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+					<div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
 						{VIDEO_CATEGORIES.map((cat) => {
-							const meta = CATEGORY_META[cat] || {
-								icon: Video,
-								color: "text-blue-500 dark:text-blue-400",
-								bg: "bg-blue-500/10 border-blue-500/20",
-							};
-							const Icon = meta.icon;
 							const count = VIDEO_DATA.filter((v) => v.category === cat).length;
+							const match = cat.match(/^([^(]+)(?:\(([^)]+)\))?$/);
+							const mainTitle = match?.[1]?.trim() || cat;
+							const subTitle = match?.[2]?.trim();
 
 							return (
 								<button
 									key={cat}
 									type="button"
 									onClick={() => setSelectedCategory(cat)}
-									className="group p-4 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-3 shadow-xs hover:shadow-md cursor-pointer"
+									className="group px-3.5 py-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.98] flex flex-col justify-center gap-0.5 shadow-xs hover:shadow-md cursor-pointer"
 								>
-									<div className="flex items-start justify-between">
-										<div
-											className={`w-10 h-10 rounded-xl flex items-center justify-center border ${meta.bg} ${meta.color} group-hover:scale-105 transition-transform`}
-										>
-											<Icon size={20} strokeWidth={2.2} />
-										</div>
-										<span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa]">
+									<div className="flex items-center justify-between gap-2 w-full">
+										<span className="font-sans text-xs font-extrabold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+											{mainTitle}
+										</span>
+										<span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa] shrink-0">
 											{count}편
 										</span>
 									</div>
 
-									<div>
-										<h4 className="text-xs font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-											{cat}
-										</h4>
-										<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block mt-0.5">
-											폴더 열기 &rarr;
-										</span>
-									</div>
+									<span className="font-mono text-[11px] font-medium text-[#64748b] dark:text-[#a1a1aa] truncate block">
+										{subTitle || "측정소 개요"}
+									</span>
 								</button>
 							);
 						})}
