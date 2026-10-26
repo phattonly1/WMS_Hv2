@@ -21,6 +21,10 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 				// 키패드가 열려 높이가 전체 window 대비 확 줄어들었는지 감지 (모바일 기준)
 				const isShrunk = window.visualViewport.height < window.innerHeight * 0.75;
 				setIsKeyboardOpen(isShrunk);
+				// iOS Safari가 포커스 시 임의로 화면을 밀어올리는 현상 복구
+				if (window.scrollY !== 0) {
+					window.scrollTo(0, 0);
+				}
 			}
 		};
 
@@ -71,7 +75,7 @@ export default function LoginPageClient({ redirectTo }: LoginPageClientProps) {
 
 	return (
 		<div
-			className={`min-h-[100dvh] relative flex items-center justify-center p-4 sm:p-6 overflow-hidden font-sans transition-colors duration-700 ${
+			className={`fixed inset-0 h-[100dvh] w-full flex items-center justify-center p-4 sm:p-6 overflow-hidden overscroll-none font-sans transition-colors duration-700 ${
 				isSuccess
 					? "bg-sky-50 dark:bg-zinc-950"
 					: "bg-slate-50 dark:bg-[#09090b]"

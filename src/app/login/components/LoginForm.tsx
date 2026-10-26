@@ -27,8 +27,8 @@ export default function LoginForm({
 	// 미리 대시보드 데이터를 프리페치하여 전환 속도 향상
 	useEffect(() => {
 		router.prefetch("/dashboard");
-		// 첫 렌더 시 0번째 인풋 자동 포커스
-		inputRefs.current[0]?.focus();
+		// 첫 렌더 시 0번째 인풋 자동 포커스 (스크롤 밀림 방지)
+		inputRefs.current[0]?.focus({ preventScroll: true });
 	}, [router]);
 
 	const handleInput = (value: string, index: number) => {
@@ -40,7 +40,7 @@ export default function LoginForm({
 		setPin(newPin);
 
 		if (value && index < 3) {
-			inputRefs.current[index + 1]?.focus();
+			inputRefs.current[index + 1]?.focus({ preventScroll: true });
 		}
 	};
 
@@ -49,7 +49,7 @@ export default function LoginForm({
 		index: number,
 	) => {
 		if (e.key === "Backspace" && !pin[index] && index > 0) {
-			inputRefs.current[index - 1]?.focus();
+			inputRefs.current[index - 1]?.focus({ preventScroll: true });
 		}
 	};
 
@@ -70,7 +70,7 @@ export default function LoginForm({
 		}
 		setPin(newPin);
 		const nextIndex = Math.min(pastedDigits.length, 3);
-		setTimeout(() => inputRefs.current[nextIndex]?.focus(), 10);
+		setTimeout(() => inputRefs.current[nextIndex]?.focus({ preventScroll: true }), 10);
 	};
 
 	const handleSubmit = useCallback(
@@ -94,7 +94,7 @@ export default function LoginForm({
 					toast.error("잘못된 패스코드입니다.");
 					setTimeout(() => {
 						setPin(["", "", "", ""]);
-						inputRefs.current[0]?.focus();
+						inputRefs.current[0]?.focus({ preventScroll: true });
 					}, 500);
 				} else if (result?.success) {
 					setSuccess(true);
@@ -139,7 +139,7 @@ export default function LoginForm({
 
 			const nextEmptyIndex = pin.indexOf("");
 			const focusIndex = nextEmptyIndex !== -1 ? nextEmptyIndex : 3;
-			inputRefs.current[focusIndex]?.focus();
+			inputRefs.current[focusIndex]?.focus({ preventScroll: true });
 		};
 
 		window.addEventListener("click", handleGlobalClick);

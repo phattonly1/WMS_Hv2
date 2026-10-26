@@ -59,7 +59,7 @@ html.dark {
 body {
 	background-color: var(--canvas);
 	color: var(--text-main);
-	min-height: 100vh;
+	min-height: 100dvh;
 	margin: 0;
 	font-family:
 		"Pretendard GOV Variable", "Pretendard GOV", -apple-system,
