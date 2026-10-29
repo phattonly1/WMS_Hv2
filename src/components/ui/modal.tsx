@@ -11,6 +11,7 @@ export interface ModalProps {
 	icon?: LucideIcon | undefined;
 	children: React.ReactNode;
 	maxWidth?: string | undefined; // e.g., 'max-w-4xl'
+	size?: "standard" | "half" | undefined; // 'half': 하단 검색창 연동용 절반 크기 (45dvh)
 	headerAction?: React.ReactNode | undefined;
 	onBack?: (() => void) | undefined;
 	contentClassName?: string | undefined;
@@ -22,7 +23,7 @@ export interface ModalProps {
 
 /**
  * Nordic M3 다크 테마 기반 전역 모달 컴포넌트
- * - 전역 표준 규격: 데스크톱 max-w-xl / 모바일 80dvh 플로팅 시트
+ * - 전역 표준 규격: 데스크톱 max-w-xl / 모바일 80dvh 플로팅 시트 (size="half" 시 45dvh 절반 규격)
  * - 모바일 하단 안전영역 + 하단 내비바 상단 안착 규격
  * - 모바일 하향 드래그/스와이프 제스처 닫기 지원
  * - 배경 딤: 40% 반투명 + 2px 블러 (지도/배경 투과 일원화)
@@ -35,15 +36,23 @@ export function Modal({
 	icon: Icon,
 	children,
 	maxWidth = "max-w-xl",
+	size = "standard",
 	headerAction,
 	onBack,
 	contentClassName = "",
 	hideHeader = false,
 	containerClassName = "z-[1000] px-3.5 pb-[calc(env(safe-area-inset-bottom)+70px)] sm:p-4 md:p-6",
-	sheetClassName = "max-h-[80dvh] sm:max-h-[85vh] rounded-3xl",
+	sheetClassName,
 	preventBodyLock = false,
 }: ModalProps) {
 	const dragControls = useDragControls();
+
+	// size prop 기반 모바일 시트 높이 산출 (half: 45dvh 검색창 연동 절반 크기, standard: 최대 80dvh 표준 크기)
+	const resolvedSheetClass =
+		sheetClassName ||
+		(size === "half"
+			? "h-[45dvh] max-h-[45dvh] sm:h-[75dvh] sm:max-h-[75dvh] rounded-3xl"
+			: "max-h-[80dvh] sm:max-h-[85vh] rounded-3xl");
 
 	useEffect(() => {
 		const handleEsc = (e: KeyboardEvent) => {
@@ -94,7 +103,7 @@ export function Modal({
 				animate={{ y: 0, opacity: 1 }}
 				exit={{ y: 60, opacity: 0 }}
 				transition={{ type: "spring", damping: 28, stiffness: 320 }}
-				className={`relative w-full ${maxWidth} flex flex-col z-10 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-2xl dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.7)] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden transition-colors ${sheetClassName}`}
+				className={`relative w-full ${maxWidth} flex flex-col z-10 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-2xl dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.7)] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden transition-colors ${resolvedSheetClass}`}
 			>
 				{/* 모바일 상단 드래그 핸들 (터치로 쓸어내려 닫기) */}
 				<div

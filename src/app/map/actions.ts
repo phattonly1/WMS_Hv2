@@ -3,104 +3,6 @@
 import { createClient } from "@/utils/supabase/server";
 import type { MapMarker, Station, StationMaster } from "./stationData";
 
-// 모든 측정소 및 보조 마커 조회 (stations_master + station_assets + map_markers 병렬 조회)
-export async function getStations(): Promise<Station[]> {
-	const supabase = await createClient();
-	const [
-		{ data: masterData, error: masterErr },
-		{ data: assets, error: assetErr },
-		{ data: markerData, error: markerErr },
-	] = await Promise.all([
-		supabase
-			.from("stations_master")
-			.select("*")
-			.eq("status", "현재")
-			.order("name"),
-		supabase
-			.from("station_assets")
-			.select("station_id, model, status")
-			.order("install_date", { ascending: false }),
-		supabase.from("map_markers").select("*").order("name"),
-	]);
-
-	if (masterErr || assetErr || markerErr) {
-		const err = masterErr || assetErr || markerErr;
-		console.error("측정소 조회 에러:", err);
-		return [];
-	}
-
-	if (!masterData || !assets || !markerData) {
-		return [];
-	}
-
-	const assetsByStation: Record<string, string[]> = {};
-	for (const a of assets as {
-		station_id?: string;
-		model?: string;
-		status?: string;
-	}[]) {
-		const sId = a.station_id;
-		const model = a.model;
-		if (!sId || !model) continue;
-		const existing = assetsByStation[sId] ?? [];
-		const modelStr = a.status === "종료" ? `${model} (X)` : model;
-		if (!existing.includes(modelStr)) {
-			existing.push(modelStr);
-		}
-		assetsByStation[sId] = existing;
-	}
-
-	const masters: Station[] = (masterData as Record<string, unknown>[]).map(
-		(m) => {
-			const stationId = String(m.station_id || m.id);
-			return {
-				id: stationId,
-				name: String(m.name || ""),
-				lat: Number(m.lat) || 0,
-				lng: Number(m.lng) || 0,
-				type: m.type as Station["type"],
-				river: m.river as Station["river"],
-				features: Array.isArray(m.features) ? (m.features as string[]) : [],
-				instruments: assetsByStation[stationId] ?? [],
-				history: Array.isArray(m.history)
-					? (m.history as { date: string; desc: string }[])
-					: [],
-				color: typeof m.color === "string" ? m.color : undefined,
-				angle: 0,
-				office: typeof m.office === "string" ? m.office : undefined,
-				address: typeof m.address === "string" ? m.address : undefined,
-				facility_type:
-					typeof m.facility_type === "string" ? m.facility_type : undefined,
-				install_date:
-					typeof m.install_date === "string" ? m.install_date : undefined,
-				description:
-					typeof m.description === "string" ? m.description : undefined,
-			};
-		},
-	);
-
-	const markers: Station[] = (markerData as Record<string, unknown>[]).map(
-		(mk) => ({
-			id: String(mk.id),
-			name: String(mk.name || ""),
-			lat: Number(mk.lat) || 0,
-			lng: Number(mk.lng) || 0,
-			type: mk.type as Station["type"],
-			river: mk.river as Station["river"],
-			related_station_id:
-				typeof mk.related_station_id === "string"
-					? mk.related_station_id
-					: undefined,
-			angle: Number(mk.angle) || 0,
-			color: typeof mk.color === "string" ? mk.color : undefined,
-			description:
-				typeof mk.description === "string" ? mk.description : undefined,
-		}),
-	);
-
-	return [...masters, ...markers];
-}
-
 // 측정소 추가/수정 (stations_master 및 map_markers 대응)
 export async function upsertStation(stationData: Partial<Station>) {
 	const supabase = await createClient();
@@ -256,4 +158,262 @@ export async function deleteMapMarker(id: string) {
 	const { error } = await supabase.from("map_markers").delete().eq("id", id);
 	if (error) return { error: error.message };
 	return { success: true };
+}
+
+// ============================================================
+// 국립환경과학원(NIER) 실시간 수질 데이터 조회 액션
+// ============================================================
+import {
+	getNierStationCode,
+	type RealtimeWaterQuality,
+} from "./nierStationMap";
+
+// 23개 전체 가동 측정소의 최신 실시간 수질 데이터를 일괄 조회 (지도 마커용)
+// NIER 메인 대시보드 전용 엔드포인트(/web/autoWaterData/listJson)를 사용하여 단 1회 요청으로 전 측정소 수신
+// 매시 정각+1분(01분) 기준 1시간 단위 캐싱 (01분 진입 시 새 시간대 데이터로 갱신)
+let cachedRealtimeMap: Record<string, RealtimeWaterQuality> | null = null;
+let cachedHourKey: string = "";
+
+// 특정 측정소 24~48시간 시계열 이력 메모리 캐시 (stationCode -> { hourKey, data })
+const cachedHistoryMap: Record<
+	string,
+	{ hourKey: string; data: { latest: RealtimeWaterQuality | null; history: RealtimeWaterQuality[] } }
+> = {};
+
+// 매 정각+1분(01분) 기준 현재 시간대 키 산출 헬퍼 (현재 시각 - 1분)
+// 예: 03:01 ~ 04:00 -> 'YYYY-MM-DD-03', 04:01 진입 시 -> 'YYYY-MM-DD-04'로 자동 전환
+function getHourlySyncKey(): string {
+	const shifted = new Date(Date.now() - 1 * 60 * 1000);
+	return `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
+}
+
+export async function getAllStationsRealtimeWaterQuality(): Promise<
+	Record<string, RealtimeWaterQuality>
+> {
+	try {
+		const currentHourKey = getHourlySyncKey();
+
+		// 같은 시간대(매 정각+1분 기준 1시간 단위)에 이미 가져온 데이터가 있으면 0ms로 즉시 반환
+		if (
+			cachedRealtimeMap &&
+			cachedHourKey === currentHourKey &&
+			Object.keys(cachedRealtimeMap).length > 0
+		) {
+			return cachedRealtimeMap;
+		}
+
+		const res = await fetch(
+			"https://water.nier.go.kr/web/autoWaterData/listJson",
+			{
+				method: "POST",
+				headers: {
+					"User-Agent":
+						"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+					Referer: "https://water.nier.go.kr/web",
+					Accept: "application/json, text/javascript, */*; q=0.01",
+					"X-Requested-With": "XMLHttpRequest",
+					"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+				},
+				body: "a=1",
+				cache: "no-store", // 갱신 시점(매시 01분)은 위의 currentHourKey 인메모리 캐시로 정확히 제어
+			},
+		);
+
+		if (!res.ok) {
+			return cachedRealtimeMap || {};
+		}
+
+		const data = (await res.json()) as { atoWaterData?: Record<string, unknown>[] };
+		const list: Record<string, unknown>[] = data.atoWaterData || [];
+
+		const parseVal = (val: unknown): number | null => {
+			if (val === null || val === undefined || val === "") return null;
+			const n = Number(String(val).trim());
+			return Number.isNaN(n) ? null : n;
+		};
+
+		const byCode: Record<string, RealtimeWaterQuality> = {};
+
+		for (const item of list) {
+			const code = typeof item.WQAMN_CODE === "string" ? item.WQAMN_CODE : "";
+			if (!code) continue;
+
+			// MESURE_DT 예: "20261030010000" -> "2026-10-30 01h"
+			let measureDt = typeof item.MSR_DATE_FMT === "string" ? item.MSR_DATE_FMT : "";
+			if (item.MESURE_DT && String(item.MESURE_DT).length >= 10) {
+				const raw = String(item.MESURE_DT);
+				measureDt = `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)} ${raw.slice(8, 10)}h`;
+			}
+
+			byCode[code] = {
+				stationCode: code,
+				stationName: typeof item.WQAMN_NM === "string" ? item.WQAMN_NM : "",
+				measureDt,
+				grade: typeof item.WQI_GRD_NM === "string" ? item.WQI_GRD_NM : null, // "우수", "양호", "보통", "주의", "불량", "점검중"
+				wqi: parseVal(item.WQI),
+				wtrtp: parseVal(item.STTUS_WTRTP),
+				ph: parseVal(item.STTUS_PH),
+				ec: parseVal(item.STTUS_EC),
+				doc: parseVal(item.STTUS_DOC),
+				toc: parseVal(item.STTUS_TOC),
+				tn: parseVal(item.STTUS_TN),
+				tp: parseVal(item.STTUS_TP),
+				tur: parseVal(item.STTUS_TUR),
+				chla: parseVal(item.STTUS_CHLA),
+			};
+		}
+
+		if (Object.keys(byCode).length > 0) {
+			cachedRealtimeMap = byCode;
+			cachedHourKey = currentHourKey;
+		}
+
+		return byCode;
+	} catch (err) {
+		console.error("getAllStationsRealtimeWaterQuality error:", err);
+		return cachedRealtimeMap || {};
+	}
+}
+
+export async function getRealtimeWaterQuality(
+	stationNameOrCode: string,
+): Promise<{
+	latest: RealtimeWaterQuality | null;
+	history: RealtimeWaterQuality[];
+	error?: string;
+}> {
+	const stationCode = getNierStationCode(stationNameOrCode);
+	if (!stationCode) {
+		return {
+			latest: null,
+			history: [],
+			error: `측정소 코드 매핑 실패: ${stationNameOrCode}`,
+		};
+	}
+
+	const currentHourKey = getHourlySyncKey();
+	// 매 정각+1분 기준 메모리 캐시 확인 (있으면 0ms 즉시 반환)
+	if (
+		cachedHistoryMap[stationCode] &&
+		cachedHistoryMap[stationCode].hourKey === currentHourKey
+	) {
+		return cachedHistoryMap[stationCode].data;
+	}
+
+	try {
+		// 오늘 날짜 및 어제 날짜 구하기 (YYYYMMDD)
+		const now = new Date();
+		const pad = (n: number) => String(n).padStart(2, "0");
+		const todayStr = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+
+		const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+		const yesterdayStr = `${yesterday.getFullYear()}${pad(yesterday.getMonth() + 1)}${pad(yesterday.getDate())}`;
+
+		// 미확정 실시간 시간별 데이터 조회 (querySn=61)
+		const body = new URLSearchParams({
+			pMENU_NO: "574",
+			page: "1",
+			pageSize: "48",
+			querySn: "61",
+			queryTp: "autoMe",
+			confirmNum: "1",
+			station_code: stationCode,
+			ATTR_2: yesterdayStr,
+			ATTR_3: todayStr,
+		});
+
+		const res = await fetch(
+			"https://water.nier.go.kr/web/autoMeasure/noConfirm/toastList",
+			{
+				method: "POST",
+				headers: {
+					"User-Agent":
+						"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+					Referer:
+						"https://water.nier.go.kr/web/autoMeasure/noConfirm?pMENU_NO=574",
+					Accept: "application/json, text/javascript, */*; q=0.01",
+					"X-Requested-With": "XMLHttpRequest",
+					"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+				},
+				body: body.toString(),
+				cache: "no-store",
+			},
+		);
+
+		if (!res.ok) {
+			return {
+				latest: null,
+				history: [],
+				error: `HTTP ${res.status}: 데이터 조회 실패`,
+			};
+		}
+
+		const data = (await res.json()) as { list?: Record<string, unknown>[] };
+		const rawList: Record<string, unknown>[] = data.list || [];
+
+		// 파싱 및 변환
+		const history: RealtimeWaterQuality[] = rawList
+			.map((item) => {
+				const parseNum = (val: unknown) => {
+					if (val === null || val === undefined || val === "") return null;
+					const n = Number(val);
+					return Number.isNaN(n) ? null : n;
+				};
+
+				return {
+					stationCode: typeof item.WQAMN_CODE === "string" ? item.WQAMN_CODE : stationCode,
+					stationName: typeof item.WQAMN_NM === "string" ? item.WQAMN_NM : "",
+					measureDt: typeof item.MESURE_DT === "string" ? item.MESURE_DT : "",
+					grade: typeof item.WQI_GRADE === "string" ? item.WQI_GRADE : null,
+					wqi: parseNum(item.WQI),
+					wtrtp: parseNum(item.IEM_WTRTP),
+					ph: parseNum(item.IEM_PH),
+					doc: parseNum(item.IEM_DOC),
+					ec: parseNum(item.IEM_EC),
+					tur: parseNum(item.IEM_TUR),
+					toc: parseNum(item.IEM_TOC),
+					tn: parseNum(item.IEM_TN),
+					tp: parseNum(item.IEM_TP),
+					chla: parseNum(item.IEM_CHLA),
+				};
+			})
+			.filter((item) => item.measureDt !== "");
+
+		// 최신 유효 레코드 (null이 아닌 실제 측정값이 있는 마지막 레코드)
+		const validRecords = history.filter(
+			(r) =>
+				r.ph !== null ||
+				r.wtrtp !== null ||
+				r.doc !== null ||
+				r.toc !== null ||
+				r.wqi !== null,
+		);
+		const latest: RealtimeWaterQuality | null =
+			validRecords.length > 0 ? (validRecords[validRecords.length - 1] ?? null) : null;
+
+		// 미래 빈 슬롯(아직 측정되지 않은 미래 시간)을 제외하고,
+		// 실제 측정이 완료된 최근 24개 시간대(24h) 레코드만 정확히 산출
+		const trimmedHistory = validRecords.slice(-24);
+
+		const result = {
+			latest,
+			history: trimmedHistory,
+		};
+
+		if (history.length > 0) {
+			cachedHistoryMap[stationCode] = {
+				hourKey: currentHourKey,
+				data: result,
+			};
+		}
+
+		return result;
+	} catch (err: unknown) {
+		console.error("getRealtimeWaterQuality error:", err);
+		return {
+			latest: null,
+			history: [],
+			error: err instanceof Error ? err.message : "실시간 수질 조회 중 오류가 발생했습니다.",
+		};
+	}
 }

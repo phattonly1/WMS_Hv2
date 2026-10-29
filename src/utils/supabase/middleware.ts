@@ -49,11 +49,12 @@ export async function updateSession(request: NextRequest) {
 		},
 	});
 
-	// 로그인 페이지 및 물품(아이템) 퀵링크 체크
+	// 로그인 페이지 및 물품(아이템) · 자료실(매뉴얼/동영상) 퀵링크 체크
 	const isLoginPage = request.nextUrl.pathname === "/";
 	const isAllowedQuickPage =
 		request.nextUrl.pathname.startsWith("/items") ||
-		request.nextUrl.pathname.startsWith("/item");
+		request.nextUrl.pathname.startsWith("/item") ||
+		request.nextUrl.pathname.startsWith("/docs");
 
 	const hasQuickLinkParam =
 		request.nextUrl.searchParams.get("quicklink") === "true";
@@ -103,10 +104,7 @@ export async function updateSession(request: NextRequest) {
 						: NextResponse.redirect(new URL("/", request.url));
 
 				request.cookies.getAll().forEach((cookie) => {
-					if (
-						cookie.name.includes("supabase") ||
-						cookie.name.includes("sb-")
-					) {
+					if (cookie.name.includes("supabase") || cookie.name.includes("sb-")) {
 						response.cookies.delete(cookie.name);
 					}
 				});

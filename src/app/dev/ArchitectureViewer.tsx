@@ -1,6 +1,7 @@
 "use client";
 
 import {
+	Bot,
 	FileCode2,
 	Layers,
 	Maximize2,
@@ -17,15 +18,13 @@ import { FILE_DIAGRAM_NODES, type FileNodeStory } from "./architectureData";
 
 const BADGE_STYLES: Record<FileNodeStory["badgeColor"], string> = {
 	blue: "bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] border-blue-500/20",
-	emerald:
-		"bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border-emerald-500/20",
 	amber:
 		"bg-amber-500/10 text-amber-600 dark:text-[#fbbf24] border-amber-500/20",
-	sky: "bg-sky-500/10 text-sky-600 dark:text-[#38bdf8] border-sky-500/20",
-	rose: "bg-rose-500/10 text-rose-600 dark:text-[#f87171] border-rose-500/20",
+	emerald:
+		"bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border-emerald-500/20",
 };
 
-type NodeTone = "amber" | "blue" | "sky" | "emerald" | "rose";
+type NodeTone = "blue" | "amber" | "emerald";
 
 const TONE_PALETTE: Record<
 	NodeTone,
@@ -37,13 +36,6 @@ const TONE_PALETTE: Record<
 		dot: string;
 	}
 > = {
-	amber: {
-		border: "#f59e0b",
-		headerBg: "#18181b",
-		badgeText: "#fbbf24",
-		titleText: "#f4f4f5",
-		dot: "#f59e0b",
-	},
 	blue: {
 		border: "#2563eb",
 		headerBg: "#18181b",
@@ -51,12 +43,12 @@ const TONE_PALETTE: Record<
 		titleText: "#f4f4f5",
 		dot: "#2563eb",
 	},
-	sky: {
-		border: "#0284c7",
+	amber: {
+		border: "#f59e0b",
 		headerBg: "#18181b",
-		badgeText: "#38bdf8",
+		badgeText: "#fbbf24",
 		titleText: "#f4f4f5",
-		dot: "#38bdf8",
+		dot: "#f59e0b",
 	},
 	emerald: {
 		border: "#10b981",
@@ -65,20 +57,17 @@ const TONE_PALETTE: Record<
 		titleText: "#f4f4f5",
 		dot: "#10b981",
 	},
-	rose: {
-		border: "#f43f5e",
-		headerBg: "#18181b",
-		badgeText: "#f87171",
-		titleText: "#f4f4f5",
-		dot: "#f43f5e",
-	},
 };
 
 export function ArchitectureViewer() {
-	// 'summary' (핵심 요약 10노드) vs 'full' (완전판 22노드) 전환 상태
-	const [diagramMode, setDiagramMode] = useState<"summary" | "full">("summary");
-	const [selectedId, setSelectedId] = useState<string>("app_dashboard");
-	const [scale, setScale] = useState<number>(1);
+	// 'ai' (AI 협업 개발 프로세스) vs 'summary' (프론트엔드 화면 요약) vs 'full' (전체 시스템 아키텍처)
+	const [diagramMode, setDiagramMode] = useState<"ai" | "summary" | "full">(
+		"ai",
+	);
+	const [selectedId, setSelectedId] = useState<string>(
+		"devops_pipeline_overview",
+	);
+	const [scale, setScale] = useState<number>(2.8);
 	const [pan, setPan] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 	const [isDragging, setIsDragging] = useState<boolean>(false);
 	const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -106,9 +95,21 @@ export function ArchitectureViewer() {
 		FILE_DIAGRAM_NODES.app_dashboard ??
 		fallbackNode;
 
-	const handleModeChange = (mode: "summary" | "full") => {
+	const handleModeChange = (mode: "ai" | "summary" | "full") => {
 		setDiagramMode(mode);
-		setScale(1);
+		if (mode === "ai") {
+			setSelectedId("devops_pipeline_overview");
+			setScale(2.8);
+		} else if (
+			selectedId.startsWith("devops_") ||
+			selectedId.startsWith("ai_panel_") ||
+			selectedId.startsWith("ai_flow")
+		) {
+			setSelectedId("app_dashboard");
+			setScale(1);
+		} else {
+			setScale(1);
+		}
 		setPan({ x: 0, y: 0 });
 	};
 
@@ -117,7 +118,7 @@ export function ArchitectureViewer() {
 	const handleZoomOut = () =>
 		setScale((s) => Math.max(0.4, Number((s - 0.2).toFixed(2))));
 	const handleResetZoom = () => {
-		setScale(1);
+		setScale(diagramMode === "ai" ? 2.8 : 1);
 		setPan({ x: 0, y: 0 });
 	};
 
@@ -395,12 +396,24 @@ export function ArchitectureViewer() {
 				{/* 컨트롤 툴바: [요약 보기 / 전체 상세] 전환 스위치 + 줌 컨트롤 */}
 				<div className="flex items-center justify-between flex-wrap gap-2">
 					<div className="flex items-center gap-2.5 flex-wrap">
-						{/* 요약 보기 (프론트엔드 중심) vs 전체 상세 (백엔드·외부연동 포함) 전환 스위치 */}
-						<div className="flex items-center p-1 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
+						{/* 3대 모드 전환 탭: [AI 에이전트 개발 프로세스] / [프론트엔드 화면 구조] / [전체 아키텍처] */}
+						<div className="flex items-center p-1 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex-wrap gap-1">
+							<button
+								type="button"
+								onClick={() => handleModeChange("ai")}
+								className={`min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+									diagramMode === "ai"
+										? "bg-[#2563eb] text-white shadow-sm"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5]"
+								}`}
+							>
+								<Bot className="w-3.5 h-3.5" />
+								<span>AI 에이전트 개발 프로세스</span>
+							</button>
 							<button
 								type="button"
 								onClick={() => handleModeChange("summary")}
-								className={`min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+								className={`min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
 									diagramMode === "summary"
 										? "bg-[#2563eb] text-white shadow-sm"
 										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5]"
@@ -412,7 +425,7 @@ export function ArchitectureViewer() {
 							<button
 								type="button"
 								onClick={() => handleModeChange("full")}
-								className={`min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+								className={`min-h-[34px] px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
 									diagramMode === "full"
 										? "bg-[#2563eb] text-white shadow-sm"
 										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5]"
@@ -495,39 +508,59 @@ export function ArchitectureViewer() {
 					} ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
 				>
 					{/* 하단 컬러 범례 바 */}
-					<div className="absolute bottom-3 right-3 z-10 flex flex-wrap items-center gap-3 px-3.5 py-2 rounded-xl bg-[#111115] border border-[#222228] text-[11px] font-mono text-[#d4d4d8] pointer-events-none">
-						{diagramMode === "full" ? (
-							<>
-								<span className="flex items-center gap-1.5 font-bold text-[#60a5fa]">
-									<span className="w-2.5 h-2.5 rounded-xs border border-[#2563eb] bg-[#1e40af]" />
-									🖥️ 프론트엔드 영역 (UI · 페이지 · 컴포넌트)
-								</span>
-								<span className="flex items-center gap-1.5 font-bold text-[#fbbf24]">
-									<span className="w-2.5 h-2.5 rounded-xs border border-[#f59e0b] bg-[#111115]" />
-									⚙️ 백엔드 영역 (Next 서버 · 인증 미들웨어 · DB 연동)
-								</span>
-								<span className="flex items-center gap-1.5 font-bold text-[#34d399]">
-									<span className="w-2.5 h-2.5 rounded-xs border border-dashed border-[#10b981] bg-[#111115]" />
-									🌐 외부 인프라 (인증 · DB · CDN · 지도 · WMS)
-								</span>
-							</>
-						) : (
-							<>
-								<span className="flex items-center gap-1.5 font-bold text-[#60a5fa]">
-									<span className="w-2.5 h-2.5 rounded-xs bg-[#2563eb]" />
-									프론트엔드 핵심 UI 화면
-								</span>
-								<span className="flex items-center gap-1.5">
-									<span className="w-2.5 h-2.5 rounded-xs bg-[#f59e0b]" />
-									로그인 및 QR 즉시 진입
-								</span>
-								<span className="flex items-center gap-1.5">
-									<span className="w-2.5 h-2.5 rounded-xs bg-[#38bdf8]" />
-									보조 도구 및 품질 검증 UI
-								</span>
-							</>
-						)}
-					</div>
+					{diagramMode === "ai" ? (
+						<div className="absolute bottom-3 right-3 z-10 flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-xl bg-[#111115]/90 backdrop-blur-sm border border-[#222228] text-[11px] font-mono text-[#d4d4d8]">
+							<span className="text-[#a1a1aa] font-sans mr-1">🔍 섹션 바로가기:</span>
+							<button
+								type="button"
+								onClick={() => selectNode("ai_panel_how_it_works")}
+								className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+									selectedId === "ai_panel_how_it_works"
+										? "bg-[#2563eb] text-white font-bold"
+										: "text-[#60a5fa] hover:bg-[#2563eb]/20"
+								}`}
+							>
+								1. HOW AI WORKS
+							</button>
+							<button
+								type="button"
+								onClick={() => selectNode("ai_panel_core_features")}
+								className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+									selectedId === "ai_panel_core_features"
+										? "bg-[#f59e0b] text-white font-bold"
+										: "text-[#fbbf24] hover:bg-[#f59e0b]/20"
+								}`}
+							>
+								2. CORE AI FEATURES
+							</button>
+							<button
+								type="button"
+								onClick={() => selectNode("ai_panel_pipeline")}
+								className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
+									selectedId === "ai_panel_pipeline"
+										? "bg-[#10b981] text-white font-bold"
+										: "text-[#34d399] hover:bg-[#10b981]/20"
+								}`}
+							>
+								3. DEV-TO-CLOUD PIPELINE
+							</button>
+						</div>
+					) : (
+						<div className="absolute bottom-3 right-3 z-10 flex flex-wrap items-center gap-3 px-3.5 py-2 rounded-xl bg-[#111115] border border-[#222228] text-[11px] font-mono text-[#d4d4d8] pointer-events-none">
+							<span className="flex items-center gap-1.5 font-bold text-[#60a5fa]">
+								<span className="w-2.5 h-2.5 rounded-xs bg-[#2563eb]" />
+								🖥️ 프론트엔드 (UI · 화면 · 클라이언트)
+							</span>
+							<span className="flex items-center gap-1.5 font-bold text-[#fbbf24]">
+								<span className="w-2.5 h-2.5 rounded-xs bg-[#f59e0b]" />
+								⚙️ 백엔드 (서버 · API · 미들웨어)
+							</span>
+							<span className="flex items-center gap-1.5 font-bold text-[#34d399]">
+								<span className="w-2.5 h-2.5 rounded-xs bg-[#10b981]" />
+								🌐 외부 연동 (NIER 수질 · DB · 인프라)
+							</span>
+						</div>
+					)}
 
 					<div
 						style={{
@@ -536,7 +569,132 @@ export function ArchitectureViewer() {
 						}}
 						className="w-full h-full flex items-center justify-center transition-transform duration-75 ease-out"
 					>
-						{diagramMode === "summary" ? (
+						{diagramMode === "ai" ? (
+							/* =========================================================
+							   [MODE 0] AI 에이전트 & DevOps 배포 파이프라인 (인포그래픽 이미지 원본 + 인터랙티브 핫스팟)
+							========================================================= */
+							<div className="relative flex flex-col items-center justify-center p-4">
+								<svg
+									viewBox="0 0 1920 1080"
+									className="w-full max-w-[1400px] h-auto drop-shadow-2xl rounded-2xl overflow-hidden select-none"
+									role="img"
+									aria-label="WMS 2.0 AI 에이전트 개발 및 배포 인포그래픽 원본"
+								>
+									{/* 원본 고화질 인포그래픽 이미지 렌더링 */}
+									<image
+										href="/images/ai-wms-infographic.png"
+										x="0"
+										y="0"
+										width="1920"
+										height="1080"
+										preserveAspectRatio="xMidYMid meet"
+									/>
+
+									{/* 3대 섹션 인터랙티브 클릭 영역 (Hover & Selection Hotspots) */}
+									{/* 1. Left Panel: HOW AI AGENT WORKS? */}
+									<g
+										className="cursor-pointer transition-opacity"
+										onClick={() => selectNode("ai_panel_how_it_works")}
+									>
+										<rect
+											x="55"
+											y="235"
+											width="580"
+											height="755"
+											rx="24"
+											fill={
+												selectedId === "ai_panel_how_it_works"
+													? "#2563eb"
+													: "transparent"
+											}
+											fillOpacity={
+												selectedId === "ai_panel_how_it_works" ? 0.18 : 0
+											}
+											stroke={
+												selectedId === "ai_panel_how_it_works"
+													? "#60a5fa"
+													: "#2563eb"
+											}
+											strokeWidth={
+												selectedId === "ai_panel_how_it_works" ? 4 : 0
+											}
+											strokeDasharray={
+												selectedId === "ai_panel_how_it_works" ? "none" : "6 6"
+											}
+											className="hover:stroke-[#60a5fa] hover:stroke-[3px]"
+										/>
+									</g>
+
+									{/* 2. Middle Panel: CORE AI FEATURES */}
+									<g
+										className="cursor-pointer transition-opacity"
+										onClick={() => selectNode("ai_panel_core_features")}
+									>
+										<rect
+											x="670"
+											y="235"
+											width="580"
+											height="755"
+											rx="24"
+											fill={
+												selectedId === "ai_panel_core_features"
+													? "#f59e0b"
+													: "transparent"
+											}
+											fillOpacity={
+												selectedId === "ai_panel_core_features" ? 0.18 : 0
+											}
+											stroke={
+												selectedId === "ai_panel_core_features"
+													? "#fbbf24"
+													: "#f59e0b"
+											}
+											strokeWidth={
+												selectedId === "ai_panel_core_features" ? 4 : 0
+											}
+											strokeDasharray={
+												selectedId === "ai_panel_core_features"
+													? "none"
+													: "6 6"
+											}
+											className="hover:stroke-[#fbbf24] hover:stroke-[3px]"
+										/>
+									</g>
+
+									{/* 3. Right Panel: DEV-TO-CLOUD PIPELINE */}
+									<g
+										className="cursor-pointer transition-opacity"
+										onClick={() => selectNode("ai_panel_pipeline")}
+									>
+										<rect
+											x="1285"
+											y="235"
+											width="580"
+											height="755"
+											rx="24"
+											fill={
+												selectedId === "ai_panel_pipeline"
+													? "#10b981"
+													: "transparent"
+											}
+											fillOpacity={
+												selectedId === "ai_panel_pipeline" ? 0.18 : 0
+											}
+											stroke={
+												selectedId === "ai_panel_pipeline"
+													? "#34d399"
+													: "#10b981"
+											}
+											strokeWidth={selectedId === "ai_panel_pipeline" ? 4 : 0}
+											strokeDasharray={
+												selectedId === "ai_panel_pipeline" ? "none" : "6 6"
+											}
+											className="hover:stroke-[#34d399] hover:stroke-[3px]"
+										/>
+									</g>
+								</svg>
+							</div>
+						) : diagramMode === "summary" ? (
 							/* =========================================================
 							   [MODE 1] 프론트엔드 화면 구조 (요약 9개 순수 화면 UI 흐름)
 							========================================================= */
@@ -655,7 +813,7 @@ export function ArchitectureViewer() {
 									"무인증 바로가기",
 									"교육 영상 · QR 스캔 접속",
 									"/docs/video · /items (2종 묶음)",
-									"amber",
+									"blue",
 								)}
 
 								{/* [중앙: 프론트엔드 첫 화면] 로그인 페이지 */}
@@ -668,7 +826,7 @@ export function ArchitectureViewer() {
 									"로그인 페이지",
 									"src/app/page.tsx",
 									"/ (첫 접속 화면 및 로그인 UI)",
-									"amber",
+									"blue",
 								)}
 
 								{/* [우측: 프론트엔드 메인 허브] 메인 대시보드 */}
@@ -694,7 +852,7 @@ export function ArchitectureViewer() {
 									"소모품 · QR 관리",
 									"src/app/items/",
 									"/items (소모품 재고 & QR 라벨 UI)",
-									"amber",
+									"blue",
 								)}
 								{renderCardNode(
 									"app_map",
@@ -727,7 +885,7 @@ export function ArchitectureViewer() {
 									"F12 통합 런처",
 									"dashboard/launcher/",
 									"통합 런처 (F12 브라우저 스크립트)",
-									"sky",
+									"blue",
 								)}
 								{renderCardNode(
 									"public_tools",
@@ -738,7 +896,7 @@ export function ArchitectureViewer() {
 									"독립 실행형 도구",
 									"public/tools/* (4종)",
 									"웹에서 바로 쓰는 단독 보조 도구",
-									"sky",
+									"blue",
 								)}
 								{renderCardNode(
 									"app_dev",
@@ -749,7 +907,7 @@ export function ArchitectureViewer() {
 									"구조도 · 품질 검증",
 									"src/app/dev/",
 									"/dev (구조도 뷰어 & UI 검증기)",
-									"rose",
+									"blue",
 								)}
 							</svg>
 						) : (
@@ -971,29 +1129,49 @@ export function ArchitectureViewer() {
 								/>
 								{renderEdgeLabel(1220, 905, 145, "배경 지도 타일 로드", "emerald")}
 
-								{/* [Flow 10] 소모품(330) · 수질지도(620) · 자료실(980) -> 우측 백엔드 데이터 계층(1550,998 상단) [전용 통로 Y=960] */}
+								{/* [Flow 10] 소모품(330) · 수질지도 제원(650) · 자료실(980) ➔ 우측 백엔드 DB 연동(1550 상단, Y=998) [전용 통로 Y=960] */}
 								<path
 									d="M 330 822 L 330 960 L 1550 960 L 1550 995"
-									stroke="#10b981"
+									stroke="#f59e0b"
 									strokeWidth="2.4"
 									fill="none"
-									markerEnd="url(#arrow-emerald)"
+									markerEnd="url(#arrow-amber)"
 								/>
 								<path
-									d="M 620 822 L 620 960"
-									stroke="#10b981"
+									d="M 650 822 L 650 960"
+									stroke="#f59e0b"
 									strokeWidth="2.4"
 									fill="none"
 								/>
 								<path
 									d="M 980 822 L 980 960"
-									stroke="#10b981"
+									stroke="#f59e0b"
 									strokeWidth="2.4"
 									fill="none"
 								/>
-								{renderEdgeLabel(1160, 960, 175, "데이터 조회 · 저장 요청", "emerald")}
+								{renderEdgeLabel(1160, 960, 160, "측정소 제원 · 소모품 DB 연동", "amber")}
 
-								{/* [Flow 11] 우측 백엔드 데이터 계층(1550,1082 하단) -> 최하단 외부 Supabase DB & Storage(1550,1328 상단) */}
+								{/* [Flow 10-1] 수질지도 실시간 수질(710) ➔ 백엔드 실시간 수질 중계(1960 상단, Y=998) [전용 통로 Y=930 - DB 완전 미경유] */}
+								<path
+									d="M 710 822 L 710 930 L 1960 930 L 1960 995"
+									stroke="#f59e0b"
+									strokeWidth="2.4"
+									fill="none"
+									markerEnd="url(#arrow-amber)"
+								/>
+								{renderEdgeLabel(1360, 930, 175, "24h 실시간 수질 (DB 미경유)", "amber")}
+
+								{/* [Flow 10-2] 백엔드 실시간 수질 중계(2090,1040 우측) ➔ 외부 NIER 실시간 수질 API(2135,1040 좌측) 직결 */}
+								<path
+									d="M 2090 1040 L 2130 1040"
+									stroke="#10b981"
+									strokeWidth="2.4"
+									fill="none"
+									markerEnd="url(#arrow-emerald)"
+								/>
+								{renderEdgeLabel(2110, 1015, 80, "외부 API 호출", "emerald")}
+
+								{/* [Flow 11] 우측 백엔드 DB 연동(1550,1082 하단) ➔ 최하단 외부 Supabase DB & Storage(1550,1328 상단) */}
 								<path
 									d="M 1550 1082 L 1550 1325"
 									stroke="#10b981"
@@ -1001,38 +1179,38 @@ export function ArchitectureViewer() {
 									fill="none"
 									markerEnd="url(#arrow-emerald)"
 								/>
-								{renderEdgeLabel(1550, 1140, 175, "DB 쿼리 및 파일 저장/로드", "emerald")}
+								{renderEdgeLabel(1550, 1140, 165, "DB 쿼리 (제원·소모품만)", "emerald")}
 
 								{/* [Flow 12] 품질 검증기(760,1142 하단) -> 우측 audit.ts 검사 엔진(1960,1328 상단) [전용 통로 Y=1175] */}
 								<path
 									d="M 760 1142 L 760 1175 L 1960 1175 L 1960 1325"
-									stroke="#f43f5e"
+									stroke="#f59e0b"
 									strokeWidth="2.4"
 									fill="none"
-									markerEnd="url(#arrow-rose)"
+									markerEnd="url(#arrow-amber)"
 								/>
-								{renderEdgeLabel(1160, 1175, 150, "규칙 위반 자동 검사")}
+								{renderEdgeLabel(1160, 1175, 150, "규칙 위반 자동 검사", "amber")}
 
-								{/* [Flow 13] 독립 실행형 도구(490,1142 하단) -> 우측 외부 SheetJS CDN(2260,1082 하단) [전용 통로 Y=1225] */}
+								{/* [Flow 13] 독립 실행형 도구(490,1142 하단) -> 우측 외부 WMS 포털(2260,1328 상단) [전용 통로 Y=1225] */}
 								<path
-									d="M 490 1142 L 490 1225 L 2260 1225 L 2260 1085"
+									d="M 490 1142 L 490 1225 L 2260 1225 L 2260 1325"
 									stroke="#10b981"
 									strokeWidth="1.8"
 									strokeDasharray="5 5"
 									fill="none"
 									markerEnd="url(#arrow-emerald)"
 								/>
-								{renderEdgeLabel(1160, 1225, 150, "엑셀(xlsx) 처리 CDN", "emerald")}
+								{renderEdgeLabel(1160, 1225, 150, "WMS 엑셀/데이터 연동", "emerald")}
 
-								{/* [Flow 14] F12 통합 런처(220,1142 하단) -> 우측 외부 과학원 WMS(1960,1082 하단) [전용 통로 Y=1275] */}
+								{/* [Flow 14] F12 통합 런처(220,1142 하단) -> 우측 외부 과학원 WMS(2135,1370 좌측) [전용 통로 Y=1275] */}
 								<path
-									d="M 220 1142 L 220 1275 L 1960 1275 L 1960 1085"
-									stroke="#38bdf8"
+									d="M 220 1142 L 220 1275 L 2135 1275 L 2135 1370"
+									stroke="#10b981"
 									strokeWidth="2.4"
 									fill="none"
-									markerEnd="url(#arrow-blue)"
+									markerEnd="url(#arrow-emerald)"
 								/>
-								{renderEdgeLabel(880, 1275, 150, "F12 스크립트 대상 주입", "sky")}
+								{renderEdgeLabel(880, 1275, 150, "F12 스크립트 대상 주입", "emerald")}
 
 								{/* [Flow 15] 공통 UI 컴포넌트(1030,1058 상단) -> 실무 화면 UI 적용 [전용 통로 Y=1015] */}
 								<path
@@ -1082,7 +1260,7 @@ export function ArchitectureViewer() {
 									"무인증 바로가기",
 									"교육 영상 · QR 스캔 접속",
 									"/docs/video · /items (2종 묶음)",
-									"amber",
+									"blue",
 								)}
 
 								{/* [좌측 배치 2] 프론트엔드 로그인 페이지 */}
@@ -1095,7 +1273,7 @@ export function ArchitectureViewer() {
 									"🖥️ 프론트엔드 로그인",
 									"src/app/page.tsx & app/login/",
 									"첫 화면 로그인 폼 및 사용자 입력 처리",
-									"amber",
+									"blue",
 								)}
 
 								{/* [좌측 배치 3] 메인 대시보드 허브 */}
@@ -1121,7 +1299,7 @@ export function ArchitectureViewer() {
 									"소모품 · QR 관리",
 									"src/app/items/",
 									"/items (소모품 재고 & QR 인쇄)",
-									"amber",
+									"blue",
 								)}
 								{renderCardNode(
 									"app_map",
@@ -1156,7 +1334,7 @@ export function ArchitectureViewer() {
 									"F12 통합 런처",
 									"src/app/dashboard/launcher/",
 									"외부 WMS 주입용 자동화 스크립트",
-									"sky",
+									"blue",
 								)}
 								{renderCardNode(
 									"public_tools",
@@ -1167,7 +1345,7 @@ export function ArchitectureViewer() {
 									"독립 실행형 도구",
 									"public/tools/* (4종)",
 									"이력완성 · PDF마스킹 · 이미지변환",
-									"sky",
+									"blue",
 								)}
 								{renderCardNode(
 									"app_dev",
@@ -1178,7 +1356,7 @@ export function ArchitectureViewer() {
 									"구조도 · 품질 검증",
 									"src/app/dev/",
 									"/dev (파일 구조도 & 품질 검증기)",
-									"rose",
+									"blue",
 								)}
 								{renderCardNode(
 									"common_ui",
@@ -1189,7 +1367,7 @@ export function ArchitectureViewer() {
 									"공통 UI 컴포넌트",
 									"src/components/",
 									"공통 팝업(Modal) · 테마 버튼",
-									"sky",
+									"blue",
 								)}
 
 								{/* 좌측 최하단 (Y=1370): 정적 자원 및 유틸 */}
@@ -1202,7 +1380,7 @@ export function ArchitectureViewer() {
 									"🖥️ 프론트 공통 레이아웃",
 									"src/app/layout.tsx & globals.css",
 									"전체 화면 틀 · 테마 · 기본 스타일",
-									"sky",
+									"blue",
 								)}
 								{renderCardNode(
 									"hangul_util",
@@ -1213,7 +1391,7 @@ export function ArchitectureViewer() {
 									"초성 검색 기능",
 									"src/utils/hangul.ts",
 									"한글 초성('ㄱㅍ'→'가평') 검색 처리",
-									"emerald",
+									"blue",
 								)}
 								{renderCardNode(
 									"public_assets",
@@ -1224,7 +1402,7 @@ export function ArchitectureViewer() {
 									"정적 데이터 · 이미지",
 									"public/data/han_rivers.geojson",
 									"한강 하천망 좌표 · 아이콘 이미지",
-									"sky",
+									"blue",
 								)}
 
 								{/* =========================================================
@@ -1347,49 +1525,48 @@ export function ArchitectureViewer() {
 									true,
 								)}
 
-								{/* 우측 하단 1: 백엔드 데이터 캐싱 계층 (src/actions/*) & 외부 대상 시스템 */}
+								{/* 우측 하단 1: 백엔드 DB 처리 계층 & 백엔드 실시간 수질 중계 액션 & 외부 대상 시스템 */}
 								{renderCardNode(
 									"data_layer",
 									1550,
 									1040,
-									380,
+									360,
 									84,
-									"⚙️ 백엔드 데이터 처리 계층",
-									"src/actions/* & src/utils/supabase/*",
-									"DB 데이터 임시 저장(캐싱) 및 서버 반영 처리",
-									"emerald",
+									"⚙️ 백엔드 DB 연동",
+									"src/actions/supplies.ts & utils/supabase/*",
+									"Supabase DB 데이터 조회·캐싱 및 수정 반영",
+									"amber",
 								)}
 								{renderCardNode(
-									"ext_wms",
+									"nier_actions",
 									1960,
 									1040,
 									260,
 									84,
-									"🌐 외부 대상 시스템",
-									"외부: 국립환경과학원 WMS",
-									"wms.waterkorea.or.kr (런처 실행 대상)",
-									"sky",
-									true,
+									"⚙️ 백엔드 수질 중계",
+									"src/app/map/actions.ts (수질 API)",
+									"DB 미경유 24시간 실시간 수질 중계 액션",
+									"amber",
 								)}
 								{renderCardNode(
-									"ext_sheetjs",
+									"ext_nier_api",
 									2260,
 									1040,
 									250,
 									84,
-									"🌐 외부 라이브러리 서버",
-									"외부 CDN: SheetJS & cdnjs",
-									"엑셀(xlsx) 파일 생성 · PDF 화면 표시",
+									"🌐 외부 수질 API",
+									"외부: 국립환경과학원 물환경",
+									"water.nier.go.kr (DB 미저장 직접 조회)",
 									"emerald",
 									true,
 								)}
 
-								{/* 우측 최하단: 외부 Supabase DB & Storage & 검사 엔진 */}
+								{/* 우측 최하단: 외부 Supabase DB & Storage & 검사 엔진 & 외부 WMS/CDN */}
 								{renderCardNode(
 									"ext_supa_db",
 									1550,
 									1370,
-									350,
+									360,
 									84,
 									"🌐 외부 DB · 파일 저장소",
 									"외부: Supabase DB & Storage",
@@ -1401,12 +1578,24 @@ export function ArchitectureViewer() {
 									"audit_engine",
 									1960,
 									1370,
-									280,
+									260,
 									84,
-									"코드 · 디자인 자동 검사",
+									"⚙️ 백엔드 품질 검사",
 									"src/actions/audit.ts & scripts/*",
 									"미사용 파일·패키지 및 색상 규칙 위반 검사",
-									"rose",
+									"amber",
+								)}
+								{renderCardNode(
+									"ext_wms",
+									2260,
+									1370,
+									250,
+									84,
+									"🌐 외부 대상 시스템",
+									"외부: 국립환경과학원 WMS",
+									"wms.waterkorea.or.kr (런처 실행 대상)",
+									"emerald",
+									true,
 								)}
 							</svg>
 						)}

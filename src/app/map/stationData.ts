@@ -13,11 +13,25 @@ export type Equipment = {
 	details?: any;
 };
 
+export type WaterChipMode =
+	| "default"
+	| "none"
+	| "wtrtp"
+	| "wqi"
+	| "ph"
+	| "doc"
+	| "ec"
+	| "toc"
+	| "tp"
+	| "tn"
+	| "tur";
+
 export interface MapFilters {
 	station: boolean;
 	small: boolean;
 	poi: boolean;
 	arrow: "none" | "name" | "no-name";
+	waterChip: WaterChipMode; // 실시간 수질 마커 칩 단일 표시 항목
 	rivers: Record<RiverType, boolean>;
 	highlightedRiver?: RiverType | null; // 특정 수계 강조 (굵기 & 채도 극대화)
 }

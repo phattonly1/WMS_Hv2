@@ -58,6 +58,7 @@ export function useMapState(
 		small: true,
 		poi: true,
 		arrow: "none",
+		waterChip: "default", // 기본값: 수온 + WQI
 		rivers: {
 			bukhan: true,
 			namhan: true,

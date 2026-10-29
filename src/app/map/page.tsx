@@ -3,6 +3,7 @@
 import {
 	ArrowUp,
 	Check,
+	ChevronDown,
 	ChevronLeft,
 	Crosshair,
 	Database,
@@ -27,7 +28,10 @@ import { useStations } from "@/utils/supabase/hooks";
 import { StationListModal } from "./components/StationListModal";
 
 import { StationBottomSheet } from "./components/StationBottomSheet";
-import { RIVER_CONFIG, TYPE_CONFIG } from "./stationData";
+import { WaterQualityChartModal } from "./components/WaterQualityChartModal";
+import { getRealtimeWaterQuality } from "./actions";
+import type { RealtimeWaterQuality } from "./nierStationMap";
+import { RIVER_CONFIG, TYPE_CONFIG, type Station } from "./stationData";
 import { useMapState } from "./useMapState";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -51,6 +55,33 @@ export default function MapPage() {
 	const [isUiHidden, setIsUiHidden] = useState(false);
 	// 하단 필터 팝오버 상태
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	// 마커 수질 칩 상세 지표 커스텀 팝오버 열림 상태
+	const [isDetailChipOpen, setIsDetailChipOpen] = useState(false);
+
+	// 실시간 수질 24시간 차트 모달 대상 측정소 및 데이터 상태
+	const [chartStation, setChartStation] = useState<Station | null>(null);
+	const [chartData, setChartData] = useState<{
+		latest: RealtimeWaterQuality | null;
+		history: RealtimeWaterQuality[];
+	} | null>(null);
+	const [isLoadingChart, setIsLoadingChart] = useState(false);
+
+	// 수질 모달 오픈 핸들러
+	const handleOpenWaterQuality = async (st: Station) => {
+		setChartStation(st);
+		setIsLoadingChart(true);
+		try {
+			const res = await getRealtimeWaterQuality(st.name);
+			setChartData({
+				latest: res.latest,
+				history: res.history,
+			});
+		} catch {
+			setChartData(null);
+		} finally {
+			setIsLoadingChart(false);
+		}
+	};
 
 	const {
 		searchTerm,
@@ -576,7 +607,7 @@ export default function MapPage() {
 			</Modal>
 
 			{/* ============================================================ */}
-			{/* 5-1. 표시 레이어 필터 모달 (공통 M3 Modal 규격 전역 참조)    */}
+			{/* 5-1. 표시 레이어 필터 모달 (초슬림 인라인 4단 압축 규격)    */}
 			{/* ============================================================ */}
 			<Modal
 				isOpen={!isEditMode && isFilterOpen}
@@ -584,242 +615,317 @@ export default function MapPage() {
 				title="표시 레이어 설정"
 				subtitle="지도에 노출할 시설 및 수계 선택"
 				icon={SlidersHorizontal}
+				contentClassName="p-2.5 sm:p-4 overflow-y-hidden"
 			>
-				<div className="space-y-4">
-					{/* 1. 시설/망 유형 (3구 타일) */}
-					<div className="space-y-1.5">
-						<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block">
-							측정망 유형
-						</span>
-						<div className="grid grid-cols-3 gap-1.5">
-							<button
-								type="button"
-								onClick={() =>
-									setFilters({ ...filters, station: !filters.station })
-								}
-								className={`py-3 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
-									filters.station
-										? "bg-blue-600 text-white border-blue-500 shadow-sm"
-										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<div
-									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
-										filters.station
-											? "bg-white/20 text-white"
-											: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-									}`}
-								>
-									<MapPin size={13} strokeWidth={2.5} />
-								</div>
-								<span className="text-xs font-bold">국가망</span>
-							</button>
-
-							<button
-								type="button"
-								onClick={() =>
-									setFilters({ ...filters, small: !filters.small })
-								}
-								className={`py-3 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
-									filters.small
-										? "bg-cyan-600 text-white border-cyan-500 shadow-sm"
-										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<div
-									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
-										filters.small
-											? "bg-white/20 text-white"
-											: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"
-									}`}
-								>
-									<MapPin size={13} strokeWidth={2.5} />
-								</div>
-								<span className="text-xs font-bold">소규모</span>
-							</button>
-
-							<button
-								type="button"
-								onClick={() =>
-									setFilters({ ...filters, poi: !filters.poi })
-								}
-								className={`py-3 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
-									filters.poi
-										? "bg-rose-600 text-white border-rose-500 shadow-sm"
-										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<div
-									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
-										filters.poi
-											? "bg-white/20 text-white"
-											: "bg-rose-500/10 text-rose-600 dark:text-rose-400"
-									}`}
-								>
-									<MapPin size={13} strokeWidth={2.5} />
-								</div>
-								<span className="text-xs font-bold">관심지점</span>
-							</button>
-						</div>
-					</div>
-
-					{/* 2. 하천 흐름 화살표 */}
-					<div className="space-y-1.5">
-						<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block">
-							흐름 화살표
-						</span>
-						<div className="grid grid-cols-3 gap-1.5">
-							<button
-								type="button"
-								onClick={() => setFilters({ ...filters, arrow: "none" })}
-								className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
-									filters.arrow === "none"
-										? "bg-[#222228] text-white border-white/20 shadow-sm"
-										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<div className="w-6 h-6 rounded-lg flex items-center justify-center bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa]">
-									<X size={12} strokeWidth={2.5} />
-								</div>
-								<span className="text-xs font-bold">숨김</span>
-							</button>
-
-							<button
-								type="button"
-								onClick={() => setFilters({ ...filters, arrow: "no-name" })}
-								className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
-									filters.arrow === "no-name"
-										? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
-										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<div
-									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
-										filters.arrow === "no-name"
-											? "bg-white/20 text-white"
-											: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-									}`}
-								>
-									<ArrowUp size={13} strokeWidth={3} />
-								</div>
-								<span className="text-xs font-bold">화살표만</span>
-							</button>
-
-							<button
-								type="button"
-								onClick={() => setFilters({ ...filters, arrow: "name" })}
-								className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${
-									filters.arrow === "name"
-										? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
-										: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<div
-									className={`w-6 h-6 rounded-lg flex items-center justify-center ${
-										filters.arrow === "name"
-											? "bg-white/20 text-white"
-											: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-									}`}
-								>
-									<ArrowUp size={13} strokeWidth={3} />
-								</div>
-								<span className="text-xs font-bold">+지명표시</span>
-							</button>
-						</div>
-					</div>
-
-					{/* 3. 5대 수계 활성화 */}
-					<div className="space-y-1.5 pt-3 border-t border-[#e2e8f0] dark:border-[#222228]">
-						<div className="flex items-center justify-between px-0.5">
-							<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa]">
-								수계 표시 활성화
+				<div className="space-y-2.5 text-[11px] pb-0.5">
+					{/* 1단 (최상단). 마커 수질 칩 표시 */}
+					<div className="space-y-1">
+						<div className="flex items-center justify-between">
+							<span className="text-[10.5px] font-semibold text-[#0f172a] dark:text-[#f1f5f9]">
+								마커 수질 칩 표시
 							</span>
+							<span className="text-[9.5px] font-mono text-[#94a3b8] dark:text-[#71717a]">
+								단일 선택
+							</span>
+						</div>
+
+						{/* 상단 3분할 탭: 기본 / TOC / 숨김 */}
+						<div className="grid grid-cols-3 gap-1 bg-transparent">
 							<button
 								type="button"
-								onClick={() => {
-									const allOn = Object.values(filters.rivers).every(Boolean);
-									setFilters({
-										...filters,
-										rivers: {
-											bukhan: !allOn,
-											namhan: !allOn,
-											han: !allOn,
-											imjin: !allOn,
-											pyeongtaek: !allOn,
-										},
-									});
-								}}
-								className="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300"
+								onClick={() => setFilters({ ...filters, waterChip: "default" })}
+								className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+									filters.waterChip === "default"
+										? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
+										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+								}`}
 							>
-								{Object.values(filters.rivers).every(Boolean)
-									? "전체해제"
-									: "전체선택"}
+								<span className="whitespace-nowrap font-bold">기본 (수온+WQI)</span>
+							</button>
+							<button
+								type="button"
+								onClick={() => setFilters({ ...filters, waterChip: "toc" })}
+								className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+									filters.waterChip === "toc"
+										? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
+										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+								}`}
+							>
+								<span className="whitespace-nowrap font-bold">TOC (유기탄소)</span>
+							</button>
+							<button
+								type="button"
+								onClick={() => setFilters({ ...filters, waterChip: "none" })}
+								className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+									filters.waterChip === "none"
+										? "bg-[#27272a] text-white font-bold border-white/20 shadow-xs"
+										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+								}`}
+							>
+								<span className="whitespace-nowrap font-bold">숨김</span>
 							</button>
 						</div>
 
-						<div className="grid grid-cols-5 gap-1.5">
-							{(
-								[
-									"bukhan",
-									"namhan",
-									"han",
-									"imjin",
-									"pyeongtaek",
-								] as const
-							).map((rv) => {
-								const conf = RIVER_CONFIG[rv];
-								const isActive = filters.rivers[rv];
-								return (
-									<button
-										key={rv}
-										type="button"
-										onClick={() => {
-											setFilters({
-												...filters,
-												rivers: {
-													...filters.rivers,
-													[rv]: !isActive,
-												},
-											});
-										}}
-										style={{
-											backgroundColor: isActive ? conf.color : undefined,
-										}}
-										className={`py-2 rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
-											isActive
-												? "text-white border-transparent shadow-sm"
-												: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
-										}`}
-									>
-										<span
-											className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-white" : "bg-[#94a3b8] dark:bg-[#52525b]"}`}
-										/>
-										<span className="text-[10.5px] font-bold tracking-tight truncate w-full px-0.5 text-center">
-											{conf.label.replace("수계", "").replace("본류", "")}
+						{/* 하단 상세 지표 커스텀 인라인 셀렉터 바 (h-7) */}
+						<div className="relative">
+							<div
+								onClick={() => setIsDetailChipOpen(!isDetailChipOpen)}
+								className={`w-full h-7 px-2.5 rounded-md flex items-center justify-between border cursor-pointer select-none transition-all active:scale-[0.99] ${
+									filters.waterChip !== "default" &&
+									filters.waterChip !== "toc" &&
+									filters.waterChip !== "none"
+										? "bg-sky-50 dark:bg-sky-950/40 border-sky-400 dark:border-sky-600/70 shadow-xs"
+										: "bg-[#f8fafc] dark:bg-[#18181b] border-[#e2e8f0] dark:border-[#222228] hover:border-black/20 dark:hover:border-white/20"
+								}`}
+							>
+								{/* 라벨 / 선택 뱃지 표시 영역 */}
+								<div className="flex items-center gap-1.5 min-w-0">
+									{filters.waterChip !== "default" &&
+									filters.waterChip !== "toc" &&
+									filters.waterChip !== "none" ? (
+										<div className="flex items-center gap-1">
+											<span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse shrink-0" />
+											<span className="text-[10px] font-bold text-sky-600 dark:text-sky-300 truncate">
+												{
+													{
+														tp: "총인 (TP)",
+														tn: "총질소 (TN)",
+														wtrtp: "수온 (°C)",
+														wqi: "수질점수 (WQI)",
+														ph: "수소이온농도 (pH)",
+														doc: "용존산소 (DO)",
+														ec: "전기전도도 (EC)",
+														tur: "탁도 (NTU)",
+													}[filters.waterChip]
+												}
+											</span>
+											<span className="text-[9px] font-mono text-sky-500/70 dark:text-sky-400/60 ml-0.5">
+												표시 중
+											</span>
+										</div>
+									) : (
+										<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] truncate font-medium">
+											기타 상세 지표 선택 (총인, 총질소, 수온, WQI 등)
 										</span>
-									</button>
-								);
-							})}
+									)}
+								</div>
+
+								{/* 우측 초기화 / 화살표 버튼 */}
+								<div className="flex items-center gap-1 shrink-0 ml-1">
+									{filters.waterChip !== "default" &&
+										filters.waterChip !== "toc" &&
+										filters.waterChip !== "none" && (
+											<button
+												type="button"
+												title="기본값으로 복귀"
+												onClick={(e) => {
+													e.stopPropagation();
+													setFilters({ ...filters, waterChip: "default" });
+													setIsDetailChipOpen(false);
+												}}
+												className="p-0.5 rounded text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+											>
+												<X size={11} strokeWidth={2.5} />
+											</button>
+										)}
+									<ChevronDown
+										size={11}
+										strokeWidth={2.5}
+										className={`text-[#64748b] dark:text-[#a1a1aa] transition-transform duration-200 ${
+											isDetailChipOpen ? "rotate-180" : ""
+										}`}
+									/>
+								</div>
+							</div>
+
+							{/* 커스텀 팝오버 메뉴 */}
+							{isDetailChipOpen && (
+								<div className="absolute top-full left-0 right-0 mt-1 z-30 p-1 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-lg shadow-xl shadow-black/20 animate-in fade-in zoom-in-95 duration-150">
+									<div className="grid grid-cols-2 gap-1 text-[10.5px]">
+										{(
+											[
+												{ key: "tp", label: "총인 (TP)" },
+												{ key: "tn", label: "총질소 (TN)" },
+												{ key: "wtrtp", label: "수온 (°C)" },
+												{ key: "wqi", label: "수질점수 (WQI)" },
+												{ key: "ph", label: "수소이온 (pH)" },
+												{ key: "doc", label: "용존산소 (DO)" },
+												{ key: "ec", label: "전도도 (EC)" },
+												{ key: "tur", label: "탁도 (NTU)" },
+											] as const
+										).map((item) => {
+											const isSelected = filters.waterChip === item.key;
+											return (
+												<button
+													key={item.key}
+													type="button"
+													onClick={() => {
+														setFilters({
+															...filters,
+															waterChip: item.key,
+														});
+														setIsDetailChipOpen(false);
+													}}
+													className={`h-7 px-2.5 rounded-md flex items-center justify-center text-center transition-all active:scale-95 border ${
+														isSelected
+															? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-300 border-sky-400 dark:border-sky-600 font-bold shadow-xs"
+															: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-black/5 dark:hover:bg-white/5 text-[#334155] dark:text-[#cbd5e1] border-transparent font-medium"
+													}`}
+												>
+													<span className="truncate">{item.label}</span>
+												</button>
+											);
+										})}
+									</div>
+								</div>
+							)}
 						</div>
 					</div>
 
-					{/* 4. 수계 흐름 강조 */}
-					<div className="space-y-1.5 pt-3 border-t border-[#e2e8f0] dark:border-[#222228]">
-						<div className="flex items-center justify-between px-0.5">
-							<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa]">
-								수계 흐름 강조 (굵기·채도 극대화)
+					{/* 2단. 측정망 유형 & 흐름 화살표 (2행) */}
+					<div className="space-y-1.5 pt-1 border-t border-[#e2e8f0] dark:border-[#222228]">
+						{/* 측정망 유형 (1행) */}
+						<div className="space-y-0.5">
+							<span className="text-[10px] font-medium text-[#64748b] dark:text-[#94a3b8] block">
+								측정망 유형
 							</span>
-							{filters.highlightedRiver && (
+							<div className="grid grid-cols-3 gap-1">
 								<button
 									type="button"
 									onClick={() =>
-										setFilters({ ...filters, highlightedRiver: null })
+										setFilters({ ...filters, station: !filters.station })
 									}
-									className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+										filters.station
+											? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
 								>
-									강조 해제
+									<MapPin size={10} strokeWidth={2.5} className="shrink-0" />
+									<span className="whitespace-nowrap">국가 측정망</span>
 								</button>
-							)}
+								<button
+									type="button"
+									onClick={() =>
+										setFilters({ ...filters, small: !filters.small })
+									}
+									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+										filters.small
+											? "bg-teal-600 text-white font-bold border-teal-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<MapPin size={10} strokeWidth={2.5} className="shrink-0" />
+									<span className="whitespace-nowrap">소규모 감시망</span>
+								</button>
+								<button
+									type="button"
+									onClick={() =>
+										setFilters({ ...filters, poi: !filters.poi })
+									}
+									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+										filters.poi
+											? "bg-rose-600 text-white font-bold border-rose-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<MapPin size={10} strokeWidth={2.5} className="shrink-0" />
+									<span className="whitespace-nowrap">관심 지점</span>
+								</button>
+							</div>
+						</div>
+
+						{/* 흐름 화살표 (2행) */}
+						<div className="space-y-0.5">
+							<span className="text-[10px] font-medium text-[#64748b] dark:text-[#94a3b8] block">
+								흐름 화살표
+							</span>
+							<div className="grid grid-cols-3 gap-1">
+								<button
+									type="button"
+									onClick={() => setFilters({ ...filters, arrow: "none" })}
+									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+										filters.arrow === "none"
+											? "bg-[#27272a] text-white font-bold border-white/20 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<X size={10} strokeWidth={2.5} className="shrink-0" />
+									<span className="whitespace-nowrap">숨김</span>
+								</button>
+								<button
+									type="button"
+									onClick={() => setFilters({ ...filters, arrow: "no-name" })}
+									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+										filters.arrow === "no-name"
+											? "bg-emerald-600 text-white font-bold border-emerald-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<ArrowUp size={10} strokeWidth={3} className="shrink-0" />
+									<span className="whitespace-nowrap">화살표만</span>
+								</button>
+								<button
+									type="button"
+									onClick={() => setFilters({ ...filters, arrow: "name" })}
+									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+										filters.arrow === "name"
+											? "bg-emerald-600 text-white font-bold border-emerald-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<ArrowUp size={10} strokeWidth={3} className="shrink-0" />
+									<span className="whitespace-nowrap">화살표+지명</span>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					{/* 3단. 수계 표시 및 흐름 강조 통합 (h-7) */}
+					<div className="space-y-1 pt-1 border-t border-[#e2e8f0] dark:border-[#222228]">
+						<div className="flex items-center justify-between px-0.5">
+							<div className="flex items-center gap-1.5">
+								<span className="text-[10px] font-medium text-[#64748b] dark:text-[#94a3b8]">
+									수계 표시 및 강조
+								</span>
+								<span className="text-[8.5px] text-[#94a3b8] dark:text-[#71717a]">
+									(순환: 끔 ➔ 켬 ➔ 강조)
+								</span>
+							</div>
+							<div className="flex items-center gap-2">
+								{filters.highlightedRiver && (
+									<button
+										type="button"
+										onClick={() =>
+											setFilters({ ...filters, highlightedRiver: null })
+										}
+										className="text-[9px] font-semibold text-amber-500 hover:underline"
+									>
+										강조 해제
+									</button>
+								)}
+								<button
+									type="button"
+									onClick={() => {
+										const allOn = Object.values(filters.rivers).every(Boolean);
+										setFilters({
+											...filters,
+											rivers: {
+												bukhan: !allOn,
+												namhan: !allOn,
+												han: !allOn,
+												imjin: !allOn,
+												pyeongtaek: !allOn,
+											},
+										});
+									}}
+									className="text-[9.5px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+								>
+									{Object.values(filters.rivers).every(Boolean)
+										? "전체 해제"
+										: "전체 선택"}
+								</button>
+							</div>
 						</div>
 
 						<div className="grid grid-cols-5 gap-1">
@@ -833,31 +939,92 @@ export default function MapPage() {
 								] as const
 							).map((rv) => {
 								const conf = RIVER_CONFIG[rv];
+								const isActive = filters.rivers[rv];
 								const isHigh = filters.highlightedRiver === rv;
+
+								// 3단계 순환 탭: [꺼짐] ➔ [일반 켜짐] ➔ [강조 (★)] ➔ [꺼짐]
+								const handleRiverClick = () => {
+									setFilters((prev) => {
+										const currentActive = prev.rivers[rv];
+										const currentHigh = prev.highlightedRiver === rv;
+
+										if (!currentActive) {
+											// 1. 꺼진 상태에서 탭 -> [일반 켜짐]
+											return {
+												...prev,
+												rivers: {
+													...prev.rivers,
+													[rv]: true,
+												},
+												highlightedRiver:
+													prev.highlightedRiver === rv ? null : prev.highlightedRiver,
+											};
+										} else if (currentActive && !currentHigh) {
+											// 2. 켜진 상태에서 탭 (두 번째 탭) -> [강조 켜짐]
+											return {
+												...prev,
+												rivers: {
+													...prev.rivers,
+													[rv]: true,
+												},
+												highlightedRiver: rv,
+											};
+										} else {
+											// 3. 강조 상태에서 탭 -> [완전 꺼짐]
+											return {
+												...prev,
+												rivers: {
+													...prev.rivers,
+													[rv]: false,
+												},
+												highlightedRiver:
+													prev.highlightedRiver === rv ? null : prev.highlightedRiver,
+											};
+										}
+									});
+								};
+
 								return (
 									<button
-										key={`high-${rv}`}
+										key={rv}
 										type="button"
-										onClick={() => {
-											setFilters({
-												...filters,
-												highlightedRiver: isHigh ? null : rv,
-											});
-										}}
+										onClick={handleRiverClick}
 										style={{
-											borderColor: isHigh ? conf.color : undefined,
 											backgroundColor: isHigh
-												? `${conf.color}25`
-												: undefined,
-											color: isHigh ? conf.color : undefined,
+												? conf.color
+												: isActive
+													? `${conf.color}25`
+													: undefined,
+											borderColor: isHigh
+												? conf.color
+												: isActive
+													? `${conf.color}80`
+													: undefined,
+											color: isHigh ? "#ffffff" : isActive ? conf.color : undefined,
 										}}
-										className={`py-1.5 rounded-xl text-[10px] font-bold transition-all active:scale-95 border ${
+										className={`h-7 rounded-lg flex items-center justify-center gap-1 border transition-all active:scale-95 relative select-none ${
 											isHigh
-												? "shadow-sm ring-1 ring-offset-0"
-												: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]"
+												? "font-black shadow-md ring-2 ring-white/50 ring-offset-1 dark:ring-offset-black"
+												: isActive
+													? "font-bold shadow-xs"
+													: "bg-[#f8fafc] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#71717a] border-[#e2e8f0] dark:border-[#222228]"
 										}`}
 									>
-										{conf.label.replace("수계", "").replace("본류", "")}
+										{!isHigh && (
+											<span
+												className="w-1.5 h-1.5 rounded-full shrink-0"
+												style={{
+													backgroundColor: isActive ? conf.color : "#94a3b8",
+													opacity: isActive ? 1 : 0.4,
+												}}
+											/>
+										)}
+										{isHigh && (
+											<span className="text-[9px] leading-none shrink-0">★</span>
+										)}
+										<span className="text-[10px] tracking-tight truncate">
+											{conf.label.replace("수계", "").replace("본류", "")}
+										</span>
 									</button>
 								);
 							})}
@@ -999,20 +1166,31 @@ export default function MapPage() {
 				onClose={() => setIsSidebarOpen(false)}
 				onSelectStation={moveToStation}
 				stations={stations}
-				filters={filters}
-				setFilters={setFilters}
 				searchTerm={searchTerm}
-				setSearchTerm={setSearchTerm}
 				searchResults={searchResults}
 			/>
 
 			{/* ============================================================ */}
-			{/* 8. 모바일 인터랙티브 바텀 시트 (선택 시 슬라이드 업)         */}
+			{/* 8. 모바일 인터랙티브 바텀 시트 (선택 시 슬라이드 업, 차트 모달 열릴 땐 숨김) */}
 			{/* ============================================================ */}
-			{!isEditMode && !isUiHidden && selectedStation && (
+			{!isEditMode && !isUiHidden && selectedStation && !chartStation && (
 				<StationBottomSheet
 					station={selectedStation}
 					onClose={() => setSelectedStation(null)}
+					onOpenWaterQuality={handleOpenWaterQuality}
+				/>
+			)}
+
+			{/* ============================================================ */}
+			{/* 9. 실시간 수질 24시간 추이 차트 모달 (독립 최상위 레벨)       */}
+			{/* ============================================================ */}
+			{chartStation && (
+				<WaterQualityChartModal
+					isOpen={!!chartStation}
+					onClose={() => setChartStation(null)}
+					stationName={chartStation.name}
+					data={chartData}
+					isLoading={isLoadingChart}
 				/>
 			)}
 		</div>

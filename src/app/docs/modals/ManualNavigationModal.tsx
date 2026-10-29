@@ -117,6 +117,7 @@ export default function ManualNavigationModal({
 					: "카테고리별 문서 목록"
 			}
 			icon={FolderTree}
+			size="half"
 			contentClassName="!p-0 overflow-hidden"
 		>
 			{isSearching ? (

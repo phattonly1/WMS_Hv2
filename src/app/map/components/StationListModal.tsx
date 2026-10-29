@@ -7,11 +7,9 @@ import {
 	Eye,
 	List,
 } from "lucide-react";
-import type React from "react";
 import { useMemo, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import {
-	type MapFilters,
 	RIVER_CONFIG,
 	RIVER_ICONS,
 	type RiverType,
@@ -23,10 +21,7 @@ export interface StationListModalProps {
 	onClose: () => void;
 	onSelectStation: (station: Station) => void;
 	stations: Station[];
-	filters?: MapFilters;
-	setFilters?: React.Dispatch<React.SetStateAction<MapFilters>>;
 	searchTerm?: string;
-	setSearchTerm?: (term: string) => void;
 	searchResults?: Station[];
 }
 
@@ -95,6 +90,7 @@ export function StationListModal({
 			}
 			icon={List}
 			maxWidth="max-w-md"
+			size="half"
 			contentClassName="!p-0 overflow-hidden"
 		>
 			{/* 본문 영역 */}

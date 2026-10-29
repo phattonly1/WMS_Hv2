@@ -84,6 +84,7 @@ export default function ReagentModal({
 					: "수질자동측정망 시약 조제 매뉴얼"
 			}
 			icon={FlaskConical}
+			size="half"
 			onBack={selectedStation ? () => setSelectedStation(null) : undefined}
 		>
 			<div className="space-y-4">

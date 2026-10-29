@@ -3,7 +3,7 @@ export interface FileNodeStory {
 	name: string;
 	path: string;
 	badge: string;
-	badgeColor: "blue" | "emerald" | "amber" | "sky" | "rose";
+	badgeColor: "blue" | "amber" | "emerald";
 	title: string;
 	keyFiles: {
 		name: string;
@@ -12,6 +12,196 @@ export interface FileNodeStory {
 }
 
 export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
+	devops_pipeline_overview: {
+		id: "devops_pipeline_overview",
+		name: "BUILDING WMS WITH AI AGENT",
+		path: "WMS 2.0 AI-Driven Architecture & Engineering",
+		badge: "⚙️ WMS 지능형 자동화 개발 종합",
+		badgeColor: "amber",
+		title: "인공지능 에이전트와 페어 프로그래밍으로 구축된 WMS 2.0 지능형 자동화 체계",
+		keyFiles: [
+			{
+				name: "1. HOW AI AGENT WORKS?",
+				desc: "사용자 자연어 지시 ➔ 컨텍스트 기억 & 자율 행동 ➔ 로컬 파일 도구 조작 3단 루프로 구성된 자율 개발 체계",
+			},
+			{
+				name: "2. CORE AI FEATURES",
+				desc: "한강수계 지도 지오메트리 정밀화, NIER 실시간 수질 API 연동, QR 모바일 반응형 UI, 2중 자동 무결성 검증",
+			},
+			{
+				name: "3. DEV-TO-CLOUD PIPELINE",
+				desc: "로컬 PC(내 컴퓨터) ➔ AI 에이전트 ➔ GitHub 원격 저장소 ➔ Vercel 엣지 클라우드 ➔ 프로덕션 라이브 사이트 무중단 배포",
+			},
+		],
+	},
+	ai_panel_how_it_works: {
+		id: "ai_panel_how_it_works",
+		name: "1. HOW AI AGENT WORKS? (에이전트 동작 원리)",
+		path: "Instruction ➔ Memory & Context ➔ Autonomous Action ➔ Code Tools",
+		badge: "🖥️ AI 에이전트 협업 원리",
+		badgeColor: "blue",
+		title: "자연어 요구사항을 바탕으로 로컬 파일과 터미널을 직접 제어하는 자율 개발 원리",
+		keyFiles: [
+			{
+				name: "User Instruction (사용자 요구사항 지시)",
+				desc: "현장 실무 도메인 지식과 화면 기획 의도를 자연어로 AI 에이전트에게 전달합니다.",
+			},
+			{
+				name: "Memory & Context (프로젝트 지식 저장소)",
+				desc: "전체 프로젝트 구조, TypeScript 인터페이스, 디자인 토큰 룰을 파악하여 일관성을 유지합니다.",
+			},
+			{
+				name: "Autonomous Action & Code Tools (도구 실행)",
+				desc: "파일 직접 읽기/편집, 터미널 명령 실행, 웹 검색 등 강력한 툴체인을 자율적으로 호출해 코드를 완성합니다.",
+			},
+		],
+	},
+	ai_panel_core_features: {
+		id: "ai_panel_core_features",
+		name: "2. CORE AI FEATURES (WMS 2.0 4대 핵심 기능 구현)",
+		path: "src/app/map · src/app/supplies · src/app/education",
+		badge: "⚙️ 핵심 기술 구현 성과",
+		badgeColor: "amber",
+		title: "AI 에이전트와의 협력으로 신속하게 구축된 WMS 2.0 엔지니어링 핵심 성과",
+		keyFiles: [
+			{
+				name: "River Map Engineering (하천 지도 정밀화)",
+				desc: "145개 한강수계 하천망 중심선 지오메트리 계산 및 실시간 측정소 좌표 핀 투영 엔지니어링",
+			},
+			{
+				name: "Realtime Water Quality API (실시간 수질 연동)",
+				desc: "국립환경과학원(NIER) 공공데이터를 1시간 주기 서버 인메모리 캐싱으로 초고속 서빙",
+			},
+			{
+				name: "QR Code & Mobile UI (현장 모바일 접근성)",
+				desc: "현장 창고에서 스마트폰 QR 스캔으로 로그인 없이 소모품 재고 및 동영상 매뉴얼 즉시 열람",
+			},
+			{
+				name: "Automated Code Testing (2중 자동 무결성 검증)",
+				desc: "TypeScript 컴파일, Biome 린트, M3 다크 테마 디자인 토큰 감사를 통과해야만 배포되는 엄격한 품질 보증",
+			},
+		],
+	},
+	ai_panel_pipeline: {
+		id: "ai_panel_pipeline",
+		name: "3. DEV-TO-CLOUD PIPELINE (엔드투엔드 배포 자동화)",
+		path: "Local PC ➔ AI Agent ➔ GitHub ➔ Vercel ➔ Live Production",
+		badge: "🌐 클라우드 배포 파이프라인",
+		badgeColor: "emerald",
+		title: "로컬 환경에서 코드 작성부터 프로덕션 배포까지 실시간으로 이어지는 완전 자동화 파이프라인",
+		keyFiles: [
+			{
+				name: "Local PC (내 컴퓨터 환경)",
+				desc: "개발자의 Windows PC 로컬 환경(localhost:3000)에서 실시간으로 화면과 기능을 테스트합니다.",
+			},
+			{
+				name: "AI Agent Partner (AI 페어 프로그래머)",
+				desc: "코드 작성 및 수정 후 터미널 무결성 검증을 직접 수행하여 0-Error 코드를 산출합니다.",
+			},
+			{
+				name: "GitHub Repository (형상 관리)",
+				desc: "검증 완료된 코드를 Git commit & push하여 안전하게 버전 관리하고 배포 웹훅을 트리거합니다.",
+			},
+			{
+				name: "Vercel Cloud (서버리스 엣지 인프라)",
+				desc: "웹훅을 수신해 전 세계 엣지 네트워크에 Next.js App Router를 무중단 빌드 및 배포합니다.",
+			},
+			{
+				name: "Live Production Site (운영 서비스)",
+				desc: "전국 현장 점검자와 관제자가 모바일과 PC에서 즉각 사용하는 실시간 WMS 2.0 웹 서비스입니다.",
+			},
+		],
+	},
+	devops_local_pc: {
+		id: "devops_local_pc",
+		name: "내 컴퓨터 (로컬 개발 환경)",
+		path: "Windows PC · VS Code · localhost:3000",
+		badge: "🖥️ 개발자 PC 환경",
+		badgeColor: "blue",
+		title: "사용자의 개발 PC 환경 및 실시간 화면 확인 (localhost:3000)",
+		keyFiles: [
+			{
+				name: "작업 디렉토리 & 소스코드",
+				desc: "내 PC의 로컬 저장소(WMS_Hv2)에서 실제 코드 파일들이 안전하게 관리되고 실시간 브라우저 테스트가 이루어집니다.",
+			},
+			{
+				name: "자연어 요구사항 지시",
+				desc: "사용자가 실무 지식과 기능 추가·수정 사항을 자연어로 AI 에이전트에게 전달합니다.",
+			},
+		],
+	},
+	devops_ai_agent: {
+		id: "devops_ai_agent",
+		name: "Antigravity AI Agent (자율 개발 에이전트)",
+		path: "Gemini CLI Agent · Code Generation · Auto Testing",
+		badge: "⚙️ AI 자율 페어 프로그래밍",
+		badgeColor: "amber",
+		title: "내 PC의 파일을 직접 편집하고 테스트 명령을 수행하는 AI 페어 프로그래머",
+		keyFiles: [
+			{
+				name: "로컬 파일 자율 수정 (Write/Edit)",
+				desc: "지시받은 요구사항에 맞춰 내 컴퓨터의 React/Next.js/TypeScript 소스코드를 직접 작성하고 리팩토링합니다.",
+			},
+			{
+				name: "2중 자동 검증 실행 (tsc · biome · audit)",
+				desc: "코드 수정 후 터미널 명령을 직접 실행해 문법 오류, 타입 에러, 디자인 토큰 위반을 스스로 찾아내고 0 에러로 자율 수습합니다.",
+			},
+		],
+	},
+	devops_github: {
+		id: "devops_github",
+		name: "GitHub (원격 소스코드 저장소)",
+		path: "https://github.com/*/WMS_Hv2 (main branch)",
+		badge: "🌐 소스코드 형상 관리",
+		badgeColor: "emerald",
+		title: "로컬에서 완성된 소스코드가 안전하게 동기화되는 원격 Git 저장소",
+		keyFiles: [
+			{
+				name: "Git Commit & Push",
+				desc: "내 PC에서 검증이 끝난 무결점 코드가 Git을 통해 GitHub main 브랜치로 푸시됩니다.",
+			},
+			{
+				name: "Vercel Webhook 자동 연동",
+				desc: "GitHub에 새로운 커밋이 푸시되는 즉시 Vercel 배포 파이프라인으로 빌드 이벤트가 자동 전송됩니다.",
+			},
+		],
+	},
+	devops_vercel: {
+		id: "devops_vercel",
+		name: "Vercel 클라우드 (무중단 자동 배포 / CI-CD)",
+		path: "https://*.vercel.app (Serverless Edge Network)",
+		badge: "🌐 클라우드 호스팅 & CDN",
+		badgeColor: "emerald",
+		title: "커밋 즉시 자동 빌드되어 글로벌 네트워크에 무중단 배포되는 클라우드 인프라",
+		keyFiles: [
+			{
+				name: "Serverless & Edge Runtime",
+				desc: "서버 설치/관리 없이 Next.js App Router와 Server Actions를 전 세계 엣지 네트워크로 자동 배포합니다.",
+			},
+			{
+				name: "환경변수 & 보안 인프라",
+				desc: "Supabase DB 키, 비밀 토큰 등 민감 정보를 안전하게 주입하며 HTTPS 보안 통신을 기본 보장합니다.",
+			},
+		],
+	},
+	devops_production: {
+		id: "devops_production",
+		name: "WMS 2.0 프로덕션 서비스",
+		path: "실무 현장 PC · 스마트폰 웹 브라우저 (모바일 반응형)",
+		badge: "🌐 실제 운영 서비스",
+		badgeColor: "emerald",
+		title: "전국 현장 점검자 및 관제자가 언제 어디서나 접속해 실무에 활용하는 완성 웹 서비스",
+		keyFiles: [
+			{
+				name: "실시간 한강수계 수질 지도 (/map)",
+				desc: "국립환경과학원(NIER) 24h 측정값과 145개 정돈된 하천망을 바탕으로 현장에서 실시간 수질 상태를 관제합니다.",
+			},
+			{
+				name: "모바일 QR 소모품 & 전자 매뉴얼",
+				desc: "현장 창고에서 스마트폰 QR 스캔으로 로그인 없이 즉시 재고를 파악하고, 교육 영상 및 매뉴얼을 확인합니다.",
+			},
+		],
+	},
 	proxy_entry: {
 		id: "proxy_entry",
 		name: "src/proxy.ts",
@@ -49,7 +239,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		name: "src/app/page.tsx & app/login/",
 		path: "src/app/page.tsx · src/app/login/*",
 		badge: "🖥️ 프론트엔드 로그인",
-		badgeColor: "amber",
+		badgeColor: "blue",
 		title: "기본 주소('/') 접속 시 브라우저에 표시되는 로그인 화면 UI",
 		keyFiles: [
 			{
@@ -70,8 +260,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "public_bypass",
 		name: "로그인 없이 바로 열리는 기능 (교육 영상 · QR 소모품)",
 		path: "/docs/video · /items?quicklink=true",
-		badge: "무인증 예외 허용",
-		badgeColor: "amber",
+		badge: "🖥️ 프론트 무인증 경로",
+		badgeColor: "blue",
 		title: "현장 편의를 위해 로그인 없이 바로 접근할 수 있도록 묶어둔 2가지 예외 경로",
 		keyFiles: [
 			{
@@ -88,7 +278,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "ext_supa_auth",
 		name: "🌐 외부: Supabase Auth",
 		path: "https://*.supabase.co/auth/v1",
-		badge: "외부 인증 서버",
+		badge: "🌐 외부 인증 서버",
 		badgeColor: "emerald",
 		title: "계정 정보 확인 및 로그인 세션을 관리하는 외부 인증 서비스",
 		keyFiles: [
@@ -102,8 +292,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "layout_global",
 		name: "src/app/layout.tsx & globals.css",
 		path: "src/app/layout.tsx · src/app/globals.css",
-		badge: "공통 레이아웃 · 스타일",
-		badgeColor: "sky",
+		badge: "🖥️ 프론트 공통 레이아웃",
+		badgeColor: "blue",
 		title: "전체 페이지의 기본 구조, 웹폰트 로드, 다크/라이트 테마 설정",
 		keyFiles: [
 			{
@@ -120,7 +310,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "pages_group",
 		name: "src/app/* (전체 페이지)",
 		path: "src/app/ 하위 페이지 폴더",
-		badge: "페이지 라우트 구조",
+		badge: "🖥️ 프론트 페이지 구조",
 		badgeColor: "blue",
 		title: "폴더 경로가 그대로 웹 주소(URL)가 되는 화면 폴더 묶음",
 		keyFiles: [
@@ -134,7 +324,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "ext_jsdelivr",
 		name: "🌐 외부 CDN: jsDelivr",
 		path: "https://cdn.jsdelivr.net (Pretendard GOV)",
-		badge: "외부 웹폰트 서버",
+		badge: "🌐 외부 웹폰트 서버",
 		badgeColor: "emerald",
 		title: "Pretendard GOV 웹폰트 파일을 제공하는 외부 콘텐츠 전송 서버",
 		keyFiles: [
@@ -148,8 +338,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "common_ui",
 		name: "src/components/",
 		path: "src/components/providers/ThemeProvider.tsx · ui/ThemeToggle.tsx · ui/modal.tsx",
-		badge: "공통 UI 컴포넌트",
-		badgeColor: "sky",
+		badge: "🖥️ 프론트 공통 UI",
+		badgeColor: "blue",
 		title: "여러 페이지에서 재사용하는 팝업 모달 및 테마 전환 버튼",
 		keyFiles: [
 			{
@@ -166,13 +356,13 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "public_assets",
 		name: "public/data/han_rivers.geojson & public/icons/*",
 		path: "public/data/han_rivers.geojson · public/icons/* · public/images/*",
-		badge: "정적 데이터 · 이미지",
-		badgeColor: "sky",
+		badge: "🖥️ 프론트 정적 데이터",
+		badgeColor: "blue",
 		title: "한강 하천망 지도 데이터 및 화면 아이콘 이미지 파일",
 		keyFiles: [
 			{
 				name: "public/data/han_rivers.geojson",
-				desc: "수질 지도(/map) 위에 한강·남한강·북한강 수계 라인을 표시하기 위한 지리 좌표 데이터 파일입니다.",
+				desc: "수질 지도(/map) 위에 한강·남한강·북한강 수계 및 소규모 측정소 인접 하천 145개 본류/지류를 렌더링하는 지리 좌표 데이터 파일입니다 (단절 조각 및 불필요한 폴리곤 제거 최적화 완료).",
 			},
 			{
 				name: "public/icons/* & public/images/*",
@@ -184,8 +374,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "hangul_util",
 		name: "src/utils/hangul.ts",
 		path: "src/utils/hangul.ts",
-		badge: "초성 검색 기능",
-		badgeColor: "emerald",
+		badge: "🖥️ 프론트 검색 유틸",
+		badgeColor: "blue",
 		title: "수질 지도와 소모품 목록에서 사용되는 한글 초성 검색 유틸리티",
 		keyFiles: [
 			{
@@ -198,7 +388,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "app_dashboard",
 		name: "src/app/dashboard/",
 		path: "src/app/dashboard/page.tsx",
-		badge: "메인 대시보드",
+		badge: "🖥️ 프론트 대시보드",
 		badgeColor: "blue",
 		title: "로그인 후 이동하는 메인 화면 (4대 핵심 메뉴 및 실무 도구 연결)",
 		keyFiles: [
@@ -216,8 +406,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "app_launcher",
 		name: "src/app/dashboard/launcher/",
 		path: "src/app/dashboard/launcher/engine.ts · core/* · modules/* · ui/*",
-		badge: "F12 통합 런처",
-		badgeColor: "sky",
+		badge: "🖥️ 프론트 자동화 런처",
+		badgeColor: "blue",
 		title: "외부 WMS 사이트의 개발자 도구(F12)에 붙여넣어 실행하는 자동화 스크립트",
 		keyFiles: [
 			{
@@ -238,8 +428,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "public_tools",
 		name: "public/tools/* (4종)",
 		path: "public/tools/*.html & *.txt",
-		badge: "독립 실행형 도구",
-		badgeColor: "sky",
+		badge: "🖥️ 프론트 보조 도구",
+		badgeColor: "blue",
 		title: "별도 서버 없이 브라우저에서 바로 열거나 다운로드해 쓰는 실무 도구 4종",
 		keyFiles: [
 			{
@@ -264,7 +454,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "app_docs",
 		name: "src/app/docs/ & content/*.md",
 		path: "src/app/docs/page.tsx · content/*/*.md · modals/*",
-		badge: "자료실 · 매뉴얼",
+		badge: "🖥️ 프론트 자료실",
 		badgeColor: "blue",
 		title: "마크다운(.md) 원고 기반 업무 매뉴얼 뷰어 및 시약 계산기 · 교육 영상",
 		keyFiles: [
@@ -286,8 +476,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "app_items",
 		name: "src/app/items/",
 		path: "src/app/items/page.tsx & components/*",
-		badge: "소모품 · QR 관리",
-		badgeColor: "amber",
+		badge: "🖥️ 프론트 소모품 관리",
+		badgeColor: "blue",
 		title: "소모품·부품 현재고 조회, 구매 요청, 반출/반납 기록 및 QR 코드 생성",
 		keyFiles: [
 			{
@@ -307,14 +497,26 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 	app_map: {
 		id: "app_map",
 		name: "src/app/map/ & map/stations/",
-		path: "src/app/map/page.tsx · src/app/map/stations/page.tsx",
-		badge: "수질 지도 · 제원 관리",
+		path: "src/app/map/page.tsx · VectorMarkers.tsx · WaterQualityChartModal.tsx · StationBottomSheet.tsx",
+		badge: "🖥️ 프론트 수질 지도",
 		badgeColor: "blue",
-		title: "한강수계 지도 모니터링 및 측정소별 제원 · 보유 기기 통계 관리",
+		title: "한강수계 실시간 수질 모니터링(NIER 24h), 지도 관제 및 측정소별 제원 관리",
 		keyFiles: [
 			{
 				name: "src/app/map/page.tsx & MapLibreView.tsx",
-				desc: "수계별·분류별 필터링과 마커 위치 편집 모드(?mode=edit)를 지원하는 수질 지도 메인 파일입니다.",
+				desc: "수계별·분류별 필터링, 정돈된 한강 하천망 레이어 및 마커 편집 모드(?mode=edit)를 지원하는 수질 지도 메인 파일입니다.",
+			},
+			{
+				name: "src/app/map/components/VectorMarkers.tsx",
+				desc: "지도 확대/축소 시 위치 이탈이 없는 GPS 원점 앵커링(w-0 h-0) 및 레이어 최상단 툴팁(z-[99999])을 제공하는 벡터 마커 컴포넌트입니다.",
+			},
+			{
+				name: "src/app/map/components/WaterQualityChartModal.tsx",
+				desc: "국립환경과학원(NIER) 24시간 실시간 측정 데이터(9개 수질 항목)를 상대 시간축(-23h~0h)과 고해상도 SVG 그래프로 시각화하는 모달입니다.",
+			},
+			{
+				name: "src/app/map/components/StationBottomSheet.tsx",
+				desc: "국가 측정소(상세 제원·실시간 수질)와 소규모 감시망/관심지점(경량 이름 뷰)을 통합 지원하는 인터랙티브 바텀시트 모달입니다.",
 			},
 			{
 				name: "src/app/map/stations/page.tsx & StationForm.tsx",
@@ -330,8 +532,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "app_dev",
 		name: "src/app/dev/",
 		path: "src/app/dev/page.tsx · ArchitectureViewer.tsx",
-		badge: "구조도 · 품질 검증",
-		badgeColor: "rose",
+		badge: "🖥️ 프론트 개발자 센터",
+		badgeColor: "blue",
 		title: "시스템 구조도 뷰어 및 배포 전 코드·디자인 규칙 자동 검증 페이지",
 		keyFiles: [
 			{
@@ -348,8 +550,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "ext_wms",
 		name: "🌐 외부: 국립환경과학원 WMS",
 		path: "https://wms.waterkorea.or.kr/wms/main",
-		badge: "외부 대상 시스템",
-		badgeColor: "sky",
+		badge: "🌐 외부 WMS 포털",
+		badgeColor: "emerald",
 		title: "통합 런처 스크립트를 붙여넣어 업무 자동화를 실행하는 외부 포털",
 		keyFiles: [
 			{
@@ -362,7 +564,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "ext_sheetjs",
 		name: "🌐 외부 CDN: SheetJS & cdnjs",
 		path: "https://cdn.sheetjs.com · https://cdnjs.cloudflare.com",
-		badge: "외부 라이브러리 서버",
+		badge: "🌐 외부 라이브러리 서버",
 		badgeColor: "emerald",
 		title: "엑셀 파일 생성 및 PDF 문서 렌더링 기능을 제공하는 외부 라이브러리",
 		keyFiles: [
@@ -376,7 +578,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "ext_r2",
 		name: "🌐 외부: Cloudflare R2",
 		path: "https://*.r2.dev (src/app/docs/video/data.ts)",
-		badge: "외부 영상 스토리지",
+		badge: "🌐 외부 영상 스토리지",
 		badgeColor: "emerald",
 		title: "자료실의 교육 영상 파일들을 저장하고 스트리밍하는 외부 미디어 서버",
 		keyFiles: [
@@ -388,23 +590,59 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 	},
 	data_layer: {
 		id: "data_layer",
-		name: "src/actions/* & src/utils/supabase/*",
-		path: "src/actions/supplies.ts · map/actions.ts · utils/supabase/*",
-		badge: "데이터 조회 · 저장 처리",
-		badgeColor: "emerald",
-		title: "DB 데이터를 불러와 임시 저장(캐싱)하고, 변경 사항을 서버에 반영하는 파일들",
+		name: "src/actions/supplies.ts & utils/supabase/*",
+		path: "src/actions/supplies.ts · utils/supabase/storageActions.ts · hooks.ts",
+		badge: "⚙️ 백엔드 DB 연동",
+		badgeColor: "amber",
+		title: "Supabase DB 데이터를 조회·캐싱하고 소모품 재고 및 측정소 제원을 갱신하는 파일들",
 		keyFiles: [
 			{
 				name: "src/utils/supabase/hooks.ts & fetcher.ts",
-				desc: "측정소와 소모품 데이터를 DB에서 불러온 뒤 메모리에 임시 저장(SWR 캐싱)하여, 페이지 재방문 시 다시 로딩하지 않고 즉시 보여줍니다.",
+				desc: "측정소 제원과 소모품 데이터를 Supabase DB에서 조회한 뒤 메모리에 SWR 캐싱하여 즉시 제공합니다.",
 			},
 			{
-				name: "src/actions/supplies.ts & src/app/map/actions.ts",
-				desc: "소모품 입출고 수량 변경이나 측정소 정보 수정 요청을 서버에서 안전하게 처리해 DB에 반영하는 파일입니다.",
+				name: "src/actions/supplies.ts & map/actions.ts(upsert)",
+				desc: "소모품 입출고 내역 저장이나 측정소 제원/마커 좌표 수정을 Supabase DB에 안전하게 반영합니다.",
 			},
 			{
 				name: "src/utils/supabase/storageActions.ts",
-				desc: "소모품 사진과 자료실 양식 파일을 외부 스토리지에 업로드하거나 삭제하는 기능을 담당합니다.",
+				desc: "소모품 실물 사진과 자료실 서식 파일을 Supabase Storage에 업로드하거나 삭제합니다.",
+			},
+		],
+	},
+	nier_actions: {
+		id: "nier_actions",
+		name: "src/app/map/actions.ts (실시간 수질)",
+		path: "src/app/map/actions.ts (getAllStationsRealtimeWaterQuality)",
+		badge: "⚙️ 백엔드 수질 중계",
+		badgeColor: "amber",
+		title: "Supabase DB를 거치지 않고 NIER 수질 API와 직접 통신하여 24시간 실시간 데이터를 중계하는 서버 액션",
+		keyFiles: [
+			{
+				name: "src/app/map/actions.ts (NIER API 연동)",
+				desc: "국립환경과학원(water.nier.go.kr)에 직접 HTTP 요청을 보내 최근 24시간 9개 수질 측정 항목을 가져옵니다. DB에 쓰지 않고 서버 메모리에서 즉시 브라우저로 중계합니다.",
+			},
+			{
+				name: "매시 01분(HH:01) 인메모리 캐시 (cachedHistoryMap)",
+				desc: "중복 API 호출로 인한 외부 서버 부하 및 레이턴시를 방지하기 위해 1시간 단위 인메모리 캐싱을 수행합니다.",
+			},
+		],
+	},
+	ext_nier_api: {
+		id: "ext_nier_api",
+		name: "🌐 외부: 국립환경과학원 물환경정보",
+		path: "https://water.nier.go.kr/web/autoWaterData/listJson",
+		badge: "🌐 외부 실시간 수질 API",
+		badgeColor: "emerald",
+		title: "국가 수질자동측정소 24시간 실시간 측정 데이터를 제공하는 국립환경과학원 API (DB 미경유)",
+		keyFiles: [
+			{
+				name: "water.nier.go.kr (autoWaterData/listJson)",
+				desc: "전국 수질자동측정망의 24시간 실시간 측정 데이터(수온, pH, EC, DO, TOC, TN, TP, 탁도 등 9개 지표)를 제공하는 공공 API 서비스입니다.",
+			},
+			{
+				name: "직접 중계 아키텍처",
+				desc: "Supabase DB에 적재하지 않고, Next.js 서버(map/actions.ts)가 직접 fetch하여 지도 프론트엔드로 전달합니다.",
 			},
 		],
 	},
@@ -412,7 +650,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "ext_supa_db",
 		name: "🌐 외부: Supabase DB & Storage",
 		path: "https://*.supabase.co (PostgreSQL & Storage)",
-		badge: "외부 DB · 파일 저장소",
+		badge: "🌐 외부 DB · 파일 저장소",
 		badgeColor: "emerald",
 		title: "측정소 제원, 보유 기기, 소모품 재고 데이터 및 이미지가 저장되는 클라우드 DB",
 		keyFiles: [
@@ -430,7 +668,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "ext_vworld",
 		name: "🌐 외부: VWorld & OSM",
 		path: "https://api.vworld.kr · https://tile.openstreetmap.org",
-		badge: "외부 배경지도 서버",
+		badge: "🌐 외부 배경지도 서버",
 		badgeColor: "emerald",
 		title: "수질 지도(/map)에 위성 사진과 일반 도로 지도를 제공하는 외부 지도 서비스",
 		keyFiles: [
@@ -444,8 +682,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		id: "audit_engine",
 		name: "src/actions/audit.ts & scripts/audit-design-tokens.mjs",
 		path: "src/actions/audit.ts · scripts/audit-design-tokens.mjs · package.json",
-		badge: "코드 · 디자인 자동 검사",
-		badgeColor: "rose",
+		badge: "⚙️ 백엔드 품질 검사",
+		badgeColor: "amber",
 		title: "사용하지 않는 파일·패키지와 디자인 규칙 위반을 찾아내는 자동 검사 파일",
 		keyFiles: [
 			{

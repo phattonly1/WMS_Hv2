@@ -11,6 +11,14 @@ if (typeof window !== "undefined") {
 	setWorkerUrl("/maplibre-gl-worker.mjs");
 }
 
+// 마커 호버 스타일 주입 (호버된 마커 DOM 컨테이너를 다른 마커들보다 항상 최상위로 올림)
+const MARKER_HOVER_STYLE = `
+  .maplibregl-marker:has(.group:hover) {
+    z-index: 99999 !important;
+  }
+`;
+
+import { getAllStationsRealtimeWaterQuality } from "./actions";
 import {
 	ArrowMarker,
 	PoiMarker,
@@ -18,6 +26,10 @@ import {
 	StationMarker,
 } from "./components/VectorMarkers";
 import { MAP_STYLES } from "./mapStyles";
+import {
+	getNierStationCode,
+	type RealtimeWaterQuality,
+} from "./nierStationMap";
 import { getStationColor, type MapFilters, type Station } from "./stationData";
 
 interface MapLibreViewProps {
@@ -67,12 +79,85 @@ export default function MapLibreView({
 	// 국가 표준 GIS 하천망 GeoJSON 데이터 상태
 	const [gisRiversData, setGisRiversData] = useState<any>(null);
 
+	// 매시 30분 기준 시간대 키 생성 헬퍼 (02:30 ~ 03:29 동일 키)
+	const getRealtimeHourKey = useCallback(() => {
+		const shifted = new Date(Date.now() - 30 * 60 * 1000);
+		return `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
+	}, []);
+
+	// 23개 측정소 실시간 수질 데이터 상태 (초기값으로 localStorage 즉시 조회하여 깜빡임/네트워크 0회 달성)
+	const [waterQualityMap, setWaterQualityMap] = useState<
+		Record<string, RealtimeWaterQuality>
+	>(() => {
+		if (typeof window === "undefined") return {};
+		try {
+			const cachedRaw = window.localStorage.getItem("wms_nier_realtime_wq");
+			if (!cachedRaw) return {};
+			const parsed = JSON.parse(cachedRaw);
+			const shifted = new Date(Date.now() - 30 * 60 * 1000);
+			const currentKey = `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
+			if (
+				parsed &&
+				parsed.hourKey === currentKey &&
+				parsed.data &&
+				Object.keys(parsed.data).length > 0
+			) {
+				return parsed.data;
+			}
+		} catch {
+			// ignore storage error
+		}
+		return {};
+	});
+
 	useEffect(() => {
 		fetch("/data/han_rivers.geojson")
 			.then((res) => res.json())
 			.then((data) => setGisRiversData(data))
 			.catch((err) => console.error("Failed to load han_rivers.geojson:", err));
-	}, []);
+
+		// localStorage에 현재 시간대(매시 30분 기준) 데이터가 이미 있으면 서버 호출 생략
+		const currentKey = getRealtimeHourKey();
+		try {
+			const cachedRaw = window.localStorage.getItem("wms_nier_realtime_wq");
+			if (cachedRaw) {
+				const parsed = JSON.parse(cachedRaw);
+				if (
+					parsed?.hourKey === currentKey &&
+					parsed?.data &&
+					Object.keys(parsed.data).length > 0
+				) {
+					setWaterQualityMap(parsed.data);
+					return;
+				}
+			}
+		} catch {
+			// ignore storage error
+		}
+
+		// 캐시가 없거나 시간대(30분 경과)가 바뀐 경우에만 서버 호출 후 localStorage 저장
+		getAllStationsRealtimeWaterQuality()
+			.then((data) => {
+				if (data && Object.keys(data).length > 0) {
+					setWaterQualityMap(data);
+					try {
+						window.localStorage.setItem(
+							"wms_nier_realtime_wq",
+							JSON.stringify({
+								hourKey: currentKey,
+								data,
+								savedAt: Date.now(),
+							}),
+						);
+					} catch {
+						// ignore quota error
+					}
+				}
+			})
+			.catch((err) =>
+				console.error("Failed to load realtime water quality:", err),
+			);
+	}, [getRealtimeHourKey]);
 	// 수계 경로(Polyline) GeoJSON FeatureCollection 변환
 	const polylinesGeoJSON = useMemo(() => {
 		const features = stations
@@ -148,6 +233,14 @@ export default function MapLibreView({
 			// 3. 관심지점(POI): 상시 비활성화(숨김), 측정소 선택 시 해당 측정소 관련 POI만 노출
 			if (s.type === "poi") {
 				if (!selectedStation) return false;
+				if (s.id === selectedStation.id) return true;
+				if (
+					selectedStation.type === "poi" &&
+					s.related_station_id &&
+					s.related_station_id === selectedStation.related_station_id
+				) {
+					return true;
+				}
 				// 선택된 측정소의 id 또는 name과 매칭
 				if (
 					s.related_station_id &&
@@ -171,6 +264,9 @@ export default function MapLibreView({
 
 	return (
 		<div className="relative w-full h-full">
+			{/* 마커 호버 스타일 주입 (호버된 마커 컨테이너를 타 마커/POI보다 최상위로 올림) */}
+			<style>{MARKER_HOVER_STYLE}</style>
+
 			{/* 지도 캔버스 타일 및 마커 색반전 주입 */}
 			{isInverted && (
 				<style>{`
@@ -497,6 +593,12 @@ export default function MapLibreView({
 									station={station}
 									color={color}
 									isSelected={isSelected}
+									chipMode={filters.waterChip}
+									waterQuality={
+										getNierStationCode(station.name)
+											? waterQualityMap[getNierStationCode(station.name)!]
+											: null
+									}
 								/>
 							)}
 							{station.type === "small" && (

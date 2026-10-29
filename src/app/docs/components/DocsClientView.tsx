@@ -14,7 +14,7 @@ import {
 	X,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import DownloadModal from "../modals/DownloadModal";
 import ManualNavigationModal from "../modals/ManualNavigationModal";
@@ -46,16 +46,22 @@ export default function DocsClientView({
 	const [fontSizeStep, setFontSizeStep] = useState<number>(0);
 
 	// 데스크톱 / 모바일 공용 스크롤 이벤트 처리
-	const handleScrollUpdate = (scrollTop: number, scrollHeight: number, clientHeight: number) => {
-		setShowScrollTop(scrollTop > 200);
-		const maxScroll = scrollHeight - clientHeight;
-		if (maxScroll > 0) {
-			const progress = Math.min(100, Math.max(0, Math.round((scrollTop / maxScroll) * 100)));
-			setScrollProgress(progress);
-		} else {
-			setScrollProgress(0);
-		}
-	};
+	const handleScrollUpdate = useCallback(
+		(scrollTop: number, scrollHeight: number, clientHeight: number) => {
+			setShowScrollTop(scrollTop > 200);
+			const maxScroll = scrollHeight - clientHeight;
+			if (maxScroll > 0) {
+				const progress = Math.min(
+					100,
+					Math.max(0, Math.round((scrollTop / maxScroll) * 100)),
+				);
+				setScrollProgress(progress);
+			} else {
+				setScrollProgress(0);
+			}
+		},
+		[],
+	);
 
 	const scrollToTop = () => {
 		const mobileContainer = document.getElementById("docs-scroll-container");
@@ -77,6 +83,12 @@ export default function DocsClientView({
 			}
 		} catch {
 			// ignore storage access errors
+		}
+
+		// URL 딥링크 파라미터(?modal=video) 확인 시 동영상 매뉴얼 모달 자동 오픈
+		const params = new URLSearchParams(window.location.search);
+		if (params.get("modal") === "video") {
+			setActiveModal("video");
 		}
 	}, []);
 
@@ -105,7 +117,7 @@ export default function DocsClientView({
 		};
 		window.addEventListener("scroll", handleWindowScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleWindowScroll);
-	}, []);
+	}, [handleScrollUpdate]);
 
 	// Cmd/Ctrl + K 키보드 단축키
 	useEffect(() => {
@@ -143,7 +155,9 @@ export default function DocsClientView({
 	// 카테고리 퀵 내비게이터 무한 루프 순환 (Infinite Loop)
 	const prevCategory =
 		categories.length > 0 && currentCatIndex >= 0
-			? categories[(currentCatIndex - 1 + categories.length) % categories.length]
+			? categories[
+					(currentCatIndex - 1 + categories.length) % categories.length
+				]
 			: null;
 	const nextCategory =
 		categories.length > 0 && currentCatIndex >= 0
@@ -166,7 +180,11 @@ export default function DocsClientView({
 				id="docs-scroll-container"
 				onScroll={(e) => {
 					const target = e.currentTarget;
-					handleScrollUpdate(target.scrollTop, target.scrollHeight, target.clientHeight);
+					handleScrollUpdate(
+						target.scrollTop,
+						target.scrollHeight,
+						target.clientHeight,
+					);
 				}}
 				className={`flex-1 w-full relative z-10 sm:pb-12 overscroll-contain ${
 					isNavOpen || activeModal
@@ -200,7 +218,10 @@ export default function DocsClientView({
 								onClick={() => setActiveModal("download")}
 								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 							>
-								<FolderDown size={14} className="text-amber-500 dark:text-amber-400" />
+								<FolderDown
+									size={14}
+									className="text-amber-500 dark:text-amber-400"
+								/>
 								<span>다운로드</span>
 							</button>
 							<button
@@ -208,7 +229,10 @@ export default function DocsClientView({
 								onClick={() => setActiveModal("video")}
 								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 							>
-								<Video size={14} className="text-indigo-500 dark:text-indigo-400" />
+								<Video
+									size={14}
+									className="text-indigo-500 dark:text-indigo-400"
+								/>
 								<span>동영상</span>
 							</button>
 							<button
@@ -216,7 +240,10 @@ export default function DocsClientView({
 								onClick={() => setActiveModal("reagent")}
 								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 							>
-								<FlaskConical size={14} className="text-emerald-500 dark:text-emerald-400" />
+								<FlaskConical
+									size={14}
+									className="text-emerald-500 dark:text-emerald-400"
+								/>
 								<span>시약</span>
 							</button>
 							<button
@@ -315,7 +342,11 @@ export default function DocsClientView({
 						>
 							<span className="truncate">{activeCategory.name}</span>
 							{showScrollTop && (
-								<ArrowUp size={12} strokeWidth={2.8} className="shrink-0 animate-bounce text-blue-600 dark:text-blue-400" />
+								<ArrowUp
+									size={12}
+									strokeWidth={2.8}
+									className="shrink-0 animate-bounce text-blue-600 dark:text-blue-400"
+								/>
 							)}
 
 							{/* 4. 스크롤 진행률 게이지 바 (하단 2px) */}

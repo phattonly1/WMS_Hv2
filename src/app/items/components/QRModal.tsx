@@ -77,7 +77,12 @@ export default function QRModal({ isOpen, onClose, item }: QRModalProps) {
 		img.src = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgData)))}`;
 	};
 
-	const origin = typeof window !== "undefined" ? window.location.origin : "";
+	const origin =
+		typeof window !== "undefined" &&
+		window.location.hostname !== "localhost" &&
+		window.location.hostname !== "127.0.0.1"
+			? window.location.origin
+			: "https://wmshv2.vercel.app";
 	const qrUrl = item ? `${origin}/items?action=${item.id}&quicklink=true` : "";
 
 	return (
