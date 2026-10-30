@@ -170,7 +170,7 @@ import {
 
 // 23개 전체 가동 측정소의 최신 실시간 수질 데이터를 일괄 조회 (지도 마커용)
 // NIER 메인 대시보드 전용 엔드포인트(/web/autoWaterData/listJson)를 사용하여 단 1회 요청으로 전 측정소 수신
-// 매시 정각+1분(01분) 기준 1시간 단위 캐싱 (01분 진입 시 새 시간대 데이터로 갱신)
+// NIER 데이터 집계 시간(매시 15분경)을 고려하여 매시 15분 기준 1시간 단위 캐싱 (15분 진입 시 새 시간대 데이터로 자동 갱신)
 let cachedRealtimeMap: Record<string, RealtimeWaterQuality> | null = null;
 let cachedHourKey: string = "";
 
@@ -180,10 +180,10 @@ const cachedHistoryMap: Record<
 	{ hourKey: string; data: { latest: RealtimeWaterQuality | null; history: RealtimeWaterQuality[] } }
 > = {};
 
-// 매 정각+1분(01분) 기준 현재 시간대 키 산출 헬퍼 (현재 시각 - 1분)
-// 예: 03:01 ~ 04:00 -> 'YYYY-MM-DD-03', 04:01 진입 시 -> 'YYYY-MM-DD-04'로 자동 전환
+// 매시 15분 기준 시간대 키 산출 헬퍼 (현재 시각 - 15분)
+// 예: 19:15 ~ 20:14 -> 'YYYY-MM-DD-19', 20:15 진입 시 -> 'YYYY-MM-DD-20'으로 자동 전환
 function getHourlySyncKey(): string {
-	const shifted = new Date(Date.now() - 1 * 60 * 1000);
+	const shifted = new Date(Date.now() - 15 * 60 * 1000);
 	return `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
 }
 
