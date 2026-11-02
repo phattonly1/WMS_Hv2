@@ -74,6 +74,58 @@ export const LAUNCHER_STYLES_CSS = `
     .wms-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     .wms-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
+    /* 연도 변경 바 텍스트 색상 (라이트/다크 대응) */
+    .wms-poll-year-title { color: #0f172a; }
+    .wms-dark .wms-poll-year-title { color: #f8fafc !important; }
+    .wms-dark .wms-poll-year-bar { background: #1e293b !important; border-color: #334155 !important; }
+
+    /* 글래스모피즘 락 오버레이 시스템 */
+    .wms-lock-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 50;
+        backdrop-filter: blur(2.5px);
+        -webkit-backdrop-filter: blur(2.5px);
+        background: rgba(255, 255, 255, 0.72);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        user-select: none;
+    }
+    .wms-lock-overlay.active {
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    .wms-lock-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #0f172a;
+        color: #ffffff;
+        padding: 8px 18px;
+        border-radius: 24px;
+        font-size: 13px;
+        font-weight: 800;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
+        animation: wmsFadeIn 0.2s ease-out;
+        letter-spacing: -0.2px;
+    }
+    @media (prefers-color-scheme: dark) {
+        .wms-lock-overlay {
+            background: rgba(15, 23, 42, 0.78);
+        }
+        .wms-lock-badge {
+            background: #1e293b;
+            color: #60a5fa;
+            border: 1px solid #3b82f6;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+    }
+
     /* 7열 측정소 그리드 스타일 */
     .wms-team-grid {
         display: grid;
@@ -147,7 +199,7 @@ export const LAUNCHER_STYLES_CSS = `
     .wms-label-base { background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }
     .wms-label-extra { background: #f5f3ff; color: #6d28d9; border: 1px solid #ede9fe; }
     .wms-label-small { background: #ecfdf5; color: #047857; border: 1px solid #d1fae5; }
-    .wms-sub-badge { font-size: 10px; font-weight: 700; opacity: 0.85; }
+    .wms-sub-badge { font-size: 9px; font-weight: 800; opacity: 0.9; }
 
     /* 개별 측정소 칩 */
     .wms-chip-v2 {

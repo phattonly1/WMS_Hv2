@@ -18,7 +18,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "WMS 2.0 AI-Driven Architecture & Engineering",
 		badge: "⚙️ WMS 지능형 자동화 개발 종합",
 		badgeColor: "amber",
-		title: "인공지능 에이전트와 페어 프로그래밍으로 구축된 WMS 2.0 지능형 자동화 체계",
+		title:
+			"인공지능 에이전트와 페어 프로그래밍으로 구축된 WMS 2.0 지능형 자동화 체계",
 		keyFiles: [
 			{
 				name: "1. HOW AI AGENT WORKS?",
@@ -40,7 +41,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "Instruction ➔ Memory & Context ➔ Autonomous Action ➔ Code Tools",
 		badge: "🖥️ AI 에이전트 협업 원리",
 		badgeColor: "blue",
-		title: "자연어 요구사항을 바탕으로 로컬 파일과 터미널을 직접 제어하는 자율 개발 원리",
+		title:
+			"자연어 요구사항을 바탕으로 로컬 파일과 터미널을 직접 제어하는 자율 개발 원리",
 		keyFiles: [
 			{
 				name: "User Instruction (사용자 요구사항 지시)",
@@ -62,7 +64,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/app/map · src/app/supplies · src/app/education",
 		badge: "⚙️ 핵심 기술 구현 성과",
 		badgeColor: "amber",
-		title: "AI 에이전트와의 협력으로 신속하게 구축된 WMS 2.0 엔지니어링 핵심 성과",
+		title:
+			"AI 에이전트와의 협력으로 신속하게 구축된 WMS 2.0 엔지니어링 핵심 성과",
 		keyFiles: [
 			{
 				name: "River Map Engineering (하천 지도 정밀화)",
@@ -88,7 +91,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "Local PC ➔ AI Agent ➔ GitHub ➔ Vercel ➔ Live Production",
 		badge: "🌐 클라우드 배포 파이프라인",
 		badgeColor: "emerald",
-		title: "로컬 환경에서 코드 작성부터 프로덕션 배포까지 실시간으로 이어지는 완전 자동화 파이프라인",
+		title:
+			"로컬 환경에서 코드 작성부터 프로덕션 배포까지 실시간으로 이어지는 완전 자동화 파이프라인",
 		keyFiles: [
 			{
 				name: "Local PC (내 컴퓨터 환경)",
@@ -136,7 +140,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "Gemini CLI Agent · Code Generation · Auto Testing",
 		badge: "⚙️ AI 자율 페어 프로그래밍",
 		badgeColor: "amber",
-		title: "내 PC의 파일을 직접 편집하고 테스트 명령을 수행하는 AI 페어 프로그래머",
+		title:
+			"내 PC의 파일을 직접 편집하고 테스트 명령을 수행하는 AI 페어 프로그래머",
 		keyFiles: [
 			{
 				name: "로컬 파일 자율 수정 (Write/Edit)",
@@ -151,7 +156,7 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 	devops_github: {
 		id: "devops_github",
 		name: "GitHub (원격 소스코드 저장소)",
-		path: "https://github.com/*/WMS_Hv2 (main branch)",
+		path: `${process.env.NEXT_PUBLIC_GITHUB_REPO_URL || "https://github.com"}/*/WMS_Hv2 (main branch)`,
 		badge: "🌐 소스코드 형상 관리",
 		badgeColor: "emerald",
 		title: "로컬에서 완성된 소스코드가 안전하게 동기화되는 원격 Git 저장소",
@@ -172,7 +177,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "https://*.vercel.app (Serverless Edge Network)",
 		badge: "🌐 클라우드 호스팅 & CDN",
 		badgeColor: "emerald",
-		title: "커밋 즉시 자동 빌드되어 글로벌 네트워크에 무중단 배포되는 클라우드 인프라",
+		title:
+			"커밋 즉시 자동 빌드되어 글로벌 네트워크에 무중단 배포되는 클라우드 인프라",
 		keyFiles: [
 			{
 				name: "Serverless & Edge Runtime",
@@ -190,7 +196,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "실무 현장 PC · 스마트폰 웹 브라우저 (모바일 반응형)",
 		badge: "🌐 실제 운영 서비스",
 		badgeColor: "emerald",
-		title: "전국 현장 점검자 및 관제자가 언제 어디서나 접속해 실무에 활용하는 완성 웹 서비스",
+		title:
+			"전국 현장 점검자 및 관제자가 언제 어디서나 접속해 실무에 활용하는 완성 웹 서비스",
 		keyFiles: [
 			{
 				name: "실시간 한강수계 수질 지도 (/map)",
@@ -222,7 +229,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/utils/supabase/middleware.ts",
 		badge: "⚙️ 백엔드 세션 분기",
 		badgeColor: "amber",
-		title: "서버 미들웨어: 로그인 여부 검증, 30분 활동 세션 체크, QR 스캔 임시 허용",
+		title:
+			"서버 미들웨어: 로그인 여부 검증, 30분 활동 세션 체크, QR 스캔 임시 허용",
 		keyFiles: [
 			{
 				name: "src/utils/supabase/middleware.ts",
@@ -262,7 +270,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "/docs/video · /items?quicklink=true",
 		badge: "🖥️ 프론트 무인증 경로",
 		badgeColor: "blue",
-		title: "현장 편의를 위해 로그인 없이 바로 접근할 수 있도록 묶어둔 2가지 예외 경로",
+		title:
+			"현장 편의를 위해 로그인 없이 바로 접근할 수 있도록 묶어둔 2가지 예외 경로",
 		keyFiles: [
 			{
 				name: "1) 교육 영상 바로보기 (/docs/video)",
@@ -408,7 +417,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/app/dashboard/launcher/engine.ts · core/* · modules/* · ui/*",
 		badge: "🖥️ 프론트 자동화 런처",
 		badgeColor: "blue",
-		title: "외부 WMS 사이트의 개발자 도구(F12)에 붙여넣어 실행하는 자동화 스크립트",
+		title:
+			"외부 WMS 사이트의 개발자 도구(F12)에 붙여넣어 실행하는 자동화 스크립트",
 		keyFiles: [
 			{
 				name: "src/app/dashboard/launcher/engine.ts",
@@ -430,7 +440,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "public/tools/*.html & *.txt",
 		badge: "🖥️ 프론트 보조 도구",
 		badgeColor: "blue",
-		title: "별도 서버 없이 브라우저에서 바로 열거나 다운로드해 쓰는 실무 도구 4종",
+		title:
+			"별도 서버 없이 브라우저에서 바로 열거나 다운로드해 쓰는 실무 도구 4종",
 		keyFiles: [
 			{
 				name: "public/tools/station-history-filler.html",
@@ -456,7 +467,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/app/docs/page.tsx · content/*/*.md · modals/*",
 		badge: "🖥️ 프론트 자료실",
 		badgeColor: "blue",
-		title: "마크다운(.md) 원고 기반 업무 매뉴얼 뷰어 및 시약 계산기 · 교육 영상",
+		title:
+			"마크다운(.md) 원고 기반 업무 매뉴얼 뷰어 및 시약 계산기 · 교육 영상",
 		keyFiles: [
 			{
 				name: "src/app/docs/content/*/*.md",
@@ -500,7 +512,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/app/map/page.tsx · VectorMarkers.tsx · WaterQualityChartModal.tsx · StationBottomSheet.tsx",
 		badge: "🖥️ 프론트 수질 지도",
 		badgeColor: "blue",
-		title: "한강수계 실시간 수질 모니터링(NIER 24h), 지도 관제 및 측정소별 제원 관리",
+		title:
+			"한강수계 실시간 수질 모니터링(NIER 24h), 지도 관제 및 측정소별 제원 관리",
 		keyFiles: [
 			{
 				name: "src/app/map/page.tsx & MapLibreView.tsx",
@@ -594,7 +607,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/actions/supplies.ts · utils/supabase/storageActions.ts · hooks.ts",
 		badge: "⚙️ 백엔드 DB 연동",
 		badgeColor: "amber",
-		title: "Supabase DB 데이터를 조회·캐싱하고 소모품 재고 및 측정소 제원을 갱신하는 파일들",
+		title:
+			"Supabase DB 데이터를 조회·캐싱하고 소모품 재고 및 측정소 제원을 갱신하는 파일들",
 		keyFiles: [
 			{
 				name: "src/utils/supabase/hooks.ts & fetcher.ts",
@@ -616,7 +630,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/app/map/actions.ts (getAllStationsRealtimeWaterQuality)",
 		badge: "⚙️ 백엔드 수질 중계",
 		badgeColor: "amber",
-		title: "Supabase DB를 거치지 않고 NIER 수질 API와 직접 통신하여 24시간 실시간 데이터를 중계하는 서버 액션",
+		title:
+			"Supabase DB를 거치지 않고 NIER 수질 API와 직접 통신하여 24시간 실시간 데이터를 중계하는 서버 액션",
 		keyFiles: [
 			{
 				name: "src/app/map/actions.ts (NIER API 연동)",
@@ -631,10 +646,11 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 	ext_nier_api: {
 		id: "ext_nier_api",
 		name: "🌐 외부: 국립환경과학원 물환경정보",
-		path: "https://water.nier.go.kr/web/autoWaterData/listJson",
+		path: `${process.env.NEXT_PUBLIC_NIER_API_BASE || "https://water.nier.go.kr"}/web/autoWaterData/listJson`,
 		badge: "🌐 외부 실시간 수질 API",
 		badgeColor: "emerald",
-		title: "국가 수질자동측정소 24시간 실시간 측정 데이터를 제공하는 국립환경과학원 API (DB 미경유)",
+		title:
+			"국가 수질자동측정소 24시간 실시간 측정 데이터를 제공하는 국립환경과학원 API (DB 미경유)",
 		keyFiles: [
 			{
 				name: "water.nier.go.kr (autoWaterData/listJson)",
@@ -652,7 +668,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "https://*.supabase.co (PostgreSQL & Storage)",
 		badge: "🌐 외부 DB · 파일 저장소",
 		badgeColor: "emerald",
-		title: "측정소 제원, 보유 기기, 소모품 재고 데이터 및 이미지가 저장되는 클라우드 DB",
+		title:
+			"측정소 제원, 보유 기기, 소모품 재고 데이터 및 이미지가 저장되는 클라우드 DB",
 		keyFiles: [
 			{
 				name: "stations_master · station_assets · map_markers (측정소 테이블)",
@@ -670,7 +687,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "https://api.vworld.kr · https://tile.openstreetmap.org",
 		badge: "🌐 외부 배경지도 서버",
 		badgeColor: "emerald",
-		title: "수질 지도(/map)에 위성 사진과 일반 도로 지도를 제공하는 외부 지도 서비스",
+		title:
+			"수질 지도(/map)에 위성 사진과 일반 도로 지도를 제공하는 외부 지도 서비스",
 		keyFiles: [
 			{
 				name: "국토교통부 브이월드(VWorld) & 오픈스트리트맵(OSM)",
@@ -684,7 +702,8 @@ export const FILE_DIAGRAM_NODES: Record<string, FileNodeStory> = {
 		path: "src/actions/audit.ts · scripts/audit-design-tokens.mjs · package.json",
 		badge: "⚙️ 백엔드 품질 검사",
 		badgeColor: "amber",
-		title: "사용하지 않는 파일·패키지와 디자인 규칙 위반을 찾아내는 자동 검사 파일",
+		title:
+			"사용하지 않는 파일·패키지와 디자인 규칙 위반을 찾아내는 자동 검사 파일",
 		keyFiles: [
 			{
 				name: "scripts/audit-design-tokens.mjs",

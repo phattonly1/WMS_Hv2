@@ -367,6 +367,7 @@ export const UNIFIED_SMALL_CHART_REPORT_JS = `
         }
 
         isRunning = true;
+        if (typeof setDateRangeLock === 'function') setDateRangeLock(true);
         cancelRequested = false;
 
         const progBox = document.getElementById('wms-progress-box');
@@ -454,6 +455,7 @@ export const UNIFIED_SMALL_CHART_REPORT_JS = `
         } finally {
             cleanupWorkerWindow();
             isRunning = false;
+            if (typeof setDateRangeLock === 'function') setDateRangeLock(false);
             if (cancelBtn) cancelBtn.style.display = 'none';
             if (runBtn) { runBtn.style.display = 'inline-flex'; runBtn.disabled = false; runBtn.style.opacity = '1'; }
         }

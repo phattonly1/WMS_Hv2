@@ -39,7 +39,7 @@ export default function VideoModal({
 		window.location.hostname !== "localhost" &&
 		window.location.hostname !== "127.0.0.1"
 			? window.location.origin
-			: "https://wmshv2.vercel.app";
+			: process.env.NEXT_PUBLIC_APP_URL || "https://wmshv2.vercel.app";
 	const qrUrl = `${origin}/docs?modal=video&quicklink=true`;
 
 	const downloadQR = () => {

@@ -16,6 +16,7 @@ export const UNIFIED_POLLUTION_ACTION_JS = `
     async function runPollutionActionProcess() {
         // 어느 화면에서 실행하든 상관없이 WMS 내에서 바로 전수 수집 및 엑셀 다운로드 실행
         isRunning = true;
+        if (typeof setDateRangeLock === 'function') setDateRangeLock(true);
         cancelRequested = false;
 
         const progBox = document.getElementById('wms-progress-box');
@@ -97,6 +98,7 @@ export const UNIFIED_POLLUTION_ACTION_JS = `
                 if (startBtn) startBtn.style.display = 'inline-flex';
                 if (cancelBtn) cancelBtn.style.display = 'none';
                 isRunning = false;
+            if (typeof setDateRangeLock === 'function') setDateRangeLock(false);
                 return;
             }
 
@@ -695,6 +697,7 @@ export const UNIFIED_POLLUTION_ACTION_JS = `
             alert('수질오염사고 크롤링 중 오류가 발생했습니다: ' + err.message);
         } finally {
             isRunning = false;
+            if (typeof setDateRangeLock === 'function') setDateRangeLock(false);
         }
     }
 

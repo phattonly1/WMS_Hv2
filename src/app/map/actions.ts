@@ -3,6 +3,9 @@
 import { createClient } from "@/utils/supabase/server";
 import type { MapMarker, Station, StationMaster } from "./stationData";
 
+const NIER_WATER_API_BASE =
+	process.env.NIER_WATER_API_BASE || "https://water.nier.go.kr";
+
 // 측정소 추가/수정 (stations_master 및 map_markers 대응)
 export async function upsertStation(stationData: Partial<Station>) {
 	const supabase = await createClient();
@@ -177,7 +180,13 @@ let cachedHourKey: string = "";
 // 특정 측정소 24~48시간 시계열 이력 메모리 캐시 (stationCode -> { hourKey, data })
 const cachedHistoryMap: Record<
 	string,
-	{ hourKey: string; data: { latest: RealtimeWaterQuality | null; history: RealtimeWaterQuality[] } }
+	{
+		hourKey: string;
+		data: {
+			latest: RealtimeWaterQuality | null;
+			history: RealtimeWaterQuality[];
+		};
+	}
 > = {};
 
 // 매시 15분 기준 시간대 키 산출 헬퍼 (현재 시각 - 15분)
@@ -203,13 +212,13 @@ export async function getAllStationsRealtimeWaterQuality(): Promise<
 		}
 
 		const res = await fetch(
-			"https://water.nier.go.kr/web/autoWaterData/listJson",
+			`${NIER_WATER_API_BASE}/web/autoWaterData/listJson`,
 			{
 				method: "POST",
 				headers: {
 					"User-Agent":
 						"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-					Referer: "https://water.nier.go.kr/web",
+					Referer: `${NIER_WATER_API_BASE}/web`,
 					Accept: "application/json, text/javascript, */*; q=0.01",
 					"X-Requested-With": "XMLHttpRequest",
 					"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -223,7 +232,9 @@ export async function getAllStationsRealtimeWaterQuality(): Promise<
 			return cachedRealtimeMap || {};
 		}
 
-		const data = (await res.json()) as { atoWaterData?: Record<string, unknown>[] };
+		const data = (await res.json()) as {
+			atoWaterData?: Record<string, unknown>[];
+		};
 		const list: Record<string, unknown>[] = data.atoWaterData || [];
 
 		const parseVal = (val: unknown): number | null => {
@@ -239,7 +250,8 @@ export async function getAllStationsRealtimeWaterQuality(): Promise<
 			if (!code) continue;
 
 			// MESURE_DT 예: "20261030010000" -> "2026-10-30 01h"
-			let measureDt = typeof item.MSR_DATE_FMT === "string" ? item.MSR_DATE_FMT : "";
+			let measureDt =
+				typeof item.MSR_DATE_FMT === "string" ? item.MSR_DATE_FMT : "";
 			if (item.MESURE_DT && String(item.MESURE_DT).length >= 10) {
 				const raw = String(item.MESURE_DT);
 				measureDt = `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)} ${raw.slice(8, 10)}h`;
@@ -323,14 +335,13 @@ export async function getRealtimeWaterQuality(
 		});
 
 		const res = await fetch(
-			"https://water.nier.go.kr/web/autoMeasure/noConfirm/toastList",
+			`${NIER_WATER_API_BASE}/web/autoMeasure/noConfirm/toastList`,
 			{
 				method: "POST",
 				headers: {
 					"User-Agent":
 						"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-					Referer:
-						"https://water.nier.go.kr/web/autoMeasure/noConfirm?pMENU_NO=574",
+					Referer: `${NIER_WATER_API_BASE}/web/autoMeasure/noConfirm?pMENU_NO=574`,
 					Accept: "application/json, text/javascript, */*; q=0.01",
 					"X-Requested-With": "XMLHttpRequest",
 					"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -361,7 +372,8 @@ export async function getRealtimeWaterQuality(
 				};
 
 				return {
-					stationCode: typeof item.WQAMN_CODE === "string" ? item.WQAMN_CODE : stationCode,
+					stationCode:
+						typeof item.WQAMN_CODE === "string" ? item.WQAMN_CODE : stationCode,
 					stationName: typeof item.WQAMN_NM === "string" ? item.WQAMN_NM : "",
 					measureDt: typeof item.MESURE_DT === "string" ? item.MESURE_DT : "",
 					grade: typeof item.WQI_GRADE === "string" ? item.WQI_GRADE : null,
@@ -389,7 +401,9 @@ export async function getRealtimeWaterQuality(
 				r.wqi !== null,
 		);
 		const latest: RealtimeWaterQuality | null =
-			validRecords.length > 0 ? (validRecords[validRecords.length - 1] ?? null) : null;
+			validRecords.length > 0
+				? (validRecords[validRecords.length - 1] ?? null)
+				: null;
 
 		// 미래 빈 슬롯(아직 측정되지 않은 미래 시간)을 제외하고,
 		// 실제 측정이 완료된 최근 24개 시간대(24h) 레코드만 정확히 산출
@@ -413,7 +427,10 @@ export async function getRealtimeWaterQuality(
 		return {
 			latest: null,
 			history: [],
-			error: err instanceof Error ? err.message : "실시간 수질 조회 중 오류가 발생했습니다.",
+			error:
+				err instanceof Error
+					? err.message
+					: "실시간 수질 조회 중 오류가 발생했습니다.",
 		};
 	}
 }

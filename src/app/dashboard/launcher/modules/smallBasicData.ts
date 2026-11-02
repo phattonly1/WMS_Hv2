@@ -523,6 +523,7 @@ export const UNIFIED_SMALL_BASIC_DATA_JS = `
         }
 
         isRunning = true;
+        if (typeof setDateRangeLock === 'function') setDateRangeLock(true);
         cancelRequested = false;
         const progBox = document.getElementById('wms-progress-box');
         const progText = document.getElementById('wms-prog-text');
@@ -604,6 +605,7 @@ export const UNIFIED_SMALL_BASIC_DATA_JS = `
         } finally {
             cleanupWorkerWindow();
             isRunning = false;
+            if (typeof setDateRangeLock === 'function') setDateRangeLock(false);
             if (cancelBtn) cancelBtn.style.display = 'none';
             if (runBtn) {
                 runBtn.style.display = 'inline-flex';

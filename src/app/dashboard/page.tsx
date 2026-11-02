@@ -1,5 +1,6 @@
 import {
 	Activity,
+	Baby,
 	Code2,
 	Download,
 	ExternalLink,
@@ -35,7 +36,7 @@ const NAV_SERVICES = [
 	},
 ];
 
-// 하단 업무 유틸리티 도구 4종
+// 하단 업무 유틸리티 도구 5종
 const OFFLINE_TOOLS = [
 	{
 		name: "측정/장애 이력 완성기",
@@ -54,6 +55,12 @@ const OFFLINE_TOOLS = [
 		desc: "JPG/WEBP to PNG 이미지 변환",
 		file: "/tools/image-converter.html",
 		icon: ImageDown,
+	},
+	{
+		name: "아기 감각놀이",
+		desc: "키보드·터치 청각/시각 자극 토이",
+		file: "/tools/baby-toy.html",
+		icon: Baby,
 	},
 	{
 		name: "교육 자동화",

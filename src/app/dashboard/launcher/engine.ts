@@ -201,6 +201,15 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
             : []
     );
     let isRunning = false;
+
+    // 작업 시작 시 "중단버튼 상단 전체"를 1개 통짜 박스로 잠그는 헬퍼 함수
+    const setDateRangeLock = (locked) => {
+        const topLock = document.getElementById('wms-top-work-lock');
+        if (topLock) {
+            if (locked) topLock.classList.add('active');
+            else topLock.classList.remove('active');
+        }
+    };
     let cancelRequested = false;
 
     // 탭별 전용 옵션 상태
@@ -220,7 +229,7 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
 
     const card = document.createElement('div');
     card.id = 'wms-instant-card';
-    card.style.cssText = 'background:#ffffff;width:96vw;max-width:1600px;height:86vh;min-height:700px;max-height:920px;border-radius:18px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(226,232,240,0.8);position:relative;animation:wmsFadeIn 0.25s ease-out;';
+    card.style.cssText = 'background:#ffffff;width:96vw;max-width:1600px;height:90vh;min-height:720px;max-height:960px;border-radius:18px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(226,232,240,0.8);position:relative;animation:wmsFadeIn 0.25s ease-out;';
     overlay.appendChild(card);
     document.body.appendChild(overlay);
 
@@ -301,7 +310,7 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
     // 메인 탭바 전환 이벤트 (탭 넘어갈 때마다 모든 측정소 선택 항상 해제)
     header.querySelectorAll('.wms-main-tab').forEach(tabBtn => {
         tabBtn.onclick = () => {
-            if (isRunning) { alert('작업이 진행 중일 때는 탭을 전환할 수 없습니다.'); return; }
+            if (isRunning) return;
             activeTab = tabBtn.getAttribute('data-tab');
             header.querySelectorAll('.wms-main-tab').forEach(b => b.classList.remove('active'));
             tabBtn.classList.add('active');
@@ -338,6 +347,7 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
 
     // 메인 뷰 렌더링
     function renderMainView() {
+        if (isRunning) return;
         const btnCfg = getRunButtonConfig();
         const isDiagnostic = activeTab === 'diagnostic';
         const isSmallMonthly = activeTab === 'smallMonthly';
@@ -348,7 +358,7 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
         const stationButtonsHtml = isJournalCopy
             ? '<div style="display:inline-flex;align-items:center;height:28px;box-sizing:border-box;"><span style="font-size:12px;font-weight:800;color:#2563eb;background:#eff6ff;padding:4px 10px;border-radius:8px;border:1px solid #bfdbfe;line-height:1;display:inline-flex;align-items:center;">🎯 단일 측정소 선택 모드 (1개 선택 시 나머지 비활성화)</span></div>'
             : isPollutionAction
-            ? '<div style="display:inline-flex;align-items:center;height:28px;box-sizing:border-box;"><span style="font-size:12px;font-weight:800;color:#e11d48;background:#fff1f2;padding:4px 10px;border-radius:8px;border:1px solid #fecdd3;line-height:1;display:inline-flex;align-items:center;">🌐 측정소 구분 없이 전수 자동 취합 모드</span></div>'
+            ? ''
             : isSmallMonthly
             ? '<button id="wms-btn-sml" class="wms-pill-preset highlight" style="background:#ecfdf5;color:#059669;border-color:#a7f3d0;font-weight:900;padding:4px 10px;font-size:12px;height:28px;box-sizing:border-box;display:inline-flex;align-items:center;">소규모 (20)</button>' +
               '<button id="wms-btn-clear" class="wms-pill-preset" style="color:#dc2626;padding:4px 10px;font-size:12px;height:28px;box-sizing:border-box;display:inline-flex;align-items:center;">선택 해제</button>'
@@ -359,15 +369,9 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
               '<button id="wms-btn-clear" class="wms-pill-preset" style="color:#dc2626;padding:4px 10px;font-size:12px;height:28px;box-sizing:border-box;display:inline-flex;align-items:center;">선택 해제</button>';
 
         // 좌측 패널 상단 컨텐츠 렌더링 (점검일지 탭에서도 날짜 영역을 비활성화 상태로 유지하여 완벽한 UI 레이아웃 통일)
-        const dateDisabledStyle = isJournal ? 'opacity:0.42;pointer-events:none;filter:grayscale(0.6);user-select:none;' : '';
+        const dateDisabledStyle = (isJournal || isPollutionAction) ? 'opacity:0.45;pointer-events:none;filter:grayscale(0.6);user-select:none;' : '';
         const currentYearNum = new Date().getFullYear();
-        const dateNoticeBadge = isJournal
-            ? (journalTask === 'copy'
-                ? '<span style="font-size:11px;font-weight:800;color:#64748b;background:#f1f5f9;padding:2px 8px;border-radius:6px;border:1px solid #e2e8f0;">🔒 날짜 선택 비활성화 (작성창 팝업에서 조회)</span>'
-                : (journalYearScope === 'lastYear'
-                    ? \`<span style="font-size:11px;font-weight:800;color:#059669;background:#ecfdf5;padding:2px 8px;border-radius:6px;border:1px solid #a7f3d0;">⚡ 작년 전체 자동수집 (\${currentYearNum - 1}.1.1 ~ 12.31)</span>\`
-                    : \`<span style="font-size:11px;font-weight:800;color:#059669;background:#ecfdf5;padding:2px 8px;border-radius:6px;border:1px solid #a7f3d0;">⚡ 올해 전체 자동수집 (\${currentYearNum}.1.1 ~ 오늘)</span>\`))
-            : '';
+        const dateNoticeBadge = '';
 
         const leftPanelHtml = \`
             <!-- 2개월 인라인 캘린더 -->
@@ -383,16 +387,14 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
             </div>
 
             <!-- 빠른 날짜 프리셋 바 -->
-            <div class="wms-preset-bar" style="background:#f8fafc;border:1px solid #e9eff6;border-radius:12px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;\${dateDisabledStyle}">
-                <span style="font-size:12.5px;font-weight:800;color:#64748b;">빠른 선택</span>
-                <div style="flex:1;display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end;">
-                    <button id="wms-btn-prev-month-nav" class="wms-pill-preset" style="color:#2563eb;font-weight:800;padding:3px 9px;font-size:12px;">◀ 이전달</button>
-                    <button id="wms-btn-next-month-nav" class="wms-pill-preset" style="color:#2563eb;font-weight:800;padding:3px 9px;font-size:12px;">다음달 ▶</button>
-                    <button id="wms-btn-last-month" class="wms-pill-preset highlight" style="background:#ecfdf5;color:#059669;border-color:#a7f3d0;font-weight:900;padding:3px 9px;font-size:12px;">지난달 전체</button>
-                    <button id="wms-btn-this-month" class="wms-pill-preset" style="color:#059669;font-weight:800;padding:3px 9px;font-size:12px;">이번달</button>
-                    <button id="wms-btn-week-prev" class="wms-pill-preset" style="padding:3px 9px;font-size:12px;">지난주(월~일)</button>
-                    <button id="wms-btn-today" class="wms-pill-preset" style="padding:3px 9px;font-size:12px;">오늘</button>
-                    <button id="wms-btn-last-7days" class="wms-pill-preset" style="padding:3px 9px;font-size:12px;">최근 7일</button>
+            <div class="wms-preset-bar" style="background:#f8fafc;border:1px solid #e9eff6;border-radius:11px;padding:5px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;\${dateDisabledStyle}">
+                <span style="font-size:12px;font-weight:800;color:#64748b;white-space:nowrap;">빠른 선택</span>
+                <div style="flex:1;display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;">
+                    <button id="wms-btn-last-month" class="wms-pill-preset highlight" style="background:#ecfdf5;color:#059669;border-color:#a7f3d0;font-weight:900;padding:3px 8px;font-size:11.5px;">지난달</button>
+                    <button id="wms-btn-this-month" class="wms-pill-preset" style="color:#059669;font-weight:800;padding:3px 8px;font-size:11.5px;">이번달</button>
+                    <button id="wms-btn-week-prev" class="wms-pill-preset" style="padding:3px 8px;font-size:11.5px;">지난주(수~화)</button>
+                    <button id="wms-btn-today" class="wms-pill-preset" style="padding:3px 8px;font-size:11.5px;">오늘</button>
+                    <button id="wms-btn-last-7days" class="wms-pill-preset" style="padding:3px 8px;font-size:11.5px;">최근 7일</button>
                 </div>
             </div>
 
@@ -410,12 +412,12 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
         \`;
 
         // 우측 측정소 패널 스타일: 수질오염사고 탭에서는 측정소 선택 완전 비활성화 (포인터 방지, 불투명도 조절)
-        const stationPanelDisabledStyle = isPollutionAction ? 'opacity:0.48;pointer-events:none;filter:grayscale(0.5);user-select:none;' : '';
+        const stationPanelDisabledStyle = isPollutionAction ? 'opacity:0.45;pointer-events:none;filter:grayscale(0.6);user-select:none;' : '';
 
         body.innerHTML = \`
-            <div style="display:grid;grid-template-columns:1fr 1.25fr;gap:16px;align-items:stretch;flex:1;min-height:0;overflow:hidden;">
+            <div style="position:relative;display:grid;grid-template-columns:1fr 1.25fr;gap:16px;align-items:stretch;flex:1;min-height:0;overflow:hidden;">
                 <!-- 좌측 영역: 기간 및 작업 모드 카드 (모든 탭 위치 100% 통일) -->
-                <div style="min-width:0;display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:2px;" class="wms-scrollbar">
+                <div style="min-width:0;display:flex;flex-direction:column;gap:7px;overflow-y:auto;padding-right:2px;" class="wms-scrollbar">
                     \${leftPanelHtml}
                 </div>
 
@@ -433,6 +435,14 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
 
                     <div style="flex:1;min-height:0;overflow-y:auto;padding-right:2px;" class="wms-scrollbar">
                         <div id="wms-7col-station-container"></div>
+                    </div>
+                </div>
+
+                <!-- ★ 중단버튼 상단 전체(본문 좌우 전체)를 덮는 단 1개의 통짜 락 오버레이 ★ -->
+                <div id="wms-top-work-lock" class="wms-lock-overlay" style="border-radius:14px;">
+                    <div class="wms-lock-badge">
+                        <span>🔒</span>
+                        <span>설정 잠김 상태입니다 (작업 중단 시 변경 가능)</span>
                     </div>
                 </div>
             </div>
@@ -513,17 +523,19 @@ export const generateUnifiedLauncherScript = (defaultTab?: string): string => {
             };
 
             const pNav = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
-            pNav('wms-btn-prev-month-nav', () => { const cur = new Date(startDate); applyPreset(new Date(cur.getFullYear(), cur.getMonth() - 1, 1), new Date(cur.getFullYear(), cur.getMonth(), 0)); });
-            pNav('wms-btn-next-month-nav', () => { const cur = new Date(startDate); applyPreset(new Date(cur.getFullYear(), cur.getMonth() + 1, 1), new Date(cur.getFullYear(), cur.getMonth() + 2, 0)); });
             pNav('wms-btn-last-month', () => { const t = new Date(); applyPreset(new Date(t.getFullYear(), t.getMonth() - 1, 1), new Date(t.getFullYear(), t.getMonth(), 0)); });
             pNav('wms-btn-this-month', () => { const t = new Date(); applyPreset(new Date(t.getFullYear(), t.getMonth(), 1), t); });
             pNav('wms-btn-today', () => { const t = new Date(); applyPreset(t, t); });
             pNav('wms-btn-last-7days', () => { const t = new Date(); const d7 = new Date(t); d7.setDate(t.getDate() - 6); applyPreset(d7, t); });
             pNav('wms-btn-week-prev', () => {
-                const t = new Date(); const day = t.getDay(); const diff = day === 0 ? 7 : day;
-                const lastSun = new Date(t); lastSun.setDate(t.getDate() - diff);
-                const lastMon = new Date(lastSun); lastMon.setDate(lastSun.getDate() - 6);
-                applyPreset(lastMon, lastSun);
+                const t = new Date();
+                const day = t.getDay(); // 0(일), 1(월), 2(화), 3(수)...
+                const diffToTue = (day >= 2) ? (day - 2) : (day + 5);
+                const lastTue = new Date(t);
+                lastTue.setDate(t.getDate() - (diffToTue === 0 ? 7 : diffToTue));
+                const lastWed = new Date(lastTue);
+                lastWed.setDate(lastTue.getDate() - 6);
+                applyPreset(lastWed, lastTue);
             });
         }
 

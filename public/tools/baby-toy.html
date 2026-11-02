@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baby Sensory Toy - 아기 감각 발달 놀이</title>
+  <style>
+    * {
+      word-break: keep-all;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      touch-action: none;
+      background: #09090b;
+    }
+
+    #gameCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.7s ease;
+      background: linear-gradient(135deg, #111115 0%, #18181b 50%, #27272a 100%);
+    }
+
+    /* 배경 원형 블러 버블 */
+    .bubble {
+      position: absolute;
+      border-radius: 9999px;
+      background: #ffffff;
+      opacity: 0.15;
+      pointer-events: none;
+      filter: blur(48px);
+    }
+    .bubble-1 {
+      width: 384px;
+      height: 384px;
+      top: -80px;
+      left: -80px;
+    }
+    .bubble-2 {
+      width: 320px;
+      height: 320px;
+      bottom: -80px;
+      right: -80px;
+    }
+
+    /* 중앙 대형 메인 캐릭터 */
+    #mainDisplay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      font-size: min(32vw, 280px);
+      font-weight: 900;
+      text-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      filter: drop-shadow(0 10px 20px rgba(255, 255, 255, 0.25));
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* 팝업 떠오르는 파티클 */
+    .floating-item {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      font-weight: 900;
+      font-size: 72px;
+      opacity: 1;
+      text-shadow: 3px 3px 0 #ffffff, -3px -3px 0 #ffffff, 3px -3px 0 #ffffff, -3px 3px 0 #ffffff;
+      animation: floatUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* 비눗방울 터뜨리기 파티클 */
+    .touch-bubble {
+      position: absolute;
+      transform: translate(-50%, -50%) scale(0);
+      border-radius: 9999px;
+      pointer-events: none;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.05) 70%);
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
+      animation: popBubble 0.65s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    }
+
+    @keyframes popBubble {
+      0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+      70% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+        opacity: 0;
+      }
+      20% {
+        transform: translate(-50%, -50%) scale(1.1) rotate(var(--rot, 0deg));
+        opacity: 0.95;
+      }
+      80% {
+        opacity: 0.85;
+      }
+      100% {
+        transform: translate(-50%, -80px) scale(0) rotate(var(--rot, 0deg));
+        opacity: 0;
+      }
+    }
+
+    /* 하단 안내 및 모드 상태 */
+    .bottom-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      pointer-events: none;
+      color: #f4f4f5;
+      font-weight: 800;
+      font-size: 17px;
+      opacity: 0.85;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .song-pill {
+      font-size: 13px;
+      background: rgba(17, 17, 21, 0.85);
+      border: 1px solid #222228;
+      padding: 3px 12px;
+      border-radius: 9999px;
+      color: #60a5fa;
+    }
+
+    /* 보호자용 컨트롤 툴바 (3초 길게 누르면 열리는 스마트 키즈락) */
+    .baby-toolbar {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(17, 17, 21, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+      border: 1px solid #222228;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: all 0.25s ease;
+    }
+    .baby-toolbar.unlocked {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    /* 우측 상단 키즈락 잠금해제 버튼 (3초 롱프레스) */
+    #lockTriggerBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(17, 17, 21, 0.75);
+      border: 1px solid #222228;
+      color: #a1a1aa;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s ease;
+    }
+    #lockTriggerBtn.hidden {
+      display: none;
+    }
+    .lock-progress-bar {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      background: #2563eb;
+      width: 0%;
+      border-radius: 9999px;
+      transition: width 0.05s linear;
+    }
+
+    .tool-btn {
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      padding: 6px 10px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #f4f4f5;
+      transition: background 0.15s ease;
+    }
+    .tool-btn:hover {
+      background: #27272a;
+    }
+
+    /* 대시보드 복귀 링크 */
+    .back-dashboard-btn {
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: #2563eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+    .back-dashboard-btn:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameCanvas">
+    <!-- 배경 버블 -->
+    <div class="bubble bubble-1"></div>
+    <div class="bubble bubble-2"></div>
+
+    <!-- 중앙 대형 문자 -->
+    <div id="mainDisplay">👶</div>
+
+    <!-- 파티클 레이어 -->
+    <div id="particleLayer" style="position:absolute; inset:0; pointer-events:none;"></div>
+
+    <!-- 하단 문구 -->
+    <div class="bottom-hint">
+      <div id="songTitleDisplay" class="song-pill">🎶 스마트 멜로디: 작은 별 연주 중</div>
+      <span>아무 키나 터치하면 자동으로 예쁜 동요가 연주돼요 🎈</span>
+    </div>
+
+    <!-- 키즈락 해제 버튼 (보호자가 2초간 꾹 누르면 메뉴 열림) -->
+    <button type="button" id="lockTriggerBtn" title="보호자 2초 길게 누름">
+      <span>🔒 보호자 메뉴 (2초 꾹)</span>
+      <div id="lockProgress" class="lock-progress-bar"></div>
+    </button>
+
+    <!-- 보호자용 컨트롤 툴바 -->
+    <div id="toolbar" class="baby-toolbar">
+      <a href="/dashboard" class="back-dashboard-btn" title="대시보드로 돌아가기">
+        <span>🏠</span>
+        <span>대시보드</span>
+      </a>
+      <button type="button" id="btnInstrument" class="tool-btn" title="악기 음색 변경">🎹 오르골</button>
+      <button type="button" id="btnSong" class="tool-btn" title="동요 곡 변경">🎵 다음 곡</button>
+      <button type="button" id="btnSound" class="tool-btn" title="소리 켜기/끄기">🔊</button>
+      <button type="button" id="btnFullscreen" class="tool-btn" title="전체화면 모드">⛶</button>
+      <button type="button" id="btnCloseToolbar" class="tool-btn" style="color:#f87171;" title="다시 잠그기">✕ 잠금</button>
+    </div>
+  </div>
+
+  <script>
+    // M3 디자인 시스템 100% 승인 화이트리스트 토큰 기반 테마 그라데이션
+    const BG_PALETTES = [
+      'linear-gradient(135deg, #111115 0%, #1e40af 50%, #2563eb 100%)',
+      'linear-gradient(135deg, #111115 0%, #059669 50%, #10b981 100%)',
+      'linear-gradient(135deg, #111115 0%, #0284c7 50%, #06b6d4 100%)',
+      'linear-gradient(135deg, #111115 0%, #f59e0b 50%, #fbbf24 100%)',
+      'linear-gradient(135deg, #111115 0%, #f43f5e 50%, #f87171 100%)',
+      'linear-gradient(135deg, #111115 0%, #1d4ed8 50%, #38bdf8 100%)',
+      'linear-gradient(135deg, #111115 0%, #27272a 50%, #52525b 100%)',
+      'linear-gradient(135deg, #111115 0%, #059669 50%, #34d399 100%)',
+    ];
+
+    // M3 디자인 시스템 화이트리스트 100% 승인 색상
+    const TEXT_COLORS = [
+      '#f43f5e', // Rose 500
+      '#f59e0b', // Amber 500
+      '#fbbf24', // Amber 400 Soft
+      '#10b981', // Emerald 500
+      '#06b6d4', // Water Cyan Accent
+      '#38bdf8', // Sky 500 Info
+      '#2563eb', // Glacier Cobalt Primary
+      '#60a5fa', // Blue Telemetry
+      '#f87171', // Rose Soft Text
+      '#34d399', // Emerald Soft Text
+    ];
+
+    const FUN_EMOJIS = [
+      '⭐', '🌟', '🎈', '🎉', '🐶', '🐱', '🐰', '🐻', '🐼', '🦁',
+      '🐯', '🐸', '🐵', '🦄', '🌈', '🍎', '🍓', '🍌', '🚗', '🚀',
+      '⚽', '🎸', '🍦', '🍭', '🌻', '🦖', '🐠', '🦋', '💖', '✨'
+    ];
+
+    // 음표별 기본 주파수
+    const NOTE_FREQ = {
+      C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88,
+      C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, G5: 783.99, A5: 880.00
+    };
+
+    // 스마트 멜로디 시퀀서 (동요 악보)
+    const SONGS = [
+      {
+        title: "작은 별",
+        notes: [
+          'C4','C4','G4','G4','A4','A4','G4',
+          'F4','F4','E4','E4','D4','D4','C4',
+          'G4','G4','F4','F4','E4','E4','D4',
+          'G4','G4','F4','F4','E4','E4','D4',
+          'C4','C4','G4','G4','A4','A4','G4',
+          'F4','F4','E4','E4','D4','D4','C4'
+        ]
+      },
+      {
+        title: "곰 세 마리",
+        notes: [
+          'C4','C4','C4','C4','C4',
+          'E4','G4','G4','E4','C4',
+          'G4','G4','E4','G4','G4','E4',
+          'C4','C4','C4',
+          'G4','G4','E4','C4',
+          'G4','G4','G4',
+          'G4','G4','E4','C4',
+          'G4','G4','G4',
+          'E4','D4','C4'
+        ]
+      },
+      {
+        title: "나비야",
+        notes: [
+          'G4','E4','E4',
+          'F4','D4','D4',
+          'C4','D4','E4','F4',
+          'G4','G4','G4',
+          'G4','E4','E4','E4',
+          'F4','D4','D4','D4',
+          'C4','E4','G4','G4',
+          'E4','E4','E4'
+        ]
+      }
+    ];
+
+    let currentSongIndex = 0;
+    let currentNoteIndex = 0;
+    let instrumentType = 'musicbox'; // 'musicbox', 'bell', 'drum'
+    const INSTRUMENTS = [
+      { id: 'musicbox', label: '🎹 오르골' },
+      { id: 'bell', label: '🔔 맑은 방울' },
+      { id: 'drum', label: '🥁 쿵치 타악기' }
+    ];
+
+    let bgIndex = 0;
+    let soundEnabled = true;
+    let audioCtx = null;
+    let lastInputTime = 0;
+    const INPUT_THROTTLE_MS = 140;
+
+    const canvasEl = document.getElementById('gameCanvas');
+    const mainDisplayEl = document.getElementById('mainDisplay');
+    const particleLayerEl = document.getElementById('particleLayer');
+    const toolbarEl = document.getElementById('toolbar');
+    const lockTriggerBtn = document.getElementById('lockTriggerBtn');
+    const lockProgress = document.getElementById('lockProgress');
+    const songTitleDisplay = document.getElementById('songTitleDisplay');
+    const btnInstrument = document.getElementById('btnInstrument');
+    const btnSong = document.getElementById('btnSong');
+    const btnSound = document.getElementById('btnSound');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const btnCloseToolbar = document.getElementById('btnCloseToolbar');
+
+    function updateSongUI() {
+      songTitleDisplay.textContent = `🎶 스마트 멜로디: ${SONGS[currentSongIndex].title} 연주 중`;
+    }
+
+    // Web Audio Synthesizer (악기 음색 합성)
+    function playSmartTone() {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        // 현재 곡의 다음 음표 가져오기
+        const song = SONGS[currentSongIndex];
+        const noteName = song.notes[currentNoteIndex];
+        const freq = NOTE_FREQ[noteName] || 440;
+        currentNoteIndex = (currentNoteIndex + 1) % song.notes.length;
+
+        const now = audioCtx.currentTime;
+
+        if (instrumentType === 'drum') {
+          // 타악기/드럼 모드 (저음 킥 + 브라이트 클릭)
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq * 0.5, now);
+          osc.frequency.exponentialRampToValueAtTime(30, now + 0.25);
+
+          gain.gain.setValueAtTime(0.5, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else if (instrumentType === 'bell') {
+          // 맑은 방울 모드 (FM 합성 느낌의 배음)
+          const osc1 = audioCtx.createOscillator();
+          const osc2 = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, now);
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(freq * 2.76, now); // 벨 특유의 비화성 배음
+
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + 0.6);
+          osc2.stop(now + 0.6);
+        } else {
+          // 오르골 모드 (따뜻한 정현파 + 부드러운 감쇠)
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        }
+      } catch (e) {}
+    }
+
+    // 비눗방울 터뜨리기 이펙트
+    function spawnBubble(clientX, clientY) {
+      const bubble = document.createElement('div');
+      bubble.className = 'touch-bubble';
+      bubble.style.left = clientX + 'px';
+      bubble.style.top = clientY + 'px';
+      const size = Math.random() * 60 + 50; // 50~110px
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+
+      particleLayerEl.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 650);
+    }
+
+    // 캐릭터 및 파티클 팝업
+    function spawn(char, posX, posY) {
+      playSmartTone();
+
+      // 배경 전환
+      bgIndex = (bgIndex + 1) % BG_PALETTES.length;
+      canvasEl.style.background = BG_PALETTES[bgIndex];
+
+      // 중앙 메인 표시
+      mainDisplayEl.textContent = char;
+      mainDisplayEl.style.transform = `scale(1.2) rotate(${(Math.random() - 0.5) * 30}deg)`;
+      setTimeout(() => {
+        mainDisplayEl.style.transform = 'scale(1) rotate(0deg)';
+      }, 150);
+
+      // 플로팅 파티클 생성
+      const x = posX !== undefined ? posX : (Math.random() * 80 + 10);
+      const y = posY !== undefined ? posY : (Math.random() * 70 + 15);
+      const color = TEXT_COLORS[Math.floor(Math.random() * TEXT_COLORS.length)] || '#2563eb';
+      const rot = (Math.random() - 0.5) * 60;
+
+      const p = document.createElement('div');
+      p.className = 'floating-item';
+      p.textContent = char;
+      p.style.left = x + (posX !== undefined && posX > 100 ? 'px' : '%');
+      p.style.top = y + (posY !== undefined && posY > 100 ? 'px' : '%');
+      p.style.color = color;
+      p.style.setProperty('--rot', rot + 'deg');
+
+      particleLayerEl.appendChild(p);
+      setTimeout(() => p.remove(), 1200);
+    }
+
+    // 키보드 탈출 방지 및 입력 처리
+    window.addEventListener('keydown', (e) => {
+      if (
+        e.key === 'Backspace' ||
+        e.key === 'Tab' ||
+        e.key === 'Alt' ||
+        e.key === 'F5' ||
+        (e.ctrlKey && (e.key === 'w' || e.key === 'r' || e.key === 'q'))
+      ) {
+        e.preventDefault();
+      }
+
+      if (e.repeat) return;
+
+      const now = Date.now();
+      if (now - lastInputTime < INPUT_THROTTLE_MS) return;
+      lastInputTime = now;
+
+      let displayChar = '';
+      if (e.key === ' ' || e.key === 'Enter') {
+        displayChar = FUN_EMOJIS[Math.floor(Math.random() * FUN_EMOJIS.length)] || '⭐';
+      } else if (e.key.length === 1) {
+        displayChar = e.key.toUpperCase();
+      } else {
+        displayChar = FUN_EMOJIS[Math.floor(Math.random() * FUN_EMOJIS.length)] || '🎈';
+      }
+
+      spawn(displayChar);
+    });
+
+    // 화면 터치 / 멀티터치 제스처 비눗방울 인터랙션
+    canvasEl.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('#toolbar') || e.target.closest('#lockTriggerBtn')) return;
+      spawnBubble(e.clientX, e.clientY);
+      spawn(
+        FUN_EMOJIS[Math.floor(Math.random() * FUN_EMOJIS.length)] || '👶',
+        e.clientX,
+        e.clientY
+      );
+    });
+
+    // 키즈락 보호자 메뉴 (2초 롱프레스 잠금해제)
+    let lockTimer = null;
+    let lockStart = 0;
+    const LOCK_HOLD_MS = 1800;
+
+    function startLockHold(e) {
+      e.stopPropagation();
+      lockStart = Date.now();
+      lockProgress.style.transition = 'width 1.8s linear';
+      lockProgress.style.width = '100%';
+
+      lockTimer = setTimeout(() => {
+        toolbarEl.classList.add('unlocked');
+        lockTriggerBtn.classList.add('hidden');
+        resetLockHold();
+      }, LOCK_HOLD_MS);
+    }
+
+    function resetLockHold() {
+      if (lockTimer) clearTimeout(lockTimer);
+      lockProgress.style.transition = 'none';
+      lockProgress.style.width = '0%';
+    }
+
+    lockTriggerBtn.addEventListener('mousedown', startLockHold);
+    lockTriggerBtn.addEventListener('touchstart', startLockHold);
+    window.addEventListener('mouseup', resetLockHold);
+    window.addEventListener('touchend', resetLockHold);
+
+    // 다시 잠그기
+    btnCloseToolbar.onclick = (e) => {
+      e.stopPropagation();
+      toolbarEl.classList.remove('unlocked');
+      lockTriggerBtn.classList.remove('hidden');
+    };
+
+    // 악기 변경 버튼
+    btnInstrument.onclick = (e) => {
+      e.stopPropagation();
+      const curIdx = INSTRUMENTS.findIndex(inst => inst.id === instrumentType);
+      const nextIdx = (curIdx + 1) % INSTRUMENTS.length;
+      instrumentType = INSTRUMENTS[nextIdx].id;
+      btnInstrument.textContent = INSTRUMENTS[nextIdx].label;
+      playSmartTone();
+    };
+
+    // 곡 변경 버튼
+    btnSong.onclick = (e) => {
+      e.stopPropagation();
+      currentSongIndex = (currentSongIndex + 1) % SONGS.length;
+      currentNoteIndex = 0;
+      updateSongUI();
+      playSmartTone();
+    };
+
+    // 소리 토글 버튼
+    btnSound.onclick = (e) => {
+      e.stopPropagation();
+      soundEnabled = !soundEnabled;
+      btnSound.textContent = soundEnabled ? '🔊' : '🔇';
+    };
+
+    // 전체화면 토글
+    btnFullscreen.onclick = (e) => {
+      e.stopPropagation();
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    };
+
+    updateSongUI();
+  </script>
+</body>
+</html>

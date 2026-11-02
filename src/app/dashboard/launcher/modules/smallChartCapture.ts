@@ -613,6 +613,7 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
         }
 
         isRunning = true;
+        if (typeof setDateRangeLock === 'function') setDateRangeLock(true);
         cancelRequested = false;
         const progBox = document.getElementById('wms-progress-box');
         const progText = document.getElementById('wms-prog-text');
@@ -682,6 +683,7 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
         } finally {
             closeWmsChartPopup();
             isRunning = false;
+            if (typeof setDateRangeLock === 'function') setDateRangeLock(false);
             cancelRequested = false;
             if (progBox) progBox.style.display = 'none';
             if (runBtn) runBtn.style.display = 'inline-flex';
@@ -708,6 +710,7 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
         }
 
         isRunning = true;
+        if (typeof setDateRangeLock === 'function') setDateRangeLock(true);
         cancelRequested = false;
         const progBox = document.getElementById('wms-progress-box');
         const progText = document.getElementById('wms-prog-text');
@@ -846,6 +849,7 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
             alert('ZIP 병합 엑셀 생성 중 오류가 발생했습니다: ' + (err.message || err));
         } finally {
             isRunning = false;
+            if (typeof setDateRangeLock === 'function') setDateRangeLock(false);
             cancelRequested = false;
             if (progBox) progBox.style.display = 'none';
             if (runBtn) runBtn.style.display = 'inline-flex';

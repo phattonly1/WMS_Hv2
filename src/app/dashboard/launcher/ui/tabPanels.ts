@@ -24,7 +24,7 @@ export const LAUNCHER_TAB_PANELS_JS = `
                             </label>
                         </div>
                         <div style="font-size:11.5px;color:#475569;line-height:1.4;">
-                            1시간당 35분(7개) 이상 OK 시 1유효시간, 하루 13시간 이상 시 유효일 판정
+                            시간당 35분(7개) 이상 OK, 1일 13시간 이상 정상 판정
                         </div>
                     </div>
 
@@ -37,7 +37,7 @@ export const LAUNCHER_TAB_PANELS_JS = `
                             </label>
                         </div>
                         <div style="font-size:11.5px;color:#475569;line-height:1.4;">
-                            [G]점검, [D]정지, [E]교정 시계열 연속 구간 분석
+                            [G]점검 · [D]정지 · [E]교정 연속 시계열 이력 분석
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@ export const LAUNCHER_TAB_PANELS_JS = `
                             </label>
                         </div>
                         <div style="font-size:11.5px;color:#475569;line-height:1.4;">
-                            데이터 상태코드 및 수치 변경 승인/이력 전수 추적
+                            측정데이터 상태코드 및 수치 변경 이력 전수 추적
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@ export const LAUNCHER_TAB_PANELS_JS = `
                             </label>
                         </div>
                         <div style="font-size:11.5px;color:#475569;line-height:1.4;">
-                            WMS 상태관리 데이터(10027) 고속 병렬 수집 종합 진단
+                            상태관리(10027) 데이터 고속 수집 및 점검현황 종합 진단
                         </div>
                     </div>
                 </div>
@@ -269,10 +269,10 @@ export const LAUNCHER_TAB_PANELS_JS = `
     function renderPollutionActionTaskCards() {
         const curYear = pollutionYear || new Date().getFullYear();
         const qList = [
-            { id: '1Q', label: '1분기', desc: '1.1 ~ 3.31', s: \`\${curYear}-01-01\`, e: \`\${curYear}-03-31\` },
-            { id: '2Q', label: '2분기', desc: '4.1 ~ 6.30', s: \`\${curYear}-04-01\`, e: \`\${curYear}-06-30\` },
-            { id: '3Q', label: '3분기', desc: '7.1 ~ 9.30', s: \`\${curYear}-07-01\`, e: \`\${curYear}-09-30\` },
-            { id: '4Q', label: '4분기', desc: '10.1 ~ 12.31', s: \`\${curYear}-10-01\`, e: \`\${curYear}-12-31\` }
+            { id: '1Q', label: '1분기', desc: '1.1 ~ 3.31', s: curYear + '-01-01', e: curYear + '-03-31' },
+            { id: '2Q', label: '2분기', desc: '4.1 ~ 6.30', s: curYear + '-04-01', e: curYear + '-06-30' },
+            { id: '3Q', label: '3분기', desc: '7.1 ~ 9.30', s: curYear + '-07-01', e: curYear + '-09-30' },
+            { id: '4Q', label: '4분기', desc: '10.1 ~ 12.31', s: curYear + '-10-01', e: curYear + '-12-31' }
         ];
 
         const qButtons = qList.map(q => {
@@ -291,19 +291,19 @@ export const LAUNCHER_TAB_PANELS_JS = `
         return \`
             <div style="display:flex;flex-direction:column;gap:10px;">
                 <!-- 연도 전환 컨트롤러 바 -->
-                <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,0.03);">
-                    <button type="button" id="wms-btn-poll-prev-year" style="border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all 0.15s ease;">
+                <div class="wms-panel-box wms-poll-year-bar" style="border-radius:12px;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;">
+                    <button type="button" id="wms-btn-poll-prev-year" class="wms-btn-secondary" style="border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
                         ◀ \${curYear - 1}년
                     </button>
                     <div style="display:flex;align-items:center;gap:8px;">
-                        <span style="font-size:15px;font-weight:900;color:#1e293b;">📅 \${curYear}년도</span>
+                        <span class="wms-poll-year-title" style="font-size:14px;font-weight:900;">📅 \${curYear}년도</span>
                         \${curYear !== new Date().getFullYear() ? \`
                             <button type="button" id="wms-btn-poll-reset-year" style="border:1px solid #bfdbfe;background:#eff6ff;color:#2563eb;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:800;cursor:pointer;">
                                 올해(\${new Date().getFullYear()}년)로 복귀
                             </button>
                         \` : ''}
                     </div>
-                    <button type="button" id="wms-btn-poll-next-year" style="border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all 0.15s ease;">
+                    <button type="button" id="wms-btn-poll-next-year" class="wms-btn-secondary" style="border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
                         \${curYear + 1}년 ▶
                     </button>
                 </div>
@@ -311,19 +311,7 @@ export const LAUNCHER_TAB_PANELS_JS = `
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                     \${qButtons}
                 </div>
-                <div style="font-size:11.5px;color:#475569;line-height:1.55;background:#f8fafc;border:1px solid #e2e8f0;padding:12px 14px;border-radius:10px;display:flex;flex-direction:column;gap:5px;">
-                    <div style="font-size:12px;font-weight:900;color:#0f172a;display:flex;align-items:center;gap:6px;">
-                        <span>💡</span>
-                        <span>[붙임 2] 보고서 자동화 프로세스 안내</span>
-                    </div>
-                    <div style="padding-left:2px;display:flex;flex-direction:column;gap:3px;">
-                        <div>• <strong>시간순 연번 정렬:</strong> 발생일시 기준 오름차순으로 자동 정렬하여 1번부터 연번을 부여합니다.</div>
-                        <div>• <strong>점검여부 정밀 판정:</strong> 경보 발생 후 최초 출동(시간범위 종료일 기준)을 식별하고, 출동 당일 병행된 정기점검(<code>일상</code>/<code>주간</code>/<code>월간</code>)만 점검일지와 교차 분석하여 자동 기입합니다. (단순 긴급출동은 공란 유지)</div>
-                        <div>• <strong>대분류 공식 매핑:</strong> WMS 결재 폼에 등록된 대분류 코드(<code>108: 환경적 요인</code>, <code>109: 설비적 요인</code>)를 1:1로 매핑하며, 미등록 시 임의 추정 없이 공란 처리합니다.</div>
-                        <div>• <strong>초과항목 전수 맵핑:</strong> 초과항목(1~10)의 단위 및 실제 경보기준을 결재 폼 데이터와 대조하여 정확히 추출합니다.</div>
-                    </div>
                 </div>
-            </div>
         \`;
     }
 
