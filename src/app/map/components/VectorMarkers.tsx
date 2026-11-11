@@ -174,10 +174,10 @@ export const StationMarker = React.memo(function StationMarker({
 	};
 
 	const chipText = getChipText();
-	// 마커 코어 링 색상: EC 급감 시 로즈 레드(#e11d48), EC 급등 시 앰버(#f59e0b), 평소엔 수계 기본 색상
+	// 마커 코어 링 색상: EC 급감 시 로즈 레드(#ef4444), EC 급등 시 앰버(#f59e0b), 평소엔 수계 기본 색상
 	const ringColor = hasEcWarning
 		? ecAnomaly?.type === "low"
-			? "#e11d48"
+			? "#ef4444"
 			: "#f59e0b"
 		: color;
 

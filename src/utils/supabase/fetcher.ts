@@ -1,5 +1,9 @@
-import { createClient } from "./client";
 import type { Station } from "@/app/map/stationData";
+import type {
+	ReagentOrderSheet,
+	ReagentPerson,
+} from "@/app/reagents/constants";
+import { createClient } from "./client";
 
 export async function fetchStations(): Promise<Station[]> {
 	const supabase = createClient();
@@ -32,7 +36,11 @@ export async function fetchStations(): Promise<Station[]> {
 	}
 
 	const assetsByStation: Record<string, string[]> = {};
-	for (const a of assetData as { station_id?: string; model?: string; status?: string }[]) {
+	for (const a of assetData as {
+		station_id?: string;
+		model?: string;
+		status?: string;
+	}[]) {
 		const sId = a.station_id;
 		const model = a.model;
 		if (!sId || !model) continue;
@@ -44,41 +52,54 @@ export async function fetchStations(): Promise<Station[]> {
 		assetsByStation[sId] = existing;
 	}
 
-	const masters: Station[] = (masterData as Record<string, unknown>[]).map((m) => {
-		const sId = String(m.station_id || m.id);
-		const instruments = assetsByStation[sId] ?? [];
+	const masters: Station[] = (masterData as Record<string, unknown>[]).map(
+		(m) => {
+			const sId = String(m.station_id || m.id);
+			const instruments = assetsByStation[sId] ?? [];
 
-		return {
-			id: sId,
-			name: String(m.name || ""),
-			lat: Number(m.lat) || 0,
-			lng: Number(m.lng) || 0,
-			type: m.type as Station["type"],
-			river: m.river as Station["river"],
-			office: typeof m.office === "string" ? m.office : undefined,
-			address: typeof m.address === "string" ? m.address : undefined,
-			description: typeof m.description === "string" ? m.description : undefined,
-			facility_type: typeof m.facility_type === "string" ? m.facility_type : undefined,
-			install_date: typeof m.install_date === "string" ? m.install_date : undefined,
-			instruments,
-			features: Array.isArray(m.features) ? (m.features as string[]) : [],
-			history: Array.isArray(m.history) ? (m.history as { date: string; desc: string }[]) : [],
-			angle: 0,
-		};
-	});
+			return {
+				id: sId,
+				name: String(m.name || ""),
+				lat: Number(m.lat) || 0,
+				lng: Number(m.lng) || 0,
+				type: m.type as Station["type"],
+				river: m.river as Station["river"],
+				office: typeof m.office === "string" ? m.office : undefined,
+				address: typeof m.address === "string" ? m.address : undefined,
+				description:
+					typeof m.description === "string" ? m.description : undefined,
+				facility_type:
+					typeof m.facility_type === "string" ? m.facility_type : undefined,
+				install_date:
+					typeof m.install_date === "string" ? m.install_date : undefined,
+				instruments,
+				features: Array.isArray(m.features) ? (m.features as string[]) : [],
+				history: Array.isArray(m.history)
+					? (m.history as { date: string; desc: string }[])
+					: [],
+				angle: 0,
+			};
+		},
+	);
 
-	const markers: Station[] = (markerData as Record<string, unknown>[]).map((mk) => ({
-		id: String(mk.id),
-		name: String(mk.name || ""),
-		lat: Number(mk.lat) || 0,
-		lng: Number(mk.lng) || 0,
-		type: mk.type as Station["type"],
-		river: mk.river as Station["river"],
-		related_station_id: typeof mk.related_station_id === "string" ? mk.related_station_id : undefined,
-		angle: Number(mk.angle) || 0,
-		color: typeof mk.color === "string" ? mk.color : undefined,
-		description: typeof mk.description === "string" ? mk.description : undefined,
-	}));
+	const markers: Station[] = (markerData as Record<string, unknown>[]).map(
+		(mk) => ({
+			id: String(mk.id),
+			name: String(mk.name || ""),
+			lat: Number(mk.lat) || 0,
+			lng: Number(mk.lng) || 0,
+			type: mk.type as Station["type"],
+			river: mk.river as Station["river"],
+			related_station_id:
+				typeof mk.related_station_id === "string"
+					? mk.related_station_id
+					: undefined,
+			angle: Number(mk.angle) || 0,
+			color: typeof mk.color === "string" ? mk.color : undefined,
+			description:
+				typeof mk.description === "string" ? mk.description : undefined,
+		}),
+	);
 
 	return [...masters, ...markers];
 }
@@ -124,4 +145,31 @@ export async function fetchLogs(type: "REQ" | "OUT" | "OUT_RETURN") {
 		throw error;
 	}
 	return data || [];
+}
+
+// 제조시약 주문 회차 목록 가져오기 (reagent_order_sheets)
+export async function fetchReagentSheets(): Promise<ReagentOrderSheet[]> {
+	const supabase = createClient();
+	const { data, error } = await supabase
+		.from("reagent_order_sheets")
+		.select("id, title, deadline, delivery_date, sort_order, cells, created_at")
+		.order("sort_order", { ascending: true });
+
+	if (error) {
+		console.error("fetchReagentSheets error:", error);
+		throw error;
+	}
+
+	return (data || []).map((row) => ({
+		id: row.id,
+		title: row.title,
+		deadline: row.deadline || "-",
+		deliveryDate: row.delivery_date || "-",
+		sortOrder: row.sort_order || 1,
+		cells:
+			row.cells && typeof row.cells === "object"
+				? (row.cells as Record<string, Partial<Record<ReagentPerson, string>>>)
+				: {},
+		createdAt: row.created_at,
+	}));
 }

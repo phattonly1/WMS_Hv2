@@ -1,7 +1,12 @@
 "use client";
 
 import useSWR from "swr";
-import { fetchLogs, fetchStations, fetchSupplies } from "./fetcher";
+import {
+	fetchLogs,
+	fetchReagentSheets,
+	fetchStations,
+	fetchSupplies,
+} from "./fetcher";
 
 const defaultOptions = {
 	revalidateOnFocus: false,
@@ -58,6 +63,25 @@ export function useLogs(type: "REQ" | "OUT" | "OUT_RETURN") {
 
 	return {
 		logs: data ?? [],
+		isLoading,
+		isError: error,
+		refresh,
+	};
+}
+
+export function useReagentSheets() {
+	const {
+		data,
+		error,
+		isLoading,
+		mutate: refresh,
+	} = useSWR("reagent_order_sheets", fetchReagentSheets, {
+		...defaultOptions,
+		dedupingInterval: 30000,
+	});
+
+	return {
+		sheets: data ?? [],
 		isLoading,
 		isError: error,
 		refresh,

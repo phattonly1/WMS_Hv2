@@ -12,7 +12,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
 	deleteReagentSheet,
-	getReagentSheets,
 	type ReagentOrderSheet,
 	type ReagentPerson,
 	type ReagentRowSpec,
@@ -20,6 +19,7 @@ import {
 	upsertReagentSheetMeta,
 } from "@/actions/reagents";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useReagentSheets } from "@/utils/supabase/hooks";
 import DesktopReagentWorkspace from "./components/DesktopReagentWorkspace";
 import MobileReagentBottomBar from "./components/MobileReagentBottomBar";
 import ReagentAmountModal from "./components/ReagentAmountModal";
@@ -35,9 +35,29 @@ import {
 import { downloadStyledReagentXlsx } from "./utils/exportReagentXlsx";
 
 export default function ReagentsPage() {
+	const {
+		sheets: fetchedSheets,
+		isLoading: isFetchingSheets,
+		refresh: refreshSheetsData,
+	} = useReagentSheets();
 	const [sheets, setSheets] = useState<ReagentOrderSheet[]>([]);
 	const [selectedSheetId, setSelectedSheetId] = useState<string>("");
-	const [loading, setLoading] = useState<boolean>(true);
+
+	useEffect(() => {
+		if (fetchedSheets) {
+			setSheets(fetchedSheets);
+		}
+	}, [fetchedSheets]);
+
+	// 초기 선택 시트 설정
+	useEffect(() => {
+		if (sheets.length > 0 && !selectedSheetId) {
+			const latest = sheets[sheets.length - 1];
+			setSelectedSheetId(latest ? latest.id : SUMMARY_SHEET_ID);
+		}
+	}, [sheets, selectedSheetId]);
+
+	const loading = isFetchingSheets && sheets.length === 0;
 
 	// 모바일 전용 상태: 처음 진입 시 이름 선택 화면부터 노출 (null)
 	const [mobilePerson, setMobilePerson] = useState<ReagentPerson | null>(null);
@@ -63,31 +83,27 @@ export default function ReagentsPage() {
 	const [sheetDelivery, setSheetDelivery] = useState<string>("");
 	const [savingSheet, setSavingSheet] = useState<boolean>(false);
 
-	const loadSheets = useCallback(async (preferSheetId?: string) => {
-		setLoading(true);
-		try {
-			const data = await getReagentSheets();
-			setSheets(data);
-			if (preferSheetId) {
-				setSelectedSheetId(preferSheetId);
-			} else if (data.length > 0) {
-				setSelectedSheetId((prev) => {
-					if (prev === SUMMARY_SHEET_ID) return SUMMARY_SHEET_ID;
-					if (prev && data.some((s) => s.id === prev)) return prev;
-					const latest = data[data.length - 1];
-					return latest ? latest.id : SUMMARY_SHEET_ID;
-				});
-			} else {
-				setSelectedSheetId(SUMMARY_SHEET_ID);
+	const loadSheets = useCallback(
+		async (preferSheetId?: string) => {
+			const updated = await refreshSheetsData();
+			if (updated && Array.isArray(updated)) {
+				setSheets(updated);
+				if (preferSheetId) {
+					setSelectedSheetId(preferSheetId);
+				} else if (updated.length > 0) {
+					setSelectedSheetId((prev) => {
+						if (prev === SUMMARY_SHEET_ID) return SUMMARY_SHEET_ID;
+						if (prev && updated.some((s) => s.id === prev)) return prev;
+						const latest = updated[updated.length - 1];
+						return latest ? latest.id : SUMMARY_SHEET_ID;
+					});
+				} else {
+					setSelectedSheetId(SUMMARY_SHEET_ID);
+				}
 			}
-		} finally {
-			setLoading(false);
-		}
-	}, []);
-
-	useEffect(() => {
-		loadSheets();
-	}, [loadSheets]);
+		},
+		[refreshSheetsData],
+	);
 
 	// 모바일 브라우저/하드웨어 뒤로가기 시 대시보드 이탈 대신 측정소 선택 화면으로 복귀
 	useEffect(() => {

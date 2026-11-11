@@ -1,20 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import type { ReagentPerson, ReagentRowSpec } from "@/app/reagents/constants";
+import {
+	type ReagentOrderSheet,
+	type ReagentPerson,
+	type ReagentRowSpec,
+} from "@/app/reagents/constants";
 import { createClient } from "@/utils/supabase/server";
 
-export type { ReagentPerson, ReagentRowSpec };
-
-export interface ReagentOrderSheet {
-	id: string;
-	title: string;
-	deadline: string;
-	deliveryDate: string;
-	sortOrder: number;
-	cells: Record<string, Partial<Record<ReagentPerson, string>>>;
-	createdAt: string;
-}
+export type { ReagentOrderSheet, ReagentPerson, ReagentRowSpec };
 
 const DEDICATED_TABLE = "reagent_order_sheets";
 

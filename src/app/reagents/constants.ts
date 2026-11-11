@@ -11,6 +11,16 @@ export const PEOPLE_LIST = [
 export type ReagentPerson = (typeof PEOPLE_LIST)[number];
 export type ReagentCategory = "TOC" | "TP" | "TN" | "기타";
 
+export interface ReagentOrderSheet {
+	id: string;
+	title: string;
+	deadline: string;
+	deliveryDate: string;
+	sortOrder: number;
+	cells: Record<string, Partial<Record<ReagentPerson, string>>>;
+	createdAt: string;
+}
+
 export interface ReagentRowSpec {
 	id: string;
 	category: ReagentCategory;
