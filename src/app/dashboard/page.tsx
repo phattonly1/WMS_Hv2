@@ -14,7 +14,7 @@ import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { LauncherCard } from "./launcher-card";
 
-// 주요 3대 네비게이션 서비스 (정적 데이터)
+// 주요 4대 네비게이션 서비스 (정적 데이터)
 const NAV_SERVICES = [
 	{
 		title: "수질 지도",
@@ -33,6 +33,12 @@ const NAV_SERVICES = [
 		desc: "시약 및 부품 재고 관리",
 		imgSrc: "/icons/icon-item-bg.png",
 		href: "/items",
+	},
+	{
+		title: "시약 주문",
+		desc: "담당자별 제조시약 취합",
+		imgSrc: "/icons/icon-reagent-bg.png",
+		href: "/reagents",
 	},
 ];
 
@@ -119,9 +125,9 @@ export default function DashboardPage() {
 					</div>
 				</header>
 
-				{/* 1. 메인 4대 서비스 내비게이션 그리드 (2열 2행 균형 배치) */}
+				{/* 1. 메인 5대 서비스 내비게이션 그리드 */}
 				<nav className="w-full" aria-label="주요 서비스 내비게이션">
-					<div className="grid grid-cols-2 gap-4 md:gap-6">
+					<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
 						{NAV_SERVICES.slice(0, 2).map((item) => (
 							<Link key={item.title} href={item.href} className="block h-full">
 								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
@@ -151,29 +157,36 @@ export default function DashboardPage() {
 							<LauncherCard />
 						</div>
 
-						{NAV_SERVICES.slice(2).map((item) => (
-							<Link key={item.title} href={item.href} className="block h-full">
-								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
-									<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-										<Image
-											src={item.imgSrc}
-											alt={item.title}
-											width={80}
-											height={80}
-											className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl select-none"
-										/>
+						{NAV_SERVICES.slice(2).map((item, idx, arr) => {
+							const isLastItem = idx === arr.length - 1;
+							return (
+								<Link
+									key={item.title}
+									href={item.href}
+									className={`block h-full ${isLastItem ? "col-span-2 sm:col-span-1" : ""}`}
+								>
+									<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
+										<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+											<Image
+												src={item.imgSrc}
+												alt={item.title}
+												width={80}
+												height={80}
+												className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl select-none"
+											/>
+										</div>
+										<div className="text-center w-full mt-1.5 space-y-0.5">
+											<span className="text-base font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-center gap-1 whitespace-nowrap">
+												{item.title}
+											</span>
+											<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] leading-tight truncate">
+												{item.desc}
+											</p>
+										</div>
 									</div>
-									<div className="text-center w-full mt-1.5 space-y-0.5">
-										<span className="text-base font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-center gap-1 whitespace-nowrap">
-											{item.title}
-										</span>
-										<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] leading-tight truncate">
-											{item.desc}
-										</p>
-									</div>
-								</div>
-							</Link>
-						))}
+								</Link>
+							);
+						})}
 					</div>
 				</nav>
 

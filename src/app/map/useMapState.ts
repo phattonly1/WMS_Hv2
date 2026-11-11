@@ -18,6 +18,11 @@ export function useMapState(
 	const [isSat, setIsSat] = useState(false);
 	const [isInverted, setIsInverted] = useState(false);
 	const [isTracking, setIsTracking] = useState(false);
+	const [userLocation, setUserLocation] = useState<{
+		lat: number;
+		lng: number;
+	} | null>(null);
+	const watchIdRef = useRef<number | null>(null);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const [selectedStation, setSelectedStation] = useState<Station | null>(null);
 	const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
@@ -77,6 +82,9 @@ export function useMapState(
 			if (moveTimeoutRef.current) {
 				clearTimeout(moveTimeoutRef.current);
 			}
+			if (watchIdRef.current !== null && navigator.geolocation) {
+				navigator.geolocation.clearWatch(watchIdRef.current);
+			}
 		};
 	}, []);
 
@@ -88,7 +96,12 @@ export function useMapState(
 	// GPS 내 위치 추적
 	const toggleGPS = useCallback(() => {
 		if (isTracking) {
+			if (watchIdRef.current !== null && navigator.geolocation) {
+				navigator.geolocation.clearWatch(watchIdRef.current);
+				watchIdRef.current = null;
+			}
 			setIsTracking(false);
+			setUserLocation(null);
 			return;
 		}
 
@@ -98,9 +111,12 @@ export function useMapState(
 		}
 
 		setIsTracking(true);
+
+		// 초기 즉각 위치 이동
 		navigator.geolocation.getCurrentPosition(
 			(p) => {
 				const { latitude, longitude } = p.coords;
+				setUserLocation({ lat: latitude, lng: longitude });
 				if (mapRef.current) {
 					mapRef.current.flyTo({
 						center: [longitude, latitude],
@@ -108,13 +124,27 @@ export function useMapState(
 						duration: 1200,
 					});
 				}
-				setIsTracking(false);
 			},
 			(err) => {
 				toast.error(`현재 위치를 가져오지 못했습니다: ${err.message}`);
 				setIsTracking(false);
+				setUserLocation(null);
 			},
+			{ enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 },
 		);
+
+		// 실시간 위치 추적 유지
+		const id = navigator.geolocation.watchPosition(
+			(p) => {
+				const { latitude, longitude } = p.coords;
+				setUserLocation({ lat: latitude, lng: longitude });
+			},
+			() => {
+				// watchPosition error silently handled or logged
+			},
+			{ enableHighAccuracy: true, maximumAge: 5000 },
+		);
+		watchIdRef.current = id;
 	}, [isTracking]);
 
 	// 검색 (station / small 대상, 수계 및 망 필터 반영)
@@ -393,6 +423,7 @@ export function useMapState(
 		isInverted,
 		toggleInvert,
 		isTracking,
+		userLocation,
 		isSidebarOpen,
 		setIsSidebarOpen,
 		selectedStation,

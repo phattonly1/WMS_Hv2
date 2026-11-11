@@ -290,7 +290,7 @@ export function WaterQualityChartModal({
 						</div>
 
 						{data?.latest && (
-							<div className="flex items-center gap-1 shrink-0 text-right whitespace-nowrap">
+							<div className="flex items-center gap-1.5 shrink-0 text-right whitespace-nowrap">
 								<span className="text-[10px] text-slate-400">최신:</span>
 								<span
 									className="text-xs font-black font-mono"
@@ -301,6 +301,34 @@ export function WaterQualityChartModal({
 										? `${(data.latest[activeMetric] as number).toFixed(selectedConfig.decimals)} ${selectedConfig.unit}`
 										: "점검중"}
 								</span>
+								{(() => {
+									const cur = data.latest[activeMetric] as number | null;
+									const avg = data.latest.prevAvg?.[activeMetric] ?? null;
+									if (
+										typeof cur === "number" &&
+										typeof avg === "number" &&
+										avg > 0
+									) {
+										const ratio = cur / avg;
+										const pct = Math.round(ratio * 100);
+										const isLow = ratio <= 0.5;
+										const isHigh = ratio >= 1.5;
+										if (isLow || isHigh) {
+											return (
+												<span
+													className={`px-1.5 py-0.5 rounded-md text-[9.5px] font-mono font-black ${
+														isLow
+															? "bg-rose-500 text-white"
+															: "bg-amber-500 text-white"
+													}`}
+												>
+													전일평균의 {pct}%
+												</span>
+											);
+										}
+									}
+									return null;
+								})()}
 							</div>
 						)}
 					</div>

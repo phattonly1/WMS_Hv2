@@ -21,7 +21,9 @@ export interface HardcodedViolation {
 		| "arbitrary-input-font"
 		| "arbitrary-modal-width"
 		| "arbitrary-modal-height"
-		| "nested-scrollbar";
+		| "nested-scrollbar"
+		| "dead-code"
+		| "unreachable-code";
 	file: string;
 	line: number;
 	snippet: string;
@@ -196,6 +198,7 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 				// 2. 외부 포털 주입용 standalone 번들 (src/app/dashboard/launcher)
 				// 3. 지도 지리정보 및 백터 렌더링 (단, UI 컴포넌트나 모달은 검증에 포함)
 				// 4. 정적 CDN/SVG 네임스페이스 및 미디어 데이터 (video/data.ts)
+				// 5. 엑셀 바이너리/XML 생성기 (국제 표준 OpenXML 스펙 및 엑셀 전용 팔레트 사용)
 				if (
 					relPath.includes("actions/audit.ts") ||
 					relPath.includes("scripts/audit") ||
@@ -203,7 +206,8 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 					relPath === "src/app/map/MapLibreView.tsx" ||
 					relPath === "src/app/map/components/VectorMarkers.tsx" ||
 					relPath === "src/app/map/stationData.ts" ||
-					relPath.includes("video/data.ts")
+					relPath.includes("video/data.ts") ||
+					relPath.includes("exportReagentXlsx.ts")
 				) {
 					continue;
 				}
@@ -268,6 +272,11 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 						urlMatch &&
 						!lineText.includes("wms.waterkorea.or.kr") &&
 						!lineText.includes("vworld.kr") &&
+						!lineText.includes("water.nier.go.kr") &&
+						!lineText.includes("github.com") &&
+						!lineText.includes("openxmlformats.org") &&
+						!lineText.includes("microsoft.com") &&
+						!lineText.includes("vercel.app") &&
 						!lineText.includes("openstreetmap.org") &&
 						!lineText.includes("schema.org") &&
 						!lineText.includes("w3.org") &&
@@ -365,10 +374,82 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 							recommendation: "자식 요소의 overflow-y-auto를 제거하고 부모 Modal 스크롤 1개로 일원화하세요.",
 						});
 					}
+
+					// J. 절대 실행 불가능한 죽은 조건문 분기 감지 (if (false), if (null), if (true && false))
+					if (
+						/\bif\s*\(\s*(false|null|undefined|""|0)\s*\)/.test(lineText) ||
+						/\bif\s*\(\s*!true\s*\)/.test(lineText)
+					) {
+						hardcodedViolations.push({
+							type: "dead-code",
+							file: relPath,
+							line: lineNum,
+							snippet: lineText.trim().slice(0, 50),
+							detail: "절대 실행될 수 없는 상시 거짓(Dead Branch) 조건문이 방치되어 있습니다.",
+							recommendation: "불필요한 if문 블록과 내부 잔여 코드를 완전히 삭제하세요.",
+						});
+					}
+
+					// K. 주석 처리된 채 방치된 구형 로직 블록 감지 (// if (, // return, // const 등이 연속되거나 방치)
+					if (
+						/^\s*\/\/\s*(if\s*\(|const\s+\w+\s*=|let\s+\w+\s*=|return\s+[{<"'\w]|function\s+\w+)/.test(
+							lineText,
+						) &&
+						!lineText.includes("eslint") &&
+						!lineText.includes("prettier") &&
+						!lineText.includes("TODO")
+					) {
+						hardcodedViolations.push({
+							type: "dead-code",
+							file: relPath,
+							line: lineNum,
+							snippet: lineText.trim().slice(0, 50),
+							detail: "주석 처리된 채 삭제되지 않고 방치된 레거시 실행 코드 감지",
+							recommendation: "주석 처리된 죽은 코드를 지우고 Git 커밋 이력으로 관리하세요.",
+						});
+					}
 				});
 			}
 		}
 	};
+
+	// 1-1. tsc (TypeScript 정적 컴파일러 죽은 코드 및 미사용 파라미터/변수 전수 검증)
+	try {
+		const tscOutput = await new Promise<string>((resolve) => {
+			exec("npx tsc --noEmit", { cwd: rootDir, maxBuffer: 5 * 1024 * 1024 }, (_err, stdout, stderr) => {
+				resolve((stdout || stderr || "").trim());
+			});
+		});
+
+		if (tscOutput) {
+			const lines = tscOutput.split(/\r?\n/);
+			for (const line of lines) {
+				const m = line.match(/^([^(]+)\((\d+),\d+\):\s+error\s+TS(\d+):\s+(.*)$/);
+				if (m) {
+					const filePath = m[1]?.trim().replace(/\\/g, "/") || "";
+					const lineNum = Number(m[2]) || 1;
+					const code = m[3];
+					const msg = m[4]?.trim() || "";
+
+					// TS6133: 미사용 변수/파라미터
+					// TS7027: 도달할 수 없는 코드(Unreachable code)
+					// TS7028: 사용되지 않는 레이블
+					if (code === "6133" || code === "7027" || code === "7028") {
+						hardcodedViolations.push({
+							type: code === "7027" ? "unreachable-code" : "dead-code",
+							file: filePath,
+							line: lineNum,
+							snippet: `TS${code}: ${msg}`,
+							detail: code === "7027"
+								? `[TypeScript] 절대 실행될 수 없는 도달 불가능한 죽은 코드(Unreachable code)가 감지되었습니다.`
+								: `[TypeScript] 함수 내부에 선언된 변수/파라미터가 사용되지 않고 방치되어 있습니다.`,
+							recommendation: "불필요한 변수 선언이나 조건문 블록을 코드에서 완전히 제거하세요.",
+						});
+					}
+				}
+			}
+		}
+	} catch {}
 
 	scanHardcoding(path.join(rootDir, "src"));
 

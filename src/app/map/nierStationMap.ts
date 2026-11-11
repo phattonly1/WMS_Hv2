@@ -192,6 +192,27 @@ export function getNierStationCode(nameOrStationId: string): string | null {
 	return null;
 }
 
+// 가동 중인 23개 측정소 코드 배열 반환
+export function getAllNierStationCodes(): string[] {
+	return Object.values(NIER_STATION_MAP).map((info) => info.code);
+}
+
+export type WaterQualityMetricKey =
+	| "wqi"
+	| "wtrtp"
+	| "ph"
+	| "doc"
+	| "ec"
+	| "tur"
+	| "toc"
+	| "tn"
+	| "tp"
+	| "chla";
+
+export type WaterQualityAverageMap = Partial<
+	Record<WaterQualityMetricKey, number | null>
+>;
+
 // 실시간 수질 데이터 응답 타입
 export interface RealtimeWaterQuality {
 	stationCode: string;
@@ -208,4 +229,5 @@ export interface RealtimeWaterQuality {
 	tn?: number | null; // 총질소 (TN, mg/L)
 	tp?: number | null; // 총인 (TP, mg/L)
 	chla?: number | null; // 클로로필-a (Chl-a, µg/L)
+	prevAvg?: WaterQualityAverageMap; // 전일(또는 누적 24h) 평균값
 }

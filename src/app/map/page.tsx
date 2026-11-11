@@ -91,6 +91,7 @@ export default function MapPage() {
 		isInverted,
 		toggleInvert,
 		isTracking,
+		userLocation,
 		isSidebarOpen,
 		setIsSidebarOpen,
 		selectedStation,
@@ -388,6 +389,7 @@ export default function MapPage() {
 				mapRef={mapRef}
 				isSat={isSat}
 				isInverted={isInverted}
+				userLocation={userLocation}
 				isEditMode={isEditMode}
 				isAddingStation={isAddingStation}
 				isAddingArrow={isAddingArrow}

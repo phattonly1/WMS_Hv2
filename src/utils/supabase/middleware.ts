@@ -13,12 +13,13 @@ export async function updateSession(request: NextRequest) {
 		return NextResponse.redirect(url);
 	}
 
-	// 비디오 스트리밍 API, 교육 영상(/docs/video), 업무 도구 파일(/tools, /api/tools)은 무인증 허용
+	// 비디오 스트리밍 API, 교육 영상(/docs/video), 업무 도구 파일(/tools, /api/tools), 크론 API(/api/cron)는 무인증 허용
 	if (
 		request.nextUrl.pathname.startsWith("/api/video") ||
 		request.nextUrl.pathname.startsWith("/docs/video") ||
 		request.nextUrl.pathname.startsWith("/tools/") ||
-		request.nextUrl.pathname.startsWith("/api/tools/")
+		request.nextUrl.pathname.startsWith("/api/tools/") ||
+		request.nextUrl.pathname.startsWith("/api/cron/")
 	) {
 		return supabaseResponse;
 	}
@@ -54,6 +55,7 @@ export async function updateSession(request: NextRequest) {
 	const isAllowedQuickPage =
 		request.nextUrl.pathname.startsWith("/items") ||
 		request.nextUrl.pathname.startsWith("/item") ||
+		request.nextUrl.pathname.startsWith("/reagents") ||
 		request.nextUrl.pathname.startsWith("/docs");
 
 	const hasQuickLinkParam =

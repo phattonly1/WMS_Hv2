@@ -40,6 +40,7 @@ interface MapLibreViewProps {
 	mapRef: React.MutableRefObject<MapRef | null>;
 	isSat?: boolean;
 	isInverted?: boolean;
+	userLocation?: { lat: number; lng: number } | null;
 	// 에디터 모드
 	isEditMode?: boolean;
 	isAddingStation?: boolean;
@@ -65,6 +66,7 @@ export default function MapLibreView({
 	mapRef,
 	isSat = false,
 	isInverted = false,
+	userLocation = null,
 	isEditMode = false,
 	isAddingStation = false,
 	isAddingArrow = false,
@@ -79,9 +81,9 @@ export default function MapLibreView({
 	// 국가 표준 GIS 하천망 GeoJSON 데이터 상태
 	const [gisRiversData, setGisRiversData] = useState<any>(null);
 
-	// NIER 데이터 취합 주기(매시 15분)에 맞춘 시간대 키 생성 헬퍼 (19:15 ~ 20:14 동일 키)
+	// NIER 데이터 취합 주기(매시 10~15분 랜덤 수집)에 맞춘 시간대 키 생성 헬퍼 (현재 시각 - 12분)
 	const getRealtimeHourKey = useCallback(() => {
-		const shifted = new Date(Date.now() - 15 * 60 * 1000);
+		const shifted = new Date(Date.now() - 12 * 60 * 1000);
 		return `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
 	}, []);
 
@@ -94,13 +96,17 @@ export default function MapLibreView({
 			const cachedRaw = window.localStorage.getItem("wms_nier_realtime_wq");
 			if (!cachedRaw) return {};
 			const parsed = JSON.parse(cachedRaw);
-			const shifted = new Date(Date.now() - 15 * 60 * 1000);
+			const shifted = new Date(Date.now() - 12 * 60 * 1000);
 			const currentKey = `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
+			const firstEntry = parsed?.data
+				? (Object.values(parsed.data)[0] as RealtimeWaterQuality | undefined)
+				: undefined;
 			if (
 				parsed &&
 				parsed.hourKey === currentKey &&
 				parsed.data &&
-				Object.keys(parsed.data).length > 0
+				Object.keys(parsed.data).length > 0 &&
+				firstEntry?.prevAvg !== undefined
 			) {
 				return parsed.data;
 			}
@@ -110,7 +116,7 @@ export default function MapLibreView({
 		return {};
 	});
 
-	// 실시간 수질 데이터 로드 및 갱신 함수 (초기 로드 + 1분 간격 백그라운드 시간대 변경 감지)
+	// 실시간 수질 데이터 로드 및 갱신 함수 (초기 로드 + 매시 10~15분 사이 랜덤 지연 후 백그라운드 갱신)
 	const refreshRealtimeWaterQuality = useCallback(
 		(force = false) => {
 			const currentKey = getRealtimeHourKey();
@@ -119,10 +125,16 @@ export default function MapLibreView({
 					const cachedRaw = window.localStorage.getItem("wms_nier_realtime_wq");
 					if (cachedRaw) {
 						const parsed = JSON.parse(cachedRaw);
+						const firstEntry = parsed?.data
+							? (Object.values(parsed.data)[0] as
+									| RealtimeWaterQuality
+									| undefined)
+							: undefined;
 						if (
 							parsed?.hourKey === currentKey &&
 							parsed?.data &&
-							Object.keys(parsed.data).length > 0
+							Object.keys(parsed.data).length > 0 &&
+							firstEntry?.prevAvg !== undefined
 						) {
 							setWaterQualityMap(parsed.data);
 							return;
@@ -168,13 +180,28 @@ export default function MapLibreView({
 		// 1. 초기 로드
 		refreshRealtimeWaterQuality();
 
-		// 2. 지도 화면을 계속 켜두었을 때도 매 1분마다 검사하여 매시 15분 경과 시 자동 무중단 갱신
+		// 2. 지도 화면을 계속 켜두었을 때 매시 10~15분 사이 랜덤 시각에 자동 무중단 갱신
+		let jitterTimeoutId: number | null = null;
 		const intervalId = window.setInterval(() => {
-			refreshRealtimeWaterQuality();
+			const min = new Date().getMinutes();
+			if (min >= 10 && min <= 15) {
+				if (jitterTimeoutId === null) {
+					const randomDelay = Math.floor(Math.random() * 45 * 1000);
+					jitterTimeoutId = window.setTimeout(() => {
+						refreshRealtimeWaterQuality();
+						jitterTimeoutId = null;
+					}, randomDelay);
+				}
+			} else {
+				refreshRealtimeWaterQuality();
+			}
 		}, 60 * 1000);
 
 		return () => {
 			window.clearInterval(intervalId);
+			if (jitterTimeoutId !== null) {
+				window.clearTimeout(jitterTimeoutId);
+			}
 		};
 	}, [refreshRealtimeWaterQuality]);
 	// 수계 경로(Polyline) GeoJSON FeatureCollection 변환
@@ -579,7 +606,25 @@ export default function MapLibreView({
 					</Source>
 				)}
 
-				{/* 3. 측정소/포인트 마커 렌더링 */}
+				{/* 3. 현재 GPS 위치 마커 */}
+				{userLocation && (
+					<Marker
+						latitude={userLocation.lat}
+						longitude={userLocation.lng}
+						anchor="center"
+					>
+						<div className="relative flex items-center justify-center pointer-events-none">
+							{/* 파동 펄스 애니메이션 */}
+							<div className="absolute w-10 h-10 rounded-full bg-blue-500/25 animate-ping" />
+							{/* 반투명 외곽 링 */}
+							<div className="absolute w-7 h-7 rounded-full bg-blue-500/30 ring-1 ring-blue-500/50" />
+							{/* 센터 고선명 블루 코어 */}
+							<div className="relative w-4 h-4 rounded-full bg-blue-600 border-2 border-white shadow-[0_0_8px_rgba(37,99,235,0.8)]" />
+						</div>
+					</Marker>
+				)}
+
+				{/* 4. 측정소/포인트 마커 렌더링 */}
 				{visibleStations.map((station) => {
 					const lat = Number(station.lat);
 					const lng = Number(station.lng);
