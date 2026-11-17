@@ -82,11 +82,11 @@ export function StationListModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={isSearching ? "측정소 검색 결과" : "측정소 위치 바로가기"}
+			title={isSearching ? "측정소 검색" : "측정소 목록"}
 			subtitle={
 				isSearching
-					? `검색어: "${searchTerm}" (${searchResults.length}개소)`
-					: "수계별 측정망 2열 목록"
+					? `${searchResults.length}개소`
+					: undefined
 			}
 			icon={List}
 			maxWidth="max-w-md"
@@ -97,9 +97,9 @@ export function StationListModal({
 			{isSearching ? (
 						/* 검색 결과 목록 */
 						<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
-							<div className="flex-1 overflow-y-auto overscroll-contain p-2.5 space-y-1.5">
+							<div className="flex-1 overflow-y-auto overscroll-contain p-2 space-y-1">
 								{searchResults.length === 0 ? (
-									<div className="py-20 text-center text-xs text-[#64748b] dark:text-[#71717a] font-mono">
+									<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#71717a]">
 										'{searchTerm}' 일치하는 측정소가 없습니다.
 									</div>
 								) : (
@@ -119,20 +119,20 @@ export function StationListModal({
 													onSelectStation(station);
 													onClose();
 												}}
-												className="w-full px-3 py-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 flex items-center gap-2.5 text-left transition-all active:scale-[0.99] group shadow-xs"
+												className="w-full px-3 py-2 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 flex items-center gap-2.5 text-left transition-all active:scale-[0.99] group shadow-xs"
 											>
 												<div
-													className="w-7 h-7 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs"
+													className="w-6 h-6 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs"
 													style={{ backgroundColor: riverConf.color }}
 												>
-													<Icon size={13} strokeWidth={2.5} />
+													<Icon size={12} strokeWidth={2.5} />
 												</div>
 
-												<div className="flex-1 min-w-0">
-													<div className="text-xs font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+												<div className="flex-1 min-w-0 flex items-center justify-between gap-2">
+													<span className="text-xs font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
 														{station.name}
-													</div>
-													<div className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] flex items-center gap-1.5 mt-0.5">
+													</span>
+													<div className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] flex items-center gap-1 shrink-0">
 														<span
 															className={
 																isNational
@@ -142,13 +142,13 @@ export function StationListModal({
 														>
 															{isNational ? "국가망" : "소규모"}
 														</span>
-														<span>•</span>
+														<span>·</span>
 														<span>{riverConf.label}</span>
 													</div>
 												</div>
 
 												<Eye
-													size={14}
+													size={13}
 													className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
 												/>
 											</button>
@@ -161,7 +161,7 @@ export function StationListModal({
 						/* 수계별 탐색 뷰 (2열 독립 스크롤) */
 						<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
 							{/* 수계 전환 퀵 내비게이터 바 (원형 순환 Infinite Loop) */}
-							<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-mono select-none shrink-0 h-10">
+							<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none shrink-0 h-9">
 								<button
 									type="button"
 									onClick={() =>
@@ -183,8 +183,8 @@ export function StationListModal({
 										className="truncate flex items-center gap-1"
 										style={{ color: activeCategory?.color }}
 									>
-										<span>{activeCategory?.label}</span>
-										<span className="text-[10px] font-mono text-[#64748b] dark:text-[#71717a]">
+										<span className="truncate">{activeCategory?.label}</span>
+										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#71717a] shrink-0">
 											({activeCatIndex + 1}/{CATEGORIES.length})
 										</span>
 									</span>
@@ -215,14 +215,14 @@ export function StationListModal({
 												국가망
 											</span>
 										</div>
-										<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
+										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa]">
 											{nationalStations.length}개소
 										</span>
 									</div>
 
 									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5 space-y-1">
 										{nationalStations.length === 0 ? (
-											<div className="py-12 text-center text-[11px] font-mono text-[#64748b] dark:text-[#71717a]">
+											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
 												해당 없음
 											</div>
 										) : (
@@ -236,7 +236,7 @@ export function StationListModal({
 													}}
 													className="w-full px-2.5 py-2 rounded-lg bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/30 flex items-center justify-between text-left transition-all active:scale-[0.98] group"
 												>
-													<span className="text-xs font-semibold text-[#0f172a] dark:text-[#f4f4f5] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+													<span className="text-xs font-bold text-[#0f172a] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
 														{station.name}
 													</span>
 													<Eye
@@ -258,14 +258,14 @@ export function StationListModal({
 												소규모
 											</span>
 										</div>
-										<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
+										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa]">
 											{smallStations.length}개소
 										</span>
 									</div>
 
 									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5 space-y-1">
 										{smallStations.length === 0 ? (
-											<div className="py-12 text-center text-[11px] font-mono text-[#64748b] dark:text-[#71717a]">
+											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
 												해당 없음
 											</div>
 										) : (
@@ -279,7 +279,7 @@ export function StationListModal({
 													}}
 													className="w-full px-2.5 py-2 rounded-lg bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-cyan-500/30 flex items-center justify-between text-left transition-all active:scale-[0.98] group"
 												>
-													<span className="text-xs font-semibold text-[#0f172a] dark:text-[#f4f4f5] group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors truncate">
+													<span className="text-xs font-bold text-[#0f172a] dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors truncate">
 														{station.name}
 													</span>
 													<Eye

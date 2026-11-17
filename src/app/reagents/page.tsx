@@ -2,6 +2,7 @@
 
 import {
 	ArrowLeft,
+	ChevronRight,
 	Download,
 	FlaskConical,
 	Plus,
@@ -12,9 +13,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
 	deleteReagentSheet,
-	type ReagentOrderSheet,
-	type ReagentPerson,
-	type ReagentRowSpec,
 	updateReagentCell,
 	upsertReagentSheetMeta,
 } from "@/actions/reagents";
@@ -30,6 +28,9 @@ import {
 	PERSON_GREEN_ROWS,
 	parseCellExpression,
 	REAGENT_SPEC_ROWS,
+	type ReagentOrderSheet,
+	type ReagentPerson,
+	type ReagentRowSpec,
 	SUMMARY_SHEET_ID,
 } from "./constants";
 import { downloadStyledReagentXlsx } from "./utils/exportReagentXlsx";
@@ -61,9 +62,6 @@ export default function ReagentsPage() {
 
 	// 모바일 전용 상태: 처음 진입 시 이름 선택 화면부터 노출 (null)
 	const [mobilePerson, setMobilePerson] = useState<ReagentPerson | null>(null);
-	const [breakdownPopupRowId, setBreakdownPopupRowId] = useState<string | null>(
-		null,
-	);
 
 	// 셀 입력 모달 상태 (아이디어 A: 1L, 2L, 5L, 10L 카드 4개 + 입력 구성 내용 + 초기화)
 	const [editingTarget, setEditingTarget] = useState<{
@@ -109,7 +107,6 @@ export default function ReagentsPage() {
 	useEffect(() => {
 		const handlePopState = () => {
 			setMobilePerson(null);
-			setBreakdownPopupRowId(null);
 		};
 		window.addEventListener("popstate", handlePopState);
 		return () => window.removeEventListener("popstate", handlePopState);
@@ -124,13 +121,11 @@ export default function ReagentsPage() {
 			window.history.pushState({ mobilePerson: person }, "");
 		}
 		setMobilePerson(person);
-		setBreakdownPopupRowId(null);
 	};
 
 	const handleResetMobilePerson = () => {
 		if (!mobilePerson) return;
 		setMobilePerson(null);
-		setBreakdownPopupRowId(null);
 		if (typeof window !== "undefined" && window.history.state?.mobilePerson) {
 			window.history.back();
 		}
@@ -182,6 +177,62 @@ export default function ReagentsPage() {
 		const allowedIds = new Set(PERSON_GREEN_ROWS[mobilePerson]);
 		return REAGENT_SPEC_ROWS.filter((row) => allowedIds.has(row.id));
 	}, [mobilePerson]);
+
+	// 모바일에서 (제조사 + 측정항목: 예 '백년 TP', '코비 TP') 단위로 트레이 그룹화 후, 합이 3개 이하인 인접 트레이는 한 줄(3열)로 병합
+	const mobileGroupedBlocks = useMemo(() => {
+		const MOBILE_CAT_ORDER: Record<string, number> = {
+			TOC: 0,
+			TN: 1,
+			TP: 2,
+			기타: 3,
+		};
+		const sorted = [...mobilePersonRows].sort(
+			(a, b) =>
+				(MOBILE_CAT_ORDER[a.category] ?? 9) -
+				(MOBILE_CAT_ORDER[b.category] ?? 9),
+		);
+
+		const groups: {
+			key: string;
+			category: string;
+			companyLabel: string;
+			rows: ReagentRowSpec[];
+		}[] = [];
+
+		for (const row of sorted) {
+			const { companyBadge } = getMobileReagentLabel(row);
+			const companyLabel = companyBadge || "";
+			const groupKey = `${companyLabel}-${row.category}`;
+			const last = groups[groups.length - 1];
+			if (!last || last.key !== groupKey) {
+				groups.push({
+					key: groupKey,
+					category: row.category,
+					companyLabel,
+					rows: [row],
+				});
+			} else {
+				last.rows.push(row);
+			}
+		}
+
+		const blocks: (typeof groups)[] = [];
+		let idx = 0;
+		while (idx < groups.length) {
+			const current = groups[idx];
+			const next = groups[idx + 1];
+			if (current && next && current.rows.length + next.rows.length <= 3) {
+				blocks.push([current, next]);
+				idx += 2;
+			} else if (current) {
+				blocks.push([current]);
+				idx += 1;
+			} else {
+				idx += 1;
+			}
+		}
+		return blocks;
+	}, [mobilePersonRows]);
 
 	// 모바일 및 데스크톱 셀 입력 모달 오픈
 	const handleOpenCellModal = (row: ReagentRowSpec, person: ReagentPerson) => {
@@ -395,13 +446,23 @@ export default function ReagentsPage() {
 						<div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
 							<FlaskConical size={16} strokeWidth={2.4} />
 						</div>
-						<div className="min-w-0">
+						<div className="flex items-center gap-1.5 min-w-0">
 							<h1 className="text-sm font-bold text-[#0f172a] dark:text-white tracking-tight break-keep truncate">
 								제조시약 주문
 							</h1>
-							<p className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] tracking-tight truncate">
-								REAGENT ORDER MATRIX
-							</p>
+							{mobilePerson && (
+								<div className="lg:hidden flex items-center gap-1.5 shrink-0">
+									<span className="text-[#cbd5e1] dark:text-[#3f3f46]">·</span>
+									<span className="text-sm font-bold text-[#2563eb] dark:text-[#60a5fa]">
+										{mobilePerson}
+									</span>
+									{(columnTotals.totals[mobilePerson] || 0) > 0 && (
+										<span className="px-1.5 py-0.5 rounded-md bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] font-bold text-[11px] tabular-nums">
+											{columnTotals.totals[mobilePerson]}L
+										</span>
+									)}
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -433,151 +494,197 @@ export default function ReagentsPage() {
 
 			{/* [A] 모바일 전용 화면 (lg 미만) */}
 			<div className="lg:hidden flex-1 flex flex-col min-h-0 overflow-hidden">
-				<main className="flex-1 min-h-0 overflow-y-auto px-2.5 pt-3 pb-24">
+				<main
+					className={`flex-1 min-h-0 px-2.5 pb-20 ${
+						mobilePerson ? "overflow-y-auto pt-3" : "overflow-hidden flex flex-col justify-center"
+					}`}
+				>
 					{loading ? (
 						<div className="h-full flex items-center justify-center text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							데이터를 불러오는 중...
 						</div>
 					) : !mobilePerson ? (
 						/* 1) 모바일 초기 진입: 이름 선택 화면만 노출 */
-						<div className="min-h-full flex flex-col items-center py-2">
-							<div className="w-full max-w-md my-auto bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl p-4 shadow-sm space-y-3">
-								<div className="flex items-center gap-2.5 pb-2 border-b border-[#e2e8f0] dark:border-[#222228]">
-									<div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
-										<UserCheck size={18} />
-									</div>
-									<div className="min-w-0">
-										<h2 className="text-sm font-bold text-[#0f172a] dark:text-white break-keep">
-											측정소를 선택하세요
-										</h2>
-										<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] break-keep truncate">
-											측정소의 시약 목록만 표시됩니다
-										</p>
-									</div>
+						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl p-4 shadow-sm space-y-3">
+							<div className="flex items-center gap-2.5 pb-2 border-b border-[#e2e8f0] dark:border-[#222228]">
+								<div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
+									<UserCheck size={18} />
 								</div>
+								<div className="min-w-0">
+									<h2 className="text-sm font-bold text-[#0f172a] dark:text-white break-keep">
+										측정소를 선택하세요
+									</h2>
+									<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] break-keep truncate">
+										측정소의 시약 목록만 표시됩니다
+									</p>
+								</div>
+							</div>
 
-								<div className="grid grid-cols-2 gap-2">
-									{PEOPLE_LIST.map((person) => {
-										const count = PERSON_GREEN_ROWS[person].length;
-										const totalL = columnTotals.totals[person] || 0;
-										return (
-											<button
-												key={person}
-												type="button"
-												onClick={() => handleSelectMobilePerson(person)}
-												className="min-h-[50px] py-2.5 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-[#2563eb] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between transition-all active:scale-95 cursor-pointer"
-											>
-												<div className="text-left">
-													<div className="text-sm font-bold text-[#0f172a] dark:text-white">
-														{person}
-													</div>
-													<div className="text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
-														시약 <span className="font-mono">{count}</span>종
-													</div>
+							<div className="grid grid-cols-2 gap-2">
+								{PEOPLE_LIST.map((person) => {
+									const count = PERSON_GREEN_ROWS[person].length;
+									const totalL = columnTotals.totals[person] || 0;
+									return (
+										<button
+											key={person}
+											type="button"
+											onClick={() => handleSelectMobilePerson(person)}
+											className="min-h-[50px] py-2.5 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-[#2563eb] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between transition-all active:scale-95 cursor-pointer"
+										>
+											<div className="text-left">
+												<div className="text-sm font-bold text-[#0f172a] dark:text-white">
+													{person}
 												</div>
-												{totalL > 0 && (
-													<span className="px-2 py-0.5 rounded-lg bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] font-bold text-xs">
-														<span className="font-mono">{totalL}</span>L
-													</span>
-												)}
-											</button>
-										);
-									})}
-								</div>
+												<div className="text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
+													시약 <span className="tabular-nums font-semibold">{count}</span>종
+												</div>
+											</div>
+											{totalL > 0 && (
+												<span className="px-2 py-0.5 rounded-lg bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] font-bold text-xs tabular-nums">
+													{totalL}L
+												</span>
+											)}
+										</button>
+									);
+								})}
 							</div>
 						</div>
 					) : (
-						/* 2) 측정소 선택 후: 녹색 셀 시약 1줄 인라인 리스트 */
-						<div className="space-y-1.5">
-							<div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[10px] font-bold text-[#64748b] dark:text-[#a1a1aa]">
-								<span>측정항목 · 시약명</span>
-								<span>합계 · 시약 추가</span>
-							</div>
-
-							{mobilePersonRows.map((row) => {
+						/* 2) 측정소 선택 후: (제조사 + 측정항목) 트레이 + 상하 2단 키캡 타일 */
+						<div className="w-full max-w-[348px] mx-auto space-y-2 pb-2">
+							{mobileGroupedBlocks.map((block) => {
 								const activeTargetSheet =
 									currentSheet ?? sheets[sheets.length - 1];
-								const rawVal =
-									activeTargetSheet?.cells[row.id]?.[mobilePerson] || "";
-								const parsed = parseCellExpression(rawVal, row.defaultVolume);
-								const { mainName, companyBadge } = getMobileReagentLabel(row);
-								const isBreakdownOpen = breakdownPopupRowId === row.id;
-
-								const catBadgeClass =
-									row.category === "TOC"
-										? "bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] border-blue-500/20"
-										: row.category === "TP"
-											? "bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border-emerald-500/20"
-											: row.category === "TN"
-												? "bg-amber-500/10 text-amber-600 dark:text-[#fbbf24] border-amber-500/20"
-												: "bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]";
+								const isMergedRow = block.length > 1;
+								const blockKey = block.map((g) => g.key).join("_");
 
 								return (
 									<div
-										key={row.id}
-										className="relative px-2.5 py-2 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-2xs"
+										key={blockKey}
+										className={
+											isMergedRow ? "grid grid-cols-3 gap-2" : "w-full"
+										}
 									>
-										<div className="flex items-center gap-1.5 min-w-0">
-											{/* 1) 측정항목 뱃지 */}
-											<span
-												className={`w-9 py-1 rounded-lg font-mono font-bold text-[10px] text-center border shrink-0 ${catBadgeClass}`}
-											>
-												{row.category}
-											</span>
+										{block.map((group) => {
+											const catDotClass =
+												group.category === "TOC"
+													? "bg-[#2563eb] dark:bg-[#60a5fa]"
+													: group.category === "TP"
+														? "bg-emerald-500 dark:bg-[#34d399]"
+														: group.category === "TN"
+															? "bg-amber-500 dark:bg-[#fbbf24]"
+															: "bg-[#64748b] dark:bg-[#a1a1aa]";
 
-											{/* 2) 제조사 뱃지 (시약명 왼쪽, 측정항목처럼 키운 크기) */}
-											{companyBadge && (
-												<span className="px-2 py-1 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[10px] font-bold text-[#64748b] dark:text-[#a1a1aa] text-center shrink-0">
-													{companyBadge}
-												</span>
-											)}
+											const catTextClass =
+												group.category === "TOC"
+													? "text-[#2563eb] dark:text-[#60a5fa]"
+													: group.category === "TP"
+														? "text-emerald-600 dark:text-[#34d399]"
+														: group.category === "TN"
+															? "text-amber-600 dark:text-[#fbbf24]"
+															: "text-[#64748b] dark:text-[#a1a1aa]";
 
-											{/* 3) 시약명 */}
-											<div className="flex-1 min-w-0 pr-1">
-												<span className="text-xs font-bold text-[#0f172a] dark:text-white truncate block">
-													{mainName}
-												</span>
-											</div>
+											const colSpanClass = isMergedRow
+												? group.rows.length === 1
+													? "col-span-1"
+													: "col-span-2"
+												: "";
 
-											<button
-												type="button"
-												onClick={() =>
-													setBreakdownPopupRowId((prev) =>
-														prev === row.id ? null : row.id,
-													)
-												}
-												className={`min-w-[48px] h-10 px-2 rounded-xl font-mono text-xs font-bold flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer border ${
-													parsed.total > 0
-														? "bg-blue-500/15 text-[#2563eb] dark:text-[#60a5fa] border-blue-500/30"
-														: "bg-[#f1f5f9] dark:bg-[#16161c] text-[#94a3b8] dark:text-[#52525b] border-[#e2e8f0] dark:border-[#222228]"
-												}`}
-												title="클릭하여 상세 내역(몇L × 몇개) 확인"
-											>
-												{parsed.total}L
-											</button>
+											const innerGridClass = isMergedRow
+												? group.rows.length === 1
+													? "grid grid-cols-1 gap-x-1.5 gap-y-[15px]"
+													: "grid grid-cols-2 gap-x-1.5 gap-y-[15px]"
+												: "grid grid-cols-3 gap-x-1.5 gap-y-[15px]";
 
-											<button
-												type="button"
-												onClick={() => handleOpenCellModal(row, mobilePerson)}
-												className="h-10 px-3 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs flex items-center justify-center gap-1 transition-all active:scale-95 shrink-0 cursor-pointer shadow-2xs"
-											>
-												<Plus size={14} strokeWidth={2.5} />
-												<span>추가</span>
-											</button>
-										</div>
+											const isEtcGroup = group.category === "기타";
+											const trayTitle = group.companyLabel
+												? `${group.companyLabel} ${group.category}`
+												: group.category;
 
-										{isBreakdownOpen && (
-											<div className="mt-2 px-3 py-2 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-blue-500/30 flex items-center justify-between text-xs font-mono">
-												<span className="text-[#64748b] dark:text-[#a1a1aa]">
-													입력 구성 내역:
-												</span>
-												<span className="font-bold text-[#2563eb] dark:text-[#60a5fa]">
-													{parsed.total > 0
-														? `${parsed.breakdownText} (총 ${parsed.total}L)`
-														: "입력된 수량 없음"}
-												</span>
-											</div>
-										)}
+											return (
+												<section
+													key={group.key}
+													className={`p-2 rounded-2xl bg-[#eef2f6]/90 dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] min-w-0 flex flex-col justify-end ${
+														isEtcGroup ? "" : "space-y-1.5"
+													} ${colSpanClass}`}
+												>
+													{/* 제조사 + 측정항목 트레이 헤더 ('기타'는 표시 생략) */}
+													{!isEtcGroup && (
+														<div className="flex items-center gap-1.5 px-1">
+															<span
+																className={`w-1.5 h-1.5 rounded-full shrink-0 ${catDotClass}`}
+															/>
+															<span
+																className={`text-[11px] font-bold tracking-tight truncate ${catTextClass}`}
+															>
+																{trayTitle}
+															</span>
+															<span className="text-[10px] font-semibold tabular-nums text-[#94a3b8] dark:text-[#52525b] shrink-0">
+																{group.rows.length}
+															</span>
+														</div>
+													)}
+
+													{/* 해당 항목 시약 그리드 (상하 2단 중앙 키캡형) */}
+													<div className={innerGridClass}>
+														{group.rows.map((row) => {
+															const rawVal =
+																activeTargetSheet?.cells[row.id]?.[
+																	mobilePerson
+																] || "";
+															const parsed = parseCellExpression(
+																rawVal,
+																row.defaultVolume,
+															);
+															const { mainName } = getMobileReagentLabel(row);
+															const totalBottles = Object.values(
+																parsed.buckets,
+															).reduce((acc, c) => acc + c, 0);
+															const showBreakdown =
+																parsed.total > 0 && totalBottles > 1;
+
+															return (
+																<button
+																	key={row.id}
+																	type="button"
+																	onClick={() =>
+																		handleOpenCellModal(row, mobilePerson)
+																	}
+																	className={`min-h-[48px] px-1.5 py-1.5 rounded-xl bg-white dark:bg-[#111115] border flex flex-col items-center justify-center gap-0.5 text-center transition-all active:scale-95 cursor-pointer shadow-2xs min-w-0 ${
+																		parsed.total > 0
+																			? "border-blue-500/40 dark:border-blue-500/40"
+																			: "border-[#e2e8f0]/80 dark:border-[#222228]"
+																	}`}
+																>
+																	<span className="text-[11px] font-bold text-[#0f172a] dark:text-white tracking-tight truncate w-full">
+																		{mainName}
+																	</span>
+
+																	<div className="flex items-center justify-center gap-1 min-w-0 w-full">
+																		{showBreakdown && (
+																			<span className="text-[10px] font-medium tabular-nums text-[#64748b] dark:text-[#a1a1aa] truncate">
+																				{parsed.breakdownText
+																					.replace(/\s*×\s*/g, "×")
+																					.replace(/개/g, "")}
+																			</span>
+																		)}
+																		<span
+																			className={`text-xs font-bold tabular-nums shrink-0 ${
+																				parsed.total > 0
+																					? "text-[#2563eb] dark:text-[#60a5fa]"
+																					: "text-[#94a3b8] dark:text-[#52525b]"
+																			}`}
+																		>
+																			{parsed.total}L
+																		</span>
+																	</div>
+																</button>
+															);
+														})}
+													</div>
+												</section>
+											);
+										})}
 									</div>
 								);
 							})}

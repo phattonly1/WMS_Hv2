@@ -109,7 +109,6 @@ export function LauncherCard() {
 				isOpen={showMobileNotice}
 				onClose={() => setShowMobileNotice(false)}
 				title="PC 전용 기능"
-				subtitle="WMS 슈퍼 런처"
 				icon={Monitor}
 				maxWidth="max-w-xs"
 			>
@@ -136,7 +135,7 @@ export function LauncherCard() {
 							<span className="font-bold text-sm text-[#0f172a] dark:text-white tracking-tight break-keep">
 								WMS 올인원 통합 런처 복사 완료
 							</span>
-							<span className="px-2 py-0.5 text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0">
+							<span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0">
 								<Check className="w-2.5 h-2.5" />
 								클립보드 저장됨
 							</span>

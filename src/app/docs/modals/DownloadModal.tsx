@@ -142,87 +142,87 @@ export default function DownloadModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title="파일 다운로드 보관함"
-			subtitle="SUPABASE CLOUD STORAGE"
+			title="보관함"
+			subtitle={currentPath ? currentPath.split("/").pop() : "루트"}
 			icon={FolderDown}
 			size="half"
-		>
-			<div className="space-y-3.5">
-				{/* 브레드크럼 */}
-				<div className="flex items-center gap-1.5 px-1 text-xs text-[#64748b] dark:text-[#a1a1aa] overflow-x-auto whitespace-nowrap">
-					<button
-						type="button"
-						onClick={() => navigateToFolder("")}
-						className="hover:text-[#0f172a] dark:hover:text-white flex items-center gap-1 transition-colors"
-					>
-						<Home size={13} />
-						<span>루트</span>
-					</button>
-					{breadcrumbs.map((b) => (
-						<React.Fragment key={b.path}>
-							<ChevronRight size={12} className="text-[#64748b] dark:text-[#a1a1aa]" />
-							<button
-								type="button"
-								onClick={() => navigateToFolder(b.path)}
-								className="hover:text-[#0f172a] dark:hover:text-white transition-colors"
-							>
-								{b.name}
-							</button>
-						</React.Fragment>
-					))}
-				</div>
-
-				{/* 파일 목록 */}
-				<div className="space-y-1.5 pr-1">
-					{isPending ? (
-						<div className="py-12 flex flex-col items-center justify-center text-xs text-[#64748b] dark:text-[#a1a1aa] gap-2">
-							<Loader2 size={18} className="animate-spin text-blue-500 dark:text-blue-400" />
-							<span>파일 목록을 불러오는 중...</span>
-						</div>
-					) : filteredItems.length === 0 ? (
-						<div className="py-10 text-center text-xs text-[#64748b] dark:text-[#a1a1aa]">
-							파일이나 하위 폴더가 없습니다.
-						</div>
-					) : (
-						filteredItems.map((item) => (
-							<div
-								key={item.path}
-								className="flex items-center justify-between p-2.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-colors"
-							>
-								<div
-									onClick={() => item.isFolder && navigateToFolder(item.path)}
-									className={`flex items-center gap-2.5 min-w-0 flex-1 ${item.isFolder ? "cursor-pointer" : ""}`}
-									aria-hidden="true"
+			headerAction={
+				<div className="flex items-center gap-1.5 text-xs text-[#64748b] dark:text-[#a1a1aa]">
+					{/* 헤더 브레드크럼 */}
+					<div className="flex items-center gap-1 overflow-x-auto max-w-[140px] sm:max-w-[200px] whitespace-nowrap">
+						<button
+							type="button"
+							onClick={() => navigateToFolder("")}
+							className="hover:text-[#0f172a] dark:hover:text-white flex items-center gap-0.5 transition-colors"
+						>
+							<Home size={12} />
+						</button>
+						{breadcrumbs.map((b) => (
+							<React.Fragment key={b.path}>
+								<ChevronRight size={10} className="text-[#64748b] dark:text-[#a1a1aa]" />
+								<button
+									type="button"
+									onClick={() => navigateToFolder(b.path)}
+									className="hover:text-[#0f172a] dark:hover:text-white transition-colors truncate max-w-[60px]"
 								>
-									<div className="w-8 h-8 rounded-lg bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center shrink-0">
-										{getFileIcon(item.name, item.isFolder)}
-									</div>
-									<div className="min-w-0 flex-1">
-										<p className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
-											{item.name}
-										</p>
-										<p className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] mt-0.5">
-											{item.isFolder
-												? "폴더"
-												: formatBytes(item.metadata?.size)}
-										</p>
-									</div>
+									{b.name}
+								</button>
+							</React.Fragment>
+						))}
+					</div>
+					<span className="text-[10px] font-semibold tabular-nums px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 shrink-0">
+						{filteredItems.length}개
+					</span>
+				</div>
+			}
+		>
+			<div className="space-y-1 pr-0.5">
+				{isPending ? (
+					<div className="py-12 flex flex-col items-center justify-center text-xs text-[#64748b] dark:text-[#a1a1aa] gap-2">
+						<Loader2 size={18} className="animate-spin text-blue-500 dark:text-blue-400" />
+						<span>파일 목록을 불러오는 중...</span>
+					</div>
+				) : filteredItems.length === 0 ? (
+					<div className="py-10 text-center text-xs text-[#64748b] dark:text-[#a1a1aa]">
+						파일이나 하위 폴더가 없습니다.
+					</div>
+				) : (
+					filteredItems.map((item) => (
+						<div
+							key={item.path}
+							className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-colors gap-2"
+						>
+							<div
+								onClick={() => item.isFolder && navigateToFolder(item.path)}
+								className={`flex items-center gap-2 min-w-0 flex-1 ${item.isFolder ? "cursor-pointer" : ""}`}
+								aria-hidden="true"
+							>
+								<div className="w-6 h-6 rounded-lg bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center shrink-0">
+									{getFileIcon(item.name, item.isFolder)}
 								</div>
+								<p className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
+									{item.name}
+								</p>
+							</div>
 
+							<div className="flex items-center gap-2 shrink-0">
+								<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa]">
+									{item.isFolder ? "폴더" : formatBytes(item.metadata?.size)}
+								</span>
 								{!item.isFolder && (
 									<button
 										type="button"
 										onClick={() => handleDownloadSingle(item)}
 										title="다운로드"
-										className="p-2 rounded-lg text-[#64748b] dark:text-[#a1a1aa] hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors shrink-0"
+										className="p-1 rounded-lg text-[#64748b] dark:text-[#a1a1aa] hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors shrink-0"
 									>
-										<Download size={15} />
+										<Download size={13} />
 									</button>
 								)}
 							</div>
-						))
-					)}
-				</div>
+						</div>
+					))
+				)}
 			</div>
 		</Modal>
 	);

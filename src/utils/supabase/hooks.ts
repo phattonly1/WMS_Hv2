@@ -8,6 +8,8 @@ import {
 	fetchSupplies,
 } from "./fetcher";
 
+const EMPTY_ARRAY: never[] = [];
+
 const defaultOptions = {
 	revalidateOnFocus: false,
 	revalidateOnReconnect: false,
@@ -24,7 +26,7 @@ export function useStations() {
 	} = useSWR("stations", fetchStations, defaultOptions);
 
 	return {
-		stations: data ?? [],
+		stations: data ?? EMPTY_ARRAY,
 		isLoading,
 		isError: error,
 		refresh,
@@ -43,7 +45,7 @@ export function useSupplies() {
 	});
 
 	return {
-		supplies: data ?? [],
+		supplies: data ?? EMPTY_ARRAY,
 		isLoading,
 		isError: error,
 		refresh,
@@ -62,7 +64,7 @@ export function useLogs(type: "REQ" | "OUT" | "OUT_RETURN") {
 	});
 
 	return {
-		logs: data ?? [],
+		logs: data ?? EMPTY_ARRAY,
 		isLoading,
 		isError: error,
 		refresh,
@@ -81,7 +83,7 @@ export function useReagentSheets() {
 	});
 
 	return {
-		sheets: data ?? [],
+		sheets: data ?? EMPTY_ARRAY,
 		isLoading,
 		isError: error,
 		refresh,

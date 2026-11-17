@@ -94,11 +94,11 @@ export default function QRModal({ isOpen, onClose, item }: QRModalProps) {
 			icon={QrCode}
 			maxWidth="max-w-xs"
 		>
-			<div className="text-center space-y-4">
+			<div className="text-center space-y-3">
 				<div className="relative inline-block">
 					<div
 						ref={qrRef}
-						className="relative bg-white p-5 rounded-2xl border border-white/20 shadow-2xl flex items-center justify-center mx-auto"
+						className="relative bg-white p-4 rounded-2xl border border-white/20 shadow-2xl flex items-center justify-center mx-auto"
 					>
 						{item && (
 							<QRCodeSVG
@@ -111,29 +111,24 @@ export default function QRModal({ isOpen, onClose, item }: QRModalProps) {
 					</div>
 				</div>
 
-				<div className="space-y-1">
-					<p className="text-xs font-mono font-bold text-[#0f172a] dark:text-white truncate max-w-[220px] mx-auto">
-						{item?.name}
+				{item?.code && (
+					<p className="text-[11px] font-mono text-[#64748b] dark:text-[#71717a]">
+						ID: {item.code}
 					</p>
-					{item?.code && (
-						<p className="text-[10px] font-mono text-[#64748b] dark:text-[#71717a]">
-							ID: {item.code}
-						</p>
-					)}
-				</div>
+				)}
 
-				<div className="flex gap-2.5 pt-1">
+				<div className="flex gap-2 pt-1">
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex-1 h-11 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#e2e8f0] dark:border-[#222228]"
+						className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#e2e8f0] dark:border-[#222228]"
 					>
 						닫기
 					</button>
 					<button
 						type="button"
 						onClick={downloadQR}
-						className="flex-[1.5] h-11 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)]"
+						className="flex-[1.5] h-10 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)]"
 					>
 						<Download size={14} /> PNG 다운로드
 					</button>

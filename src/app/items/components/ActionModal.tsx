@@ -74,39 +74,39 @@ export default function ActionModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={isReq ? "수량 채우기" : "불출 처리"}
+			title={isReq ? "입고" : "출고"}
 			subtitle={selectedItem?.name}
 			icon={isReq ? ShoppingCart : LogOut}
 			maxWidth="max-w-sm"
-		>
-			<div className="space-y-3">
-				{/* 1. 슬림 탭 전환: 채우기(REQ) / 가져가기(OUT) */}
-				<div className="grid grid-cols-2 p-1 bg-[#f1f5f9] dark:bg-[#16161c] rounded-xl border border-[#e2e8f0] dark:border-[#222228]">
-					<button
-						type="button"
-						onClick={() => setActionType("REQ")}
-						className={`py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
-							isReq
-								? "bg-blue-600 text-white shadow-xs"
-								: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-						}`}
-					>
-						<ShoppingCart size={13} /> 입고 (채우기)
-					</button>
+			headerAction={
+				<div className="flex items-center p-0.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[11px] font-bold">
 					<button
 						type="button"
 						onClick={() => setActionType("OUT")}
-						className={`py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+						className={`px-2 py-0.5 rounded-md transition-colors ${
 							!isReq
-								? "bg-amber-600 text-white shadow-xs"
+								? "bg-amber-600 text-white shadow-2xs"
 								: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 						}`}
 					>
-						<LogOut size={13} /> 출고 (불출)
+						출고
+					</button>
+					<button
+						type="button"
+						onClick={() => setActionType("REQ")}
+						className={`px-2 py-0.5 rounded-md transition-colors ${
+							isReq
+								? "bg-blue-600 text-white shadow-2xs"
+								: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+						}`}
+					>
+						입고
 					</button>
 				</div>
-
-				{/* 2. 올인원 인라인 스텝퍼 + 퀵 버튼 */}
+			}
+		>
+			<div className="space-y-2.5">
+				{/* 1. 올인원 인라인 스텝퍼 + 퀵 버튼 */}
 				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-2.5 rounded-2xl border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between gap-2">
 					{/* 수량 감소 / 표시 / 증가 */}
 					<div className="flex items-center gap-1.5">
@@ -118,7 +118,7 @@ export default function ActionModal({
 						>
 							<Minus size={14} />
 						</button>
-						<div className="min-w-[42px] text-center font-mono font-black text-xl text-[#0f172a] dark:text-white">
+						<div className="min-w-[42px] text-center font-black tabular-nums text-xl text-[#0f172a] dark:text-white">
 							{actionQty}
 						</div>
 						<button
@@ -129,7 +129,7 @@ export default function ActionModal({
 						>
 							<Plus size={14} />
 						</button>
-						<span className="text-[11px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] ml-1">
+						<span className="text-[11px] font-bold text-[#64748b] dark:text-[#a1a1aa] ml-1">
 							{selectedItem?.unit || "EA"}
 						</span>
 					</div>
@@ -141,7 +141,7 @@ export default function ActionModal({
 								key={add}
 								type="button"
 								onClick={() => setActionQty((prev) => prev + add)}
-								className="px-2 py-1 rounded-lg bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-[11px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] hover:text-blue-600 dark:hover:text-blue-400 active:scale-95 transition-all shadow-2xs"
+								className="px-2 py-1 rounded-lg bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-[11px] font-bold tabular-nums text-[#64748b] dark:text-[#a1a1aa] hover:text-blue-600 dark:hover:text-blue-400 active:scale-95 transition-all shadow-2xs"
 							>
 								+{add}
 							</button>
@@ -154,7 +154,7 @@ export default function ActionModal({
 					<div className="space-y-1">
 						<label
 							htmlFor="action-user"
-							className="text-[10px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block truncate"
+							className="text-[10px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block truncate"
 						>
 							담당자 <span className="text-rose-500 dark:text-rose-400">*</span>
 						</label>
@@ -171,7 +171,7 @@ export default function ActionModal({
 					<div className="space-y-1">
 						<label
 							htmlFor="action-note"
-							className="text-[10px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block truncate"
+							className="text-[10px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-0.5 block truncate"
 						>
 							사유 / 목적
 						</label>

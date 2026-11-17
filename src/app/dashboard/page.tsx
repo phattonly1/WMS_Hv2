@@ -29,16 +29,16 @@ const NAV_SERVICES = [
 		href: "/docs",
 	},
 	{
-		title: "소모품",
-		desc: "시약 및 부품 재고 관리",
-		imgSrc: "/icons/icon-item-bg.png",
-		href: "/items",
-	},
-	{
 		title: "시약 주문",
 		desc: "담당자별 제조시약 취합",
 		imgSrc: "/icons/icon-reagent-bg.png",
 		href: "/reagents",
+	},
+	{
+		title: "소모품",
+		desc: "시약 및 부품 재고 관리",
+		imgSrc: "/icons/icon-item-bg.png",
+		href: "/items",
 	},
 ];
 
@@ -94,31 +94,31 @@ export default function DashboardPage() {
 				}}
 			/>
 
-			<div className="w-full max-w-6xl flex flex-col items-center gap-8 relative z-10 bg-white dark:bg-[#111115] rounded-3xl p-6 md:p-10 border border-[#e2e8f0] dark:border-[#222228] shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_20px_50px_rgba(0,0,0,0.5)] transition-colors">
+			<div className="w-full max-w-6xl flex flex-col items-center gap-5 sm:gap-7 relative z-10 bg-white dark:bg-[#111115] rounded-3xl p-5 sm:p-6 md:p-10 border border-[#e2e8f0] dark:border-[#222228] shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_20px_50px_rgba(0,0,0,0.5)] transition-colors">
 				{/* 상단 통합 헤더 */}
-				<header className="w-full flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#e2e8f0] dark:border-[#222228]">
-					<div className="flex items-center gap-3 min-w-0">
-						<div className="w-10 h-10 rounded-xl bg-blue-600/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shrink-0">
-							<Activity className="w-5 h-5 animate-pulse" />
-						</div>
-						<div className="min-w-0">
-							<h1 className="text-base sm:text-lg font-bold tracking-tight text-[#0f172a] dark:text-white break-keep">
-								한강수계 수질자동측정망
-							</h1>
-						</div>
+				<header className="w-full flex items-center justify-between gap-3 pb-3.5 sm:pb-5 border-b border-[#e2e8f0] dark:border-[#222228]">
+					<div className="flex items-center gap-2 min-w-0">
+						<Activity
+							size={18}
+							strokeWidth={2.4}
+							className="text-blue-600 dark:text-blue-400 shrink-0"
+						/>
+						<h1 className="text-sm sm:text-base font-bold tracking-tight text-[#0f172a] dark:text-white truncate break-keep">
+							한강수계 수질자동측정망
+						</h1>
 					</div>
 
-					<div className="flex items-center gap-2">
+					<div className="flex items-center gap-1.5 shrink-0">
 						<ThemeToggle />
 						<Link
 							href="/architecture"
-							className="hidden sm:inline-flex px-3.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#2563eb] dark:text-[#60a5fa] hover:underline transition-colors items-center gap-1.5 shadow-sm whitespace-nowrap shrink-0"
+							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
 						>
 							<span>구조도 뷰어</span>
 						</Link>
 						<Link
 							href="/dev"
-							className="hidden sm:inline-flex px-3.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors items-center gap-1.5 shadow-sm whitespace-nowrap shrink-0"
+							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
 						>
 							<span>/dev 검증기</span>
 						</Link>
@@ -152,46 +152,43 @@ export default function DashboardPage() {
 							</Link>
 						))}
 
-						{/* WMS 런처 (클라이언트 상호작용 컴포넌트) */}
-						<div className="h-full">
+						{/* WMS 런처 (PC 전용 노출, 모바일에서는 숨김) */}
+						<div className="hidden sm:block h-full">
 							<LauncherCard />
 						</div>
 
-						{NAV_SERVICES.slice(2).map((item, idx, arr) => {
-							const isLastItem = idx === arr.length - 1;
-							return (
-								<Link
-									key={item.title}
-									href={item.href}
-									className={`block h-full ${isLastItem ? "col-span-2 sm:col-span-1" : ""}`}
-								>
-									<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
-										<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-											<Image
-												src={item.imgSrc}
-												alt={item.title}
-												width={80}
-												height={80}
-												className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl select-none"
-											/>
-										</div>
-										<div className="text-center w-full mt-1.5 space-y-0.5">
-											<span className="text-base font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-center gap-1 whitespace-nowrap">
-												{item.title}
-											</span>
-											<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] leading-tight truncate">
-												{item.desc}
-											</p>
-										</div>
+						{NAV_SERVICES.slice(2).map((item) => (
+							<Link
+								key={item.title}
+								href={item.href}
+								className="block h-full"
+							>
+								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
+									<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+										<Image
+											src={item.imgSrc}
+											alt={item.title}
+											width={80}
+											height={80}
+											className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-2xl select-none"
+										/>
 									</div>
-								</Link>
-							);
-						})}
+									<div className="text-center w-full mt-1.5 space-y-0.5">
+										<span className="text-base font-bold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center justify-center gap-1 whitespace-nowrap">
+											{item.title}
+										</span>
+										<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] leading-tight truncate">
+											{item.desc}
+										</p>
+									</div>
+								</div>
+							</Link>
+						))}
 					</div>
 				</nav>
 
-				{/* 2. 업무 유틸리티 도구함 바 (정적 SSR 렌더링) */}
-				<section className="w-full pt-6 border-t border-[#e2e8f0] dark:border-[#222228] flex flex-col gap-4">
+				{/* 2. 업무 유틸리티 도구함 바 (정적 SSR 렌더링, 모바일 숨김) */}
+				<section className="hidden sm:flex w-full pt-6 border-t border-[#e2e8f0] dark:border-[#222228] flex-col gap-4">
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
 						<div className="flex items-center gap-2.5">
 							<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">

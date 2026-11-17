@@ -178,7 +178,7 @@ export default function MobileFilterBar({
 								/>
 								<div className="absolute bottom-full left-0 mb-3 w-52 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl shadow-2xl z-50 overflow-hidden">
 									<div className="p-3 border-b border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#111115]">
-										<p className="text-[10px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider px-1">
+										<p className="text-[10px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider px-1">
 											제조사 선택
 										</p>
 									</div>
@@ -221,7 +221,7 @@ export default function MobileFilterBar({
 						className="flex-1 min-w-0 h-full bg-transparent border-none outline-none text-xs text-[#0f172a] dark:text-white placeholder:text-[#64748b] dark:placeholder:text-[#a1a1aa] px-1"
 					/>
 
-					<span className="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md shrink-0 mr-1 border border-blue-500/20 whitespace-nowrap">
+					<span className="text-[10px] tabular-nums font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md shrink-0 mr-1 border border-blue-500/20 whitespace-nowrap">
 						{filteredItemsLength}
 					</span>
 				</div>

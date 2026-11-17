@@ -105,14 +105,14 @@ export function Modal({
 				transition={{ type: "spring", damping: 28, stiffness: 320 }}
 				className={`relative w-full ${maxWidth} flex flex-col z-10 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-2xl dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.7)] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden transition-colors ${resolvedSheetClass}`}
 			>
-				{/* 모바일 상단 드래그 핸들 (터치로 쓸어내려 닫기) */}
+				{/* 모바일 상단 드래그 핸들 (헤더 상단 중앙 얇은 바) */}
 				<div
 					onPointerDown={(e) => dragControls.start(e)}
 					onClick={onClose}
-					className="w-full pt-3 pb-1 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing sm:hidden select-none"
+					className="w-full pt-1.5 pb-0.5 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing sm:hidden select-none"
 					aria-hidden="true"
 				>
-					<div className="w-10 h-1.5 rounded-full bg-black/20 dark:bg-white/20 hover:bg-black/30 dark:hover:bg-white/30 transition-colors" />
+					<div className="w-8 h-1 rounded-full bg-black/20 dark:bg-white/20 hover:bg-black/30 dark:hover:bg-white/30 transition-colors" />
 				</div>
 
 				{!hideHeader && (
@@ -122,53 +122,51 @@ export function Modal({
 							if ((e.target as HTMLElement).closest("button")) return;
 							dragControls.start(e);
 						}}
-						className="relative px-4 sm:px-6 py-3 flex items-center justify-between border-b border-[#e2e8f0] dark:border-[#222228] shrink-0 min-h-[52px] select-none"
+						className="relative px-3 sm:px-4 py-1.5 flex items-center justify-between border-b border-[#e2e8f0] dark:border-[#222228] shrink-0 min-h-[38px] select-none gap-2"
 					>
-						<div className="flex items-center gap-2.5 min-w-0 pr-2">
+						<div className="flex items-center gap-1.5 min-w-0 flex-1">
 							{onBack && (
 								<button
 									type="button"
 									onClick={onBack}
-									className="w-8 h-8 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
+									className="w-6 h-6 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
 								>
-									<ChevronLeft size={16} />
+									<ChevronLeft size={14} />
 								</button>
 							)}
 							{Icon && (
-								<div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-									<Icon size={16} strokeWidth={2.4} />
-								</div>
+								<Icon size={15} strokeWidth={2.4} className="text-blue-600 dark:text-blue-400 shrink-0" />
 							)}
-							<div className="min-w-0">
+							<div className="flex items-center gap-1.5 min-w-0">
 								{title && (
-									<h2 className="text-sm sm:text-base font-bold tracking-tight text-[#0f172a] dark:text-white truncate break-keep">
+									<h2 className="text-xs sm:text-[13px] font-bold tracking-tight text-[#0f172a] dark:text-white truncate break-keep">
 										{title}
 									</h2>
 								)}
 								{subtitle && (
-									<p className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] tracking-tight truncate mt-0.5">
+									<span className="px-1.5 py-0.2 rounded-md bg-slate-100 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[10px] font-semibold tabular-nums text-[#64748b] dark:text-[#a1a1aa] tracking-tight truncate shrink-0">
 										{subtitle}
-									</p>
+									</span>
 								)}
 							</div>
 						</div>
 
-						<div className="flex items-center gap-2 shrink-0">
+						<div className="flex items-center gap-1 shrink-0">
 							{headerAction}
 							<button
 								type="button"
 								onClick={onClose}
 								aria-label="닫기"
-								className="w-8 h-8 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center active:scale-95 transition-all"
+								className="w-6 h-6 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center active:scale-95 transition-all"
 							>
-								<X size={16} strokeWidth={2.5} />
+								<X size={14} strokeWidth={2.5} />
 							</button>
 						</div>
 					</div>
 				)}
 
 				<div
-					className={`flex-1 flex flex-col overflow-y-auto overscroll-contain p-4 sm:p-6 min-h-0 ${contentClassName}`}
+					className={`flex-1 flex flex-col overflow-y-auto overscroll-contain p-2.5 sm:p-4 min-h-0 ${contentClassName}`}
 				>
 					{children}
 				</div>

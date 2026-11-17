@@ -2,10 +2,11 @@
 
 import { FlaskConical, Plus, RotateCcw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import type { ReagentPerson, ReagentRowSpec } from "@/actions/reagents";
 import { Modal } from "@/components/ui/modal";
 import {
 	parseCellExpression,
+	type ReagentPerson,
+	type ReagentRowSpec,
 	serializeBuckets,
 	VOLUME_OPTIONS,
 } from "../constants";
@@ -125,7 +126,7 @@ export default function ReagentAmountModal({
 											}`}
 										>
 											<span
-												className={`text-base font-mono font-bold leading-none ${
+												className={`text-base tabular-nums font-bold leading-none ${
 													isActive
 														? "text-[#2563eb] dark:text-[#60a5fa]"
 														: "text-[#0f172a] dark:text-white"
@@ -135,7 +136,7 @@ export default function ReagentAmountModal({
 											</span>
 
 											<span
-												className={`px-2.5 py-0.5 rounded-lg font-mono text-[11px] font-bold leading-tight transition-colors ${
+												className={`px-2.5 py-0.5 rounded-lg tabular-nums text-[11px] font-bold leading-tight transition-colors ${
 													isActive
 														? "bg-[#2563eb] text-white shadow-2xs"
 														: "bg-black/5 dark:bg-white/5 text-[#94a3b8] dark:text-[#71717a]"
@@ -151,7 +152,7 @@ export default function ReagentAmountModal({
 							{/* 하단 1: 입력 구성 내용 (예시 C: 1줄 칩/뱃지형 압축) */}
 							<div className="h-11 px-3.5 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between text-xs font-bold">
 								<div className="flex items-center gap-2 min-w-0">
-									<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 text-[#2563eb] dark:text-[#60a5fa] font-mono text-xs shrink-0">
+									<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 text-[#2563eb] dark:text-[#60a5fa] tabular-nums text-xs shrink-0">
 										총 {modalPreview.total}L
 									</span>
 									<span className="text-[#64748b] dark:text-[#a1a1aa] shrink-0">
@@ -159,7 +160,7 @@ export default function ReagentAmountModal({
 									</span>
 									<span className="truncate text-[#0f172a] dark:text-white">
 										{modalPreview.total > 0 ? (
-											<span className="font-mono text-xs">
+											<span className="tabular-nums text-xs">
 												{modalPreview.breakdownText}
 											</span>
 										) : (
@@ -177,7 +178,7 @@ export default function ReagentAmountModal({
 								<span className="text-xs font-bold text-[#0f172a] dark:text-white">
 									단일 수량 입력 (표준용액 등)
 								</span>
-								<span className="text-xs font-mono text-[#64748b] dark:text-[#a1a1aa]">
+								<span className="text-xs text-[#64748b] dark:text-[#a1a1aa]">
 									숫자만 표기
 								</span>
 							</div>
@@ -191,7 +192,7 @@ export default function ReagentAmountModal({
 									onChange={(e) =>
 										setEditSingleTotal(Math.max(0, Number(e.target.value)))
 									}
-									className="flex-1 h-11 rounded-xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-center font-mono text-xs font-bold text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
+									className="flex-1 h-11 rounded-xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-center tabular-nums text-xs font-bold text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
 								/>
 								<button
 									type="button"
@@ -208,7 +209,7 @@ export default function ReagentAmountModal({
 										key={n}
 										type="button"
 										onClick={() => setEditSingleTotal(n)}
-										className="h-9 rounded-xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] font-mono text-xs font-bold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#2563eb] cursor-pointer"
+										className="h-9 rounded-xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] tabular-nums text-xs font-bold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#2563eb] cursor-pointer"
 									>
 										{n}
 									</button>

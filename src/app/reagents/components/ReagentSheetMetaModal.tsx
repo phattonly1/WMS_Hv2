@@ -35,7 +35,6 @@ export default function ReagentSheetMetaModal({
 			isOpen={isOpen}
 			onClose={onClose}
 			title={editingSheetId ? "회차 정보 수정" : "새 시약 주문 회차 생성"}
-			subtitle="주문 마감일 및 예상 납기일 설정"
 			icon={Calendar}
 		>
 			<div className="space-y-4">

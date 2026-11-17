@@ -1,14 +1,18 @@
 "use client";
 
-import { useMemo, useRef, useState, useEffect } from "react";
-import { Check, ChevronDown, Droplets } from "lucide-react";
-import type { RealtimeWaterQuality } from "../nierStationMap";
+import { useEffect, useMemo, useState } from "react";
+import { Droplets } from "lucide-react";
+import type {
+	RealtimeWaterQuality,
+	WaterQualityMetricKey,
+} from "../nierStationMap";
 import { Modal } from "@/components/ui/modal";
 
 interface WaterQualityChartModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 	stationName: string;
+	initialMetric?: WaterQualityMetricKey;
 	data: {
 		latest: RealtimeWaterQuality | null;
 		history: RealtimeWaterQuality[];
@@ -16,82 +20,174 @@ interface WaterQualityChartModalProps {
 	isLoading: boolean;
 }
 
-type MetricKey = "wtrtp" | "wqi" | "toc" | "tp" | "tn" | "ph" | "doc" | "ec" | "tur";
+type MetricKey =
+	| "wtrtp"
+	| "wqi"
+	| "toc"
+	| "tp"
+	| "tn"
+	| "ph"
+	| "doc"
+	| "ec"
+	| "tur"
+	| "chla";
 
 interface MetricConfig {
 	key: MetricKey;
 	label: string;
+	shortLabel: string;
 	unit: string;
 	color: string;
 	decimals: number;
 }
 
 const METRIC_CONFIGS: MetricConfig[] = [
-	{ key: "wtrtp", label: "수온", unit: "℃", color: "#38bdf8", decimals: 1 },
-	{ key: "wqi", label: "WQI", unit: "점", color: "#2563eb", decimals: 0 },
-	{ key: "toc", label: "TOC", unit: "mg/L", color: "#10b981", decimals: 2 },
-	{ key: "tp", label: "TP(총인)", unit: "mg/L", color: "#f59e0b", decimals: 3 },
-	{ key: "tn", label: "TN(총질소)", unit: "mg/L", color: "#60a5fa", decimals: 3 },
-	{ key: "ph", label: "pH", unit: "", color: "#f43f5e", decimals: 2 },
-	{ key: "doc", label: "DO(용존산소)", unit: "mg/L", color: "#06b6d4", decimals: 1 },
-	{ key: "ec", label: "EC(전도도)", unit: "μS/cm", color: "#059669", decimals: 0 },
-	{ key: "tur", label: "탁도", unit: "NTU", color: "#fbbf24", decimals: 1 },
+	{
+		key: "wtrtp",
+		label: "수온",
+		shortLabel: "수온",
+		unit: "℃",
+		color: "#38bdf8",
+		decimals: 1,
+	},
+	{
+		key: "wqi",
+		label: "WQI(수질지수)",
+		shortLabel: "WQI",
+		unit: "점",
+		color: "#2563eb",
+		decimals: 0,
+	},
+	{
+		key: "ec",
+		label: "EC(전도도)",
+		shortLabel: "EC",
+		unit: "μS",
+		color: "#059669",
+		decimals: 0,
+	},
+	{
+		key: "ph",
+		label: "pH",
+		shortLabel: "pH",
+		unit: "",
+		color: "#f43f5e",
+		decimals: 2,
+	},
+	{
+		key: "doc",
+		label: "DO(용존산소)",
+		shortLabel: "DO",
+		unit: "mg/L",
+		color: "#06b6d4",
+		decimals: 1,
+	},
+	{
+		key: "toc",
+		label: "TOC(유기탄소)",
+		shortLabel: "TOC",
+		unit: "mg/L",
+		color: "#10b981",
+		decimals: 2,
+	},
+	{
+		key: "tp",
+		label: "TP(총인)",
+		shortLabel: "TP",
+		unit: "mg/L",
+		color: "#f59e0b",
+		decimals: 3,
+	},
+	{
+		key: "tn",
+		label: "TN(총질소)",
+		shortLabel: "TN",
+		unit: "mg/L",
+		color: "#60a5fa",
+		decimals: 3,
+	},
+	{
+		key: "tur",
+		label: "탁도",
+		shortLabel: "탁도",
+		unit: "NTU",
+		color: "#fbbf24",
+		decimals: 1,
+	},
+	{
+		key: "chla",
+		label: "클로로필-a",
+		shortLabel: "Chl-a",
+		unit: "mg/m³",
+		color: "#84cc16",
+		decimals: 1,
+	},
 ];
 
 export function WaterQualityChartModal({
 	isOpen,
 	onClose,
 	stationName,
+	initialMetric,
 	data,
 	isLoading,
 }: WaterQualityChartModalProps) {
 	const [activeMetric, setActiveMetric] = useState<MetricKey>("wtrtp");
-	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-	const dropdownRef = useRef<HTMLDivElement>(null);
+	const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
-	// 드롭다운 외부 클릭 시 닫기
+	// 초기 지표 지정 시 보정
 	useEffect(() => {
-		const handleOutsideClick = (e: MouseEvent) => {
-			if (
-				dropdownRef.current &&
-				!dropdownRef.current.contains(e.target as Node)
-			) {
-				setIsDropdownOpen(false);
+		setHoverIdx(null);
+		if (isOpen && initialMetric) {
+			const exists = METRIC_CONFIGS.some((m) => m.key === initialMetric);
+			if (exists) {
+				setActiveMetric(initialMetric as MetricKey);
 			}
-		};
-		if (isDropdownOpen) {
-			document.addEventListener("mousedown", handleOutsideClick);
 		}
-		return () => {
-			document.removeEventListener("mousedown", handleOutsideClick);
-		};
-	}, [isDropdownOpen]);
-
-	// 모달 닫힐 때 드롭다운도 닫기
-	useEffect(() => {
-		if (!isOpen) setIsDropdownOpen(false);
-	}, [isOpen]);
+	}, [isOpen, initialMetric]);
 
 	const selectedConfig = useMemo(
-		() => METRIC_CONFIGS.find((m) => m.key === activeMetric) || METRIC_CONFIGS[0]!,
+		() =>
+			METRIC_CONFIGS.find((m) => m.key === activeMetric) ||
+			METRIC_CONFIGS[0]!,
 		[activeMetric],
 	);
 
-	// 유효한 실측 데이터가 존재하는 최근 24개 시간대 추출
-	const recent24h = useMemo(() => {
+	// 유효한 실측 데이터가 존재하는 최근 48시간 시계열 추출
+	const recentHistory = useMemo(() => {
 		if (!data?.history || data.history.length === 0) return [];
-		// 이미 유효한 레코드 중 뒤에서 최대 24개
 		const validList = data.history.filter((item) => {
-			return item.ph !== null || item.wtrtp !== null || item.doc !== null || item.toc !== null;
+			return (
+				item.ph !== null ||
+				item.wtrtp !== null ||
+				item.doc !== null ||
+				item.toc !== null
+			);
 		});
-		return validList.slice(-24);
+		return validList.slice(-48);
 	}, [data]);
 
-	// 차트 SVG 좌표 계산
-	const chartData = useMemo(() => {
-		if (recent24h.length === 0) return null;
+	// 각 지표별로 최근 48시간 내 가장 마지막 유효 측정값 추출 (현재 시각이 결측일 때 회색 숫자로 표시용)
+	const lastValidByMetric = useMemo(() => {
+		const map: Partial<Record<MetricKey, { val: number; dt: string }>> = {};
+		for (const m of METRIC_CONFIGS) {
+			for (let i = recentHistory.length - 1; i >= 0; i--) {
+				const rec = recentHistory[i];
+				const v = rec?.[m.key];
+				if (typeof v === "number" && !Number.isNaN(v)) {
+					map[m.key] = { val: v, dt: rec?.measureDt || "" };
+					break;
+				}
+			}
+		}
+		return map;
+	}, [recentHistory]);
 
-		const values = recent24h
+	// 차트 SVG 좌표 계산 (초슬림 높이 84px, 실측 구간 컬러 실선 + 결측 구간 회색 점선 분리)
+	const chartData = useMemo(() => {
+		if (recentHistory.length === 0) return null;
+
+		const values = recentHistory
 			.map((item) => item[activeMetric] as number | null)
 			.filter((v): v is number => v !== null && !Number.isNaN(v));
 
@@ -102,30 +198,111 @@ export function WaterQualityChartModal({
 		const range = maxVal - minVal === 0 ? 1 : maxVal - minVal;
 
 		const svgWidth = 320;
-		const svgHeight = 120;
-		const padY = 16;
+		const svgHeight = 84;
+		const padY = 10;
 		const usableHeight = svgHeight - padY * 2;
 
-		const points = recent24h.map((item, idx) => {
-			const x = (idx / (recent24h.length - 1 || 1)) * svgWidth;
-			const val = item[activeMetric] as number | null;
-			let y = svgHeight / 2;
-			if (val !== null && !Number.isNaN(val)) {
-				y = svgHeight - padY - ((val - minVal) / range) * usableHeight;
+		// "2026-11-17 14h" -> "11/17 14시" 변환 헬퍼
+		const formatKoDt = (raw: string) => {
+			const m = raw.match(/(?:\d{4}-)?(\d{2})-(\d{2})\s+(\d{2})h?/);
+			if (m) {
+				return `${Number(m[1])}/${Number(m[2])} ${Number(m[3])}시`;
 			}
-			// 시간 라벨: "2026-10-30 02h" -> "02h"
+			return raw;
+		};
+
+		const rawPoints = recentHistory.map((item, idx) => {
+			const x = (idx / (recentHistory.length - 1 || 1)) * svgWidth;
+			const val = item[activeMetric] as number | null;
+			const isValid = typeof val === "number" && !Number.isNaN(val);
+			const y = isValid
+				? svgHeight - padY - ((val - minVal) / range) * usableHeight
+				: null;
 			const rawDt = item.measureDt || "";
-			const timeLabel = rawDt.includes(" ") ? rawDt.split(" ")[1] : rawDt.slice(-3);
-			return { x, y, val, timeLabel, fullDt: item.measureDt };
+			const timeLabel = formatKoDt(rawDt);
+			return { x, y, val: isValid ? val : null, isValid, timeLabel, fullDt: rawDt };
 		});
 
-		// SVG Path 생성
-		const pathD = points.reduce((acc, pt, i) => {
-			return i === 0 ? `M ${pt.x} ${pt.y}` : `${acc} L ${pt.x} ${pt.y}`;
-		}, "");
+		// 결측(null) 포인트의 y좌표를 앞/뒤 유효 실측값 기준으로 보간(또는 직전 실측값 유지)하여 엉뚱한 중앙선(svgHeight/2) 튀는 현상 방지
+		const firstValidIdx = rawPoints.findIndex((p) => p.isValid);
+		const lastValidIdx = rawPoints.findLastIndex((p) => p.isValid);
+		const firstValidY = rawPoints[firstValidIdx]?.y ?? svgHeight / 2;
+		const lastValidY = rawPoints[lastValidIdx]?.y ?? svgHeight / 2;
 
-		// 그라디언트 채우기용 하단 닫힌 Path
-		const fillD = `${pathD} L ${svgWidth} ${svgHeight} L 0 ${svgHeight} Z`;
+		const points = rawPoints.map((pt, i) => {
+			if (pt.y !== null) return { ...pt, y: pt.y };
+			if (i < firstValidIdx) return { ...pt, y: firstValidY };
+			if (i > lastValidIdx) return { ...pt, y: lastValidY };
+			// 중간 결측 구간: 직전 유효점과 다음 유효점 사이 선형 보간
+			let prevIdx = i - 1;
+			while (prevIdx >= 0 && rawPoints[prevIdx]?.y === null) prevIdx--;
+			let nextIdx = i + 1;
+			while (nextIdx < rawPoints.length && rawPoints[nextIdx]?.y === null)
+				nextIdx++;
+			const prevPt = rawPoints[prevIdx];
+			const nextPt = rawPoints[nextIdx];
+			if (prevPt?.y != null && nextPt?.y != null && nextIdx > prevIdx) {
+				const t = (i - prevIdx) / (nextIdx - prevIdx);
+				return { ...pt, y: prevPt.y + (nextPt.y - prevPt.y) * t };
+			}
+			return { ...pt, y: lastValidY };
+		});
+
+		// 1) 연속된 실측(isValid) 구간 Path 및 그라디언트 채우기 생성
+		const solidSegments: { pathD: string; fillD: string }[] = [];
+		let currentSeg: typeof points = [];
+		for (const pt of points) {
+			if (pt.isValid) {
+				currentSeg.push(pt);
+			} else if (currentSeg.length > 0) {
+				const d = currentSeg
+					.map((p, idx) => `${idx === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+					.join(" ");
+				const firstX = currentSeg[0]!.x;
+				const lastX = currentSeg[currentSeg.length - 1]!.x;
+				solidSegments.push({
+					pathD: d,
+					fillD: `${d} L ${lastX} ${svgHeight} L ${firstX} ${svgHeight} Z`,
+				});
+				currentSeg = [];
+			}
+		}
+		if (currentSeg.length > 0) {
+			const d = currentSeg
+				.map((p, idx) => `${idx === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+				.join(" ");
+			const firstX = currentSeg[0]!.x;
+			const lastX = currentSeg[currentSeg.length - 1]!.x;
+			solidSegments.push({
+				pathD: d,
+				fillD: `${d} L ${lastX} ${svgHeight} L ${firstX} ${svgHeight} Z`,
+			});
+		}
+
+		// 2) 결측(!isValid) 구간을 잇는 회색 점선 Path 생성
+		const dashedPaths: string[] = [];
+		let i = 0;
+		while (i < points.length) {
+			if (!points[i]!.isValid) {
+				const startIdx = Math.max(0, i - 1);
+				let endIdx = i;
+				while (endIdx + 1 < points.length && !points[endIdx + 1]!.isValid) {
+					endIdx++;
+				}
+				if (endIdx + 1 < points.length) endIdx++;
+				const seg = points.slice(startIdx, endIdx + 1);
+				if (seg.length >= 2) {
+					dashedPaths.push(
+						seg
+							.map((p, idx) => `${idx === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+							.join(" "),
+					);
+				}
+				i = endIdx + 1;
+			} else {
+				i++;
+			}
+		}
 
 		return {
 			minVal,
@@ -134,217 +311,239 @@ export function WaterQualityChartModal({
 				selectedConfig.decimals,
 			),
 			points,
-			pathD,
-			fillD,
+			solidSegments,
+			dashedPaths,
 			svgWidth,
 			svgHeight,
 		};
-	}, [recent24h, activeMetric, selectedConfig]);
+	}, [recentHistory, activeMetric, selectedConfig]);
+
+	const activePoint =
+		chartData && hoverIdx !== null && chartData.points[hoverIdx]
+			? chartData.points[hoverIdx]
+			: chartData?.points[chartData.points.length - 1] || null;
+
+	const latestMeasureTime = data?.latest?.measureDt
+		? data.latest.measureDt.replace(/^\d{4}-/, "")
+		: null;
 
 	return (
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
 			title={`${stationName} 실시간 수질`}
-			subtitle="NIER 24시간 실시간 모니터링 추이"
 			icon={Droplets}
-			contentClassName="p-3 sm:p-5 overflow-y-auto"
+			maxWidth="max-w-md"
+			headerAction={
+				latestMeasureTime ? (
+					<span className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-black/5 dark:border-white/5">
+						{latestMeasureTime}
+					</span>
+				) : undefined
+			}
+			contentClassName="p-3 sm:p-3.5 overflow-hidden"
 		>
-			<div className="space-y-3 text-[11px]">
-				{/* 1. 커스텀 모던 프리미엄 드롭다운 */}
-				<div ref={dropdownRef} className="relative z-30">
-					{/* 드롭다운 트리거 버튼 */}
-					<button
-						type="button"
-						onClick={() => setIsDropdownOpen((prev) => !prev)}
-						className="w-full flex items-center justify-between p-2.5 rounded-2xl bg-white dark:bg-[#16161c] border border-slate-200/90 dark:border-white/10 shadow-xs hover:border-blue-400 dark:hover:border-blue-500/50 transition-all select-none active:scale-[0.99] group"
-					>
-						<div className="flex items-center gap-2.5 min-w-0">
-							<div
-								className="w-7 h-7 rounded-xl flex items-center justify-center shrink-0 shadow-2xs transition-transform group-hover:scale-105"
-								style={{ backgroundColor: `${selectedConfig.color}20` }}
-							>
-								<span
-									className="w-2.5 h-2.5 rounded-full"
-									style={{ backgroundColor: selectedConfig.color }}
-								/>
-							</div>
-							<div className="flex flex-col text-left leading-tight min-w-0">
-								<span className="text-[9.5px] font-semibold text-slate-400 dark:text-slate-500">
-									선택된 수질 지표
-								</span>
-								<span className="text-[12px] font-black text-slate-900 dark:text-white truncate">
-									{selectedConfig.label}
-								</span>
-							</div>
-						</div>
+			<div className="space-y-2.5 text-[11px] select-none">
+				{/* 1. 상단: 전 항목 슬림 대시보드 그리드 (5열 x 2행, 배지 없이 색상으로 이상치 강조하여 이름 잘림 원천 차단) */}
+				<div className="p-1.5 rounded-2xl bg-slate-100/80 dark:bg-[#16161c] border border-slate-200/80 dark:border-white/10 grid grid-cols-5 gap-1">
+					{METRIC_CONFIGS.map((m) => {
+						const isSelected = activeMetric === m.key;
+						const currentVal = data?.latest
+							? (data.latest[m.key] as number | null)
+							: null;
+						const isCurrentValid =
+							typeof currentVal === "number" && !Number.isNaN(currentVal);
+						const fallbackEntry = !isCurrentValid
+							? lastValidByMetric[m.key]
+							: undefined;
+						const prevAvgVal = data?.latest?.prevAvg?.[m.key] ?? null;
+						const ratio =
+							isCurrentValid &&
+							typeof prevAvgVal === "number" &&
+							!Number.isNaN(prevAvgVal) &&
+							prevAvgVal > 0
+								? currentVal / prevAvgVal
+								: null;
+						const isLow = ratio !== null && ratio <= 0.5;
+						const isHigh = ratio !== null && ratio >= 1.5;
+						const hasAnomaly = isLow || isHigh;
 
-						<div className="flex items-center gap-2 shrink-0">
-							{data?.latest && (
-								<div className="px-2 py-1 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 flex items-center gap-1 font-mono">
-									<span className="text-[9px] text-slate-400">현재</span>
-									<span
-										className="text-[11px] font-black"
-										style={{ color: selectedConfig.color }}
-									>
-										{data.latest[activeMetric] !== null &&
-										!Number.isNaN(data.latest[activeMetric] as number)
-											? `${(data.latest[activeMetric] as number).toFixed(selectedConfig.decimals)} ${selectedConfig.unit}`
-											: "점검중"}
-									</span>
-								</div>
-							)}
-							<div
-								className={`w-6 h-6 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 transition-transform duration-200 ${
-									isDropdownOpen ? "rotate-180 bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" : ""
+						return (
+							<button
+								key={m.key}
+								type="button"
+								onClick={() => {
+									setActiveMetric(m.key);
+									setHoverIdx(null);
+								}}
+								className={`relative h-[44px] px-2 py-1.5 rounded-xl flex flex-col justify-between text-left transition-all active:scale-95 border ${
+									isSelected
+										? hasAnomaly
+											? isLow
+												? "bg-rose-500/15 dark:bg-rose-500/25 border-rose-500 dark:border-rose-400 shadow-xs ring-1 ring-rose-500/30"
+												: "bg-amber-500/15 dark:bg-amber-500/25 border-amber-500 dark:border-amber-400 shadow-xs ring-1 ring-amber-500/30"
+											: "bg-white dark:bg-[#22222c] border-blue-500 dark:border-blue-400 shadow-xs ring-1 ring-blue-500/20"
+										: hasAnomaly
+											? isLow
+												? "bg-rose-500/10 dark:bg-rose-500/15 border-rose-400/60 dark:border-rose-500/40"
+												: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-400/60 dark:border-amber-500/40"
+											: "bg-white/70 dark:bg-white/[0.03] hover:bg-white dark:hover:bg-white/[0.06] border-transparent"
 								}`}
 							>
-								<ChevronDown size={14} strokeWidth={2.4} />
-							</div>
-						</div>
-					</button>
-
-					{/* 드롭다운 옵션 메뉴 (팝오버) */}
-					{isDropdownOpen && (
-						<div className="absolute left-0 right-0 top-[calc(100%+6px)] p-1.5 rounded-2xl bg-white/95 dark:bg-[#16161c]/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-[0_12px_36px_rgba(0,0,0,0.18)] dark:shadow-[0_12px_36px_rgba(0,0,0,0.5)] max-h-[260px] overflow-y-auto space-y-1 animate-in fade-in zoom-in-95 duration-150 custom-scrollbar overscroll-contain">
-							<div className="px-2 py-1 text-[9.5px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider flex items-center justify-between">
-								<span>수질 항목 목록</span>
-								<span>9개 지표</span>
-							</div>
-							{METRIC_CONFIGS.map((m) => {
-								const isSelected = activeMetric === m.key;
-								const currentVal = data?.latest
-									? (data.latest[m.key] as number | null)
-									: null;
-
-								return (
-									<button
-										key={m.key}
-										type="button"
-										onClick={() => {
-											setActiveMetric(m.key);
-											setIsDropdownOpen(false);
-										}}
-										className={`w-full px-2.5 py-2 rounded-xl flex items-center justify-between transition-all text-left ${
-											isSelected
-												? "bg-blue-50 dark:bg-blue-950/50 text-blue-950 dark:text-blue-100 font-black border border-blue-200/70 dark:border-blue-800/60 shadow-2xs"
-												: "hover:bg-slate-100/80 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300 font-bold border border-transparent"
+								{/* 1줄: 지표 약칭 */}
+								<div className="w-full flex items-center justify-between leading-none">
+									<span
+										className={`text-[10px] font-bold tracking-tight whitespace-nowrap ${
+											hasAnomaly
+												? isLow
+													? "text-rose-600 dark:text-rose-300 font-black"
+													: "text-amber-600 dark:text-amber-300 font-black"
+												: isSelected
+													? "text-blue-600 dark:text-blue-400 font-black"
+													: "text-slate-500 dark:text-slate-400"
 										}`}
 									>
-										<div className="flex items-center gap-2 min-w-0">
-											<span
-												className="w-2 h-2 rounded-full shrink-0"
-												style={{ backgroundColor: m.color }}
-											/>
-											<span className="text-[11.5px] truncate">{m.label}</span>
-											<span className="text-[9.5px] font-mono text-slate-400 dark:text-slate-500">
-												{m.unit}
-											</span>
-										</div>
+										{m.shortLabel}
+									</span>
+								</div>
 
-										<div className="flex items-center gap-2 shrink-0">
-											{currentVal !== null && !Number.isNaN(currentVal) ? (
-												<span
-													className={`text-[10.5px] font-mono font-bold px-1.5 py-0.5 rounded-md ${
-														isSelected
-															? "bg-blue-600 text-white dark:bg-blue-500"
-															: "bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300"
-													}`}
-												>
-													{currentVal.toFixed(m.decimals)} {m.unit}
-												</span>
-											) : (
-												<span className="text-[9.5px] text-slate-400 font-mono">
-													-
-												</span>
-											)}
-											{isSelected && (
-												<Check
-													size={13}
-													strokeWidth={2.8}
-													className="text-blue-600 dark:text-blue-400"
-												/>
-											)}
-										</div>
-									</button>
-								);
-							})}
-						</div>
-					)}
+								{/* 2줄: 현재 측정값 (일시 결측이지만 48h 내 최근값이 있으면 회색 숫자로 표시) */}
+								<div className="w-full flex items-baseline justify-between leading-none">
+									{isCurrentValid ? (
+										<span
+											className={`text-[12px] font-black tracking-tight tabular-nums whitespace-nowrap ${
+												hasAnomaly
+													? isLow
+														? "text-rose-600 dark:text-rose-200"
+														: "text-amber-600 dark:text-amber-200"
+													: isSelected
+														? "text-blue-600 dark:text-blue-300"
+														: "text-slate-900 dark:text-white"
+											}`}
+										>
+											{currentVal.toFixed(m.decimals)}
+										</span>
+									) : fallbackEntry ? (
+										<span
+											title={`현재 결측 (최근 측정: ${fallbackEntry.val.toFixed(m.decimals)})`}
+											className="text-[12px] font-bold tracking-tight tabular-nums whitespace-nowrap text-slate-400 dark:text-slate-500"
+										>
+											{fallbackEntry.val.toFixed(m.decimals)}
+										</span>
+									) : (
+										<span className="text-[10px] font-bold text-slate-300 dark:text-slate-600">
+											-
+										</span>
+									)}
+								</div>
+							</button>
+						);
+					})}
 				</div>
 
-				{/* 2. 메인 차트 영역 (초경량 반응형 SVG) */}
-				<div className="p-3 sm:p-3.5 rounded-2xl bg-slate-50 dark:bg-[#16161c] border border-slate-200/80 dark:border-white/10 space-y-2">
-					<div className="flex items-center justify-between gap-2">
+				{/* 2. 하단: 일체형 초컴팩트 24h 트렌드 차트 */}
+				<div className="p-2.5 rounded-2xl bg-slate-100/80 dark:bg-[#16161c] border border-slate-200/80 dark:border-white/10 space-y-1.5">
+					{/* 차트 상단 1줄: 고정 높이 h-5로 배지 등장/소멸 시 레이아웃 울렁거림 원천 차단 */}
+					<div className="h-5 flex items-center justify-between gap-2 leading-none">
 						<div className="flex items-center gap-1.5 min-w-0">
-							<span
-								className="w-2.5 h-2.5 rounded-full shrink-0"
-								style={{ backgroundColor: selectedConfig.color }}
-							/>
-							<span className="text-xs font-black text-slate-900 dark:text-white truncate">
-								{selectedConfig.label} 24h 변동 추이
+							<span className="text-[11.5px] font-black text-slate-900 dark:text-white whitespace-nowrap">
+								{selectedConfig.label}
 							</span>
-							<span className="text-[10px] font-mono text-slate-400 shrink-0">
-								({selectedConfig.unit || "무차원"})
-							</span>
+							{activePoint &&
+								(activePoint.val !== null ? (
+									<span className="text-[12px] font-black tabular-nums whitespace-nowrap text-blue-600 dark:text-blue-400">
+										{activePoint.val.toFixed(selectedConfig.decimals)}
+										{selectedConfig.unit && (
+											<span className="ml-0.5 text-[9.5px] font-bold text-slate-500 dark:text-slate-400">
+												{selectedConfig.unit}
+											</span>
+										)}
+									</span>
+								) : lastValidByMetric[activeMetric] ? (
+									<span className="text-[11px] font-bold tabular-nums whitespace-nowrap text-slate-400 dark:text-slate-500">
+										{hoverIdx !== null
+											? "결측"
+											: `${lastValidByMetric[activeMetric]!.val.toFixed(selectedConfig.decimals)}${selectedConfig.unit} (최근)`}
+									</span>
+								) : null)}
+							{(() => {
+								const cur = data?.latest
+									? (data.latest[activeMetric] as number | null)
+									: null;
+								const avg = data?.latest?.prevAvg?.[activeMetric] ?? null;
+								if (
+									typeof cur === "number" &&
+									typeof avg === "number" &&
+									!Number.isNaN(cur) &&
+									!Number.isNaN(avg) &&
+									avg > 0
+								) {
+									const ratio = cur / avg;
+									if (ratio <= 0.5 || ratio >= 1.5) {
+										const isLow = ratio <= 0.5;
+										return (
+											<span
+												className={`h-[18px] px-1.5 inline-flex items-center rounded-md text-[9px] font-black leading-none text-white tabular-nums whitespace-nowrap ${
+													isLow ? "bg-rose-500" : "bg-amber-500"
+												}`}
+											>
+												전일대비 {isLow ? "↓" : "↑"}
+												{Math.round(ratio * 100)}%
+											</span>
+										);
+									}
+								}
+								return null;
+							})()}
 						</div>
 
-						{data?.latest && (
-							<div className="flex items-center gap-1.5 shrink-0 text-right whitespace-nowrap">
-								<span className="text-[10px] text-slate-400">최신:</span>
-								<span
-									className="text-xs font-black font-mono"
-									style={{ color: selectedConfig.color }}
-								>
-									{data.latest[activeMetric] !== null &&
-									!Number.isNaN(data.latest[activeMetric] as number)
-										? `${(data.latest[activeMetric] as number).toFixed(selectedConfig.decimals)} ${selectedConfig.unit}`
-										: "점검중"}
-								</span>
-								{(() => {
-									const cur = data.latest[activeMetric] as number | null;
-									const avg = data.latest.prevAvg?.[activeMetric] ?? null;
-									if (
-										typeof cur === "number" &&
-										typeof avg === "number" &&
-										avg > 0
-									) {
-										const ratio = cur / avg;
-										const pct = Math.round(ratio * 100);
-										const isLow = ratio <= 0.5;
-										const isHigh = ratio >= 1.5;
-										if (isLow || isHigh) {
-											return (
-												<span
-													className={`px-1.5 py-0.5 rounded-md text-[9.5px] font-mono font-black ${
-														isLow
-															? "bg-rose-500 text-white"
-															: "bg-amber-500 text-white"
-													}`}
-												>
-													전일평균의 {pct}%
-												</span>
-											);
-										}
-									}
-									return null;
-								})()}
-							</div>
+						{activePoint && hoverIdx !== null && (
+							<span className="h-[18px] px-1.5 inline-flex items-center rounded-md bg-white/80 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[9.5px] font-bold text-slate-600 dark:text-slate-300 tabular-nums whitespace-nowrap shrink-0">
+								{activePoint.timeLabel}
+							</span>
 						)}
 					</div>
 
 					{/* 로딩 인디케이터 */}
 					{isLoading && (
-						<div className="h-32 flex flex-col items-center justify-center gap-2 text-slate-400">
-							<div className="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-							<span className="text-[10.5px]">실시간 24시간 데이터 수신 중...</span>
+						<div className="h-[96px] flex flex-col items-center justify-center gap-1.5 text-slate-400">
+							<div className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+							<span className="text-[10px]">48시간 데이터 수신 중...</span>
 						</div>
 					)}
 
-					{/* 차트 렌더링 */}
+					{/* 차트 SVG (모바일 터치 드래그 & PC 마우스 이동으로 시간대별 수치 탐색) */}
 					{!isLoading && chartData && (
-						<div className="space-y-1 pt-1">
-							<div className="w-full relative h-[120px] flex items-center justify-center">
+						<div>
+							<div
+								className="w-full relative h-[84px] flex items-center justify-center touch-none cursor-crosshair"
+								onPointerDown={(e) => {
+									e.stopPropagation();
+									const rect = e.currentTarget.getBoundingClientRect();
+									const relX = Math.max(
+										0,
+										Math.min(1, (e.clientX - rect.left) / rect.width),
+									);
+									const idx = Math.round(
+										relX * (chartData.points.length - 1),
+									);
+									setHoverIdx(idx);
+								}}
+								onPointerMove={(e) => {
+									const rect = e.currentTarget.getBoundingClientRect();
+									const relX = Math.max(
+										0,
+										Math.min(1, (e.clientX - rect.left) / rect.width),
+									);
+									const idx = Math.round(
+										relX * (chartData.points.length - 1),
+									);
+									setHoverIdx(idx);
+								}}
+								onPointerUp={() => setHoverIdx(null)}
+								onPointerCancel={() => setHoverIdx(null)}
+								onPointerLeave={() => setHoverIdx(null)}
+							>
 								<svg
 									viewBox={`0 0 ${chartData.svgWidth} ${chartData.svgHeight}`}
 									className="w-full h-full overflow-visible"
@@ -361,7 +560,7 @@ export function WaterQualityChartModal({
 											<stop
 												offset="0%"
 												stopColor={selectedConfig.color}
-												stopOpacity="0.3"
+												stopOpacity="0.28"
 											/>
 											<stop
 												offset="100%"
@@ -371,138 +570,144 @@ export function WaterQualityChartModal({
 										</linearGradient>
 									</defs>
 
-									{/* 수평 가이드선 3줄 */}
+									{/* 수평 가이드선 */}
 									<line
 										x1="0"
-										y1="16"
+										y1="10"
 										x2={chartData.svgWidth}
-										y2="16"
+										y2="10"
 										stroke="currentColor"
 										strokeDasharray="3 3"
 										className="text-slate-200 dark:text-white/5"
 									/>
 									<line
 										x1="0"
-										y1="60"
+										y1="42"
 										x2={chartData.svgWidth}
-										y2="60"
+										y2="42"
 										stroke="currentColor"
 										strokeDasharray="3 3"
 										className="text-slate-200 dark:text-white/5"
 									/>
 									<line
 										x1="0"
-										y1="104"
+										y1="74"
 										x2={chartData.svgWidth}
-										y2="104"
+										y2="74"
 										stroke="currentColor"
 										strokeDasharray="3 3"
 										className="text-slate-200 dark:text-white/5"
 									/>
 
-									{/* 배경 그라디언트 채우기 */}
-									<path d={chartData.fillD} fill={`url(#grad-${activeMetric})`} />
+									{/* 1) 실측 구간 배경 그라디언트 */}
+									{chartData.solidSegments.map((seg, idx) => (
+										<path
+											key={`fill-${idx}`}
+											d={seg.fillD}
+											fill={`url(#grad-${activeMetric})`}
+										/>
+									))}
 
-									{/* 트렌드 곡선 */}
-									<path
-										d={chartData.pathD}
-										fill="none"
-										stroke={selectedConfig.color}
-										strokeWidth="2.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
+									{/* 2) 결측(없는 데이터) 구간 회색 점선 */}
+									{chartData.dashedPaths.map((d, idx) => (
+										<path
+											key={`dash-${idx}`}
+											d={d}
+											fill="none"
+											stroke="#94a3b8"
+											strokeWidth="1.8"
+											strokeDasharray="3 3"
+											strokeLinecap="round"
+											opacity="0.75"
+										/>
+									))}
 
-									{/* 최신 포인트 강조 펄스 닷 */}
-									{chartData.points.length > 0 && (
+									{/* 3) 실측 구간 컬러 트렌드 실선 */}
+									{chartData.solidSegments.map((seg, idx) => (
+										<path
+											key={`line-${idx}`}
+											d={seg.pathD}
+											fill="none"
+											stroke={selectedConfig.color}
+											strokeWidth="2.2"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									))}
+
+									{/* 터치/호버 수직 가이드라인 */}
+									{activePoint && hoverIdx !== null && (
+										<line
+											x1={activePoint.x}
+											y1="4"
+											x2={activePoint.x}
+											y2={chartData.svgHeight - 4}
+											stroke={
+												activePoint.isValid ? selectedConfig.color : "#94a3b8"
+											}
+											strokeWidth="1"
+											strokeDasharray="2 2"
+											opacity="0.7"
+										/>
+									)}
+
+									{/* 활성 포인트 닷 (실측이면 컬러 닷, 결측이면 회색 속빈 닷) */}
+									{activePoint && (
 										<circle
-											cx={chartData.points[chartData.points.length - 1]!.x}
-											cy={chartData.points[chartData.points.length - 1]!.y}
-											r="4"
-											fill={selectedConfig.color}
+											cx={activePoint.x}
+											cy={activePoint.y}
+											r="3.5"
+											fill={
+												activePoint.isValid ? selectedConfig.color : "#94a3b8"
+											}
 											stroke="#ffffff"
-											strokeWidth="2"
+											strokeWidth="1.8"
 										/>
 									)}
 								</svg>
 							</div>
 
-							{/* 하단 X축 시간 라벨 (-23h ~ 0h 상대 시간 및 실제 시각 표기) */}
-							<div className="flex justify-between items-center text-[9px] font-mono text-slate-400 px-0.5 pt-1">
-								<span title={chartData.points[0]?.timeLabel}>
-									-23h
-								</span>
-								<span title={chartData.points[Math.floor(chartData.points.length / 2)]?.timeLabel}>
-									-12h
-								</span>
-								<span className="font-bold text-slate-700 dark:text-slate-200" title={chartData.points[chartData.points.length - 1]?.timeLabel}>
-									0h (최신)
-								</span>
-							</div>
+							{/* 하단 X축 시간 라벨 (48시간 전 ~ 현재) + 중앙에 최저·평균·최고 통합 */}
+							<div className="flex justify-between items-center text-[9.5px] text-slate-400 px-0.5 pt-1 leading-none tabular-nums">
+								<span className="shrink-0 font-semibold">48시간 전</span>
 
-							{/* 통계 요약 (최고, 최저, 평균) */}
-							<div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-slate-200/60 dark:border-white/5 text-center">
-								<div className="p-1 rounded-lg bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5">
-									<span className="text-[9px] text-slate-400 block">최저</span>
-									<span className="text-[10.5px] font-mono font-bold text-slate-800 dark:text-slate-200">
-										{chartData.minVal.toFixed(selectedConfig.decimals)} {selectedConfig.unit}
+								<div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 font-semibold">
+									<span>
+										최저{" "}
+										<b className="font-black text-slate-800 dark:text-slate-200">
+											{chartData.minVal.toFixed(selectedConfig.decimals)}
+										</b>
+									</span>
+									<span className="opacity-40">·</span>
+									<span>
+										평균{" "}
+										<b className="font-black text-slate-800 dark:text-slate-200">
+											{chartData.avgVal}
+										</b>
+									</span>
+									<span className="opacity-40">·</span>
+									<span>
+										최고{" "}
+										<b className="font-black text-slate-800 dark:text-slate-200">
+											{chartData.maxVal.toFixed(selectedConfig.decimals)}
+										</b>
 									</span>
 								</div>
-								<div className="p-1 rounded-lg bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5">
-									<span className="text-[9px] text-slate-400 block">평균</span>
-									<span className="text-[10.5px] font-mono font-bold text-slate-800 dark:text-slate-200">
-										{chartData.avgVal} {selectedConfig.unit}
-									</span>
-								</div>
-								<div className="p-1 rounded-lg bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5">
-									<span className="text-[9px] text-slate-400 block">최고</span>
-									<span className="text-[10.5px] font-mono font-bold text-slate-800 dark:text-slate-200">
-										{chartData.maxVal.toFixed(selectedConfig.decimals)} {selectedConfig.unit}
-									</span>
-								</div>
+
+								<span className="font-bold text-slate-700 dark:text-slate-200 shrink-0">
+									현재
+								</span>
 							</div>
 						</div>
 					)}
 
 					{/* 데이터 없음 */}
 					{!isLoading && !chartData && (
-						<div className="h-28 flex items-center justify-center text-slate-400 text-xs">
+						<div className="h-[96px] flex items-center justify-center text-slate-400 text-[11px]">
 							해당 항목의 최근 측정 데이터가 없습니다.
 						</div>
 					)}
 				</div>
-
-				{/* 3. 최근 6시간 텍스트 테이블 리스트 */}
-				{recent24h.length > 0 && (
-					<div className="space-y-1">
-						<span className="text-[10.5px] font-semibold text-slate-700 dark:text-slate-300 block">
-							시간대별 기록 (최근 6시간)
-						</span>
-						<div className="rounded-xl border border-slate-200/80 dark:border-white/10 overflow-hidden divide-y divide-slate-100 dark:divide-white/5 bg-white dark:bg-slate-900/60">
-							{recent24h
-								.slice(-6)
-								.reverse()
-								.map((item, idx) => {
-									const val = item[activeMetric] as number | null;
-									return (
-										<div
-											key={idx}
-											className="px-3 py-1.5 flex items-center justify-between text-[10.5px]"
-										>
-											<span className="font-mono text-slate-500 dark:text-slate-400">
-												{item.measureDt}
-											</span>
-											<span className="font-mono font-bold text-slate-800 dark:text-slate-200">
-												{val !== null && !Number.isNaN(val)
-													? `${val.toFixed(selectedConfig.decimals)} ${selectedConfig.unit}`
-													: "점검중"}
-											</span>
-										</div>
-									);
-								})}
-						</div>
-					</div>
-				)}
 			</div>
 		</Modal>
 	);

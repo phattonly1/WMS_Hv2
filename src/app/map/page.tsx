@@ -24,16 +24,19 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
-import { useStations } from "@/utils/supabase/hooks";
-import { StationListModal } from "./components/StationListModal";
-
-import { StationBottomSheet } from "./components/StationBottomSheet";
-import { WaterQualityChartModal } from "./components/WaterQualityChartModal";
-import { getRealtimeWaterQuality } from "./actions";
-import type { RealtimeWaterQuality } from "./nierStationMap";
-import { RIVER_CONFIG, TYPE_CONFIG, type Station } from "./stationData";
-import { useMapState } from "./useMapState";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useStations } from "@/utils/supabase/hooks";
+import { getRealtimeWaterQuality } from "./actions";
+import { StationBottomSheet } from "./components/StationBottomSheet";
+import { StationListModal } from "./components/StationListModal";
+import { WaterQualityChartModal } from "./components/WaterQualityChartModal";
+import {
+	getNierStationCode,
+	type RealtimeWaterQuality,
+	type WaterQualityMetricKey,
+} from "./nierStationMap";
+import { RIVER_CONFIG, type Station, TYPE_CONFIG } from "./stationData";
+import { useMapState } from "./useMapState";
 
 // 지도 컴포넌트 비동기 로드 (SSR 방지 및 번들 최적화)
 const MapLibreView = dynamic(() => import("./MapLibreView"), {
@@ -60,24 +63,62 @@ export default function MapPage() {
 
 	// 실시간 수질 24시간 차트 모달 대상 측정소 및 데이터 상태
 	const [chartStation, setChartStation] = useState<Station | null>(null);
+	const [chartInitialMetric, setChartInitialMetric] = useState<
+		WaterQualityMetricKey | undefined
+	>(undefined);
 	const [chartData, setChartData] = useState<{
 		latest: RealtimeWaterQuality | null;
 		history: RealtimeWaterQuality[];
 	} | null>(null);
 	const [isLoadingChart, setIsLoadingChart] = useState(false);
 
-	// 수질 모달 오픈 핸들러
-	const handleOpenWaterQuality = async (st: Station) => {
+	// 수질 모달 오픈 핸들러 (지도 마커/바텀시트와 동일한 localStorage 최신값 및 prevAvg 우선 반영)
+	const handleOpenWaterQuality = async (
+		st: Station,
+		initialMetric?: WaterQualityMetricKey,
+	) => {
+		setChartInitialMetric(initialMetric);
 		setChartStation(st);
+
+		let cachedLatest: RealtimeWaterQuality | null = null;
+		try {
+			const code = getNierStationCode(st.name);
+			const cachedRaw =
+				typeof window !== "undefined"
+					? window.localStorage.getItem("wms_nier_realtime_wq")
+					: null;
+			if (code && cachedRaw) {
+				const parsed = JSON.parse(cachedRaw);
+				cachedLatest =
+					(parsed?.data?.[code] as RealtimeWaterQuality | undefined) || null;
+			}
+		} catch {
+			// ignore cache error
+		}
+
+		if (cachedLatest) {
+			setChartData((prev) => ({
+				latest: cachedLatest,
+				history: prev?.latest?.stationCode === cachedLatest?.stationCode ? prev.history : [],
+			}));
+		}
+
 		setIsLoadingChart(true);
 		try {
 			const res = await getRealtimeWaterQuality(st.name);
 			setChartData({
-				latest: res.latest,
+				// 지도 마커/바텀시트와 이상치 판정이 100% 일치하도록 캐시된 latest(및 prevAvg)를 우선 유지하고 누락 시 서버값으로 보완
+				latest: cachedLatest
+					? {
+							...res.latest,
+							...cachedLatest,
+							prevAvg: cachedLatest.prevAvg ?? res.latest?.prevAvg,
+						}
+					: res.latest,
 				history: res.history,
 			});
 		} catch {
-			setChartData(null);
+			if (!cachedLatest) setChartData(null);
 		} finally {
 			setIsLoadingChart(false);
 		}
@@ -145,7 +186,11 @@ export default function MapPage() {
 
 	// 모달 또는 시트가 하나라도 열려 있는지 여부
 	const isAnyModalOpen = Boolean(
-		isFilterOpen || isSidebarOpen || isAdminMenuOpen || selectedStation,
+		isFilterOpen ||
+			isSidebarOpen ||
+			isAdminMenuOpen ||
+			selectedStation ||
+			chartStation,
 	);
 
 	return (
@@ -186,6 +231,7 @@ export default function MapPage() {
 								setIsSidebarOpen(false);
 								setIsAdminMenuOpen(false);
 								setSelectedStation(null);
+								setChartStation(null);
 								setIsFilterOpen(!isFilterOpen);
 							}}
 							aria-label="레이어 필터 열기"
@@ -205,6 +251,7 @@ export default function MapPage() {
 								setIsFilterOpen(false);
 								setIsAdminMenuOpen(false);
 								setSelectedStation(null);
+								setChartStation(null);
 								setIsSidebarOpen(true);
 							}}
 							className="flex-1 flex items-center gap-1.5 min-w-0 pl-2.5 pr-1.5 h-9 bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 border border-black/[0.06] dark:border-white/10 rounded-xl cursor-text transition-colors"
@@ -223,12 +270,14 @@ export default function MapPage() {
 									setIsFilterOpen(false);
 									setIsAdminMenuOpen(false);
 									setSelectedStation(null);
+									setChartStation(null);
 									setIsSidebarOpen(true);
 								}}
 								onFocus={() => {
 									setIsFilterOpen(false);
 									setIsAdminMenuOpen(false);
 									setSelectedStation(null);
+									setChartStation(null);
 									setIsSidebarOpen(true);
 								}}
 								placeholder="측정소명/초성 검색"
@@ -254,6 +303,7 @@ export default function MapPage() {
 										setIsFilterOpen(false);
 										setIsAdminMenuOpen(false);
 										setSelectedStation(null);
+										setChartStation(null);
 										setIsSidebarOpen(true);
 									}}
 									title="측정소 목록"
@@ -273,6 +323,7 @@ export default function MapPage() {
 									setIsFilterOpen(false);
 									setIsSidebarOpen(false);
 									setSelectedStation(null);
+									setChartStation(null);
 									setIsAdminMenuOpen(!isAdminMenuOpen);
 								}}
 								aria-label="관리 도구 열기"
@@ -462,7 +513,6 @@ export default function MapPage() {
 				isOpen={!isEditMode && isAdminMenuOpen}
 				onClose={() => setIsAdminMenuOpen(false)}
 				title="관리 도구"
-				subtitle="측정망 편집 및 제원 관리 센터"
 				icon={Settings}
 			>
 				<div className="grid grid-cols-2 gap-2.5">
@@ -493,7 +543,7 @@ export default function MapPage() {
 								{isSat ? "위성지도" : "일반지도"}
 							</span>
 							<span
-								className={`text-[10px] font-mono block ${isSat ? "text-blue-100" : "text-[#64748b] dark:text-[#a1a1aa]"}`}
+								className={`text-[10px] block ${isSat ? "text-blue-100" : "text-[#64748b] dark:text-[#a1a1aa]"}`}
 							>
 								{isSat ? "ON (일반으로 전환)" : "VWorld 영상 전환"}
 							</span>
@@ -513,7 +563,7 @@ export default function MapPage() {
 							<span className="text-xs font-bold tracking-tight block">
 								기기 통계
 							</span>
-							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+							<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] block">
 								항목별 집계표
 							</span>
 						</div>
@@ -535,7 +585,7 @@ export default function MapPage() {
 							<span className="text-xs font-bold tracking-tight block">
 								지도 편집
 							</span>
-							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+							<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] block">
 								위치·각도 조정
 							</span>
 						</div>
@@ -558,7 +608,7 @@ export default function MapPage() {
 							<span className="text-xs font-bold tracking-tight block">
 								제원 관리
 							</span>
-							<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
+							<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] block">
 								장비 등록·연혁
 							</span>
 						</div>
@@ -589,17 +639,23 @@ export default function MapPage() {
 									{isInverted ? "색반전 켜짐 (보정 활성화)" : "지도 색반전"}
 								</span>
 								<span
-									className={`text-[10px] font-mono block ${
-										isInverted ? "text-indigo-100" : "text-[#64748b] dark:text-[#a1a1aa]"
+									className={`text-[10px] block ${
+										isInverted
+											? "text-indigo-100"
+											: "text-[#64748b] dark:text-[#a1a1aa]"
 									}`}
 								>
-									{isInverted ? "클릭 시 원본 색상으로 복원" : "브라우저 강제 반전 보정"}
+									{isInverted
+										? "클릭 시 원본 색상으로 복원"
+										: "브라우저 강제 반전 보정"}
 								</span>
 							</div>
 						</div>
 						<span
-							className={`text-xs font-mono font-bold ${
-								isInverted ? "text-white" : "text-indigo-600 dark:text-indigo-400"
+							className={`text-xs font-bold ${
+								isInverted
+									? "text-white"
+									: "text-indigo-600 dark:text-indigo-400"
 							}`}
 						>
 							{isInverted ? "ON" : "OFF"}
@@ -615,7 +671,6 @@ export default function MapPage() {
 				isOpen={!isEditMode && isFilterOpen}
 				onClose={() => setIsFilterOpen(false)}
 				title="표시 레이어 설정"
-				subtitle="지도에 노출할 시설 및 수계 선택"
 				icon={SlidersHorizontal}
 				contentClassName="p-2.5 sm:p-4 overflow-y-hidden"
 			>
@@ -626,7 +681,7 @@ export default function MapPage() {
 							<span className="text-[10.5px] font-semibold text-[#0f172a] dark:text-[#f1f5f9]">
 								마커 수질 칩 표시
 							</span>
-							<span className="text-[9.5px] font-mono text-[#94a3b8] dark:text-[#71717a]">
+							<span className="text-[9.5px] text-[#94a3b8] dark:text-[#71717a]">
 								단일 선택
 							</span>
 						</div>
@@ -642,7 +697,9 @@ export default function MapPage() {
 										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
-								<span className="whitespace-nowrap font-bold">기본 (수온+WQI)</span>
+								<span className="whitespace-nowrap font-bold">
+									기본 (수온+WQI)
+								</span>
 							</button>
 							<button
 								type="button"
@@ -653,7 +710,9 @@ export default function MapPage() {
 										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
 								}`}
 							>
-								<span className="whitespace-nowrap font-bold">TOC (유기탄소)</span>
+								<span className="whitespace-nowrap font-bold">
+									TOC (유기탄소)
+								</span>
 							</button>
 							<button
 								type="button"
@@ -698,6 +757,7 @@ export default function MapPage() {
 														doc: "용존산소 (DO)",
 														ec: "전기전도도 (EC)",
 														tur: "탁도 (NTU)",
+														chla: "클로로필-a (Chl-a)",
 													}[filters.waterChip]
 												}
 											</span>
@@ -743,7 +803,7 @@ export default function MapPage() {
 							{/* 커스텀 팝오버 메뉴 */}
 							{isDetailChipOpen && (
 								<div className="absolute top-full left-0 right-0 mt-1 z-30 p-1 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-lg shadow-xl shadow-black/20 animate-in fade-in zoom-in-95 duration-150">
-									<div className="grid grid-cols-2 gap-1 text-[10.5px]">
+									<div className="grid grid-cols-3 gap-1 text-[10.5px]">
 										{(
 											[
 												{ key: "tp", label: "총인 (TP)" },
@@ -754,6 +814,7 @@ export default function MapPage() {
 												{ key: "doc", label: "용존산소 (DO)" },
 												{ key: "ec", label: "전도도 (EC)" },
 												{ key: "tur", label: "탁도 (NTU)" },
+												{ key: "chla", label: "클로로필-a" },
 											] as const
 										).map((item) => {
 											const isSelected = filters.waterChip === item.key;
@@ -822,9 +883,7 @@ export default function MapPage() {
 								</button>
 								<button
 									type="button"
-									onClick={() =>
-										setFilters({ ...filters, poi: !filters.poi })
-									}
+									onClick={() => setFilters({ ...filters, poi: !filters.poi })}
 									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
 										filters.poi
 											? "bg-rose-600 text-white font-bold border-rose-500 shadow-xs"
@@ -932,13 +991,7 @@ export default function MapPage() {
 
 						<div className="grid grid-cols-5 gap-1">
 							{(
-								[
-									"bukhan",
-									"namhan",
-									"han",
-									"imjin",
-									"pyeongtaek",
-								] as const
+								["bukhan", "namhan", "han", "imjin", "pyeongtaek"] as const
 							).map((rv) => {
 								const conf = RIVER_CONFIG[rv];
 								const isActive = filters.rivers[rv];
@@ -959,7 +1012,9 @@ export default function MapPage() {
 													[rv]: true,
 												},
 												highlightedRiver:
-													prev.highlightedRiver === rv ? null : prev.highlightedRiver,
+													prev.highlightedRiver === rv
+														? null
+														: prev.highlightedRiver,
 											};
 										} else if (currentActive && !currentHigh) {
 											// 2. 켜진 상태에서 탭 (두 번째 탭) -> [강조 켜짐]
@@ -980,7 +1035,9 @@ export default function MapPage() {
 													[rv]: false,
 												},
 												highlightedRiver:
-													prev.highlightedRiver === rv ? null : prev.highlightedRiver,
+													prev.highlightedRiver === rv
+														? null
+														: prev.highlightedRiver,
 											};
 										}
 									});
@@ -1002,7 +1059,11 @@ export default function MapPage() {
 												: isActive
 													? `${conf.color}80`
 													: undefined,
-											color: isHigh ? "#ffffff" : isActive ? conf.color : undefined,
+											color: isHigh
+												? "#ffffff"
+												: isActive
+													? conf.color
+													: undefined,
 										}}
 										className={`h-7 rounded-lg flex items-center justify-center gap-1 border transition-all active:scale-95 relative select-none ${
 											isHigh
@@ -1022,7 +1083,9 @@ export default function MapPage() {
 											/>
 										)}
 										{isHigh && (
-											<span className="text-[9px] leading-none shrink-0">★</span>
+											<span className="text-[9px] leading-none shrink-0">
+												★
+											</span>
 										)}
 										<span className="text-[10px] tracking-tight truncate">
 											{conf.label.replace("수계", "").replace("본류", "")}
@@ -1030,6 +1093,16 @@ export default function MapPage() {
 									</button>
 								);
 							})}
+						</div>
+					</div>
+
+					{/* 4단 (최하단). 공간정보 및 데이터 출처 (Attribution) */}
+					<div className="pt-2 border-t border-[#e2e8f0]/80 dark:border-[#222228]/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[9px] text-[#94a3b8] dark:text-[#71717a]">
+						<span className="font-medium tracking-tight">공간정보 출처</span>
+						<div className="flex items-center gap-1.5">
+							<span>지도: 국토교통부 VWorld</span>
+							<span className="opacity-40">•</span>
+							<span>하천: HDX (OSM)</span>
 						</div>
 					</div>
 				</div>
@@ -1189,8 +1262,12 @@ export default function MapPage() {
 			{chartStation && (
 				<WaterQualityChartModal
 					isOpen={!!chartStation}
-					onClose={() => setChartStation(null)}
+					onClose={() => {
+						setChartStation(null);
+						setChartInitialMetric(undefined);
+					}}
 					stationName={chartStation.name}
+					initialMetric={chartInitialMetric}
 					data={chartData}
 					isLoading={isLoadingChart}
 				/>

@@ -10,16 +10,14 @@ import {
 	Trash2,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type {
-	ReagentOrderSheet,
-	ReagentPerson,
-	ReagentRowSpec,
-} from "@/actions/reagents";
 import {
 	PEOPLE_LIST,
 	PERSON_GREEN_ROWS,
 	parseCellExpression,
 	REAGENT_SPEC_ROWS,
+	type ReagentOrderSheet,
+	type ReagentPerson,
+	type ReagentRowSpec,
 	SUMMARY_SHEET_ID,
 } from "../constants";
 
@@ -107,8 +105,8 @@ export default function DesktopReagentWorkspace({
 					<h3 className="text-[11px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider">
 						주문 회차 (시트)
 					</h3>
-					<span className="text-[10px] text-[#2563eb] dark:text-[#60a5fa] font-bold">
-						<span className="font-mono">{sheets.length}</span>개 회차
+					<span className="text-[10px] text-[#2563eb] dark:text-[#60a5fa] font-bold tabular-nums">
+						{sheets.length}개 회차
 					</span>
 				</div>
 
@@ -126,7 +124,7 @@ export default function DesktopReagentWorkspace({
 							<Layers size={15} className="shrink-0" />
 							<span className="truncate">전체 누적 합계표</span>
 						</span>
-						<span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 whitespace-nowrap shrink-0">
+						<span className="text-[10px] px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 whitespace-nowrap shrink-0">
 							SUM
 						</span>
 					</button>
@@ -153,7 +151,7 @@ export default function DesktopReagentWorkspace({
 										</span>
 										{isSelected && <Check size={13} className="shrink-0" />}
 									</div>
-									<div className="flex items-center gap-2 text-[10px] font-mono opacity-80">
+									<div className="flex items-center gap-2 text-[10px] tabular-nums opacity-80">
 										{sheet.deadline !== "-" && (
 											<span>마감 {sheet.deadline}</span>
 										)}
@@ -180,7 +178,7 @@ export default function DesktopReagentWorkspace({
 										: currentSheet?.title || "시약 주문표"}
 								</h2>
 								{isSummaryView ? (
-									<span className="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border border-emerald-500/20 whitespace-nowrap shrink-0">
+									<span className="px-2.5 py-0.5 rounded-md text-[11px] tabular-nums font-bold bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border border-emerald-500/20 whitespace-nowrap shrink-0">
 										총 {sheets.length}개 회차 자동 합산
 									</span>
 								) : (
@@ -218,7 +216,7 @@ export default function DesktopReagentWorkspace({
 									<span className="text-[#64748b] dark:text-[#a1a1aa]">
 										주문 마감일:
 									</span>
-									<span className="font-mono font-bold text-[#0f172a] dark:text-white">
+									<span className="tabular-nums font-bold text-[#0f172a] dark:text-white">
 										{currentSheet.deadline}
 									</span>
 								</div>
@@ -230,7 +228,7 @@ export default function DesktopReagentWorkspace({
 									<span className="text-[#64748b] dark:text-[#a1a1aa]">
 										예상 납기일:
 									</span>
-									<span className="font-mono font-bold text-[#0f172a] dark:text-white">
+									<span className="tabular-nums font-bold text-[#0f172a] dark:text-white">
 										{currentSheet.deliveryDate}
 									</span>
 								</div>
@@ -260,7 +258,7 @@ export default function DesktopReagentWorkspace({
 				{/* 데스크톱 전체 엑셀 매트릭스 테이블 컨테이너 */}
 				<div className="flex-1 min-h-0 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] flex flex-col overflow-hidden">
 					{loading ? (
-						<div className="h-full flex items-center justify-center p-12 text-xs font-mono text-[#64748b] dark:text-[#a1a1aa]">
+						<div className="h-full flex items-center justify-center p-12 text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							시약 주문 시트 데이터를 불러오는 중...
 						</div>
 					) : (
@@ -337,7 +335,7 @@ export default function DesktopReagentWorkspace({
 												<th
 													onMouseEnter={() => setHoveredCol("__sum__")}
 													onMouseLeave={() => setHoveredCol(null)}
-													className={`py-2 px-2.5 text-center font-mono font-bold border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap transition-colors ${
+													className={`py-2 px-2.5 text-center font-bold border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap transition-colors ${
 														hoveredCol === "__sum__"
 															? "bg-blue-500/25 text-[#2563eb] dark:text-[#60a5fa]"
 															: "bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa]"

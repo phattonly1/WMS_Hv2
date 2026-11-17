@@ -2,9 +2,12 @@
 
 import { Calendar } from "lucide-react";
 import { useState } from "react";
-import type { ReagentOrderSheet } from "@/actions/reagents";
 import { Modal } from "@/components/ui/modal";
-import { formatSheetShortTitle, getDeadlineDDay } from "../constants";
+import {
+	formatSheetShortTitle,
+	getDeadlineDDay,
+	type ReagentOrderSheet,
+} from "../constants";
 
 interface MobileReagentBottomBarProps {
 	currentSheet: ReagentOrderSheet | null;
@@ -31,7 +34,7 @@ export default function MobileReagentBottomBar({
 					className="w-full min-w-0 h-11 px-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between gap-2 text-xs cursor-pointer active:scale-[0.99] transition-all"
 				>
 					<div className="flex items-center gap-1.5 min-w-0 truncate">
-						<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 border border-blue-500/30 font-mono font-bold text-xs text-[#2563eb] dark:text-[#60a5fa] shrink-0">
+						<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 border border-blue-500/30 tabular-nums font-bold text-xs text-[#2563eb] dark:text-[#60a5fa] shrink-0">
 							{currentSheet
 								? formatSheetShortTitle(currentSheet.title)
 								: "선택"}
@@ -41,22 +44,21 @@ export default function MobileReagentBottomBar({
 						</span>
 						{currentDDay && (
 							<span
-								className={`px-1.5 py-0.5 rounded-md font-mono text-[10px] font-bold border shrink-0 ${currentDDay.badgeClass}`}
+								className={`px-1.5 py-0.5 rounded-md tabular-nums text-[10px] font-bold border shrink-0 ${currentDDay.badgeClass}`}
 							>
 								{currentDDay.text}
 							</span>
 						)}
 					</div>
-					<div className="flex items-center gap-1.5 text-[10px] shrink-0 whitespace-nowrap">
+					<div className="flex items-center gap-2 text-xs tabular-nums shrink-0 whitespace-nowrap">
 						{currentSheet && currentSheet.deadline !== "-" && (
-							<span className="text-amber-600 dark:text-[#fbbf24]">
-								마감 <span className="font-mono">{currentSheet.deadline}</span>
+							<span className="text-amber-600 dark:text-[#fbbf24] font-semibold">
+								마감 <span>{currentSheet.deadline}</span>
 							</span>
 						)}
 						{currentSheet && (
 							<span className="text-emerald-600 dark:text-[#34d399] font-bold">
-								납기{" "}
-								<span className="font-mono">{currentSheet.deliveryDate}</span>
+								납기 <span>{currentSheet.deliveryDate}</span>
 							</span>
 						)}
 					</div>
@@ -68,7 +70,6 @@ export default function MobileReagentBottomBar({
 				isOpen={showSheetModal}
 				onClose={() => setShowSheetModal(false)}
 				title="주문 회차 선택"
-				subtitle="이전 주문 내역 및 현재 주문 회차"
 				icon={Calendar}
 				size="half"
 			>
@@ -95,7 +96,7 @@ export default function MobileReagentBottomBar({
 								>
 									<div className="flex items-center gap-2 min-w-0">
 										<span
-											className={`px-2 py-0.5 rounded-lg font-mono font-bold text-xs shrink-0 ${
+											className={`px-2 py-0.5 rounded-lg tabular-nums font-bold text-xs shrink-0 ${
 												isSelected
 													? "bg-[#2563eb] text-white"
 													: "bg-black/5 dark:bg-white/10 text-[#0f172a] dark:text-white"
@@ -108,20 +109,20 @@ export default function MobileReagentBottomBar({
 										</span>
 										{dDay && (
 											<span
-												className={`px-1.5 py-0.5 rounded-md font-mono text-[10px] font-bold border shrink-0 ${dDay.badgeClass}`}
+												className={`px-1.5 py-0.5 rounded-md tabular-nums text-[10px] font-bold border shrink-0 ${dDay.badgeClass}`}
 											>
 												{dDay.text}
 											</span>
 										)}
 									</div>
-									<div className="flex items-center gap-2 text-[10px] shrink-0 ml-2 whitespace-nowrap">
+									<div className="flex items-center gap-2 text-xs tabular-nums shrink-0 ml-2 whitespace-nowrap">
 										{s.deadline !== "-" && (
-											<span className="text-amber-600 dark:text-[#fbbf24]">
-												마감 <span className="font-mono">{s.deadline}</span>
+											<span className="text-amber-600 dark:text-[#fbbf24] font-semibold">
+												마감 <span>{s.deadline}</span>
 											</span>
 										)}
 										<span className="text-emerald-600 dark:text-[#34d399] font-bold">
-											납기 <span className="font-mono">{s.deliveryDate}</span>
+											납기 <span>{s.deliveryDate}</span>
 										</span>
 									</div>
 								</button>

@@ -116,10 +116,35 @@ export const StationMarker = React.memo(function StationMarker({
 	const otherAnomalies = allAnomalies.filter((d) => d.key !== "ec");
 	const otherCount = otherAnomalies.length;
 
+	// 현재 선택된 칩 모드(chipMode) 자체가 이상치인지 확인
+	const selectedMetricKey: WaterQualityMetricKey | null =
+		chipMode !== "default" && chipMode !== "none" ? chipMode : null;
+	const selectedMetricAnomaly = selectedMetricKey
+		? allAnomalies.find((d) => d.key === selectedMetricKey) || null
+		: null;
+
+	// 현재 칩에 직접 표시된 항목(선택된 지표 + 상시 표기되는 EC)을 제외한 '다른 항목' 이상 목록
+	const unshownOtherAnomalies = allAnomalies.filter(
+		(d) => d.key !== "ec" && d.key !== selectedMetricKey,
+	);
+	const unshownOtherCount = unshownOtherAnomalies.length;
+
 	// 마커 센터 링 경고 펄스: EC 급감/급등 시 작동
 	const hasEcWarning = Boolean(ecAnomaly);
-	// 마커 옆 칩 경고: EC 또는 다른 항목 중 1개라도 이상이 있을 때
-	const hasAnyWarning = hasEcWarning || otherCount > 0;
+	// 칩 자체 배경색 경고 여부:
+	// - 기본(default) 모드일 때는 EC 또는 기타 이상이 있으면 경고 배경 표시
+	// - 특정 수질 칩(TOC, TP, 탁도 등)을 선택했을 때는 '선택한 그 지표(또는 상시 감시 EC)'가 이상일 때만 칩 전체 배경을 경고색으로 칠함!
+	//   (다른 항목만 이상일 때는 칩 배경은 정상 흰색/다크로 유지하고 우측 '+N' 배지만 주황색으로 표시해 혼동 방지)
+	const isChipSelfWarning = selectedMetricKey
+		? Boolean(selectedMetricAnomaly || ecAnomaly)
+		: hasEcWarning || otherCount > 0;
+	const chipWarningType: "low" | "high" | null = selectedMetricAnomaly
+		? selectedMetricAnomaly.type
+		: ecAnomaly
+			? ecAnomaly.type
+			: otherCount > 0
+				? "high"
+				: null;
 
 	// 선택된 칩 모드에 따른 텍스트 계산
 	const getChipText = (): string | null => {
@@ -167,6 +192,10 @@ export const StationMarker = React.memo(function StationMarker({
 			case "tur":
 				return waterQuality.tur != null
 					? `${waterQuality.tur.toFixed(1)}NTU`
+					: null;
+			case "chla":
+				return waterQuality.chla != null
+					? `Chl-a ${waterQuality.chla.toFixed(1)}`
 					: null;
 			default:
 				return null;
@@ -218,14 +247,14 @@ export const StationMarker = React.memo(function StationMarker({
 					</div>
 				</div>
 
-				{/* 2. 우측 다이렉트 텍스트 라벨 + 실시간 수질 미니 뱃지 */}
-				<div className="absolute left-3.5 flex items-center gap-1 pointer-events-none select-none transition-transform group-hover:scale-105">
+				{/* 2. 우측 다이렉트 텍스트 라벨 + 실시간 수질 미니 뱃지 (짝수 높이 h-5 고정으로 0.5px 걸침 방지 및 transform 블러 제거) */}
+				<div className="absolute left-3.5 h-5 flex items-center gap-1 pointer-events-none select-none">
 					<span
 						style={{
 							textShadow:
 								"-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 0 5px rgba(255,255,255,0.95), 0 2px 4px rgba(0,0,0,0.25)",
 						}}
-						className={`text-[11px] font-black tracking-tight whitespace-nowrap ${
+						className={`text-[11px] leading-none font-black tracking-tight whitespace-nowrap ${
 							hasEcWarning
 								? ecAnomaly?.type === "low"
 									? "text-rose-700"
@@ -236,55 +265,76 @@ export const StationMarker = React.memo(function StationMarker({
 						{station.name.replace(" 측정소", "")}
 					</span>
 
-					{/* 실시간 수질 미니 칩 (기본 측정값 + EC 이상 표시 + 타 항목 이상 시 '+N' 배지) */}
+					{/* 실시간 수질 미니 칩 (반투명 배경 레이어와 텍스트 분리로 PC 1x 모니터에서도 또렷한 렌더링 보장) */}
 					{chipText && (
-						<span
-							className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full backdrop-blur-md shadow-xs text-[9.5px] font-bold whitespace-nowrap leading-none border ${
-								hasEcWarning
-									? ecAnomaly?.type === "low"
-										? "bg-rose-600/95 text-white border-rose-400 ring-2 ring-rose-500/40"
-										: "bg-amber-600/95 text-white border-amber-300 ring-2 ring-amber-500/40"
-									: otherCount > 0
-										? "bg-amber-500/95 text-white border-amber-300 ring-1 ring-amber-400/40"
-										: "bg-white/90 dark:bg-slate-900/90 border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200"
-							}`}
-						>
+						<span className="relative inline-flex items-center h-[18px] px-1.5 rounded-full whitespace-nowrap">
+							{/* 반투명 배경 전용 레이어 (선택한 수질 항목 자체가 이상이거나 EC 이상일 때만 전체 배경 경고색 적용) */}
 							<span
-								className="w-1.5 h-1.5 rounded-full shrink-0"
-								style={{
-									backgroundColor: hasAnyWarning ? "#ffffff" : gradeColor,
-								}}
+								aria-hidden="true"
+								className={`absolute inset-0 rounded-full shadow-xs border ${
+									isChipSelfWarning
+										? chipWarningType === "low"
+											? "bg-rose-600/90 border-rose-400 ring-2 ring-rose-500/40"
+											: "bg-amber-600/90 border-amber-300 ring-2 ring-amber-500/40"
+										: "bg-white/85 dark:bg-slate-900/85 border-slate-300/90 dark:border-slate-600/90"
+								}`}
 							/>
-							<span>{chipText}</span>
 
-							{/* 1) EC 급감(↓) 또는 급등(↑) 표기 */}
-							{ecAnomaly && (
-								<span className="ml-0.5 px-1 py-0.2 rounded bg-black/25 text-[8.5px] font-mono font-black tracking-tighter">
-									EC {ecAnomaly.type === "low" ? "↓" : "↑"}
-									{Math.round(ecAnomaly.ratio * 100)}%
-								</span>
-							)}
-
-							{/* 2) EC 외 다른 측정항목도 급감/급등 시 '+N' 주의 배지 */}
-							{otherCount > 0 && (
+							{/* 고선명 전면 텍스트 & 인디케이터 레이어 */}
+							<span
+								className={`relative z-10 inline-flex items-center gap-1 text-[10px] font-extrabold leading-none tracking-tight tabular-nums ${
+									isChipSelfWarning
+										? "text-white"
+										: "text-slate-950 dark:text-white"
+								}`}
+							>
 								<span
-									className={`ml-0.5 px-1 py-0.2 rounded text-[8.5px] font-mono font-black tracking-tighter ${
-										hasEcWarning
-											? "bg-white/30 text-white"
-											: "bg-black/25 text-white"
-									}`}
-									title={`기타 이상 항목: ${otherAnomalies.map((d) => `${d.label}(${d.type === "low" ? "↓" : "↑"}${Math.round(d.ratio * 100)}%)`).join(", ")}`}
-								>
-									+{otherCount}
-								</span>
-							)}
+									className="w-1.5 h-1.5 rounded-full shrink-0"
+									style={{
+										backgroundColor: isChipSelfWarning ? "#ffffff" : gradeColor,
+									}}
+								/>
+								<span>{chipText}</span>
+
+								{/* 0) 선택된 단일 수질 칩(EC 제외) 자체가 급감/급등일 때 직접 ↓/↑% 표기 */}
+								{selectedMetricAnomaly &&
+									selectedMetricAnomaly.key !== "ec" && (
+										<span className="ml-0.5 px-1 py-0.5 rounded bg-black/25 text-[9px] font-mono font-black tracking-tighter leading-none text-white">
+											{selectedMetricAnomaly.type === "low" ? "↓" : "↑"}
+											{Math.round(selectedMetricAnomaly.ratio * 100)}%
+										</span>
+									)}
+
+								{/* 1) EC 급감(↓) 또는 급등(↑) 상시 표기 */}
+								{ecAnomaly && (
+									<span className="ml-0.5 px-1 py-0.5 rounded bg-black/25 text-[9px] font-mono font-black tracking-tighter leading-none text-white">
+										{selectedMetricKey === "ec" ? "" : "EC "}
+										{ecAnomaly.type === "low" ? "↓" : "↑"}
+										{Math.round(ecAnomaly.ratio * 100)}%
+									</span>
+								)}
+
+								{/* 2) 현재 칩에 표시되지 않은 '다른 항목'이 급감/급등일 때 '+N' 배지 표기 */}
+								{unshownOtherCount > 0 && (
+									<span
+										className={`ml-0.5 px-1 py-0.5 rounded text-[9px] font-mono font-black tracking-tighter leading-none ${
+											isChipSelfWarning
+												? "bg-black/25 text-white"
+												: "bg-amber-500 text-white"
+										}`}
+										title={`기타 이상 항목: ${unshownOtherAnomalies.map((d) => `${d.label}(${d.type === "low" ? "↓" : "↑"}${Math.round(d.ratio * 100)}%)`).join(", ")}`}
+									>
+										+{unshownOtherCount}
+									</span>
+								)}
+							</span>
 						</span>
 					)}
 				</div>
 
-				{/* 3. 마우스 호버 시 상세 실시간 수질 툴팁 팝업 */}
+				{/* 3. 마우스 호버 시 상세 실시간 수질 툴팁 팝업 (모바일 화면 < md 및 터치 기기에서는 원천 차단) */}
 				{waterQuality && (
-					<div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 pointer-events-none absolute left-0 bottom-4 mb-2 z-[9999] w-60 p-2.5 rounded-xl bg-slate-900/95 text-white backdrop-blur-md shadow-2xl border border-slate-700/80 text-[10px]">
+					<div className="hidden md:[@media(hover:hover)_and_(pointer:fine)]:block invisible opacity-0 md:group-hover:visible md:group-hover:opacity-100 transition-all duration-150 pointer-events-none absolute left-0 bottom-4 mb-2 z-[9999] w-60 p-2.5 rounded-xl bg-slate-900/95 text-white backdrop-blur-md shadow-2xl border border-slate-700/80 text-[10px]">
 						<div className="flex items-center justify-between border-b border-slate-700/70 pb-1.5 mb-1.5">
 							<div className="flex items-center gap-1.5">
 								<span
@@ -393,6 +443,24 @@ export const StationMarker = React.memo(function StationMarker({
 										unit: "NTU",
 										defaultCls: "text-white",
 									},
+									{
+										key: "tp" as const,
+										label: "TP",
+										unit: "mg/L",
+										defaultCls: "text-white",
+									},
+									{
+										key: "tn" as const,
+										label: "TN",
+										unit: "mg/L",
+										defaultCls: "text-white",
+									},
+									{
+										key: "chla" as const,
+										label: "Chl-a",
+										unit: "mg/m³",
+										defaultCls: "text-lime-300",
+									},
 								] as const
 							).map((row) => {
 								const val = waterQuality[row.key];
@@ -490,14 +558,14 @@ export const SmallMarker = React.memo(function SmallMarker({
 						/>
 					</div>
 
-					{/* 호버 시에만 나타나는 플로팅 미니 라벨 */}
+					{/* 호버 시에만 나타나는 플로팅 미니 라벨 (모바일 화면 < md 및 터치 기기 숨김) */}
 					<span
 						style={{
 							backgroundColor: "transparent",
 							textShadow:
 								"-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 0 5px rgba(255,255,255,0.9), 0 2px 4px rgba(0,0,0,0.25)",
 						}}
-						className="absolute left-1/2 -top-5 -translate-x-1/2 px-1 py-0.2 text-[9.5px] font-black text-slate-950 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-30 select-none"
+						className="hidden md:[@media(hover:hover)_and_(pointer:fine)]:block absolute left-1/2 -top-5 -translate-x-1/2 px-1 py-0.2 text-[9.5px] font-black text-slate-950 whitespace-nowrap opacity-0 md:group-hover:opacity-100 transition-opacity pointer-events-none z-30 select-none"
 					>
 						{station.name}
 					</span>

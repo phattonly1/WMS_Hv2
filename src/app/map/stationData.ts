@@ -24,7 +24,8 @@ export type WaterChipMode =
 	| "toc"
 	| "tp"
 	| "tn"
-	| "tur";
+	| "tur"
+	| "chla";
 
 export interface MapFilters {
 	station: boolean;

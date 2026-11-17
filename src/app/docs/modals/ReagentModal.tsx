@@ -75,62 +75,72 @@ export default function ReagentModal({
 				setLocalSearchTerm("");
 				onClose();
 			}}
-			title={
-				selectedStation ? `${selectedStation.name} 측정소 시약` : "시약 관리"
-			}
-			subtitle={
-				selectedStation
-					? "측정소별 장비 맞춤 조제법"
-					: "수질자동측정망 시약 조제 매뉴얼"
-			}
+			title={selectedStation ? selectedStation.name : "시약"}
+			subtitle={selectedStation ? "조제법" : undefined}
 			icon={FlaskConical}
 			size="half"
 			onBack={selectedStation ? () => setSelectedStation(null) : undefined}
+			headerAction={
+				!selectedStation ? (
+					<div className="flex items-center p-0.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[11px] font-bold">
+						<button
+							type="button"
+							onClick={() => setActiveTab("stations")}
+							className={`px-2 py-0.5 rounded-md transition-colors ${
+								activeTab === "stations"
+									? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-2xs"
+									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+							}`}
+						>
+							측정소 ({STATIONS.length})
+						</button>
+						<button
+							type="button"
+							onClick={() => setActiveTab("all")}
+							className={`px-2 py-0.5 rounded-md transition-colors ${
+								activeTab === "all"
+									? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-2xs"
+									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+							}`}
+						>
+							전체 조제법
+						</button>
+					</div>
+				) : (
+					<span className="text-[10px] font-semibold tabular-nums text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20">
+						{stationReagents.reduce((acc, g) => acc + g.reagents.length, 0)}종 시약
+					</span>
+				)
+			}
 		>
-			<div className="space-y-4">
+			<div className="space-y-2">
 				{selectedStation ? (
 					/* 측정소 상세 시약 목록 */
-					<div className="space-y-4">
-						{/* 장비 정보 요약 카드 */}
-						<div className="p-3.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-							<div>
-								<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-									TOC 장비
-								</span>
-								<span className="font-bold text-[#0f172a] dark:text-white truncate block">
-									{selectedStation.toc?.equipment || "-"}
-								</span>
-							</div>
-							<div>
-								<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-									TN 장비
-								</span>
-								<span className="font-bold text-[#0f172a] dark:text-white truncate block">
-									{selectedStation.tn?.equipment || "-"}
-								</span>
-							</div>
-							<div>
-								<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-									TP 장비
-								</span>
-								<span className="font-bold text-[#0f172a] dark:text-white truncate block">
-									{selectedStation.tp?.equipment || "-"}
-								</span>
-							</div>
-							<div>
-								<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] block">
-									생물감시
-								</span>
-								<span className="font-bold text-[#0f172a] dark:text-white truncate block">
-									{selectedStation.bio
-										? Object.keys(selectedStation.bio).join(", ")
-										: "없음"}
-								</span>
-							</div>
+					<div className="space-y-2">
+						{/* 장비 정보 인라인 요약 바 */}
+						<div className="px-2 py-1.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px]">
+							<span className="inline-flex items-center gap-1">
+								<span className="text-[#64748b] dark:text-[#a1a1aa]">TOC</span>
+								<b className="text-[#0f172a] dark:text-white">{selectedStation.toc?.equipment || "-"}</b>
+							</span>
+							<span className="inline-flex items-center gap-1">
+								<span className="text-[#64748b] dark:text-[#a1a1aa]">TN</span>
+								<b className="text-[#0f172a] dark:text-white">{selectedStation.tn?.equipment || "-"}</b>
+							</span>
+							<span className="inline-flex items-center gap-1">
+								<span className="text-[#64748b] dark:text-[#a1a1aa]">TP</span>
+								<b className="text-[#0f172a] dark:text-white">{selectedStation.tp?.equipment || "-"}</b>
+							</span>
+							<span className="inline-flex items-center gap-1">
+								<span className="text-[#64748b] dark:text-[#a1a1aa]">생물</span>
+								<b className="text-[#0f172a] dark:text-white">
+									{selectedStation.bio ? Object.keys(selectedStation.bio).join(", ") : "없음"}
+								</b>
+							</span>
 						</div>
 
 						{/* 시약 목록 */}
-						<div className="space-y-3">
+						<div className="space-y-2">
 							{stationReagents.map((group) => {
 								const config = CATEGORY_CONFIG[group.category] ??
 									CATEGORY_CONFIG.TOC ?? {
@@ -139,39 +149,39 @@ export default function ReagentModal({
 										badgeBorder: "border-blue-500/20",
 									};
 								return (
-									<div key={group.category} className="space-y-2">
-										<div className="flex items-center gap-1.5 px-1">
+									<div key={group.category} className="space-y-1">
+										<div className="flex items-center gap-1.5 px-0.5">
 											<span className="text-xs font-bold text-[#0f172a] dark:text-white">
 												{group.category}
 											</span>
-											<span className="text-[10px] font-mono text-blue-600 dark:text-blue-400">
+											<span className="text-[10px] tabular-nums text-blue-600 dark:text-blue-400">
 												({group.reagents.length})
 											</span>
 										</div>
 
-										<div className="space-y-2">
+										<div className="space-y-1">
 											{group.reagents.map((r) => (
 												<div
 													key={`${group.category}-${r.name}`}
-													className="p-3.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-2"
+													className="p-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-1"
 												>
 													<div className="flex items-center justify-between gap-2">
-														<div className="flex items-center gap-2">
+														<div className="flex items-center gap-1.5 min-w-0">
 															<span
-																className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${config.badgeBg} ${config.badgeText} border ${config.badgeBorder}`}
+																className={`text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 ${config.badgeBg} ${config.badgeText} border ${config.badgeBorder}`}
 															>
 																{r.category}
 															</span>
-															<h4 className="text-xs font-bold text-[#0f172a] dark:text-white">
+															<h4 className="text-xs font-bold text-[#0f172a] dark:text-white truncate">
 																{r.name}
 															</h4>
 														</div>
-														<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
+														<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] shrink-0">
 															{r.usage}
 														</span>
 													</div>
 
-													<div className="space-y-1 bg-white dark:bg-[#09090b] p-2.5 rounded-lg border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono">
+													<div className="space-y-0.5 bg-white dark:bg-[#09090b] p-1.5 rounded-lg border border-[#e2e8f0] dark:border-[#222228] text-xs">
 														{r.steps.map((step) => (
 															<div
 																key={step}
@@ -207,81 +217,53 @@ export default function ReagentModal({
 						</div>
 					</div>
 				) : (
-					/* 메인 탭: 측정소별 or 전체 시약 */
-					<div className="space-y-3.5">
-						{/* 탭 버튼 */}
-						<div className="grid grid-cols-2 gap-1.5 p-1 w-full rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228]">
-							<button
-								type="button"
-								onClick={() => setActiveTab("stations")}
-								className={`w-full py-1.5 rounded-lg text-xs font-bold text-center transition-colors ${
-									activeTab === "stations"
-										? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-sm"
-										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-								}`}
-							>
-								측정소별 ({STATIONS.length})
-							</button>
-							<button
-								type="button"
-								onClick={() => setActiveTab("all")}
-								className={`w-full py-1.5 rounded-lg text-xs font-bold text-center transition-colors ${
-									activeTab === "all"
-										? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-sm"
-										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
-								}`}
-							>
-								전체 시약 조제법
-							</button>
-						</div>
-
+					/* 메인: 측정소별 or 전체 시약 */
+					<div className="space-y-2">
 						{activeTab === "stations" ? (
-							<div className="space-y-3">
-								<div className="grid grid-cols-3 gap-2">
-									{filteredStations.map((station) => (
-										<button
-											key={station.name}
-											type="button"
-											onClick={() => setSelectedStation(station)}
-											className="px-2.5 py-2.5 sm:p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-colors flex items-center justify-between"
-										>
-											<div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-												<MapPin size={13} className="text-blue-600 dark:text-blue-400 shrink-0" />
-												<span className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
-													{station.name}
-												</span>
-											</div>
-										</button>
-									))}
-								</div>
+							<div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+								{filteredStations.map((station) => (
+									<button
+										key={station.name}
+										type="button"
+										onClick={() => setSelectedStation(station)}
+										className="px-2 py-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-colors flex items-center justify-between"
+									>
+										<div className="flex items-center gap-1.5 min-w-0">
+											<MapPin size={11} className="text-blue-600 dark:text-blue-400 shrink-0" />
+											<span className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
+												{station.name}
+											</span>
+										</div>
+									</button>
+								))}
 							</div>
 						) : (
-							<div className="space-y-4">
+							<div className="space-y-2.5">
 								{allGroupedReagents.length === 0 ? (
-									<div className="py-12 text-center text-xs text-[#64748b] dark:text-[#a1a1aa] font-mono">
+									<div className="py-12 text-center text-xs text-[#64748b] dark:text-[#a1a1aa]">
 										일치하는 시약 조제법이 없습니다.
 									</div>
 								) : (
 									allGroupedReagents.map((group) => (
-										<div key={group.category} className="space-y-2">
-											<h4 className="text-xs font-bold text-[#0f172a] dark:text-white px-1">
+										<div key={group.category} className="space-y-1">
+											<h4 className="text-xs font-bold text-[#0f172a] dark:text-white px-0.5">
 												{group.category} ({group.items.length})
 											</h4>
-											<div className="space-y-2">
+											<div className="space-y-1">
 												{group.items.map((r) => (
 													<div
 														key={`${group.category}-${r.name}-${r.manufacturer}`}
-														className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-1.5"
+														className="p-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-1"
 													>
 														<div className="flex items-center justify-between gap-2">
 															<span className="text-xs font-bold text-[#0f172a] dark:text-white">
 																{r.name}
 															</span>
-															<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
+															<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
 																{r.manufacturer}
 															</span>
 														</div>
-														<div className="bg-white dark:bg-[#09090b] p-2 rounded-lg text-xs font-mono text-[#334155] dark:text-[#d4d4d8] space-y-0.5 border border-[#e2e8f0] dark:border-[#222228]">
+														<div className="bg-white dark:bg-[#09090b] p-1.5 rounded-lg text-xs text-[#334155] dark:text-[#d4d4d8] space-y-0.5 border border-[#e2e8f0] dark:border-[#222228]">
 															{r.steps.map((s) => (
 																<p key={s}>{s}</p>
 															))}

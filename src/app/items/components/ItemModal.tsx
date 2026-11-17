@@ -137,7 +137,7 @@ export default function ItemModal({
 			isOpen={isOpen}
 			onClose={onClose}
 			title={selectedItem ? "물품 수정" : "새 물품 추가"}
-			subtitle={selectedItem ? "Existing Item Update" : "New Inventory Entry"}
+			subtitle={selectedItem?.code ? `#${selectedItem.code}` : undefined}
 			icon={Package}
 			maxWidth="max-w-lg"
 		>
@@ -146,7 +146,7 @@ export default function ItemModal({
 				<div className="space-y-1.5">
 					<label
 						htmlFor="item-name"
-						className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+						className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
 					>
 						물품명 <span className="text-rose-500 dark:text-rose-400">*</span>
 					</label>
@@ -168,7 +168,7 @@ export default function ItemModal({
 					<div className="space-y-1.5">
 						<label
 							htmlFor="item-device"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
 						>
 							기기명
 						</label>
@@ -186,7 +186,7 @@ export default function ItemModal({
 					<div className="space-y-1.5">
 						<label
 							htmlFor="item-manufacturer"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
 						>
 							제조사
 						</label>
@@ -211,7 +211,7 @@ export default function ItemModal({
 					<div className="space-y-1.5">
 						<label
 							htmlFor="item-unit"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
 						>
 							규격 (단위)
 						</label>
@@ -229,7 +229,7 @@ export default function ItemModal({
 					<div className="space-y-1.5">
 						<label
 							htmlFor="item-quantity"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
 						>
 							수량
 						</label>
@@ -252,7 +252,7 @@ export default function ItemModal({
 								name="item-quantity"
 								type="number"
 								required
-								className="w-full min-w-0 bg-transparent text-[#0f172a] dark:text-white text-center font-mono font-bold text-base focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+								className="w-full min-w-0 bg-transparent text-[#0f172a] dark:text-white text-center tabular-nums font-bold text-base focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 								value={formData.quantity ?? 0}
 								onChange={(e) =>
 									setFormData((prev) => ({
@@ -280,7 +280,7 @@ export default function ItemModal({
 
 				{/* 이미지 업로드 */}
 				<div className="space-y-1.5">
-					<span className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block">
+					<span className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block">
 						물품 이미지
 					</span>
 					<div className="flex gap-4 items-center bg-[#f1f5f9]/60 dark:bg-[#16161c]/60 p-3 rounded-2xl border border-dashed border-[#e2e8f0] dark:border-[#222228]">
@@ -302,7 +302,7 @@ export default function ItemModal({
 							)}
 						</div>
 						<div className="flex-1 min-w-0 space-y-2">
-							<p className="text-[11px] font-mono text-[#64748b] dark:text-[#71717a] leading-tight">
+							<p className="text-[11px] text-[#64748b] dark:text-[#71717a] leading-tight">
 								512x512px 권장 (JPG, PNG, WEBP)
 							</p>
 							<input
@@ -347,14 +347,6 @@ export default function ItemModal({
 						{isSaving ? "저장 중..." : "데이터 저장하기"}
 					</button>
 				</div>
-
-				{selectedItem?.code && (
-					<div className="text-center pt-1">
-						<span className="text-[10px] text-[#64748b] dark:text-[#71717a] font-mono tracking-widest">
-							ITEM CODE: {selectedItem.code}
-						</span>
-					</div>
-				)}
 			</form>
 		</Modal>
 	);

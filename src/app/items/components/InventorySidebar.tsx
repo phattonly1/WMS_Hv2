@@ -70,7 +70,7 @@ export default function InventorySidebar({
 					/>
 				</div>
 
-				<h3 className="text-[11px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase mb-2 px-2 tracking-wider">
+				<h3 className="text-[11px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase mb-2 px-2 tracking-wider">
 					메뉴
 				</h3>
 				<div className="space-y-1.5 mb-6">
@@ -115,7 +115,7 @@ export default function InventorySidebar({
 				{/* 제조사 필터 */}
 				{activeTab === "inventory" && (
 					<div className="mb-6">
-						<h3 className="text-[11px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase mb-2 px-2 tracking-wider">
+						<h3 className="text-[11px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase mb-2 px-2 tracking-wider">
 							제조사
 						</h3>
 						<div className="space-y-1 max-h-[240px] overflow-y-auto pr-1">
@@ -149,7 +149,7 @@ export default function InventorySidebar({
 				<>
 					{filterManufacturer !== "ALL" && (
 						<div className="space-y-2">
-							<h3 className="text-[10px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider px-2">
+							<h3 className="text-[10px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider px-2">
 								세부 기기 필터
 							</h3>
 							<div className="relative">
@@ -227,7 +227,7 @@ export default function InventorySidebar({
 				</>
 			) : activeTab === "out" ? (
 				<div>
-					<h3 className="text-[11px] font-mono font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase mb-2 px-2 tracking-wider">
+					<h3 className="text-[11px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase mb-2 px-2 tracking-wider">
 						사용자 필터
 					</h3>
 					<div className="space-y-1">

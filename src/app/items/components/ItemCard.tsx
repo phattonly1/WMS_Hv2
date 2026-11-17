@@ -52,11 +52,11 @@ export default function ItemCard({
 						</h3>
 						<div className="flex items-center gap-1.5 mt-1 w-full overflow-hidden">
 							{item.manufacturer && (
-								<span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#e2e8f0] dark:border-white/10 uppercase tracking-tight">
+								<span className="text-[10px] px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#e2e8f0] dark:border-white/10 uppercase tracking-tight">
 									{item.manufacturer}
 								</span>
 							)}
-							<span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold whitespace-nowrap shrink-0 border border-blue-500/20 uppercase tracking-tight">
+							<span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold whitespace-nowrap shrink-0 border border-blue-500/20 uppercase tracking-tight">
 								{item.device || "미분류"}
 							</span>
 						</div>
@@ -65,7 +65,7 @@ export default function ItemCard({
 					{/* 재고 수량 */}
 					<div className="flex flex-col items-end shrink-0">
 						<span
-							className={`px-3 py-1 rounded-lg font-mono font-bold text-sm transition-all ${
+							className={`px-3 py-1 rounded-lg tabular-nums font-bold text-sm transition-all ${
 								item.quantity < 10
 									? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shadow-xs"
 									: "bg-black/5 dark:bg-white/5 text-[#0f172a] dark:text-white border border-[#e2e8f0] dark:border-white/10"
@@ -129,7 +129,7 @@ export default function ItemCard({
 				)}
 				{/* 재고 배지 */}
 				<span
-					className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-mono font-bold shadow-md ${
+					className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs tabular-nums font-bold shadow-md ${
 						item.quantity < 10
 							? "bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30"
 							: "bg-white/90 dark:bg-[#111115]/90 text-[#0f172a] dark:text-white border border-[#e2e8f0] dark:border-white/20"
@@ -146,11 +146,11 @@ export default function ItemCard({
 				</h3>
 				<div className="flex items-center gap-1.5 w-full overflow-hidden">
 					{item.manufacturer && (
-						<span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#e2e8f0] dark:border-white/10 uppercase tracking-tight">
+						<span className="text-[10px] px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#e2e8f0] dark:border-white/10 uppercase tracking-tight">
 							{item.manufacturer}
 						</span>
 					)}
-					<span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold whitespace-nowrap shrink-0 border border-blue-500/20 uppercase tracking-tight">
+					<span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold whitespace-nowrap shrink-0 border border-blue-500/20 uppercase tracking-tight">
 						{item.device || "미분류"}
 					</span>
 				</div>

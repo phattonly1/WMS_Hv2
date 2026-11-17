@@ -1,12 +1,13 @@
 "use client";
 
 import * as fflate from "fflate";
-import type { ReagentOrderSheet, ReagentPerson } from "@/actions/reagents";
 import {
 	PEOPLE_LIST,
 	PERSON_GREEN_ROWS,
 	parseCellExpression,
 	REAGENT_SPEC_ROWS,
+	type ReagentOrderSheet,
+	type ReagentPerson,
 } from "../constants";
 
 function escapeXml(str: string): string {

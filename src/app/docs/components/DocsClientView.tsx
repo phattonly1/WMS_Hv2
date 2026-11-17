@@ -216,7 +216,7 @@ export default function DocsClientView({
 							<button
 								type="button"
 								onClick={() => setActiveModal("download")}
-								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 							>
 								<FolderDown
 									size={14}
@@ -227,7 +227,7 @@ export default function DocsClientView({
 							<button
 								type="button"
 								onClick={() => setActiveModal("video")}
-								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 							>
 								<Video
 									size={14}
@@ -238,7 +238,7 @@ export default function DocsClientView({
 							<button
 								type="button"
 								onClick={() => setActiveModal("reagent")}
-								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+								className="px-3 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 							>
 								<FlaskConical
 									size={14}
@@ -251,7 +251,7 @@ export default function DocsClientView({
 								onClick={() => {
 									setIsNavOpen(true);
 								}}
-								className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs font-mono text-white transition-colors flex items-center gap-1.5 whitespace-nowrap font-bold shadow-sm"
+								className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-xs text-white transition-colors flex items-center gap-1.5 whitespace-nowrap font-bold shadow-sm tabular-nums"
 							>
 								<FolderTree size={14} />
 								<span>목차 ({totalDocsCount})</span>
@@ -315,7 +315,7 @@ export default function DocsClientView({
 			<div className="sm:hidden shrink-0 z-[1100] bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#e2e8f0] dark:border-[#222228] transition-colors pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
 				{/* 카테고리 퀵 내비게이터 (모달 또는 목차가 닫혀있을 때만 노출) */}
 				{!activeModal && !isNavOpen && (
-					<div className="grid grid-cols-3 items-center border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-mono select-none">
+					<div className="grid grid-cols-3 items-center border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none">
 						<button
 							type="button"
 							onClick={() => {
@@ -508,7 +508,7 @@ export default function DocsClientView({
 						aria-label="본문 글자 크기 조절"
 					>
 						<span>Aa</span>
-						<span className="text-[10px] font-mono opacity-80">
+						<span className="text-[10px] opacity-80">
 							{fontSizeStep === 0 ? "" : fontSizeStep === 1 ? "+" : "++"}
 						</span>
 					</button>

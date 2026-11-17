@@ -552,18 +552,33 @@ export function serializeBuckets(buckets: Record<number, number>): string {
 }
 
 /**
- * 모바일 1줄 리스트에서 시약명 축약 및 배지 자동 생성
- * - mobileBadge가 지정되어 있으면 최우선 사용
- * - 신규 제조사가 추가되어도 2~4글자 축약 배지로 자동 폴백
+ * 시약명을 화면 표시용으로 다듬기 (불필요한 접미사만 정리하고 원래 시약명 유지)
+ */
+export function shortenReagentName(name: string): string {
+	return name
+		.replace(" 혼합용액", "")
+		.replace(/구형/g, "구")
+		.replace(/신형/g, "신")
+		.replace(/알칼리\s+과황산칼륨/g, "알칼리과황산칼륨")
+		.replace(/수산화나트륨\s*2%/g, "수산화나트륨")
+		.replace(/염산용액\(1\+16\)/g, "염산")
+		.replace(/염산용액/g, "염산");
+}
+
+/**
+ * 모바일 리스트/그리드에서 시약명 및 제조사 배지 생성
  */
 export function getMobileReagentLabel(row: ReagentRowSpec): {
 	mainName: string;
 	companyBadge?: string;
 } {
 	if (!row.reagentName) {
-		return { mainName: row.device, companyBadge: row.mobileBadge };
+		return {
+			mainName: row.device,
+			companyBadge: row.mobileBadge,
+		};
 	}
-	const shortName = row.reagentName.replace(" 혼합용액", "");
+	const shortName = shortenReagentName(row.reagentName);
 	if (row.mobileBadge) {
 		return { mainName: shortName, companyBadge: row.mobileBadge };
 	}
@@ -573,9 +588,7 @@ export function getMobileReagentLabel(row: ReagentRowSpec): {
 			: row.company === "동일시마즈"
 				? "시마즈"
 				: row.company === "코비"
-					? row.device === "HATP-4000H"
-						? "4000H"
-						: "코비"
+					? "코비"
 					: row.company
 						? row.company.slice(0, 4)
 						: undefined;

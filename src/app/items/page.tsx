@@ -255,9 +255,6 @@ function ItemsContent() {
 							<h1 className="text-sm font-bold text-[#0f172a] dark:text-white tracking-tight break-keep">
 								소모품 관리
 							</h1>
-							<p className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] tracking-tight">
-								INVENTORY MANAGEMENT
-							</p>
 						</div>
 					</div>
 				</div>
@@ -362,7 +359,7 @@ function ItemsContent() {
 								<p className="text-sm font-bold text-[#0f172a] dark:text-white">
 									해당하는 소모품이 없습니다
 								</p>
-								<p className="text-xs text-[#64748b] dark:text-[#71717a] mt-1 font-mono">
+								<p className="text-xs text-[#64748b] dark:text-[#71717a] mt-1">
 									필터 조건을 조정하거나 검색어를 확인해주세요.
 								</p>
 							</div>
@@ -411,7 +408,7 @@ function ItemsContent() {
 								<ChevronLeft size={18} />
 							</button>
 							<div className="bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] px-4 h-9 rounded-xl flex items-center">
-								<span className="text-xs font-mono font-bold text-[#0f172a] dark:text-white">
+								<span className="text-xs tabular-nums font-bold text-[#0f172a] dark:text-white">
 									{currentPage} <span className="text-[#64748b] dark:text-[#52525b] mx-1">/</span>{" "}
 									{totalPages}
 								</span>

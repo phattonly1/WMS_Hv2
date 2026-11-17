@@ -110,22 +110,29 @@ export default function ManualNavigationModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			title={isSearching ? "매뉴얼 검색 결과" : "매뉴얼 목차 바로가기"}
+			title={isSearching ? "문서 검색" : "매뉴얼 목차"}
 			subtitle={
 				isSearching
-					? `검색어: "${query}" (${searchResults.length}건)`
-					: "카테고리별 문서 목록"
+					? `${searchResults.length}건`
+					: undefined
 			}
 			icon={FolderTree}
 			size="half"
 			contentClassName="!p-0 overflow-hidden"
+			headerAction={
+				!isSearching && (
+					<span className="text-[10px] font-semibold tabular-nums px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa]">
+						총 {categories.reduce((acc, c) => acc + c.items.length, 0)}문서
+					</span>
+				)
+			}
 		>
 			{isSearching ? (
 				/* 검색 결과 목록 */
 				<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
-					<div className="flex-1 overflow-y-auto overscroll-contain p-2.5 space-y-1.5">
+					<div className="flex-1 overflow-y-auto overscroll-contain p-2 space-y-1">
 						{searchResults.length === 0 ? (
-							<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#71717a] font-mono">
+							<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#71717a]">
 								'{query}' 일치하는 문서가 없습니다.
 							</div>
 						) : (
@@ -137,26 +144,19 @@ export default function ManualNavigationModal({
 										onSelectItem(res.categoryId, res.item.id);
 										onClose();
 									}}
-									className="w-full p-3 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.99] flex items-start justify-between gap-2 group shadow-xs"
+									className="w-full px-3 py-2 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.99] flex items-center justify-between gap-2 group shadow-xs"
 								>
-									<div className="min-w-0 flex-1">
-										<div className="flex items-center gap-1.5 mb-1">
-											<span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-												{res.categoryName}
-											</span>
-										</div>
+									<div className="flex items-center gap-2 min-w-0 flex-1">
+										<span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
+											{res.categoryName}
+										</span>
 										<h4 className="text-xs font-bold text-[#0f172a] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate break-keep">
 											{res.item.title}
 										</h4>
-										{res.item.subtitle && (
-											<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] truncate mt-0.5">
-												{res.item.subtitle}
-											</p>
-										)}
 									</div>
 									<ChevronRight
 										size={14}
-										className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 mt-2 transition-colors"
+										className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
 									/>
 								</button>
 							))
@@ -167,7 +167,7 @@ export default function ManualNavigationModal({
 				/* 카테고리별 탐색 뷰 (StationListModal 스타일 3분할 순환 내비게이터) */
 				<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
 					{/* 카테고리 전환 퀵 내비게이터 바 (원형 순환 Infinite Loop) */}
-					<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-mono select-none shrink-0 h-10">
+					<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none shrink-0 h-9">
 						<button
 							type="button"
 							onClick={() =>
@@ -184,7 +184,7 @@ export default function ManualNavigationModal({
 						<div className="h-full flex items-center justify-center px-2 text-center border-r border-[#e2e8f0] dark:border-[#222228] font-bold text-[#0f172a] dark:text-white">
 							<span className="truncate flex items-center gap-1 text-blue-600 dark:text-blue-400">
 								<span className="truncate">{activeCategory?.name}</span>
-								<span className="text-[10px] font-mono text-[#64748b] dark:text-[#71717a] shrink-0">
+								<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#71717a] shrink-0">
 									({activeCatIndex + 1}/{categories.length})
 								</span>
 							</span>
@@ -203,9 +203,9 @@ export default function ManualNavigationModal({
 					</div>
 
 					{/* 선택된 카테고리의 문서 목록 */}
-					<div className="flex-1 overflow-y-auto overscroll-contain p-2.5 space-y-1.5">
+					<div className="flex-1 overflow-y-auto overscroll-contain p-2 space-y-1">
 						{!activeCategory || activeCategory.items.length === 0 ? (
-							<div className="py-12 text-center text-[11px] font-mono text-[#64748b] dark:text-[#71717a]">
+							<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
 								문서가 없습니다.
 							</div>
 						) : (
@@ -222,36 +222,29 @@ export default function ManualNavigationModal({
 											onSelectItem(activeCategory.id, item.id);
 											onClose();
 										}}
-										className={`w-full px-3 py-2.5 rounded-xl border flex items-center justify-between gap-2.5 text-left transition-all active:scale-[0.99] group ${
+										className={`w-full px-3 py-2 rounded-xl border flex items-center justify-between gap-2 text-left transition-all active:scale-[0.99] group ${
 											isItemActive
 												? "bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400"
 												: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/30 text-[#0f172a] dark:text-[#f4f4f5]"
 										}`}
 									>
-										<div className="flex items-center gap-2.5 min-w-0 flex-1">
+										<div className="flex items-center gap-2 min-w-0 flex-1">
 											<FileText
-												size={14}
+												size={13}
 												className={
 													isItemActive
 														? "text-blue-600 dark:text-blue-400 shrink-0"
 														: "text-[#64748b] dark:text-[#a1a1aa] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
 												}
 											/>
-											<div className="min-w-0 flex-1">
-												<div className="text-xs font-bold truncate break-keep group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-													{item.title}
-												</div>
-												{item.subtitle && (
-													<div className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] truncate mt-0.5">
-														{item.subtitle}
-													</div>
-												)}
-											</div>
+											<span className="text-xs font-bold truncate break-keep group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+												{item.title}
+											</span>
 										</div>
 
 										<div className="flex items-center gap-1.5 shrink-0">
 											{item.badge && (
-												<span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] border border-[#e2e8f0] dark:border-[#222228]">
+												<span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-white dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] border border-[#e2e8f0] dark:border-[#222228]">
 													{item.badge}
 												</span>
 											)}

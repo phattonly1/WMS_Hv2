@@ -48,7 +48,7 @@ export default function LogList({
 								{/* 좌측: 날짜, 이름, 물품명 */}
 								<div className="flex-1 min-w-0 space-y-1">
 									<div className="flex items-center gap-2">
-										<span className="text-[10px] font-mono text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-tight">
+										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-tight">
 											{new Date(log.created_at).toLocaleDateString()}
 										</span>
 										<span
@@ -59,12 +59,12 @@ export default function LogList({
 											{log.user_name}
 										</span>
 										{isReturn && (
-											<span className="text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded-md">
+											<span className="text-[9px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded-md">
 												반납
 											</span>
 										)}
 										{activeTab === "request" && log.status === "done" && (
-											<span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
+											<span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
 												✓ 완료
 											</span>
 										)}
@@ -83,7 +83,7 @@ export default function LogList({
 								<div className="flex items-center gap-3 flex-shrink-0">
 									<div className="text-right">
 										<span
-											className={`font-mono font-bold text-lg tracking-tight ${
+											className={`tabular-nums font-bold text-lg tracking-tight ${
 												activeTab === "request"
 													? "text-blue-600 dark:text-blue-400"
 													: isReturn
@@ -95,7 +95,7 @@ export default function LogList({
 											{log.quantity}
 										</span>
 										{log.type === "OUT" && Number(log.returned_qty) > 0 && (
-											<div className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
+											<div className="text-[10px] tabular-nums text-emerald-600 dark:text-emerald-400">
 												({log.returned_qty}개 반납)
 											</div>
 										)}

@@ -106,7 +106,7 @@ export default function ReturnModal({
 								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa]"
 					}`}
 				>
-					<div className="flex items-center gap-1.5 font-mono">
+					<div className="flex items-center gap-1.5">
 						<RefreshCw
 							size={13}
 							className={isSubmitting ? "animate-spin" : ""}
@@ -117,7 +117,7 @@ export default function ReturnModal({
 								? "반납 취소(추가 불출)"
 								: "수량 유지"}
 					</div>
-					<div className="text-[11px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
+					<div className="text-[11px] tabular-nums text-[#64748b] dark:text-[#a1a1aa]">
 						불출일: {new Date(log.created_at).toLocaleDateString("ko-KR")}
 					</div>
 				</div>
@@ -125,18 +125,18 @@ export default function ReturnModal({
 				{/* 원래 수량 / 현재 반납된 수량 */}
 				<div className="grid grid-cols-2 gap-3">
 					<div className="p-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
-						<p className="text-[10px] font-mono uppercase text-[#64748b] dark:text-[#a1a1aa] mb-1">
+						<p className="text-[10px] font-semibold text-[#64748b] dark:text-[#a1a1aa] mb-1">
 							원 불출 수량
 						</p>
-						<p className="text-xl font-mono font-bold text-[#0f172a] dark:text-white">
+						<p className="text-xl tabular-nums font-bold text-[#0f172a] dark:text-white">
 							{originalQty}개
 						</p>
 					</div>
 					<div className="p-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
-						<p className="text-[10px] font-mono uppercase text-[#64748b] dark:text-[#a1a1aa] mb-1">
+						<p className="text-[10px] font-semibold text-[#64748b] dark:text-[#a1a1aa] mb-1">
 							현재 반납 완료
 						</p>
-						<p className="text-xl font-mono font-bold text-emerald-600 dark:text-emerald-400">
+						<p className="text-xl tabular-nums font-bold text-emerald-600 dark:text-emerald-400">
 							{returnedQty}개
 						</p>
 					</div>
@@ -144,7 +144,7 @@ export default function ReturnModal({
 
 				{/* 사용 중 수량 조절 인터페이스 */}
 				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-4 rounded-2xl border border-[#e2e8f0] dark:border-[#222228] space-y-3">
-					<p className="text-center text-[11px] font-mono uppercase tracking-widest text-[#64748b] dark:text-[#a1a1aa]">
+					<p className="text-center text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
 						현재 사용 중 수량 조절
 					</p>
 					<div className="flex items-center justify-center gap-5">
@@ -158,7 +158,7 @@ export default function ReturnModal({
 						</button>
 						<div className="text-center min-w-[90px]">
 							<div
-								className={`text-4xl font-mono font-black tracking-tight ${
+								className={`text-4xl tabular-nums font-black tracking-tight ${
 									isReturning
 										? "text-emerald-600 dark:text-emerald-400"
 										: isTakingBack
@@ -168,8 +168,8 @@ export default function ReturnModal({
 							>
 								{currentOutQty}
 							</div>
-							<p className="text-[10px] font-mono uppercase text-[#64748b] dark:text-[#71717a] mt-0.5">
-								In Use
+							<p className="text-[10px] font-semibold text-[#64748b] dark:text-[#71717a] mt-0.5">
+								사용 중
 							</p>
 						</div>
 						<button
@@ -190,7 +190,7 @@ export default function ReturnModal({
 					<div className="space-y-1.5">
 						<label
 							htmlFor="return-user"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
 						>
 							수정자 이름 <span className="text-rose-500 dark:text-rose-400">*</span>
 						</label>
@@ -206,7 +206,7 @@ export default function ReturnModal({
 					<div className="space-y-1.5">
 						<label
 							htmlFor="return-note"
-							className="text-[11px] font-mono uppercase tracking-wider text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
+							className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block"
 						>
 							수정 사유
 						</label>

@@ -164,7 +164,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 										return (
 											<li className={`relative flex flex-col rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] p-3 [counter-increment:step-counter] ${textSize.body}`}>
 												<div className="flex items-start gap-2">
-													<span className="flex items-center justify-center w-5 h-5 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 font-mono font-bold text-[10px] shrink-0 before:content-[counter(step-counter)]" />
+													<span className="flex items-center justify-center w-5 h-5 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 tabular-nums font-bold text-[10px] shrink-0 before:content-[counter(step-counter)]" />
 													<div className="flex-1 min-w-0 text-[#0f172a] dark:text-[#f4f4f5] break-keep">
 														{children}
 													</div>
@@ -195,7 +195,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 					},
 					th({ children }) {
 						return (
-							<th className={`py-2 px-3 font-mono tracking-tight break-keep text-[#64748b] dark:text-[#a1a1aa] ${textSize.badge}`}>
+							<th className={`py-2 px-3 font-bold tracking-tight break-keep text-[#64748b] dark:text-[#a1a1aa] ${textSize.badge}`}>
 								{children}
 							</th>
 						);
@@ -226,7 +226,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 						if (isInline) {
 							return (
 								<code
-									className="px-1.5 py-0.5 rounded-md bg-[#f1f5f9] dark:bg-[#16161c] text-blue-600 dark:text-blue-400 font-mono text-[11px] font-bold border border-[#e2e8f0] dark:border-[#222228]"
+									className="px-1.5 py-0.5 rounded-md bg-[#f1f5f9] dark:bg-[#16161c] text-blue-600 dark:text-blue-400 text-[11px] font-bold border border-[#e2e8f0] dark:border-[#222228]"
 									{...props}
 								>
 									{children}
@@ -234,7 +234,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 							);
 						}
 						return (
-							<pre className="p-3 my-2 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] border border-[#e2e8f0] dark:border-[#222228] overflow-x-auto text-xs font-mono">
+							<pre className="p-3 my-2 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] border border-[#e2e8f0] dark:border-[#222228] overflow-x-auto text-xs">
 								<code className={className} {...props}>
 									{children}
 								</code>
@@ -260,7 +260,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 										decoding="async"
 										className="w-full max-h-[380px] object-contain mx-auto"
 									/>
-									<div className="absolute bottom-2 right-2 px-2 py-1 rounded-md bg-black/70 text-[10px] text-white/90 font-mono opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+									<div className="absolute bottom-2 right-2 px-2 py-1 rounded-md bg-black/70 text-[10px] text-white/90 font-semibold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
 										확대보기
 									</div>
 								</div>
@@ -358,14 +358,14 @@ export function ManualViewer({ category, activeItemId, fontSizeStep = 0 }: Manua
 								<div className="flex-1 min-w-0 pr-3">
 									<div className="flex items-center gap-2 mb-1.5 flex-wrap">
 										{item.badge && (
-											<span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 whitespace-nowrap">
+											<span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 whitespace-nowrap">
 												{item.badge}
 											</span>
 										)}
 										{item.tags?.map((tag) => (
 											<span
 												key={tag}
-												className="font-mono text-[#64748b] dark:text-[#a1a1aa] text-[11px] whitespace-nowrap"
+												className="font-medium text-[#64748b] dark:text-[#a1a1aa] text-[11px] whitespace-nowrap"
 											>
 												#{tag}
 											</span>

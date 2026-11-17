@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import {
+	AlertTriangle,
 	BarChart3,
 	Building2,
 	Calendar,
@@ -20,13 +21,38 @@ import {
 	type Station,
 } from "../stationData";
 import { getRealtimeWaterQuality } from "../actions";
-import type { RealtimeWaterQuality } from "../nierStationMap";
+import {
+	getNierStationCode,
+	type RealtimeWaterQuality,
+	type WaterQualityMetricKey,
+} from "../nierStationMap";
 
 interface StationBottomSheetProps {
 	station: Station | null;
 	onClose: () => void;
-	onOpenWaterQuality?: (station: Station) => void;
+	onOpenWaterQuality?: (
+		station: Station,
+		initialMetric?: WaterQualityMetricKey,
+	) => void;
 }
+
+const METRIC_META: {
+	key: WaterQualityMetricKey;
+	label: string;
+	unit: string;
+	decimals: number;
+}[] = [
+	{ key: "ec", label: "EC", unit: "µS", decimals: 0 },
+	{ key: "wtrtp", label: "수온", unit: "℃", decimals: 1 },
+	{ key: "ph", label: "pH", unit: "", decimals: 1 },
+	{ key: "doc", label: "DO", unit: "mg/L", decimals: 1 },
+	{ key: "toc", label: "TOC", unit: "mg/L", decimals: 1 },
+	{ key: "tur", label: "탁도", unit: "NTU", decimals: 1 },
+	{ key: "tp", label: "TP", unit: "mg/L", decimals: 3 },
+	{ key: "tn", label: "TN", unit: "mg/L", decimals: 3 },
+	{ key: "wqi", label: "WQI", unit: "점", decimals: 0 },
+	{ key: "chla", label: "클로로필-a", unit: "mg/m³", decimals: 1 },
+];
 
 export function StationBottomSheet({
 	station,
@@ -36,31 +62,49 @@ export function StationBottomSheet({
 	const [isExpanded, setIsExpanded] = useState(false);
 	const dragControls = useDragControls();
 
-	// 실시간 수질 데이터 상태 (하단 피크 칩 표시용)
-	const [waterQualityData, setWaterQualityData] = useState<{
-		latest: RealtimeWaterQuality | null;
-		history: RealtimeWaterQuality[];
-	} | null>(null);
+	// 실시간 수질 최신 데이터 상태 (하단 피크 칩 및 이상치 배너 표시용)
+	const [latestWq, setLatestWq] = useState<RealtimeWaterQuality | null>(null);
 
-	// 측정소가 바뀌면 접힌 상태(Peek)로 시작 & 백그라운드 선제 호출(Prefetch)
+	// 측정소가 바뀌면 접힌 상태(Peek)로 시작 & localStorage 캐시에서 즉시 실시간 수질 데이터 조회
 	useEffect(() => {
 		if (station) {
 			setIsExpanded(false);
 
-			// 국가망(type === 'station')일 때 백그라운드에서 24시간 실시간 수질 데이터 선제 수신
 			if (station.type === "station") {
-				getRealtimeWaterQuality(station.name)
-					.then((res) => {
-						setWaterQualityData({
-							latest: res.latest,
-							history: res.history,
+				let foundCached = false;
+				try {
+					const code = getNierStationCode(station.name);
+					const cachedRaw =
+						typeof window !== "undefined"
+							? window.localStorage.getItem("wms_nier_realtime_wq")
+							: null;
+					if (code && cachedRaw) {
+						const parsed = JSON.parse(cachedRaw);
+						const cachedLatest = parsed?.data?.[code] as
+							| RealtimeWaterQuality
+							| undefined;
+						if (cachedLatest) {
+							foundCached = true;
+							setLatestWq(cachedLatest);
+						}
+					}
+				} catch {
+					// ignore cache read error
+				}
+
+				if (!foundCached) {
+					getRealtimeWaterQuality(station.name)
+						.then((res) => {
+							if (res.latest) {
+								setLatestWq(res.latest);
+							}
+						})
+						.catch(() => {
+							// ignore fetch error
 						});
-					})
-					.catch(() => {
-						setWaterQualityData(null);
-					});
+				}
 			} else {
-				setWaterQualityData(null);
+				setLatestWq(null);
 			}
 		}
 	}, [station?.name, station?.lat, station]);
@@ -81,9 +125,48 @@ export function StationBottomSheet({
 	const instruments = parseStationArray<string>(station.instruments);
 	const isSimpleModal = station.type === "small" || station.type === "poi";
 
+	// 실시간 수질 전일 평균 대비 이상치(50% 이하 급감 / 150% 이상 급등) 항목 계산
+	const anomalies = (() => {
+		if (!latestWq?.prevAvg) return [];
+		const list: {
+			key: WaterQualityMetricKey;
+			label: string;
+			unit: string;
+			decimals: number;
+			currentVal: number;
+			prevAvgVal: number;
+			ratio: number;
+			type: "low" | "high";
+		}[] = [];
+
+		for (const m of METRIC_META) {
+			const cur = latestWq[m.key];
+			const avg = latestWq.prevAvg[m.key];
+			if (
+				typeof cur === "number" &&
+				typeof avg === "number" &&
+				!Number.isNaN(cur) &&
+				!Number.isNaN(avg) &&
+				avg > 0
+			) {
+				const ratio = cur / avg;
+				if (ratio <= 0.5 || ratio >= 1.5) {
+					list.push({
+						...m,
+						currentVal: cur,
+						prevAvgVal: avg,
+						ratio,
+						type: ratio <= 0.5 ? "low" : "high",
+					});
+				}
+			}
+		}
+		return list;
+	})();
+
 	return (
 		<AnimatePresence>
-			<div className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+14px)] z-[1200] pointer-events-none flex justify-center px-3.5">
+			<div className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+14px)] z-[1200] pointer-events-none flex flex-col items-center gap-2 px-3.5">
 				{/* 확장 상태일 때 뒷배경 딤(Dim) 오버레이 */}
 				{!isSimpleModal && isExpanded && (
 					<motion.div
@@ -93,6 +176,47 @@ export function StationBottomSheet({
 						onClick={() => setIsExpanded(false)}
 						className="fixed inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-auto z-[-1]"
 					/>
+				)}
+
+				{/* 모달 바깥 상단: 실시간 수질 이상치(50% 이하 / 150% 이상) 플로팅 알림 배너 */}
+				{!isSimpleModal && anomalies.length > 0 && (
+					<motion.div
+						initial={{ y: 20, opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+						exit={{ y: 20, opacity: 0 }}
+						transition={{ type: "spring", damping: 28, stiffness: 320 }}
+						className="pointer-events-auto w-full max-w-md px-3 py-2 rounded-2xl bg-white/95 dark:bg-[#111115]/95 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-amber-500/40 dark:border-amber-400/30 flex items-center gap-2 overflow-x-auto thin-scrollbar"
+					>
+						<span className="inline-flex items-center gap-1 text-[10.5px] font-black text-amber-700 dark:text-amber-300 shrink-0">
+							<AlertTriangle size={13} strokeWidth={2.6} className="shrink-0" />
+							<span>이상치 알림</span>
+						</span>
+						<div className="flex items-center gap-1.5 shrink-0">
+							{anomalies.map((anom) => (
+								<button
+									key={anom.key}
+									type="button"
+									onClick={() => onOpenWaterQuality?.(station, anom.key)}
+									title={`클릭 시 ${anom.label} 24시간 추이 확인`}
+									className={`px-2 py-0.5 rounded-full text-[10px] tabular-nums font-black tracking-tight flex items-center gap-1 active:scale-95 transition-transform shadow-2xs ${
+										anom.type === "low"
+											? "bg-rose-600 text-white"
+											: "bg-amber-500 text-white"
+									}`}
+								>
+									<span>{anom.label}</span>
+									<span>
+										{anom.currentVal.toFixed(anom.decimals)}
+										{anom.unit}
+									</span>
+									<span className="px-1 py-0.2 rounded bg-black/20 text-[9px] leading-none">
+										{anom.type === "low" ? "↓" : "↑"}
+										{Math.round(anom.ratio * 100)}%
+									</span>
+								</button>
+							))}
+						</div>
+					</motion.div>
 				)}
 
 				{/* 플로팅 글래스 카드 컨테이너 (아일랜드 모던 글래스) */}
@@ -271,13 +395,13 @@ export function StationBottomSheet({
 										<span className="text-[10px] font-bold">수질분석</span>
 									</div>
 									<div className="flex flex-col items-center leading-none mt-0.5">
-										{waterQualityData?.latest?.wtrtp !== null &&
-										waterQualityData?.latest?.wtrtp !== undefined ? (
-											<span className="text-[9px] font-mono text-blue-600 dark:text-blue-300 font-bold">
-												{waterQualityData.latest.wtrtp.toFixed(1)}℃
+										{latestWq?.wtrtp !== null &&
+										latestWq?.wtrtp !== undefined ? (
+											<span className="text-[9px] tabular-nums text-blue-600 dark:text-blue-300 font-bold">
+												{latestWq.wtrtp.toFixed(1)}℃
 											</span>
 										) : (
-											<span className="text-[8.5px] font-mono text-blue-500/80 dark:text-blue-300/80">
+											<span className="text-[8.5px] text-blue-500/80 dark:text-blue-300/80">
 												24h 추이
 											</span>
 										)}
@@ -337,7 +461,7 @@ export function StationBottomSheet({
 													key={i}
 													className="p-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.05] border border-black/[0.06] dark:border-white/10 flex items-start gap-2.5 text-xs shadow-2xs"
 												>
-													<span className="font-mono font-black text-indigo-600 dark:text-indigo-400 shrink-0 min-w-[70px]">
+													<span className="tabular-nums font-black text-indigo-600 dark:text-indigo-400 shrink-0 min-w-[70px]">
 														{h.date}
 													</span>
 													<span className="text-slate-800 dark:text-slate-200 font-bold leading-relaxed">
