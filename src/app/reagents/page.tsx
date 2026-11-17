@@ -2,7 +2,6 @@
 
 import {
 	ArrowLeft,
-	ChevronRight,
 	Download,
 	FlaskConical,
 	Plus,
