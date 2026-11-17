@@ -494,8 +494,8 @@ export default function ReagentsPage() {
 			{/* [A] 모바일 전용 화면 (lg 미만) */}
 			<div className="lg:hidden flex-1 flex flex-col min-h-0 overflow-hidden">
 				<main
-					className={`flex-1 min-h-0 px-2.5 pb-20 ${
-						mobilePerson ? "overflow-y-auto pt-3" : "overflow-hidden flex flex-col justify-center"
+					className={`flex-1 min-h-0 px-2.5 pb-20 flex flex-col ${
+						mobilePerson ? "overflow-y-auto pt-2" : "overflow-hidden justify-center"
 					}`}
 				>
 					{loading ? (
@@ -504,22 +504,22 @@ export default function ReagentsPage() {
 						</div>
 					) : !mobilePerson ? (
 						/* 1) 모바일 초기 진입: 이름 선택 화면만 노출 */
-						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl p-4 shadow-sm space-y-3">
-							<div className="flex items-center gap-2.5 pb-2 border-b border-[#e2e8f0] dark:border-[#222228]">
-								<div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
-									<UserCheck size={18} />
+						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-3xl p-5 shadow-sm space-y-4">
+							<div className="flex items-center gap-3 pb-3 border-b border-[#e2e8f0] dark:border-[#222228]">
+								<div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
+									<UserCheck size={20} />
 								</div>
 								<div className="min-w-0">
-									<h2 className="text-sm font-bold text-[#0f172a] dark:text-white break-keep">
+									<h2 className="text-base font-bold text-[#0f172a] dark:text-white break-keep">
 										측정소를 선택하세요
 									</h2>
-									<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] break-keep truncate">
+									<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] break-keep truncate">
 										측정소의 시약 목록만 표시됩니다
 									</p>
 								</div>
 							</div>
 
-							<div className="grid grid-cols-2 gap-2">
+							<div className="grid grid-cols-2 gap-3">
 								{PEOPLE_LIST.map((person) => {
 									const count = PERSON_GREEN_ROWS[person].length;
 									const totalL = columnTotals.totals[person] || 0;
@@ -528,18 +528,18 @@ export default function ReagentsPage() {
 											key={person}
 											type="button"
 											onClick={() => handleSelectMobilePerson(person)}
-											className="min-h-[50px] py-2.5 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-[#2563eb] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between transition-all active:scale-95 cursor-pointer"
+											className="min-h-[82px] py-3.5 px-4 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-[#2563eb] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between transition-all active:scale-95 cursor-pointer"
 										>
-											<div className="text-left">
-												<div className="text-sm font-bold text-[#0f172a] dark:text-white">
+											<div className="text-left space-y-0.5">
+												<div className="text-base font-bold text-[#0f172a] dark:text-white">
 													{person}
 												</div>
-												<div className="text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
+												<div className="text-xs text-[#64748b] dark:text-[#a1a1aa]">
 													시약 <span className="tabular-nums font-semibold">{count}</span>종
 												</div>
 											</div>
 											{totalL > 0 && (
-												<span className="px-2 py-0.5 rounded-lg bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] font-bold text-xs tabular-nums">
+												<span className="px-2.5 py-1 rounded-xl bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] font-bold text-sm tabular-nums">
 													{totalL}L
 												</span>
 											)}
@@ -550,7 +550,7 @@ export default function ReagentsPage() {
 						</div>
 					) : (
 						/* 2) 측정소 선택 후: (제조사 + 측정항목) 트레이 + 상하 2단 키캡 타일 */
-						<div className="w-full max-w-[348px] mx-auto space-y-2 pb-2">
+						<div className="w-full max-w-[360px] mx-auto my-auto space-y-3 pb-2">
 							{mobileGroupedBlocks.map((block) => {
 								const activeTargetSheet =
 									currentSheet ?? sheets[sheets.length - 1];
@@ -591,11 +591,10 @@ export default function ReagentsPage() {
 
 											const innerGridClass = isMergedRow
 												? group.rows.length === 1
-													? "grid grid-cols-1 gap-x-1.5 gap-y-[15px]"
-													: "grid grid-cols-2 gap-x-1.5 gap-y-[15px]"
-												: "grid grid-cols-3 gap-x-1.5 gap-y-[15px]";
+													? "grid grid-cols-1 gap-x-2 gap-y-[15px]"
+													: "grid grid-cols-2 gap-x-2 gap-y-[15px]"
+												: "grid grid-cols-3 gap-x-2 gap-y-[15px]";
 
-											const isEtcGroup = group.category === "기타";
 											const trayTitle = group.companyLabel
 												? `${group.companyLabel} ${group.category}`
 												: group.category;
@@ -603,26 +602,22 @@ export default function ReagentsPage() {
 											return (
 												<section
 													key={group.key}
-													className={`p-2 rounded-2xl bg-[#eef2f6]/90 dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] min-w-0 flex flex-col justify-end ${
-														isEtcGroup ? "" : "space-y-1.5"
-													} ${colSpanClass}`}
+													className={`p-2.5 rounded-2xl bg-[#eef2f6]/90 dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-2 min-w-0 ${colSpanClass}`}
 												>
-													{/* 제조사 + 측정항목 트레이 헤더 ('기타'는 표시 생략) */}
-													{!isEtcGroup && (
-														<div className="flex items-center gap-1.5 px-1">
-															<span
-																className={`w-1.5 h-1.5 rounded-full shrink-0 ${catDotClass}`}
-															/>
-															<span
-																className={`text-[11px] font-bold tracking-tight truncate ${catTextClass}`}
-															>
-																{trayTitle}
-															</span>
-															<span className="text-[10px] font-semibold tabular-nums text-[#94a3b8] dark:text-[#52525b] shrink-0">
-																{group.rows.length}
-															</span>
-														</div>
-													)}
+													{/* 제조사 + 측정항목 트레이 헤더 */}
+													<div className="flex items-center gap-1.5 px-1">
+														<span
+															className={`w-1.5 h-1.5 rounded-full shrink-0 ${catDotClass}`}
+														/>
+														<span
+															className={`text-xs font-bold tracking-tight truncate ${catTextClass}`}
+														>
+															{trayTitle}
+														</span>
+														<span className="text-[11px] font-semibold tabular-nums text-[#94a3b8] dark:text-[#52525b] shrink-0">
+															{group.rows.length}
+														</span>
+													</div>
 
 													{/* 해당 항목 시약 그리드 (상하 2단 중앙 키캡형) */}
 													<div className={innerGridClass}>
@@ -649,26 +644,26 @@ export default function ReagentsPage() {
 																	onClick={() =>
 																		handleOpenCellModal(row, mobilePerson)
 																	}
-																	className={`min-h-[48px] px-1.5 py-1.5 rounded-xl bg-white dark:bg-[#111115] border flex flex-col items-center justify-center gap-0.5 text-center transition-all active:scale-95 cursor-pointer shadow-2xs min-w-0 ${
+																	className={`min-h-[82px] px-1.5 py-2.5 rounded-xl bg-white dark:bg-[#111115] border flex flex-col items-center justify-center gap-1.5 text-center transition-all active:scale-95 cursor-pointer shadow-2xs min-w-0 ${
 																		parsed.total > 0
 																			? "border-blue-500/40 dark:border-blue-500/40"
 																			: "border-[#e2e8f0]/80 dark:border-[#222228]"
 																	}`}
 																>
-																	<span className="text-[11px] font-bold text-[#0f172a] dark:text-white tracking-tight truncate w-full">
+																	<span className="text-xs font-bold text-[#0f172a] dark:text-white tracking-tight truncate w-full">
 																		{mainName}
 																	</span>
 
 																	<div className="flex items-center justify-center gap-1 min-w-0 w-full">
 																		{showBreakdown && (
-																			<span className="text-[10px] font-medium tabular-nums text-[#64748b] dark:text-[#a1a1aa] truncate">
+																			<span className="text-[11px] font-medium tabular-nums text-[#64748b] dark:text-[#a1a1aa] truncate">
 																				{parsed.breakdownText
 																					.replace(/\s*×\s*/g, "×")
 																					.replace(/개/g, "")}
 																			</span>
 																		)}
 																		<span
-																			className={`text-xs font-bold tabular-nums shrink-0 ${
+																			className={`text-sm font-bold tabular-nums shrink-0 ${
 																				parsed.total > 0
 																					? "text-[#2563eb] dark:text-[#60a5fa]"
 																					: "text-[#94a3b8] dark:text-[#52525b]"
