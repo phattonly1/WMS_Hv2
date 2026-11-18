@@ -7,6 +7,7 @@ import {
 	Download,
 	LayoutGrid,
 	Loader2,
+	SunMoon,
 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
@@ -59,6 +60,7 @@ function ThumbnailCard({
 	pdfDoc,
 	pageNumber,
 	isActive,
+	isInverted,
 	cachedDataUrl,
 	onCacheThumb,
 	onSelect,
@@ -66,6 +68,7 @@ function ThumbnailCard({
 	pdfDoc: any;
 	pageNumber: number;
 	isActive: boolean;
+	isInverted: boolean;
 	cachedDataUrl?: string;
 	onCacheThumb: (page: number, dataUrl: string) => void;
 	onSelect: (page: number) => void;
@@ -158,6 +161,11 @@ function ThumbnailCard({
 						src={thumbUrl}
 						alt={`${pageNumber}쪽 미리보기`}
 						className="w-full h-full object-contain"
+						style={
+							isInverted
+								? { filter: "invert(1) hue-rotate(180deg) contrast(0.95)" }
+								: undefined
+						}
 					/>
 				) : (
 					<div className="flex flex-col items-center justify-center gap-1 text-[#64748b]">
@@ -194,6 +202,25 @@ function PdfViewerContent() {
 	const [zoom, setZoom] = useState(1);
 	const [isZoomMenuOpen, setIsZoomMenuOpen] = useState(false);
 	const [isGridOpen, setIsGridOpen] = useState(false);
+	const [isInverted, setIsInverted] = useState<boolean>(() => {
+		if (typeof window === "undefined") return false;
+		try {
+			return window.localStorage.getItem("wms_pdf_invert") === "true";
+		} catch {
+			return false;
+		}
+	});
+	const toggleInvert = useCallback(() => {
+		setIsInverted((prev) => {
+			const next = !prev;
+			try {
+				window.localStorage.setItem("wms_pdf_invert", String(next));
+			} catch {
+				// ignore
+			}
+			return next;
+		});
+	}, []);
 	const [loadProgress, setLoadProgress] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -449,6 +476,7 @@ function PdfViewerContent() {
 										pdfDoc={pdfDoc}
 										pageNumber={p}
 										isActive={p === pageNum}
+										isInverted={isInverted}
 										cachedDataUrl={thumbCache[p]}
 										onCacheThumb={handleCacheThumb}
 										onSelect={(selectedPage) => {
@@ -638,15 +666,20 @@ function PdfViewerContent() {
 						<canvas
 							ref={canvasRef}
 							className="bg-white rounded-md shadow-2xl max-w-none my-auto"
+							style={
+								isInverted
+									? { filter: "invert(1) hue-rotate(180deg) contrast(0.95)" }
+									: undefined
+							}
 						/>
 					)}
 				</main>
 			)}
 
-			{/* 하단 고정 1줄 통합 컨트롤 바 (좌측 [←] 단독 분리 + 중앙 [< ▦ 1/37 >] 통합으로 오터치 원천 차단) */}
-			<footer className="shrink-0 z-30 bg-[#111115]/95 backdrop-blur-md border-t border-[#222228] px-3 py-2 pb-[calc(env(safe-area-inset-bottom)+8px)]">
-				<div className="max-w-2xl mx-auto flex items-center justify-between gap-2">
-					{/* 1. 좌측 끝: 뒤로가기 단독 배치 (자주 누르는 버튼과 물리적 거리 확보) */}
+			{/* 하단 고정 1줄 통합 컨트롤 바 (좌측 [←] 단독 분리 + 중앙 [< ▦ 1/185 >] + 우측 [100%·반전팝업] [저장]) */}
+			<footer className="shrink-0 z-30 bg-[#111115]/95 backdrop-blur-md border-t border-[#222228] px-2.5 py-2 pb-[calc(env(safe-area-inset-bottom)+8px)]">
+				<div className="max-w-2xl mx-auto flex items-center justify-between gap-1.5">
+					{/* 1. 좌측 끝: 뒤로가기 단독 배치 */}
 					<button
 						type="button"
 						onClick={handleClose}
@@ -657,8 +690,8 @@ function PdfViewerContent() {
 						<ArrowLeft size={16} />
 					</button>
 
-					{/* 2. 중앙: 페이지 이동 & 전체 썸네일 모아보기 통합 (< ▦ 1 / 37 >) - 좌우 터치 영역 확대 */}
-					<div className="flex items-center bg-[#16161c] border border-[#222228] rounded-xl h-9 p-0.5">
+					{/* 2. 중앙: 페이지 이동 & 전체 썸네일 모아보기 통합 (< ▦ 1 / 185 >) */}
+					<div className="flex items-center bg-[#16161c] border border-[#222228] rounded-xl h-9 p-0.5 min-w-0">
 						<button
 							type="button"
 							disabled={pageNum <= 1 || isLoading || isGridOpen}
@@ -666,17 +699,17 @@ function PdfViewerContent() {
 								setPageNum((p) => Math.max(1, p - 1));
 								containerRef.current?.scrollTo({ top: 0 });
 							}}
-							className="w-11 sm:w-12 h-8 rounded-lg hover:bg-white/10 active:bg-white/15 flex items-center justify-center text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer"
+							className="w-9 sm:w-12 h-8 rounded-lg hover:bg-white/10 active:bg-white/15 flex items-center justify-center text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer shrink-0"
 							aria-label="이전 페이지"
 						>
-							<ChevronLeft size={18} strokeWidth={2.5} />
+							<ChevronLeft size={17} strokeWidth={2.5} />
 						</button>
 						<button
 							type="button"
 							disabled={numPages <= 0 || isLoading}
 							onClick={() => setIsGridOpen((prev) => !prev)}
 							title="터치하여 전체 페이지 썸네일 보기"
-							className={`px-3.5 h-8 rounded-lg text-xs font-bold tabular-nums whitespace-nowrap flex items-center justify-center gap-1.5 border-x border-[#222228] transition-all active:scale-95 cursor-pointer disabled:opacity-35 ${
+							className={`px-2.5 sm:px-3.5 h-8 rounded-lg text-xs font-bold tabular-nums whitespace-nowrap flex items-center justify-center gap-1.5 border-x border-[#222228] transition-all active:scale-95 cursor-pointer disabled:opacity-35 ${
 								isGridOpen
 									? "bg-blue-600 border-transparent text-white shadow-xs"
 									: "hover:bg-white/5 text-white"
@@ -695,15 +728,15 @@ function PdfViewerContent() {
 								setPageNum((p) => Math.min(numPages, p + 1));
 								containerRef.current?.scrollTo({ top: 0 });
 							}}
-							className="w-11 sm:w-12 h-8 rounded-lg hover:bg-white/10 active:bg-white/15 flex items-center justify-center text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer"
+							className="w-9 sm:w-12 h-8 rounded-lg hover:bg-white/10 active:bg-white/15 flex items-center justify-center text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer shrink-0"
 							aria-label="다음 페이지"
 						>
-							<ChevronRight size={18} strokeWidth={2.5} />
+							<ChevronRight size={17} strokeWidth={2.5} />
 						</button>
 					</div>
 
-					{/* 3. 우측: 배율 선택 팝오버(100%) + 저장 */}
-					<div className="relative flex items-center gap-2 shrink-0">
+					{/* 3. 우측: 배율·색반전 통합 팝오버(100%) + 저장 */}
+					<div className="relative flex items-center gap-1.5 shrink-0">
 						{isZoomMenuOpen && !isGridOpen && (
 							<>
 								<div
@@ -712,6 +745,19 @@ function PdfViewerContent() {
 									aria-hidden="true"
 								/>
 								<div className="absolute bottom-11 right-0 z-20 bg-[#16161c]/95 backdrop-blur-md border border-[#222228] rounded-2xl p-1 shadow-2xl flex flex-row items-center gap-1 whitespace-nowrap">
+									<button
+										type="button"
+										onClick={toggleInvert}
+										className={`h-8 px-2.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border-r border-[#222228] mr-0.5 ${
+											isInverted
+												? "bg-indigo-600 text-white"
+												: "text-[#e4e4e7] hover:bg-white/10"
+										}`}
+										title="색반전 보정 (브라우저 강제 다크모드 대응)"
+									>
+										<SunMoon size={14} />
+										<span>반전</span>
+									</button>
 									{[1, 1.25, 1.5, 2, 2.5].map((zVal) => {
 										const isSelected = zoom === zVal;
 										return (
@@ -722,7 +768,7 @@ function PdfViewerContent() {
 													setZoom(zVal);
 													setIsZoomMenuOpen(false);
 												}}
-												className={`h-8 px-2.5 rounded-xl text-xs font-bold tabular-nums transition-colors cursor-pointer ${
+												className={`h-8 px-2 rounded-xl text-xs font-bold tabular-nums transition-colors cursor-pointer ${
 													isSelected
 														? "bg-blue-600 text-white"
 														: "text-[#e4e4e7] hover:bg-white/10"
@@ -740,21 +786,24 @@ function PdfViewerContent() {
 							type="button"
 							disabled={isLoading || isGridOpen}
 							onClick={() => setIsZoomMenuOpen((prev) => !prev)}
-							className={`h-9 px-2.5 rounded-xl border text-xs font-bold tabular-nums transition-all active:scale-95 cursor-pointer disabled:opacity-30 ${
-								isZoomMenuOpen || zoom > 1
+							className={`h-9 px-2.5 rounded-xl border text-xs font-bold tabular-nums transition-all active:scale-95 cursor-pointer disabled:opacity-30 flex items-center gap-1 ${
+								isZoomMenuOpen || zoom > 1 || isInverted
 									? "bg-blue-600/15 border-blue-500/40 text-blue-400"
 									: "bg-[#16161c] hover:bg-white/10 border-[#222228] text-[#e4e4e7]"
 							}`}
-							title="배율 선택"
-							aria-label="배율 선택"
+							title="배율 및 색반전 설정"
+							aria-label="배율 및 색반전 설정"
 						>
-							{Math.round(zoom * 100)}%
+							{isInverted && (
+								<SunMoon size={12} className="text-indigo-400 shrink-0" />
+							)}
+							<span>{Math.round(zoom * 100)}%</span>
 						</button>
 
 						<button
 							type="button"
 							onClick={handleDownload}
-							className="h-9 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer shrink-0"
+							className="w-9 sm:w-auto sm:px-3 h-9 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer shrink-0"
 							title="파일 다운로드"
 							aria-label="파일 다운로드"
 						>
