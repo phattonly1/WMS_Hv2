@@ -161,7 +161,7 @@ export async function deleteMapMarker(id: string) {
 }
 
 // ============================================================
-// 국립환경과학원(NIER) 실시간 수질 48시간 누적 캐시 조회 액션 (GitHub Actions 연동)
+// 국립환경과학원(NIER) 실시간 수질 48시간 누적 캐시 조회 액션 (Supabase pg_cron 연동)
 // ============================================================
 import {
 	getNierStationCode,
