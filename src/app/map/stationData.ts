@@ -5,7 +5,7 @@ import { AlertTriangle, Droplets, Mountain, Waves } from "lucide-react";
 import type React from "react";
 
 export type RiverType = "han" | "bukhan" | "namhan" | "imjin" | "pyeongtaek";
-export type StationType = "station" | "small" | "poi" | "arrow";
+export type StationType = "station" | "small" | "poi";
 export type Equipment = {
 	item: string;
 	manufacturer: string;
@@ -31,7 +31,6 @@ export interface MapFilters {
 	station: boolean;
 	small: boolean;
 	poi: boolean;
-	arrow: "none" | "name" | "no-name";
 	waterChip: WaterChipMode; // 실시간 수질 마커 칩 단일 표시 항목
 	rivers: Record<RiverType, boolean>;
 	highlightedRiver?: RiverType | null; // 특정 수계 강조 (굵기 & 채도 극대화)
@@ -63,15 +62,13 @@ export interface StationMaster {
 export interface MapMarker {
 	id: string;
 	reg_no?: number;
-	type: "arrow" | "poi";
+	type: "poi";
 	name: string;
 	river: RiverType;
 	lat: number;
 	lng: number;
 	category?: string;
 	related_station_id?: string;
-	angle?: number;
-	arrow_type?: string;
 	color?: string;
 	description?: string;
 }
@@ -89,7 +86,6 @@ export interface Station {
 	features?: string[];
 	instruments?: string[];
 	is_deleted?: boolean;
-	angle?: number; // 화살표 방향 (0-360도, 0=북쪽, 90=동쪽)
 	office?: string;
 	address?: string;
 	facility_type?: string;
@@ -152,17 +148,15 @@ export const TYPE_CONFIG: Record<
 	station: { label: "국가 측정소", color: "#0033cc" },
 	small: { label: "소규모 감시망", color: "#0d9488" },
 	poi: { label: "관심지점", color: "#ef4444" },
-	arrow: { label: "흐름 방향", color: "#10b981" },
 };
 
 /**
  * 측정소의 색상을 결정하는 헬퍼 함수
- * 우선순위: 수계 색상 (관심지점/화살표 등) > 타입 색상 (국가/소규모)
+ * 우선순위: 수계 색상 (관심지점 등) > 타입 색상 (국가/소규모)
  */
 export function getStationColor(station: Station): string {
 	if (!station) return "#6366f1";
 	if (station.color) return station.color;
-	if (station.type === "arrow") return TYPE_CONFIG.arrow?.color || "#10b981";
 	if (station.type === "poi")
 		return (station.river && RIVER_CONFIG[station.river]?.color) || "#ef4444";
 	if (station.type === "station" || station.type === "small")

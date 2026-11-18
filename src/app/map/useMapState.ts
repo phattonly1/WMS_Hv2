@@ -54,7 +54,6 @@ export function useMapState(
 	// 에디터 모드 상태
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isAddingStation, setIsAddingStation] = useState(false);
-	const [isAddingArrow, setIsAddingArrow] = useState(false);
 	const [isAddingPoi, setIsAddingPoi] = useState(false);
 	const [editingStation, setEditingStation] = useState<Station | null>(null);
 
@@ -62,7 +61,6 @@ export function useMapState(
 		station: true,
 		small: true,
 		poi: true,
-		arrow: "none",
 		waterChip: "default", // 기본값: 수온 + WQI
 		rivers: {
 			bukhan: true,
@@ -250,9 +248,8 @@ export function useMapState(
 					name: station.name,
 					lat,
 					lng,
-					type: station.type,
+					type: "poi",
 					river: station.river,
-					angle: station.angle || 0,
 				});
 				if (!result?.error && result?.success) {
 					toast.success(`${station.name} 위치가 이동되었습니다.`);
@@ -266,40 +263,7 @@ export function useMapState(
 		}
 	};
 
-	// 2. 새 흐름 화살표 추가 (map_markers)
-	const handleAddArrow = async (lat: number, lng: number) => {
-		const name = prompt(
-			"흐름 명칭을 입력하세요 (예: 한강 흐름 A, 경안천 합류 →)",
-		);
-		if (!name) return;
-
-		try {
-			const result = await upsertMapMarker({
-				name,
-				lat,
-				lng,
-				type: "arrow",
-				river: "han",
-				color: "#10b981",
-				angle: 0,
-				arrow_type: name.includes("→") ? "junction" : "default",
-				category: "하천흐름",
-				reg_no: 1,
-			});
-
-			if (!result?.error && result?.success) {
-				setIsAddingArrow(false);
-				toast.success("흐름 화살표가 추가되었습니다.");
-				if (refresh) refresh();
-			} else {
-				toast.error(`추가 실패: ${result?.error || "알 수 없는 오류"}`);
-			}
-		} catch {
-			toast.error("추가 중 오류 발생");
-		}
-	};
-
-	// 3. 새 관심지점(POI) 추가 (map_markers)
+	// 2. 새 관심지점(POI) 추가 (map_markers)
 	const handleAddPoi = async (lat: number, lng: number) => {
 		const name = prompt("관심지점 명칭을 입력하세요 (예: 팔당댐, 암사취수장)");
 		if (!name) return;
@@ -329,7 +293,7 @@ export function useMapState(
 		}
 	};
 
-	// 4. 새 측정소 추가 (stations_master)
+	// 3. 새 측정소 추가 (stations_master)
 	const handleAddStation = async (lat: number, lng: number) => {
 		const name = prompt("측정소 이름을 입력하세요 (예: 신규 측정소)");
 		if (!name) return;
@@ -360,44 +324,12 @@ export function useMapState(
 		}
 	};
 
-	// 5. 화살표 회전각 수정 (arrow 마커 전용)
-	const updateAngle = async (station: Station, newAngle: number) => {
-		if (station.type !== "arrow") return;
-		try {
-			const result = await upsertMapMarker({
-				id: station.id,
-				name: station.name,
-				lat: station.lat,
-				lng: station.lng,
-				type: station.type,
-				river: station.river,
-				angle: newAngle,
-			});
-
-			if (!result?.error && result?.success) {
-				toast.success(`${station.name} 방향이 ${newAngle}° 로 변경되었습니다.`);
-				if (editingStation?.id === station.id) {
-					setEditingStation((prev) =>
-						prev ? { ...prev, angle: newAngle } : null,
-					);
-				}
-				if (refresh) refresh();
-			} else {
-				toast.error(
-					`방향 업데이트 실패: ${result?.error || "알 수 없는 오류"}`,
-				);
-			}
-		} catch {
-			toast.error("방향 업데이트 중 오류 발생");
-		}
-	};
-
-	// 6. 삭제 (map_markers 삭제)
+	// 4. 삭제 (map_markers 삭제)
 	const handleDeleteStation = async (station: Station) => {
 		if (!confirm(`'${station.name}'을(를) 정말 삭제하시겠습니까?`)) return;
 
 		try {
-			if (station.type === "arrow" || station.type === "poi") {
+			if (station.type === "poi") {
 				const result = await deleteMapMarker(station.id!);
 				if (!result?.error && result?.success) {
 					toast.success(`${station.name}이(가) 삭제되었습니다.`);
@@ -444,17 +376,13 @@ export function useMapState(
 		setIsEditMode,
 		isAddingStation,
 		setIsAddingStation,
-		isAddingArrow,
-		setIsAddingArrow,
 		isAddingPoi,
 		setIsAddingPoi,
 		editingStation,
 		setEditingStation,
 		updateStationLocation,
-		handleAddArrow,
 		handleAddPoi,
 		handleAddStation,
-		updateAngle,
 		handleDeleteStation,
 	};
 }

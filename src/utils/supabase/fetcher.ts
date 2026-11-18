@@ -22,7 +22,7 @@ export async function fetchStations(): Promise<Station[]> {
 			.from("station_assets")
 			.select("station_id, model, status")
 			.order("install_date", { ascending: false }),
-		supabase.from("map_markers").select("*").order("name"),
+		supabase.from("map_markers").select("*").neq("type", "arrow").order("name"),
 	]);
 
 	if (masterErr || assetErr || markerErr) {

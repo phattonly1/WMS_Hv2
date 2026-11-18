@@ -8,7 +8,7 @@ export async function upsertStation(stationData: Partial<Station>) {
 	const supabase = await createClient();
 
 	const { id, ...rest } = stationData;
-	const isMarker = rest.type === "arrow" || rest.type === "poi";
+	const isMarker = rest.type === "poi";
 
 	if (isMarker) {
 		const markerItem: Record<string, unknown> = {
@@ -17,7 +17,6 @@ export async function upsertStation(stationData: Partial<Station>) {
 			lng: Number(rest.lng),
 			type: rest.type,
 			river: rest.river,
-			angle: Number(rest.angle) || 0,
 			color: rest.color || null,
 		};
 		const res = id
@@ -136,7 +135,7 @@ export async function upsertStationMaster(data: Partial<StationMaster>) {
 }
 
 // ============================================================
-// 지도 보조 마커 (map_markers: 흐름 + POI) 액션
+// 지도 보조 마커 (map_markers: POI) 액션
 // ============================================================
 export async function upsertMapMarker(data: Partial<MapMarker>) {
 	const supabase = await createClient();

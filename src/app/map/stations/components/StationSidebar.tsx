@@ -22,7 +22,6 @@ interface StationSidebarProps {
 const TYPE_PRIORITY: Record<StationType, number> = {
 	station: 1,
 	small: 2,
-	arrow: 3,
 	poi: 99,
 };
 
@@ -194,13 +193,6 @@ export const StationSidebar = ({
 													className={`ml-auto text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter shrink-0 ${selectedId === station.id ? "bg-white/20 text-white" : "bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-white/10"}`}
 												>
 													소규모
-												</span>
-											)}
-											{station.type === "arrow" && (
-												<span
-													className={`ml-auto text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-tighter shrink-0 ${selectedId === station.id ? "bg-white/20 text-white" : "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100/50 dark:border-emerald-500/10"}`}
-												>
-													방향
 												</span>
 											)}
 										</button>

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	ArrowUp,
 	Check,
 	ChevronDown,
 	ChevronLeft,
@@ -154,17 +153,13 @@ export default function MapPage() {
 		setIsEditMode,
 		isAddingStation,
 		setIsAddingStation,
-		isAddingArrow,
-		setIsAddingArrow,
 		isAddingPoi,
 		setIsAddingPoi,
 		editingStation,
 		setEditingStation,
 		updateStationLocation,
-		handleAddArrow,
 		handleAddPoi,
 		handleAddStation,
-		updateAngle,
 		handleDeleteStation,
 	} = useMapState(stations, refresh);
 
@@ -350,13 +345,12 @@ export default function MapPage() {
 			{/* ============================================================ */}
 			{isEditMode && (
 				<div className="absolute bottom-[calc(env(safe-area-inset-bottom)+14px)] inset-x-3.5 z-[1100] pointer-events-none flex flex-col items-center">
-					<div className="pointer-events-auto w-full max-w-sm h-12 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-slate-200/80 dark:border-white/10 grid grid-cols-3 items-center p-1.5 gap-1.5">
+					<div className="pointer-events-auto w-full max-w-xs h-12 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.15)] border border-slate-200/80 dark:border-white/10 grid grid-cols-2 items-center p-1.5 gap-1.5">
 						{/* 1. 완료 버튼 */}
 						<button
 							onClick={() => {
 								setIsEditMode(false);
 								setIsAddingStation(false);
-								setIsAddingArrow(false);
 								setIsAddingPoi(false);
 								setEditingStation(null);
 							}}
@@ -367,33 +361,11 @@ export default function MapPage() {
 							<span>완료</span>
 						</button>
 
-						{/* 2. 흐름 추가 버튼 */}
-						<button
-							onClick={() => {
-								setIsAddingArrow(!isAddingArrow);
-								setIsAddingStation(false);
-								setIsAddingPoi(false);
-							}}
-							className={`h-9 rounded-xl font-black text-[11.5px] flex items-center justify-center gap-1 transition-all active:scale-95 border ${
-								isAddingArrow
-									? "bg-emerald-600 text-white border-emerald-500 shadow-sm"
-									: "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 border-transparent hover:bg-slate-200 dark:hover:bg-white/15"
-							}`}
-						>
-							{isAddingArrow ? (
-								<X size={14} strokeWidth={3} />
-							) : (
-								<ArrowUp size={14} strokeWidth={3} />
-							)}
-							<span>흐름</span>
-						</button>
-
-						{/* 4. 관심 추가 버튼 */}
+						{/* 2. 관심 추가 버튼 */}
 						<button
 							onClick={() => {
 								setIsAddingPoi(!isAddingPoi);
 								setIsAddingStation(false);
-								setIsAddingArrow(false);
 							}}
 							className={`h-9 rounded-xl font-black text-[11.5px] flex items-center justify-center gap-1 transition-all active:scale-95 border ${
 								isAddingPoi
@@ -413,22 +385,16 @@ export default function MapPage() {
 			)}
 
 			{/* 에디터 안내 배너 */}
-			{isEditMode && (isAddingArrow || isAddingStation || isAddingPoi) && (
+			{isEditMode && (isAddingStation || isAddingPoi) && (
 				<div className="absolute top-20 left-1/2 -translate-x-1/2 z-[1101] pointer-events-none px-4 w-full max-w-sm">
 					<div
 						className={`${
-							isAddingStation
-								? "bg-indigo-600"
-								: isAddingArrow
-									? "bg-emerald-600"
-									: "bg-rose-600"
+							isAddingStation ? "bg-indigo-600" : "bg-rose-600"
 						} text-white px-4 py-2.5 rounded-2xl text-xs font-black text-center shadow-2xl animate-bounce border border-white/20`}
 					>
 						{isAddingStation
 							? "지도를 탭하여 새 측정소를 추가하세요"
-							: isAddingArrow
-								? "지도를 탭하여 새 흐름 화살표를 추가하세요"
-								: "지도를 탭하여 새 관심지점을 추가하세요"}
+							: "지도를 탭하여 새 관심지점을 추가하세요"}
 					</div>
 				</div>
 			)}
@@ -447,10 +413,8 @@ export default function MapPage() {
 				userLocation={userLocation}
 				isEditMode={isEditMode}
 				isAddingStation={isAddingStation}
-				isAddingArrow={isAddingArrow}
 				isAddingPoi={isAddingPoi}
 				onAddStation={handleAddStation}
-				onAddArrow={handleAddArrow}
 				onAddPoi={handleAddPoi}
 				onUpdateStationLocation={updateStationLocation}
 				editingStation={editingStation}
@@ -590,7 +554,7 @@ export default function MapPage() {
 								지도 편집
 							</span>
 							<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] block">
-								위치·각도 조정
+								위치·관심지점 조정
 							</span>
 						</div>
 					</button>
@@ -849,9 +813,8 @@ export default function MapPage() {
 						</div>
 					</div>
 
-					{/* 2단. 측정망 유형 & 흐름 화살표 (2행) */}
+					{/* 2단. 측정망 유형 */}
 					<div className="space-y-1.5 pt-1 border-t border-[#e2e8f0] dark:border-[#222228]">
-						{/* 측정망 유형 (1행) */}
 						<div className="space-y-0.5">
 							<span className="text-[10px] font-medium text-[#64748b] dark:text-[#94a3b8] block">
 								측정망 유형
@@ -896,51 +859,6 @@ export default function MapPage() {
 								>
 									<MapPin size={10} strokeWidth={2.5} className="shrink-0" />
 									<span className="whitespace-nowrap">관심 지점</span>
-								</button>
-							</div>
-						</div>
-
-						{/* 흐름 화살표 (2행) */}
-						<div className="space-y-0.5">
-							<span className="text-[10px] font-medium text-[#64748b] dark:text-[#94a3b8] block">
-								흐름 화살표
-							</span>
-							<div className="grid grid-cols-3 gap-1">
-								<button
-									type="button"
-									onClick={() => setFilters({ ...filters, arrow: "none" })}
-									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
-										filters.arrow === "none"
-											? "bg-[#27272a] text-white font-bold border-white/20 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
-									}`}
-								>
-									<X size={10} strokeWidth={2.5} className="shrink-0" />
-									<span className="whitespace-nowrap">숨김</span>
-								</button>
-								<button
-									type="button"
-									onClick={() => setFilters({ ...filters, arrow: "no-name" })}
-									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
-										filters.arrow === "no-name"
-											? "bg-emerald-600 text-white font-bold border-emerald-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
-									}`}
-								>
-									<ArrowUp size={10} strokeWidth={3} className="shrink-0" />
-									<span className="whitespace-nowrap">화살표만</span>
-								</button>
-								<button
-									type="button"
-									onClick={() => setFilters({ ...filters, arrow: "name" })}
-									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
-										filters.arrow === "name"
-											? "bg-emerald-600 text-white font-bold border-emerald-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
-									}`}
-								>
-									<ArrowUp size={10} strokeWidth={3} className="shrink-0" />
-									<span className="whitespace-nowrap">화살표+지명</span>
 								</button>
 							</div>
 						</div>
@@ -1113,7 +1031,7 @@ export default function MapPage() {
 			</Modal>
 
 			{/* ============================================================ */}
-			{/* 6. 에디터 하단 선택 노드 각도/삭제 조절 패널                 */}
+			{/* 6. 에디터 하단 선택 노드 정보/삭제 패널                      */}
 			{/* ============================================================ */}
 			{isEditMode && editingStation && (
 				<div className="absolute bottom-[calc(env(safe-area-inset-bottom)+70px)] inset-x-3.5 z-[1600] animate-in slide-in-from-bottom-5 duration-300 max-w-md mx-auto pointer-events-auto">
@@ -1140,8 +1058,7 @@ export default function MapPage() {
 							</div>
 
 							<div className="flex gap-1.5 shrink-0">
-								{(editingStation.type === "arrow" ||
-									editingStation.type === "poi") && (
+								{editingStation.type === "poi" && (
 									<button
 										onClick={() => handleDeleteStation(editingStation)}
 										className="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-100 transition-all active:scale-95"
@@ -1159,80 +1076,6 @@ export default function MapPage() {
 								</button>
 							</div>
 						</div>
-
-						{/* 각도 조절 슬라이더 (15도 단위) */}
-						{(editingStation.type === "arrow" ||
-							editingStation.type === "station" ||
-							editingStation.type === "small") && (
-							<div className="p-3 bg-slate-50 dark:bg-white/5 rounded-xl space-y-2 border border-slate-100 dark:border-white/5">
-								<div className="flex justify-between items-center">
-									<span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">
-										회전 각도: {editingStation.angle || 0}°
-									</span>
-									<div className="flex items-center gap-1">
-										<button
-											onClick={() => {
-												const current = editingStation.angle || 0;
-												const next = (current - 15 + 360) % 360;
-												setEditingStation({ ...editingStation, angle: next });
-												updateAngle(editingStation, next);
-											}}
-											className="px-1.5 py-0.5 rounded-md text-[10px] font-bold border bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10 active:scale-95"
-											title="-15도 회전"
-										>
-											-15°
-										</button>
-										<button
-											onClick={() => {
-												const current = editingStation.angle || 0;
-												const next = (current + 15) % 360;
-												setEditingStation({ ...editingStation, angle: next });
-												updateAngle(editingStation, next);
-											}}
-											className="px-1.5 py-0.5 rounded-md text-[10px] font-bold border bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10 active:scale-95"
-											title="+15도 회전"
-										>
-											+15°
-										</button>
-										<div className="w-px h-3 bg-slate-200 dark:bg-white/10 mx-0.5" />
-										{[0, 90, 180, 270].map((deg) => (
-											<button
-												key={deg}
-												onClick={() => {
-													setEditingStation({ ...editingStation, angle: deg });
-													updateAngle(editingStation, deg);
-												}}
-												className={`px-1.5 py-0.5 rounded-md text-[10px] font-bold border ${
-													(editingStation.angle || 0) === deg
-														? "bg-indigo-600 text-white border-indigo-600"
-														: "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10"
-												}`}
-											>
-												{deg}°
-											</button>
-										))}
-									</div>
-								</div>
-								<input
-									type="range"
-									min="0"
-									max="360"
-									step="15"
-									value={editingStation.angle || 0}
-									onChange={(e) => {
-										const angle = parseInt(e.target.value, 10);
-										setEditingStation({ ...editingStation, angle });
-									}}
-									onMouseUp={() =>
-										updateAngle(editingStation, editingStation.angle || 0)
-									}
-									onTouchEnd={() =>
-										updateAngle(editingStation, editingStation.angle || 0)
-									}
-									className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-								/>
-							</div>
-						)}
 					</div>
 				</div>
 			)}

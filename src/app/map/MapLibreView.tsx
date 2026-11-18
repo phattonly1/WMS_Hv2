@@ -19,7 +19,6 @@ const MARKER_HOVER_STYLE = `
 `;
 
 import {
-	ArrowMarker,
 	PoiMarker,
 	SmallMarker,
 	StationMarker,
@@ -44,10 +43,8 @@ interface MapLibreViewProps {
 	// 에디터 모드
 	isEditMode?: boolean;
 	isAddingStation?: boolean;
-	isAddingArrow?: boolean;
 	isAddingPoi?: boolean;
 	onAddStation?: (lat: number, lng: number) => Promise<void>;
-	onAddArrow?: (lat: number, lng: number) => Promise<void>;
 	onAddPoi?: (lat: number, lng: number) => Promise<void>;
 	onUpdateStationLocation?: (
 		station: Station,
@@ -69,10 +66,8 @@ export default function MapLibreView({
 	userLocation = null,
 	isEditMode = false,
 	isAddingStation = false,
-	isAddingArrow = false,
 	isAddingPoi = false,
 	onAddStation,
-	onAddArrow,
 	onAddPoi,
 	onUpdateStationLocation,
 	editingStation: _editingStation,
@@ -169,9 +164,7 @@ export default function MapLibreView({
 	const handleMapClick = useCallback(
 		(e: any) => {
 			const { lng, lat } = e.lngLat;
-			if (isAddingArrow && onAddArrow) {
-				onAddArrow(lat, lng);
-			} else if (isAddingPoi && onAddPoi) {
+			if (isAddingPoi && onAddPoi) {
 				onAddPoi(lat, lng);
 			} else if (isAddingStation && onAddStation) {
 				onAddStation(lat, lng);
@@ -183,10 +176,8 @@ export default function MapLibreView({
 			}
 		},
 		[
-			isAddingArrow,
 			isAddingPoi,
 			isAddingStation,
-			onAddArrow,
 			onAddPoi,
 			onAddStation,
 			isEditMode,
@@ -208,12 +199,7 @@ export default function MapLibreView({
 				return false;
 			}
 
-			// 2. 수계흐름 화살표 마커: GIS 유선 도입으로 상시 비활성화(숨김)
-			if (s.type === "arrow") {
-				return false;
-			}
-
-			// 3. 관심지점(POI): 상시 비활성화(숨김), 측정소 선택 시 해당 측정소 관련 POI만 노출
+			// 2. 관심지점(POI): 상시 비활성화(숨김), 측정소 선택 시 해당 측정소 관련 POI만 노출
 			if (s.type === "poi") {
 				if (!selectedStation) return false;
 				if (s.id === selectedStation.id) return true;
@@ -271,9 +257,7 @@ export default function MapLibreView({
 				}
 				style={{ width: "100%", height: "100%" }}
 				onClick={handleMapClick}
-				cursor={
-					isAddingStation || isAddingArrow || isAddingPoi ? "crosshair" : "grab"
-				}
+				cursor={isAddingStation || isAddingPoi ? "crosshair" : "grab"}
 				maxZoom={22}
 				minZoom={6}
 				attributionControl={false}
@@ -584,7 +568,7 @@ export default function MapLibreView({
 								e.originalEvent.stopPropagation();
 								if (isEditMode) {
 									setEditingStation?.(station);
-								} else if (station.type !== "arrow") {
+								} else {
 									setSelectedStation(station);
 								}
 							}}
@@ -614,12 +598,6 @@ export default function MapLibreView({
 									station={station}
 									color={color}
 									isSelected={isSelected}
-								/>
-							)}
-							{station.type === "arrow" && (
-								<ArrowMarker
-									station={station}
-									showLabel={filters.arrow === "name"}
 								/>
 							)}
 						</Marker>
