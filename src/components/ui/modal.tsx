@@ -47,11 +47,11 @@ export function Modal({
 }: ModalProps) {
 	const dragControls = useDragControls();
 
-	// size prop 기반 모바일 시트 높이 산출 (half: 45dvh 검색창 연동 절반 크기, standard: 최대 80dvh 표준 크기)
+	// size prop 기반 모바일 시트 높이 산출 (half: 45svh 검색창 연동 절반 크기 + 키보드 활성화 시 상단 가용 영역 최대 확보, standard: 최대 80dvh 표준 크기)
 	const resolvedSheetClass =
 		sheetClassName ||
 		(size === "half"
-			? "h-[45dvh] max-h-[45dvh] sm:h-[75dvh] sm:max-h-[75dvh] rounded-3xl"
+			? "h-[45svh] max-h-[calc(100dvh-env(safe-area-inset-bottom)-82px)] sm:h-[75dvh] sm:max-h-[75dvh] rounded-3xl"
 			: "max-h-[80dvh] sm:max-h-[85vh] rounded-3xl");
 
 	useEffect(() => {

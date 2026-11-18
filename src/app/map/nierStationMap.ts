@@ -247,27 +247,11 @@ export interface NierRollingCachePayload {
 }
 
 let cachedRollingState: NierRollingCachePayload | null = null;
-let cachedRealtimeMap: Record<string, RealtimeWaterQuality> | null = null;
-let cachedHourKey = "";
-
-function getHourlySyncKey(): string {
-	const kstNow = new Date(Date.now() + 9 * 60 * 60 * 1000 - 12 * 60 * 1000);
-	const y = kstNow.getUTCFullYear();
-	const m = String(kstNow.getUTCMonth() + 1).padStart(2, "0");
-	const d = String(kstNow.getUTCDate()).padStart(2, "0");
-	const h = String(kstNow.getUTCHours()).padStart(2, "0");
-	return `${y}-${m}-${d}-${h}`;
-}
 
 async function loadRollingCacheFromStorage(): Promise<NierRollingCachePayload | null> {
 	const supabaseUrl =
 		process.env.NEXT_PUBLIC_SUPABASE_URL ||
 		"https://ymtjoyootbkszgmjywzb.supabase.co";
-
-	const currentHourKey = getHourlySyncKey();
-	if (cachedRollingState && cachedHourKey === currentHourKey) {
-		return cachedRollingState;
-	}
 
 	try {
 		const res = await fetch(
@@ -281,7 +265,6 @@ async function loadRollingCacheFromStorage(): Promise<NierRollingCachePayload | 
 		const parsed = (await res.json()) as NierRollingCachePayload;
 		if (parsed && parsed.stations && typeof parsed.stations === "object") {
 			cachedRollingState = parsed;
-			cachedHourKey = currentHourKey;
 			return parsed;
 		}
 		return cachedRollingState;
@@ -294,15 +277,6 @@ export async function getAllStationsRealtimeWaterQuality(): Promise<
 	Record<string, RealtimeWaterQuality>
 > {
 	try {
-		const currentHourKey = getHourlySyncKey();
-		if (
-			cachedRealtimeMap &&
-			cachedHourKey === currentHourKey &&
-			Object.keys(cachedRealtimeMap).length > 0
-		) {
-			return cachedRealtimeMap;
-		}
-
 		const storageCache = await loadRollingCacheFromStorage();
 		if (storageCache?.stations) {
 			const mapFromStorage: Record<string, RealtimeWaterQuality> = {};
@@ -316,16 +290,13 @@ export async function getAllStationsRealtimeWaterQuality(): Promise<
 				}
 			}
 
-			if (Object.keys(mapFromStorage).length > 0) {
-				cachedRealtimeMap = mapFromStorage;
-				return mapFromStorage;
-			}
+			return mapFromStorage;
 		}
 
-		return cachedRealtimeMap || {};
+		return {};
 	} catch (err) {
 		console.error("getAllStationsRealtimeWaterQuality error:", err);
-		return cachedRealtimeMap || {};
+		return {};
 	}
 }
 

@@ -12,6 +12,7 @@ import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Modal } from "@/components/ui/modal";
 import { matchChosung } from "@/utils/hangul";
+import { DocsPinGate } from "../components/DocsPinGate";
 import { VIDEO_CATEGORIES, VIDEO_DATA } from "../video/data";
 
 interface VideoModalProps {
@@ -32,13 +33,9 @@ export default function VideoModal({
 	const [isQROpen, setIsQROpen] = useState<boolean>(false);
 	const qrRef = useRef<HTMLDivElement>(null);
 
-	const origin =
-		typeof window !== "undefined" &&
-		window.location.hostname !== "localhost" &&
-		window.location.hostname !== "127.0.0.1"
-			? window.location.origin
-			: process.env.NEXT_PUBLIC_APP_URL || "https://wmshv2.vercel.app";
-	const qrUrl = `${origin}/docs?modal=video&quicklink=true`;
+	const qrUrl =
+		process.env.NEXT_PUBLIC_QR_GATE_URL ||
+		"https://ymtjoyootbkszgmjywzb.supabase.co/functions/v1/qr-gate";
 
 	const downloadQR = () => {
 		if (!qrRef.current) return;
@@ -160,138 +157,142 @@ export default function VideoModal({
 							: undefined
 				}
 			>
-				{selectedVideo ? (
-					/* 비디오 재생 뷰 */
-					<div className="space-y-3">
-						<div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-[#e2e8f0] dark:border-[#222228]">
-							{selectedVideo.streamUrl ? (
-								<video
-									src={selectedVideo.streamUrl}
-									controls
-									className="w-full h-full"
-								>
-									<track kind="captions" />
-								</video>
-							) : (
-								<div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
-									<Film
-										size={36}
-										className="text-[#64748b] dark:text-[#a1a1aa] mb-2"
-									/>
-									<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] mb-4">
-										영상 스트리밍 준비 중입니다.
+				<DocsPinGate title="동영상 매뉴얼 보안 코드 입력">
+					{selectedVideo ? (
+						/* 비디오 재생 뷰 */
+						<div className="space-y-3">
+							<div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-[#e2e8f0] dark:border-[#222228]">
+								{selectedVideo.streamUrl ? (
+									<video
+										src={selectedVideo.streamUrl}
+										controls
+										className="w-full h-full"
+									>
+										<track kind="captions" />
+									</video>
+								) : (
+									<div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
+										<Film
+											size={36}
+											className="text-[#64748b] dark:text-[#a1a1aa] mb-2"
+										/>
+										<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] mb-4">
+											영상 스트리밍 준비 중입니다.
+										</p>
+									</div>
+								)}
+							</div>
+
+							{selectedVideo.desc && (
+								<div className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
+									<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] leading-relaxed break-keep">
+										{selectedVideo.desc}
 									</p>
 								</div>
 							)}
 						</div>
-
-						{selectedVideo.desc && (
-							<div className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
-								<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] leading-relaxed break-keep">
-									{selectedVideo.desc}
-								</p>
-							</div>
-						)}
-					</div>
-				) : isSearching ? (
-					/* 검색 중일 때: 전체 영상 검색 결과 리스트 */
-					<div>
-						{filteredVideos.length === 0 ? (
-							<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#a1a1aa]">
-								일치하는 동영상이 없습니다.
-							</div>
-						) : (
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-								{filteredVideos.map((video) => (
-									<button
-										key={video.id}
-										type="button"
-										onClick={() => setSelectedVideo(video)}
-										className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
-									>
-										<div className="flex items-center justify-between gap-2">
-											<span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 truncate">
-												{video.category}
-											</span>
-											<PlayCircle
-												size={15}
-												className="text-blue-600 dark:text-blue-400 shrink-0 group-hover:scale-110 transition-transform"
-											/>
-										</div>
-										<h4 className="text-xs font-bold text-[#0f172a] dark:text-white line-clamp-1 leading-snug">
+					) : isSearching ? (
+						/* 검색 중일 때: 전체 영상 검색 결과 리스트 */
+						<div>
+							{filteredVideos.length === 0 ? (
+								<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#a1a1aa]">
+									일치하는 동영상이 없습니다.
+								</div>
+							) : (
+								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+									{filteredVideos.map((video) => (
+										<button
+											key={video.id}
+											type="button"
+											onClick={() => setSelectedVideo(video)}
+											className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
+										>
+											<div className="flex items-center justify-between gap-2">
+												<span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 truncate">
+													{video.category}
+												</span>
+												<PlayCircle
+													size={15}
+													className="text-blue-600 dark:text-blue-400 shrink-0 group-hover:scale-110 transition-transform"
+												/>
+											</div>
+											<h4 className="text-xs font-bold text-[#0f172a] dark:text-white line-clamp-1 leading-snug">
+												{video.title}
+											</h4>
+											{video.desc && (
+												<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] line-clamp-1">
+													{video.desc}
+												</p>
+											)}
+										</button>
+									))}
+								</div>
+							)}
+						</div>
+					) : selectedCategory ? (
+						/* 특정 장비 폴더 내부: 영상 목록 */
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+							{filteredVideos.map((video) => (
+								<button
+									key={video.id}
+									type="button"
+									onClick={() => setSelectedVideo(video)}
+									className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
+								>
+									<div className="flex items-center justify-between gap-2">
+										<h4 className="text-xs font-bold text-[#0f172a] dark:text-white truncate leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
 											{video.title}
 										</h4>
-										{video.desc && (
-											<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] line-clamp-1">
-												{video.desc}
-											</p>
-										)}
-									</button>
-								))}
-							</div>
-						)}
-					</div>
-				) : selectedCategory ? (
-					/* 특정 장비 폴더 내부: 영상 목록 */
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-						{filteredVideos.map((video) => (
-							<button
-								key={video.id}
-								type="button"
-								onClick={() => setSelectedVideo(video)}
-								className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
-							>
-								<div className="flex items-center justify-between gap-2">
-									<h4 className="text-xs font-bold text-[#0f172a] dark:text-white truncate leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-										{video.title}
-									</h4>
-									<PlayCircle
-										size={15}
-										className="text-blue-600 dark:text-blue-400 shrink-0 group-hover:scale-110 transition-transform"
-									/>
-								</div>
-								{video.desc && (
-									<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] line-clamp-1">
-										{video.desc}
-									</p>
-								)}
-							</button>
-						))}
-					</div>
-				) : (
-					/* 기본 뷰: 9개 장비 폴더 그리드 뷰 */
-					<div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-						{VIDEO_CATEGORIES.map((cat) => {
-							const count = VIDEO_DATA.filter((v) => v.category === cat).length;
-							const match = cat.match(/^([^(]+)(?:\(([^)]+)\))?$/);
-							const mainTitle = match?.[1]?.trim() || cat;
-							const subTitle = match?.[2]?.trim();
-
-							return (
-								<button
-									key={cat}
-									type="button"
-									onClick={() => setSelectedCategory(cat)}
-									className="group px-3 py-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.98] flex items-center justify-between gap-2 shadow-xs hover:shadow-md cursor-pointer"
-								>
-									<div className="flex items-baseline gap-1.5 min-w-0">
-										<span className="font-sans text-xs font-extrabold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
-											{mainTitle}
-										</span>
-										{subTitle && (
-											<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] truncate">
-												{subTitle}
-											</span>
-										)}
+										<PlayCircle
+											size={15}
+											className="text-blue-600 dark:text-blue-400 shrink-0 group-hover:scale-110 transition-transform"
+										/>
 									</div>
-									<span className="text-[10px] font-semibold tabular-nums px-1.5 py-0.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa] shrink-0">
-										{count}편
-									</span>
+									{video.desc && (
+										<p className="text-[11px] text-[#64748b] dark:text-[#a1a1aa] line-clamp-1">
+											{video.desc}
+										</p>
+									)}
 								</button>
-							);
-						})}
-					</div>
-				)}
+							))}
+						</div>
+					) : (
+						/* 기본 뷰: 9개 장비 폴더 그리드 뷰 */
+						<div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+							{VIDEO_CATEGORIES.map((cat) => {
+								const count = VIDEO_DATA.filter(
+									(v) => v.category === cat,
+								).length;
+								const match = cat.match(/^([^(]+)(?:\(([^)]+)\))?$/);
+								const mainTitle = match?.[1]?.trim() || cat;
+								const subTitle = match?.[2]?.trim();
+
+								return (
+									<button
+										key={cat}
+										type="button"
+										onClick={() => setSelectedCategory(cat)}
+										className="group px-3 py-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.98] flex items-center justify-between gap-2 shadow-xs hover:shadow-md cursor-pointer"
+									>
+										<div className="flex items-baseline gap-1.5 min-w-0">
+											<span className="font-sans text-xs font-extrabold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+												{mainTitle}
+											</span>
+											{subTitle && (
+												<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] truncate">
+													{subTitle}
+												</span>
+											)}
+										</div>
+										<span className="text-[10px] font-semibold tabular-nums px-1.5 py-0.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa] shrink-0">
+											{count}편
+										</span>
+									</button>
+								);
+							})}
+						</div>
+					)}
+				</DocsPinGate>
 			</Modal>
 
 			{/* 동영상 매뉴얼 QR 코드 모달 (소모품 QR 모달과 동일한 규격) */}

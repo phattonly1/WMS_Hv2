@@ -106,15 +106,19 @@ export default function MapPage() {
 		setIsLoadingChart(true);
 		try {
 			const res = await getRealtimeWaterQuality(st.name);
+			const freshLatest = res.latest;
 			setChartData({
-				// 지도 마커/바텀시트와 이상치 판정이 100% 일치하도록 캐시된 latest(및 prevAvg)를 우선 유지하고 누락 시 서버값으로 보완
-				latest: cachedLatest
-					? {
-							...res.latest,
-							...cachedLatest,
-							prevAvg: cachedLatest.prevAvg ?? res.latest?.prevAvg,
-						}
-					: res.latest,
+				// 서버(Storage)에 더 최신 시간대 데이터가 있으면 서버값을 우선 사용하고, 동일 시간대면 캐시된 prevAvg를 보완
+				latest:
+					freshLatest &&
+					(!cachedLatest ||
+						freshLatest.measureDt >= cachedLatest.measureDt)
+						? {
+								...cachedLatest,
+								...freshLatest,
+								prevAvg: freshLatest.prevAvg ?? cachedLatest?.prevAvg,
+							}
+						: cachedLatest,
 				history: res.history,
 			});
 		} catch {

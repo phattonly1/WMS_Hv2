@@ -39,7 +39,7 @@ export async function GET() {
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltdGpveW9vdGJrc3pnbWp5d3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2OTg5MjcsImV4cCI6MjA4MzI3NDkyN30.c94f8z0m9k2-3wU2hW3k0_N_1mN7k7pW8vY5wJ8e_6I";
 
 		const pad = (n: number) => String(n).padStart(2, "0");
-		const kst = new Date(Date.now() + 9 * 3600 * 1000 - 12 * 60 * 1000);
+		const kst = new Date(Date.now() + 9 * 3600 * 1000 - 15 * 60 * 1000);
 		const hourKey = `${kst.getUTCFullYear()}-${pad(kst.getUTCMonth() + 1)}-${pad(kst.getUTCDate())}-${pad(kst.getUTCHours())}`;
 
 		const kstYest = new Date(Date.now() + 9 * 3600 * 1000 - 24 * 3600 * 1000);
@@ -112,13 +112,26 @@ export async function GET() {
 			const code = typeof item.WQAMN_CODE === "string" ? item.WQAMN_CODE : "";
 			if (!codes.has(code)) continue;
 
+			// MSR_DATE_FMT("2026-11-18 23:00") 또는 MESURE_DT+1h 기준으로 발표 시각("YYYY-MM-DD HHh") 산출
+			const fmtRaw =
+				typeof item.MSR_DATE_FMT === "string" ? item.MSR_DATE_FMT.trim() : "";
 			const raw = String(item.MESURE_DT || "");
-			const measureDt =
-				raw.length >= 10
-					? `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)} ${raw.slice(8, 10)}h`
-					: typeof item.MSR_DATE_FMT === "string"
-						? item.MSR_DATE_FMT
-						: "";
+			let measureDt = "";
+			if (/^\d{4}-\d{2}-\d{2}\s+\d{2}/.test(fmtRaw)) {
+				measureDt = `${fmtRaw.slice(0, 13)}h`;
+			} else if (raw.length >= 10) {
+				const dt = new Date(
+					Date.UTC(
+						Number(raw.slice(0, 4)),
+						Number(raw.slice(4, 6)) - 1,
+						Number(raw.slice(6, 8)),
+						Number(raw.slice(8, 10)) + 1,
+					),
+				);
+				measureDt = `${dt.getUTCFullYear()}-${pad(dt.getUTCMonth() + 1)}-${pad(dt.getUTCDate())} ${pad(dt.getUTCHours())}h`;
+			} else {
+				measureDt = fmtRaw;
+			}
 
 			const rec: RealtimeWaterQuality = {
 				stationCode: code,

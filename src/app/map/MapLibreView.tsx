@@ -81,13 +81,7 @@ export default function MapLibreView({
 	// 국가 표준 GIS 하천망 GeoJSON 데이터 상태
 	const [gisRiversData, setGisRiversData] = useState<any>(null);
 
-	// NIER 데이터 취합 주기(매시 10~15분 랜덤 수집)에 맞춘 시간대 키 생성 헬퍼 (현재 시각 - 12분)
-	const getRealtimeHourKey = useCallback(() => {
-		const shifted = new Date(Date.now() - 12 * 60 * 1000);
-		return `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
-	}, []);
-
-	// 23개 측정소 실시간 수질 데이터 상태 (초기값으로 localStorage 즉시 조회하여 깜빡임/네트워크 0회 달성)
+	// 23개 측정소 실시간 수질 데이터 상태 (초기값으로 localStorage 즉시 표시 후 백그라운드에서 최신 JSON 동기화)
 	const [waterQualityMap, setWaterQualityMap] = useState<
 		Record<string, RealtimeWaterQuality>
 	>(() => {
@@ -96,18 +90,7 @@ export default function MapLibreView({
 			const cachedRaw = window.localStorage.getItem("wms_nier_realtime_wq");
 			if (!cachedRaw) return {};
 			const parsed = JSON.parse(cachedRaw);
-			const shifted = new Date(Date.now() - 12 * 60 * 1000);
-			const currentKey = `${shifted.getFullYear()}-${shifted.getMonth() + 1}-${shifted.getDate()}-${shifted.getHours()}`;
-			const firstEntry = parsed?.data
-				? (Object.values(parsed.data)[0] as RealtimeWaterQuality | undefined)
-				: undefined;
-			if (
-				parsed &&
-				parsed.hourKey === currentKey &&
-				parsed.data &&
-				Object.keys(parsed.data).length > 0 &&
-				firstEntry?.prevAvg !== undefined
-			) {
+			if (parsed?.data && typeof parsed.data === "object") {
 				return parsed.data;
 			}
 		} catch {
@@ -116,60 +99,29 @@ export default function MapLibreView({
 		return {};
 	});
 
-	// 실시간 수질 데이터 로드 및 갱신 함수 (초기 로드 + 매시 10~15분 사이 랜덤 지연 후 백그라운드 갱신)
-	const refreshRealtimeWaterQuality = useCallback(
-		(force = false) => {
-			const currentKey = getRealtimeHourKey();
-			if (!force) {
-				try {
-					const cachedRaw = window.localStorage.getItem("wms_nier_realtime_wq");
-					if (cachedRaw) {
-						const parsed = JSON.parse(cachedRaw);
-						const firstEntry = parsed?.data
-							? (Object.values(parsed.data)[0] as
-									| RealtimeWaterQuality
-									| undefined)
-							: undefined;
-						if (
-							parsed?.hourKey === currentKey &&
-							parsed?.data &&
-							Object.keys(parsed.data).length > 0 &&
-							firstEntry?.prevAvg !== undefined
-						) {
-							setWaterQualityMap(parsed.data);
-							return;
-						}
+	// 실시간 수질 데이터 로드 및 갱신 함수 (시간 계산 없이 항상 Storage JSON 원본과 일치)
+	const refreshRealtimeWaterQuality = useCallback(() => {
+		getAllStationsRealtimeWaterQuality()
+			.then((data) => {
+				if (data && Object.keys(data).length > 0) {
+					setWaterQualityMap(data);
+					try {
+						window.localStorage.setItem(
+							"wms_nier_realtime_wq",
+							JSON.stringify({
+								data,
+								savedAt: Date.now(),
+							}),
+						);
+					} catch {
+						// ignore quota error
 					}
-				} catch {
-					// ignore storage error
 				}
-			}
-
-			// 캐시가 없거나 시간대(매시 15분 경과)가 바뀐 경우 서버 호출
-			getAllStationsRealtimeWaterQuality()
-				.then((data) => {
-					if (data && Object.keys(data).length > 0) {
-						setWaterQualityMap(data);
-						try {
-							window.localStorage.setItem(
-								"wms_nier_realtime_wq",
-								JSON.stringify({
-									hourKey: currentKey,
-									data,
-									savedAt: Date.now(),
-								}),
-							);
-						} catch {
-							// ignore quota error
-						}
-					}
-				})
-				.catch((err) =>
-					console.error("Failed to load realtime water quality:", err),
-				);
-		},
-		[getRealtimeHourKey],
-	);
+			})
+			.catch((err) =>
+				console.error("Failed to load realtime water quality:", err),
+			);
+	}, []);
 
 	useEffect(() => {
 		fetch("/data/han_rivers.geojson")
@@ -180,10 +132,10 @@ export default function MapLibreView({
 		// 1. 초기 로드
 		refreshRealtimeWaterQuality();
 
-		// 2. 지도 화면을 계속 켜두었을 때 1분마다 시간대 변경 여부 확인 후 갱신
+		// 2. 지도 화면을 계속 켜두었을 때 3분마다 최신 JSON 동기화
 		const intervalId = window.setInterval(() => {
 			refreshRealtimeWaterQuality();
-		}, 60 * 1000);
+		}, 3 * 60 * 1000);
 
 		return () => {
 			window.clearInterval(intervalId);
