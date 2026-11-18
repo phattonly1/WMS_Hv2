@@ -180,28 +180,13 @@ export default function MapLibreView({
 		// 1. 초기 로드
 		refreshRealtimeWaterQuality();
 
-		// 2. 지도 화면을 계속 켜두었을 때 매시 10~15분 사이 랜덤 시각에 자동 무중단 갱신
-		let jitterTimeoutId: number | null = null;
+		// 2. 지도 화면을 계속 켜두었을 때 1분마다 시간대 변경 여부 확인 후 갱신
 		const intervalId = window.setInterval(() => {
-			const min = new Date().getMinutes();
-			if (min >= 10 && min <= 15) {
-				if (jitterTimeoutId === null) {
-					const randomDelay = Math.floor(Math.random() * 45 * 1000);
-					jitterTimeoutId = window.setTimeout(() => {
-						refreshRealtimeWaterQuality();
-						jitterTimeoutId = null;
-					}, randomDelay);
-				}
-			} else {
-				refreshRealtimeWaterQuality();
-			}
+			refreshRealtimeWaterQuality();
 		}, 60 * 1000);
 
 		return () => {
 			window.clearInterval(intervalId);
-			if (jitterTimeoutId !== null) {
-				window.clearTimeout(jitterTimeoutId);
-			}
 		};
 	}, [refreshRealtimeWaterQuality]);
 	// 수계 경로(Polyline) GeoJSON FeatureCollection 변환

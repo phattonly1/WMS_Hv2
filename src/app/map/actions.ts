@@ -167,25 +167,11 @@ import {
 	getNierStationCode,
 	type RealtimeWaterQuality,
 	type WaterQualityAverageMap,
-	type WaterQualityMetricKey,
 } from "./nierStationMap";
 
 const CACHE_BUCKET = "cache";
 const CACHE_OBJECT_PATH = "nier_48h_cache.json";
 const MAX_HISTORY_HOURS = 48;
-
-const METRIC_KEYS: WaterQualityMetricKey[] = [
-	"wqi",
-	"wtrtp",
-	"ph",
-	"doc",
-	"ec",
-	"tur",
-	"toc",
-	"tn",
-	"tp",
-	"chla",
-];
 
 // Supabase Storage 1-파일 누적 캐시 페이로드 구조
 export interface NierRollingCachePayload {
@@ -212,42 +198,7 @@ function getHourlySyncKey(): string {
 	return `${y}-${m}-${d}-${h}`;
 }
 
-function getYesterdayHyphen(): string {
-	const kstYest = new Date(Date.now() + 9 * 60 * 60 * 1000 - 24 * 60 * 60 * 1000);
-	const pad = (n: number) => String(n).padStart(2, "0");
-	return `${kstYest.getUTCFullYear()}-${pad(kstYest.getUTCMonth() + 1)}-${pad(kstYest.getUTCDate())}`;
-}
-
-// 시계열 배열로부터 전일 평균 산출 (prevAvgByCode 누락 시 폴백용)
-function computePrevAvgFromHistory(
-	records: RealtimeWaterQuality[],
-): WaterQualityAverageMap {
-	if (!records || records.length === 0) return {};
-	const yesterdayHyphen = getYesterdayHyphen();
-
-	let targetRecords = records.filter((r) =>
-		r.measureDt?.startsWith(yesterdayHyphen),
-	);
-	if (targetRecords.length === 0) {
-		targetRecords = records.length > 1 ? records.slice(0, -1) : records;
-	}
-
-	const avgMap: WaterQualityAverageMap = {};
-	for (const key of METRIC_KEYS) {
-		const validNums = targetRecords
-			.map((r) => r[key])
-			.filter((v): v is number => typeof v === "number" && !Number.isNaN(v));
-		avgMap[key] =
-			validNums.length > 0
-				? Number(
-						(validNums.reduce((a, b) => a + b, 0) / validNums.length).toFixed(4),
-					)
-				: null;
-	}
-	return avgMap;
-}
-
-// Supabase Storage에서 GitHub Actions가 갱신한 48시간 누적 JSON 읽기
+// Supabase Storage에서 48시간 누적 JSON 읽기
 async function loadRollingCacheFromStorage(): Promise<NierRollingCachePayload | null> {
 	const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 	if (!supabaseUrl) return null;
@@ -297,12 +248,9 @@ export async function getAllStationsRealtimeWaterQuality(): Promise<
 			for (const [code, historyArr] of Object.entries(storageCache.stations)) {
 				if (historyArr && historyArr.length > 0) {
 					const latestItem = historyArr[historyArr.length - 1]!;
-					const prevAvg =
-						storageCache.prevAvgByCode?.[code] ??
-						computePrevAvgFromHistory(historyArr);
 					mapFromStorage[code] = {
 						...latestItem,
-						prevAvg,
+						prevAvg: storageCache.prevAvgByCode?.[code],
 					};
 				}
 			}
@@ -344,9 +292,7 @@ export async function getRealtimeWaterQuality(
 			return { latest: null, history: [] };
 		}
 
-		const prevAvg =
-			rollingState?.prevAvgByCode?.[stationCode] ??
-			computePrevAvgFromHistory(accumulated);
+		const prevAvg = rollingState?.prevAvgByCode?.[stationCode];
 		const trimmedHistory = accumulated.slice(-MAX_HISTORY_HOURS);
 		const latestRaw = trimmedHistory[trimmedHistory.length - 1] ?? null;
 

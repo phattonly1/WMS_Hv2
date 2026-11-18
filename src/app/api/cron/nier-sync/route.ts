@@ -26,19 +26,10 @@ const METRIC_KEYS: WaterQualityMetricKey[] = [
 	"chla",
 ];
 
-// 매시 10분~15분 사이에 Supabase pg_cron(또는 수동 호출)이 트리거하면
+// 매시 10분~14분 사이에 Supabase pg_cron이 트리거하면
 // NIER 1회 스냅샷을 수집해 Supabase Storage (cache/nier_48h_cache.json)에 48시간 누적 저장
-export async function GET(request: Request) {
+export async function GET() {
 	try {
-		const { searchParams } = new URL(request.url);
-		const useJitter = searchParams.get("jitter") === "true";
-
-		let delayedMs = 0;
-		if (useJitter) {
-			delayedMs = Math.floor(Math.random() * 20000); // 0~20초 랜덤 지연
-			await new Promise((resolve) => setTimeout(resolve, delayedMs));
-		}
-
 		const supabaseUrl =
 			process.env.NEXT_PUBLIC_SUPABASE_URL ||
 			"https://ymtjoyootbkszgmjywzb.supabase.co";
@@ -209,7 +200,6 @@ export async function GET(request: Request) {
 		return NextResponse.json({
 			ok: up.ok,
 			status: up.status,
-			delayedMs,
 			lastHourKey: payload.lastHourKey,
 			updatedAt: payload.updatedAt,
 			stationCount: Object.keys(stations).length,
