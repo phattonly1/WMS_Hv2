@@ -15,7 +15,7 @@ import {
 	Loader2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useState, useTransition } from "react";
+import React, { useMemo, useState, useTransition } from "react";
 import { Modal } from "@/components/ui/modal";
 import {
 	getManualSignedUrl,
