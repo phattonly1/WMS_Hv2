@@ -24,9 +24,9 @@ jobs:
         run: |
           node -e '
           const SUPABASE_URL = process.env.SUPABASE_URL || "https://ymtjoyootbkszgmjywzb.supabase.co";
-          const SUPABASE_KEY = process.env.SUPABASE_KEY;
-          const CACHE_BUCKET = "items";
-          const CACHE_OBJECT_PATH = "_cache/nier_48h_cache.json";
+          const SUPABASE_KEY = process.env.SUPABASE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltdGpveW9vdGJrc3pnbWp5d3piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2OTg5MjcsImV4cCI6MjA4MzI3NDkyN30.c94f8z0m9k2-3wU2hW3k0_N_1mN7k7pW8vY5wJ8e_6I";
+          const CACHE_BUCKET = "cache";
+          const CACHE_OBJECT_PATH = "nier_48h_cache.json";
           const CODES = new Set(["S01001","S01011","S01003","S01004","S01020","S01018","S01021","S01016","S01022","S01010","S01013","S01025","S01005","S01006","S01012","S01015","S01023","S01014","S01007","S01017","S01009","S01019","S01002"]);
           const METRICS = ["wqi","wtrtp","ph","doc","ec","tur","toc","tn","tp","chla"];
 
@@ -36,6 +36,9 @@ jobs:
             const hourKey = `${kst.getUTCFullYear()}-${pad(kst.getUTCMonth()+1)}-${pad(kst.getUTCDate())}-${pad(kst.getUTCHours())}`;
             const kstYest = new Date(Date.now() + 9*3600*1000 - 24*3600*1000);
             const yestPrefix = `${kstYest.getUTCFullYear()}-${pad(kstYest.getUTCMonth()+1)}-${pad(kstYest.getUTCDate())}`;
+            // 48시간 전 기준 문자열 ("YYYY-MM-DD HHh") 산출 -> 48시간보다 오래된 과거 조각 데이터 자동 정리
+            const kstCutoff = new Date(Date.now() + 9*3600*1000 - 48*3600*1000);
+            const cutoffMeasureDt = `${kstCutoff.getUTCFullYear()}-${pad(kstCutoff.getUTCMonth()+1)}-${pad(kstCutoff.getUTCDate())} ${pad(kstCutoff.getUTCHours())}h`;
 
             let existing = { stations: {}, prevAvgByCode: {} };
             try {
@@ -86,13 +89,15 @@ jobs:
               };
 
               const arr = Array.isArray(stations[code]) ? [...stations[code]] : [];
-              if (arr.length > 0 && arr[arr.length - 1].measureDt === rec.measureDt) {
-                arr[arr.length - 1] = rec;
+              const existingIdx = arr.findIndex((r) => r.measureDt === rec.measureDt);
+              if (existingIdx >= 0) {
+                arr[existingIdx] = rec;
               } else {
                 arr.push(rec);
               }
               arr.sort((a, b) => a.measureDt.localeCompare(b.measureDt));
-              const trimmed = arr.slice(-48);
+              const within48h = arr.filter((r) => !r.measureDt || r.measureDt >= cutoffMeasureDt);
+              const trimmed = (within48h.length > 0 ? within48h : arr).slice(-48);
               stations[code] = trimmed;
 
               let targets = trimmed.filter(r => r.measureDt?.startsWith(yestPrefix));
@@ -112,18 +117,20 @@ jobs:
               prevAvgByCode
             };
 
-            if (SUPABASE_KEY) {
-              const up = await fetch(`${SUPABASE_URL}/storage/v1/object/${CACHE_BUCKET}/${CACHE_OBJECT_PATH}`, {
-                method: "POST",
-                headers: {
-                  apikey: SUPABASE_KEY,
-                  Authorization: `Bearer ${SUPABASE_KEY}`,
-                  "Content-Type": "application/json",
-                  "x-upsert": "true"
-                },
-                body: JSON.stringify(payload)
-              });
-              console.log("Uploaded 48h rolling cache:", up.status);
+            const up = await fetch(`${SUPABASE_URL}/storage/v1/object/${CACHE_BUCKET}/${CACHE_OBJECT_PATH}`, {
+              method: "POST",
+              headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: `Bearer ${SUPABASE_KEY}`,
+                "Content-Type": "application/json",
+                "x-upsert": "true"
+              },
+              body: JSON.stringify(payload)
+            });
+            console.log("Uploaded 48h rolling cache:", up.status);
+            if (!up.ok) {
+              console.error("Upload failed:", await up.text());
+              process.exit(1);
             }
           }
           run().catch(e => { console.error(e); process.exit(1); });

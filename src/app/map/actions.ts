@@ -170,8 +170,8 @@ import {
 	type WaterQualityMetricKey,
 } from "./nierStationMap";
 
-const CACHE_BUCKET = "items";
-const CACHE_OBJECT_PATH = "_cache/nier_48h_cache.json";
+const CACHE_BUCKET = "cache";
+const CACHE_OBJECT_PATH = "nier_48h_cache.json";
 const MAX_HISTORY_HOURS = 48;
 
 const METRIC_KEYS: WaterQualityMetricKey[] = [
