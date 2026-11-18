@@ -35,7 +35,7 @@ export default function VideoModal({
 
 	const qrUrl =
 		process.env.NEXT_PUBLIC_QR_GATE_URL ||
-		"https://ymtjoyootbkszgmjywzb.supabase.co/functions/v1/qr-gate";
+		"https://wms-qr.phattonly1.workers.dev";
 
 	const downloadQR = () => {
 		if (!qrRef.current) return;
