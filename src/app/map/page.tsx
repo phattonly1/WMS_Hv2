@@ -26,12 +26,12 @@ import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useStations } from "@/utils/supabase/hooks";
-import { getRealtimeWaterQuality } from "./actions";
 import { StationBottomSheet } from "./components/StationBottomSheet";
 import { StationListModal } from "./components/StationListModal";
 import { WaterQualityChartModal } from "./components/WaterQualityChartModal";
 import {
 	getNierStationCode,
+	getRealtimeWaterQuality,
 	type RealtimeWaterQuality,
 	type WaterQualityMetricKey,
 } from "./nierStationMap";

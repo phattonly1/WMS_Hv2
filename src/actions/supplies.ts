@@ -46,6 +46,25 @@ export async function addLog(
 
 	const supabase = await createClient();
 
+	// 1순위: DB 단일 트랜잭션 RPC (재고 차감/증가 + 로그 기록을 1회 호출로 원자적 처리)
+	const { error: rpcErr } = await supabase.rpc("add_supply_log_atomic", {
+		p_type: type,
+		p_supply_id: supplyId,
+		p_supply_name: supplyName,
+		p_qty: qty,
+		p_user_name: user,
+		p_note: note,
+	});
+
+	if (!rpcErr) {
+		revalidatePath("/items");
+		return { success: true };
+	}
+	if (rpcErr.message?.includes("재고가 부족") || rpcErr.message?.includes("물품을 찾을 수")) {
+		throw new Error(rpcErr.message);
+	}
+
+	// 2순위 폴백 (SQL 실행 전 호환용)
 	let remainingQty: number | null = null;
 	if (type === "OUT" || type === "RETURN" || type === "REQ") {
 		const { data: item, error: itemError } = await supabase

@@ -1,6 +1,8 @@
 "use client";
 
-import useSWR from "swr";
+import { useEffect } from "react";
+import useSWR, { mutate as globalMutate } from "swr";
+import { createClient } from "./client";
 import {
 	fetchLogs,
 	fetchReagentSheets,
@@ -44,6 +46,34 @@ export function useSupplies() {
 		dedupingInterval: 60000,
 	});
 
+	useEffect(() => {
+		const supabase = createClient();
+		const channel = supabase
+			.channel("realtime-supplies")
+			.on(
+				"postgres_changes",
+				{ event: "*", schema: "public", table: "supplies" },
+				() => {
+					void refresh();
+				},
+			)
+			.on(
+				"postgres_changes",
+				{ event: "*", schema: "public", table: "supply_logs" },
+				() => {
+					void refresh();
+					void globalMutate(["logs", "REQ"]);
+					void globalMutate(["logs", "OUT"]);
+					void globalMutate(["logs", "OUT_RETURN"]);
+				},
+			)
+			.subscribe();
+
+		return () => {
+			void supabase.removeChannel(channel);
+		};
+	}, [refresh]);
+
 	return {
 		supplies: data ?? EMPTY_ARRAY,
 		isLoading,
@@ -81,6 +111,24 @@ export function useReagentSheets() {
 		...defaultOptions,
 		dedupingInterval: 30000,
 	});
+
+	useEffect(() => {
+		const supabase = createClient();
+		const channel = supabase
+			.channel("realtime-reagent-sheets")
+			.on(
+				"postgres_changes",
+				{ event: "*", schema: "public", table: "reagent_order_sheets" },
+				() => {
+					void refresh();
+				},
+			)
+			.subscribe();
+
+		return () => {
+			void supabase.removeChannel(channel);
+		};
+	}, [refresh]);
 
 	return {
 		sheets: data ?? EMPTY_ARRAY,

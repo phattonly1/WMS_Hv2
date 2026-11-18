@@ -283,6 +283,20 @@ export async function updateReagentCell(
 	const supabase = await createClient();
 	const trimmed = value.trim();
 
+	// 1순위: DB 원자적 셀 업데이트 RPC (동시 입력 덮어쓰기 방지 & 1회 왕복)
+	const { error: rpcErr } = await supabase.rpc("update_reagent_cell_atomic", {
+		p_sheet_id: sheetId,
+		p_row_id: rowId,
+		p_person: person,
+		p_value: trimmed,
+	});
+
+	if (!rpcErr) {
+		revalidatePath("/reagents");
+		return { success: true };
+	}
+
+	// 2순위 폴백 (SQL 실행 전 호환용)
 	const { data: existing, error: fetchErr } = await supabase
 		.from(DEDICATED_TABLE)
 		.select("id, cells")

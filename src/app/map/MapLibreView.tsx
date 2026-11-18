@@ -18,7 +18,6 @@ const MARKER_HOVER_STYLE = `
   }
 `;
 
-import { getAllStationsRealtimeWaterQuality } from "./actions";
 import {
 	ArrowMarker,
 	PoiMarker,
@@ -27,6 +26,7 @@ import {
 } from "./components/VectorMarkers";
 import { MAP_STYLES } from "./mapStyles";
 import {
+	getAllStationsRealtimeWaterQuality,
 	getNierStationCode,
 	type RealtimeWaterQuality,
 } from "./nierStationMap";

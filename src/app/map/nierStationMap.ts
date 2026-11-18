@@ -231,3 +231,145 @@ export interface RealtimeWaterQuality {
 	chla?: number | null; // 클로로필-a (Chl-a, µg/L)
 	prevAvg?: WaterQualityAverageMap; // 전일(또는 누적 24h) 평균값
 }
+
+// ============================================================
+// Supabase Storage (cache/nier_48h_cache.json) 직접 조회 (Vercel 서버 경유 없이 즉시 로드)
+// ============================================================
+const CACHE_BUCKET = "cache";
+const CACHE_OBJECT_PATH = "nier_48h_cache.json";
+const MAX_HISTORY_HOURS = 48;
+
+export interface NierRollingCachePayload {
+	lastHourKey: string;
+	updatedAt: string;
+	stations: Record<string, RealtimeWaterQuality[]>;
+	prevAvgByCode: Record<string, WaterQualityAverageMap>;
+}
+
+let cachedRollingState: NierRollingCachePayload | null = null;
+let cachedRealtimeMap: Record<string, RealtimeWaterQuality> | null = null;
+let cachedHourKey = "";
+
+function getHourlySyncKey(): string {
+	const kstNow = new Date(Date.now() + 9 * 60 * 60 * 1000 - 12 * 60 * 1000);
+	const y = kstNow.getUTCFullYear();
+	const m = String(kstNow.getUTCMonth() + 1).padStart(2, "0");
+	const d = String(kstNow.getUTCDate()).padStart(2, "0");
+	const h = String(kstNow.getUTCHours()).padStart(2, "0");
+	return `${y}-${m}-${d}-${h}`;
+}
+
+async function loadRollingCacheFromStorage(): Promise<NierRollingCachePayload | null> {
+	const supabaseUrl =
+		process.env.NEXT_PUBLIC_SUPABASE_URL ||
+		"https://ymtjoyootbkszgmjywzb.supabase.co";
+
+	const currentHourKey = getHourlySyncKey();
+	if (cachedRollingState && cachedHourKey === currentHourKey) {
+		return cachedRollingState;
+	}
+
+	try {
+		const res = await fetch(
+			`${supabaseUrl}/storage/v1/object/public/${CACHE_BUCKET}/${CACHE_OBJECT_PATH}?t=${Date.now()}`,
+			{
+				method: "GET",
+				cache: "no-store",
+			},
+		);
+		if (!res.ok) return cachedRollingState;
+		const parsed = (await res.json()) as NierRollingCachePayload;
+		if (parsed && parsed.stations && typeof parsed.stations === "object") {
+			cachedRollingState = parsed;
+			cachedHourKey = currentHourKey;
+			return parsed;
+		}
+		return cachedRollingState;
+	} catch {
+		return cachedRollingState;
+	}
+}
+
+export async function getAllStationsRealtimeWaterQuality(): Promise<
+	Record<string, RealtimeWaterQuality>
+> {
+	try {
+		const currentHourKey = getHourlySyncKey();
+		if (
+			cachedRealtimeMap &&
+			cachedHourKey === currentHourKey &&
+			Object.keys(cachedRealtimeMap).length > 0
+		) {
+			return cachedRealtimeMap;
+		}
+
+		const storageCache = await loadRollingCacheFromStorage();
+		if (storageCache?.stations) {
+			const mapFromStorage: Record<string, RealtimeWaterQuality> = {};
+			for (const [code, historyArr] of Object.entries(storageCache.stations)) {
+				if (historyArr && historyArr.length > 0) {
+					const latestItem = historyArr[historyArr.length - 1]!;
+					mapFromStorage[code] = {
+						...latestItem,
+						prevAvg: storageCache.prevAvgByCode?.[code],
+					};
+				}
+			}
+
+			if (Object.keys(mapFromStorage).length > 0) {
+				cachedRealtimeMap = mapFromStorage;
+				return mapFromStorage;
+			}
+		}
+
+		return cachedRealtimeMap || {};
+	} catch (err) {
+		console.error("getAllStationsRealtimeWaterQuality error:", err);
+		return cachedRealtimeMap || {};
+	}
+}
+
+export async function getRealtimeWaterQuality(
+	stationNameOrCode: string,
+): Promise<{
+	latest: RealtimeWaterQuality | null;
+	history: RealtimeWaterQuality[];
+	error?: string;
+}> {
+	const stationCode = getNierStationCode(stationNameOrCode);
+	if (!stationCode) {
+		return {
+			latest: null,
+			history: [],
+			error: `측정소 코드 매핑 실패: ${stationNameOrCode}`,
+		};
+	}
+
+	try {
+		const rollingState = await loadRollingCacheFromStorage();
+		const accumulated = rollingState?.stations?.[stationCode] || [];
+
+		if (accumulated.length === 0) {
+			return { latest: null, history: [] };
+		}
+
+		const prevAvg = rollingState?.prevAvgByCode?.[stationCode];
+		const trimmedHistory = accumulated.slice(-MAX_HISTORY_HOURS);
+		const latestRaw = trimmedHistory[trimmedHistory.length - 1] ?? null;
+
+		return {
+			latest: latestRaw ? { ...latestRaw, prevAvg } : null,
+			history: trimmedHistory,
+		};
+	} catch (err: unknown) {
+		console.error("getRealtimeWaterQuality error:", err);
+		return {
+			latest: null,
+			history: [],
+			error:
+				err instanceof Error
+					? err.message
+					: "실시간 수질 조회 중 오류가 발생했습니다.",
+		};
+	}
+}

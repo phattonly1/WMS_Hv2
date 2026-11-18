@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import {
 	getAllNierStationCodes,
+	type NierRollingCachePayload,
 	type RealtimeWaterQuality,
 	type WaterQualityAverageMap,
 	type WaterQualityMetricKey,
 } from "@/app/map/nierStationMap";
-import type { NierRollingCachePayload } from "@/app/map/actions";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;

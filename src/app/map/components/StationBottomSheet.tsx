@@ -20,9 +20,9 @@ import {
 	RIVER_ICONS,
 	type Station,
 } from "../stationData";
-import { getRealtimeWaterQuality } from "../actions";
 import {
 	getNierStationCode,
+	getRealtimeWaterQuality,
 	type RealtimeWaterQuality,
 	type WaterQualityMetricKey,
 } from "../nierStationMap";
