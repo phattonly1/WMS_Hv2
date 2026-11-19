@@ -267,7 +267,7 @@ function ItemsContent() {
 	return (
 		<div className="min-h-dvh flex flex-col bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] transition-colors">
 			{/* Top Header Navigation */}
-			<header className="sticky top-0 h-14 px-4 lg:px-6 border-b border-[#e2e8f0] dark:border-[#222228] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between shrink-0 z-20 transition-colors">
+			<header className="sticky top-0 h-14 px-4 lg:px-6 border-b border-[#d7dfe9] dark:border-[#2a2a32] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between shrink-0 z-20 transition-colors">
 				{/* 스크롤 진행률 게이지 바 (헤더 하단 2px) */}
 				<div
 					className="absolute bottom-0 left-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-150 ease-out pointer-events-none"
@@ -276,7 +276,7 @@ function ItemsContent() {
 				<div className="flex items-center gap-3">
 					<Link
 						href="/dashboard"
-						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95"
+						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95"
 						aria-label="대시보드로 돌아가기"
 					>
 						<ArrowLeft size={18} />
@@ -311,7 +311,7 @@ function ItemsContent() {
 					)}
 
 					<div
-						className="flex gap-1 bg-[#f1f5f9] dark:bg-[#16161c] p-1 rounded-xl border border-[#e2e8f0] dark:border-[#222228]"
+						className="flex gap-1 bg-[#f1f5f9] dark:bg-[#16161c] p-1 rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32]"
 						role="tablist"
 					>
 						<button
@@ -388,7 +388,7 @@ function ItemsContent() {
 						</div>
 					) : activeTab === "inventory" ? (
 						filteredItems.length === 0 ? (
-							<div className="h-64 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-[#111115] rounded-3xl border border-[#e2e8f0] dark:border-[#222228]">
+							<div className="h-64 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-[#111115] rounded-3xl border border-[#d7dfe9] dark:border-[#2a2a32]">
 								<Package className="w-10 h-10 text-[#64748b] dark:text-[#52525b] mb-2" />
 								<p className="text-sm font-bold text-[#0f172a] dark:text-white">
 									해당하는 소모품이 없습니다
@@ -436,12 +436,12 @@ function ItemsContent() {
 								type="button"
 								onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
 								disabled={currentPage === 1}
-								className="w-9 h-9 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center disabled:opacity-30 hover:bg-black/5 dark:hover:bg-white/5 transition-all text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								className="w-9 h-9 rounded-xl bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center disabled:opacity-30 hover:bg-black/5 dark:hover:bg-white/5 transition-all text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 								aria-label="이전 페이지"
 							>
 								<ChevronLeft size={18} />
 							</button>
-							<div className="bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] px-4 h-9 rounded-xl flex items-center">
+							<div className="bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] px-4 h-9 rounded-xl flex items-center">
 								<span className="text-xs tabular-nums font-bold text-[#0f172a] dark:text-white">
 									{currentPage} <span className="text-[#64748b] dark:text-[#52525b] mx-1">/</span>{" "}
 									{totalPages}
@@ -453,7 +453,7 @@ function ItemsContent() {
 									setCurrentPage((p) => Math.min(totalPages, p + 1))
 								}
 								disabled={currentPage === totalPages}
-								className="w-9 h-9 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center disabled:opacity-30 hover:bg-black/5 dark:hover:bg-white/5 transition-all text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								className="w-9 h-9 rounded-xl bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center disabled:opacity-30 hover:bg-black/5 dark:hover:bg-white/5 transition-all text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 								aria-label="다음 페이지"
 							>
 								<ChevronRight size={18} />

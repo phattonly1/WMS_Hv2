@@ -162,11 +162,11 @@ export default function StationEditorPage() {
 	return (
 		<div className="flex flex-col min-h-screen h-screen bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] [word-break:keep-all] overflow-hidden transition-colors">
 			{/* M3 표준 상단 헤더 */}
-			<header className="h-14 border-b border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] px-2.5 sm:px-4 flex items-center justify-between gap-2 shrink-0 z-30 transition-colors">
+			<header className="h-14 border-b border-[#d7dfe9] dark:border-[#2a2a32] bg-white dark:bg-[#111115] px-2.5 sm:px-4 flex items-center justify-between gap-2 shrink-0 z-30 transition-colors">
 				<div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
 					<Link
 						href="/map"
-						className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:bg-[#e2e8f0] dark:hover:bg-[#27272a] flex items-center justify-center transition-all shadow-xs shrink-0"
+						className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:bg-[#e2e8f0] dark:hover:bg-[#27272a] flex items-center justify-center transition-all shadow-xs shrink-0"
 						title="지도로 돌아가기"
 						aria-label="지도로 돌아가기"
 					>
@@ -210,7 +210,7 @@ export default function StationEditorPage() {
 				<div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
 					<ThemeToggle className="sm:!w-9 sm:!h-9 !rounded-xl" />
 					{/* 탭 전환 버튼 */}
-					<div className="h-8 sm:h-9 flex items-center bg-[#f1f5f9] dark:bg-[#18181b] p-0.5 rounded-xl border border-[#e2e8f0] dark:border-[#222228]">
+					<div className="h-8 sm:h-9 flex items-center bg-[#f1f5f9] dark:bg-[#18181b] p-0.5 rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32]">
 						<button
 							type="button"
 							onClick={() => handleTabChange("manager")}
@@ -248,7 +248,7 @@ export default function StationEditorPage() {
 							className={`h-8 sm:h-9 flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
 								isDirty
 									? "bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-sm active:scale-95 cursor-pointer"
-									: "bg-[#f1f5f9] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#52525b] border border-[#e2e8f0] dark:border-[#222228] cursor-not-allowed"
+									: "bg-[#f1f5f9] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#52525b] border border-[#d7dfe9] dark:border-[#2a2a32] cursor-not-allowed"
 							}`}
 						>
 							<Save size={14} className="shrink-0" />
@@ -275,7 +275,7 @@ export default function StationEditorPage() {
 					)}
 
 					<aside
-						className={`fixed inset-y-0 left-0 w-[85vw] max-w-xs bg-[#111115] border-r border-[#222228] flex flex-col z-50 transition-transform duration-300 md:relative md:w-80 md:translate-x-0 md:z-20 ${
+						className={`fixed inset-y-0 left-0 w-[85vw] max-w-xs bg-[#111115] border-r border-[#2a2a32] flex flex-col z-50 transition-transform duration-300 md:relative md:w-80 md:translate-x-0 md:z-20 ${
 							isSidebarOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
 						}`}
 					>
@@ -299,7 +299,7 @@ export default function StationEditorPage() {
 							</div>
 						) : (
 							<div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-								<div className="w-16 h-16 rounded-2xl bg-[#111115] text-[#2563eb] flex items-center justify-center mb-4 border border-[#222228]">
+								<div className="w-16 h-16 rounded-2xl bg-[#111115] text-[#2563eb] flex items-center justify-center mb-4 border border-[#2a2a32]">
 									<Database size={28} />
 								</div>
 								<h3 className="text-base font-bold text-white tracking-tight mb-1">

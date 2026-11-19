@@ -7,7 +7,7 @@ export default function ItemCardSkeleton({
 }) {
 	if (viewMode === "list") {
 		return (
-			<div className="rounded-xl p-3 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] animate-pulse">
+			<div className="rounded-xl p-3 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] animate-pulse">
 				<div className="flex gap-3 items-center">
 					{/* 이미지 */}
 					<div className="w-9 h-9 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c]" />
@@ -20,7 +20,7 @@ export default function ItemCardSkeleton({
 					<div className="w-8 h-5 bg-[#f1f5f9] dark:bg-[#16161c] rounded-md" />
 				</div>
 				{/* 버튼 */}
-				<div className="flex gap-2 pt-3 mt-2 border-t border-[#e2e8f0] dark:border-[#222228]">
+				<div className="flex gap-2 pt-3 mt-2 border-t border-[#d7dfe9] dark:border-[#2a2a32]">
 					<div className="w-10 h-10 bg-[#f1f5f9] dark:bg-[#16161c] rounded-xl" />
 					<div className="flex-1 h-10 bg-[#f1f5f9] dark:bg-[#16161c] rounded-xl" />
 					<div className="w-10 h-10 bg-[#f1f5f9] dark:bg-[#16161c] rounded-xl" />
@@ -31,7 +31,7 @@ export default function ItemCardSkeleton({
 
 	// Photo View
 	return (
-		<div className="rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] overflow-hidden animate-pulse">
+		<div className="rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] overflow-hidden animate-pulse">
 			<div className="aspect-square bg-[#f1f5f9] dark:bg-[#16161c]" />
 			<div className="p-3 space-y-2">
 				<div className="h-4 bg-[#f1f5f9] dark:bg-[#16161c] rounded w-3/4" />

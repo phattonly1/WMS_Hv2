@@ -412,21 +412,21 @@ export default function ReagentsPage() {
 	return (
 		<div className="fixed inset-0 lg:static h-[100dvh] overflow-hidden overscroll-none flex flex-col bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] transition-colors">
 			{/* 상단 헤더 */}
-			<header className="h-14 px-3 sm:px-4 lg:px-6 border-b border-[#e2e8f0] dark:border-[#222228] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between gap-2 shrink-0 z-20 transition-colors">
+			<header className="h-14 px-3 sm:px-4 lg:px-6 border-b border-[#d7dfe9] dark:border-[#2a2a32] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between gap-2 shrink-0 z-20 transition-colors">
 				<div className="flex items-center gap-2.5 min-w-0">
 					{mobilePerson ? (
 						<>
 							<button
 								type="button"
 								onClick={handleResetMobilePerson}
-								className="lg:hidden w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0 cursor-pointer"
+								className="lg:hidden w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0 cursor-pointer"
 								aria-label="측정소 선택으로 돌아가기"
 							>
 								<ArrowLeft size={18} />
 							</button>
 							<Link
 								href="/dashboard"
-								className="hidden lg:flex w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
+								className="hidden lg:flex w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
 								aria-label="대시보드로 돌아가기"
 							>
 								<ArrowLeft size={18} />
@@ -435,7 +435,7 @@ export default function ReagentsPage() {
 					) : (
 						<Link
 							href="/dashboard"
-							className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
+							className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
 							aria-label="대시보드로 돌아가기"
 						>
 							<ArrowLeft size={18} />
@@ -504,8 +504,8 @@ export default function ReagentsPage() {
 						</div>
 					) : !mobilePerson ? (
 						/* 1) 모바일 초기 진입: 이름 선택 화면만 노출 */
-						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-3xl p-5 shadow-sm space-y-4">
-							<div className="flex items-center gap-3 pb-3 border-b border-[#e2e8f0] dark:border-[#222228]">
+						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-3xl p-5 shadow-sm space-y-4">
+							<div className="flex items-center gap-3 pb-3 border-b border-[#d7dfe9] dark:border-[#2a2a32]">
 								<div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
 									<UserCheck size={20} />
 								</div>
@@ -528,7 +528,7 @@ export default function ReagentsPage() {
 											key={person}
 											type="button"
 											onClick={() => handleSelectMobilePerson(person)}
-											className="min-h-[82px] py-3.5 px-4 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-[#2563eb] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between transition-all active:scale-95 cursor-pointer"
+											className="min-h-[82px] py-3.5 px-4 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-[#2563eb] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-between transition-all active:scale-95 cursor-pointer"
 										>
 											<div className="text-left space-y-0.5">
 												<div className="text-base font-bold text-[#0f172a] dark:text-white">
@@ -602,7 +602,7 @@ export default function ReagentsPage() {
 											return (
 												<section
 													key={group.key}
-													className={`p-2.5 rounded-2xl bg-[#eef2f6]/90 dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-2 min-w-0 ${colSpanClass}`}
+													className={`p-2.5 rounded-2xl bg-[#eef2f6]/90 dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-2 min-w-0 ${colSpanClass}`}
 												>
 													{/* 제조사 + 측정항목 트레이 헤더 */}
 													<div className="flex items-center gap-1.5 px-1">
@@ -647,7 +647,7 @@ export default function ReagentsPage() {
 																	className={`min-h-[82px] px-1.5 py-2.5 rounded-xl bg-white dark:bg-[#111115] border flex flex-col items-center justify-center gap-1.5 text-center transition-all active:scale-95 cursor-pointer shadow-2xs min-w-0 ${
 																		parsed.total > 0
 																			? "border-blue-500/40 dark:border-blue-500/40"
-																			: "border-[#e2e8f0]/80 dark:border-[#222228]"
+																			: "border-[#d7dfe9]/80 dark:border-[#2a2a32]"
 																	}`}
 																>
 																	<span className="text-xs font-bold text-[#0f172a] dark:text-white tracking-tight truncate w-full">

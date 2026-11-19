@@ -7,7 +7,7 @@
 	--canvas: #f8fafc;
 	--surface-container: #ffffff;
 	--surface-container-high: #f1f5f9;
-	--outline: #e2e8f0;
+	--outline: #d7dfe9;
 	--primary: #2563eb;
 	--accent: #0284c7;
 
@@ -29,7 +29,7 @@ html.dark {
 	--canvas: #09090b;
 	--surface-container: #111115;
 	--surface-container-high: #16161c;
-	--outline: #222228;
+	--outline: #2a2a32;
 	--primary: #2563eb;
 	--accent: #06b6d4;
 

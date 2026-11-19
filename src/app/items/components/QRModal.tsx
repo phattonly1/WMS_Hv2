@@ -121,7 +121,7 @@ export default function QRModal({ isOpen, onClose, item }: QRModalProps) {
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#e2e8f0] dark:border-[#222228]"
+						className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#d7dfe9] dark:border-[#2a2a32]"
 					>
 						닫기
 					</button>

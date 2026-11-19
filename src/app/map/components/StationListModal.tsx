@@ -197,7 +197,7 @@ export function StationListModal({
 													onSelectStation(station);
 													onClose();
 												}}
-												className="w-full px-3 py-2 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 flex items-center gap-2.5 text-left transition-all active:scale-[0.99] group shadow-xs"
+												className="w-full px-3 py-2 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 flex items-center gap-2.5 text-left transition-all active:scale-[0.99] group shadow-xs"
 											>
 												<div
 													className="w-6 h-6 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs"
@@ -257,7 +257,7 @@ export function StationListModal({
 															onSelectStation(station);
 															onClose();
 														}}
-														className="h-12 px-1.5 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 group"
+														className="h-12 px-1.5 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 group"
 													>
 														<Building2
 															size={13}
@@ -291,7 +291,7 @@ export function StationListModal({
 															onSelectStation(station);
 															onClose();
 														}}
-														className="h-12 px-1.5 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-cyan-500/40 flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 group"
+														className="h-12 px-1.5 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-cyan-500/40 flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 group"
 													>
 														<MapPin
 															size={13}
@@ -310,7 +310,7 @@ export function StationListModal({
 							</div>
 
 							{/* 하단 수계 전환 퀵 내비게이터 바 (원형 순환 Infinite Loop) */}
-							<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-t border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none shrink-0 h-9">
+							<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-t border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold select-none shrink-0 h-9">
 								<button
 									type="button"
 									onClick={() =>
@@ -319,7 +319,7 @@ export function StationListModal({
 												CATEGORIES.length,
 										)
 									}
-									className="h-full flex items-center justify-center gap-1 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors px-2 border-r border-[#e2e8f0] dark:border-[#222228] active:scale-95 cursor-pointer"
+									className="h-full flex items-center justify-center gap-1 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors px-2 border-r border-[#d7dfe9] dark:border-[#2a2a32] active:scale-95 cursor-pointer"
 								>
 									<ChevronLeft size={15} strokeWidth={2.5} />
 									<span className="truncate">
@@ -327,7 +327,7 @@ export function StationListModal({
 									</span>
 								</button>
 
-								<div className="h-full flex items-center justify-center px-2 text-center border-r border-[#e2e8f0] dark:border-[#222228] font-bold text-[#0f172a] dark:text-white">
+								<div className="h-full flex items-center justify-center px-2 text-center border-r border-[#d7dfe9] dark:border-[#2a2a32] font-bold text-[#0f172a] dark:text-white">
 									<span
 										className="truncate flex items-center gap-1"
 										style={{ color: activeCategory?.color }}

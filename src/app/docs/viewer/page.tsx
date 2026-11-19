@@ -151,7 +151,7 @@ function ThumbnailCard({
 			className={`group flex flex-col items-center rounded-xl p-1.5 transition-all active:scale-95 border text-center cursor-pointer ${
 				isActive
 					? "bg-blue-600/15 border-blue-500 ring-2 ring-blue-500/40 shadow-lg"
-					: "bg-white dark:bg-[#16161c] hover:bg-[#f1f5f9] dark:hover:bg-[#1e1e26] border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 dark:hover:border-white/20"
+					: "bg-white dark:bg-[#16161c] hover:bg-[#f1f5f9] dark:hover:bg-[#1e1e26] border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 dark:hover:border-white/20"
 			}`}
 		>
 			<div className="w-full aspect-[1/1.414] rounded-lg bg-white/95 overflow-hidden flex items-center justify-center relative shadow-xs">
@@ -681,13 +681,13 @@ function PdfViewerContent() {
 			)}
 
 			{/* 하단 고정 1줄 통합 컨트롤 바 (/docs 하단바와 동일한 라이트/다크 테마 연동) */}
-			<footer className="shrink-0 z-30 bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#e2e8f0] dark:border-[#222228] px-2.5 py-2 pb-[calc(env(safe-area-inset-bottom)+8px)] shadow-[0_-4px_20px_rgba(0,0,0,0.06)] transition-colors">
+			<footer className="shrink-0 z-30 bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#d7dfe9] dark:border-[#2a2a32] px-2.5 py-2 pb-[calc(env(safe-area-inset-bottom)+8px)] shadow-[0_-4px_20px_rgba(0,0,0,0.06)] transition-colors">
 				<div className="max-w-2xl mx-auto flex items-center justify-between gap-1.5">
 					{/* 1. 좌측 끝: 뒤로가기 단독 배치 */}
 					<button
 						type="button"
 						onClick={handleClose}
-						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#334155] dark:text-[#e4e4e7] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
+						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#334155] dark:text-[#e4e4e7] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
 						aria-label="뒤로가기"
 						title={isGridOpen ? "본문으로 돌아가기" : "보관함으로 돌아가기"}
 					>
@@ -695,7 +695,7 @@ function PdfViewerContent() {
 					</button>
 
 					{/* 2. 중앙: 페이지 이동 & 전체 썸네일 모아보기 통합 (< ▦ 1 / 185 >) */}
-					<div className="flex items-center bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-9 p-0.5 min-w-0">
+					<div className="flex items-center bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-9 p-0.5 min-w-0">
 						<button
 							type="button"
 							disabled={pageNum <= 1 || isLoading || isGridOpen}
@@ -713,7 +713,7 @@ function PdfViewerContent() {
 							disabled={numPages <= 0 || isLoading}
 							onClick={() => setIsGridOpen((prev) => !prev)}
 							title="터치하여 전체 페이지 썸네일 보기"
-							className={`px-2.5 sm:px-3.5 h-8 rounded-lg text-xs font-bold tabular-nums whitespace-nowrap flex items-center justify-center gap-1.5 border-x border-[#e2e8f0] dark:border-[#222228] transition-all active:scale-95 cursor-pointer disabled:opacity-35 ${
+							className={`px-2.5 sm:px-3.5 h-8 rounded-lg text-xs font-bold tabular-nums whitespace-nowrap flex items-center justify-center gap-1.5 border-x border-[#d7dfe9] dark:border-[#2a2a32] transition-all active:scale-95 cursor-pointer disabled:opacity-35 ${
 								isGridOpen
 									? "bg-blue-600 border-transparent text-white shadow-xs"
 									: "hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white"
@@ -752,11 +752,11 @@ function PdfViewerContent() {
 									onClick={() => setIsZoomMenuOpen(false)}
 									aria-hidden="true"
 								/>
-								<div className="absolute bottom-11 right-0 z-20 bg-white/95 dark:bg-[#16161c]/95 backdrop-blur-md border border-[#e2e8f0] dark:border-[#222228] rounded-2xl p-1 shadow-2xl flex flex-row items-center gap-1 whitespace-nowrap">
+								<div className="absolute bottom-11 right-0 z-20 bg-white/95 dark:bg-[#16161c]/95 backdrop-blur-md border border-[#d7dfe9] dark:border-[#2a2a32] rounded-2xl p-1 shadow-2xl flex flex-row items-center gap-1 whitespace-nowrap">
 									<button
 										type="button"
 										onClick={toggleInvert}
-										className={`h-8 px-2.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border-r border-[#e2e8f0] dark:border-[#222228] mr-0.5 ${
+										className={`h-8 px-2.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border-r border-[#d7dfe9] dark:border-[#2a2a32] mr-0.5 ${
 											isInverted
 												? "bg-indigo-600 text-white"
 												: "text-[#334155] dark:text-[#e4e4e7] hover:bg-black/5 dark:hover:bg-white/10"
@@ -797,7 +797,7 @@ function PdfViewerContent() {
 							className={`h-9 px-2.5 rounded-xl border text-xs font-bold tabular-nums transition-all active:scale-95 cursor-pointer disabled:opacity-30 flex items-center gap-1 ${
 								isZoomMenuOpen || zoom > 1 || isInverted
 									? "bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400"
-									: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border-[#e2e8f0] dark:border-[#222228] text-[#334155] dark:text-[#e4e4e7]"
+									: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border-[#d7dfe9] dark:border-[#2a2a32] text-[#334155] dark:text-[#e4e4e7]"
 							}`}
 							title="배율 및 색반전 설정"
 							aria-label="배율 및 색반전 설정"

@@ -142,7 +142,7 @@ export default function VideoModal({
 							type="button"
 							onClick={() => setIsQROpen(true)}
 							title="동영상 매뉴얼 QR 코드 발급"
-							className="h-6 px-1.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center gap-1 text-[11px] font-bold active:scale-95 transition-all cursor-pointer"
+							className="h-6 px-1.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center gap-1 text-[11px] font-bold active:scale-95 transition-all cursor-pointer"
 						>
 							<QrCode size={12} className="text-blue-600 dark:text-blue-400" />
 							<span>QR</span>
@@ -161,7 +161,7 @@ export default function VideoModal({
 					{selectedVideo ? (
 						/* 비디오 재생 뷰 */
 						<div className="space-y-3">
-							<div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-[#e2e8f0] dark:border-[#222228]">
+							<div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-[#d7dfe9] dark:border-[#2a2a32]">
 								{selectedVideo.streamUrl ? (
 									<video
 										src={selectedVideo.streamUrl}
@@ -184,7 +184,7 @@ export default function VideoModal({
 							</div>
 
 							{selectedVideo.desc && (
-								<div className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
+								<div className="p-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32]">
 									<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] leading-relaxed break-keep">
 										{selectedVideo.desc}
 									</p>
@@ -205,7 +205,7 @@ export default function VideoModal({
 											key={video.id}
 											type="button"
 											onClick={() => setSelectedVideo(video)}
-											className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
+											className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
 										>
 											<div className="flex items-center justify-between gap-2">
 												<span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 truncate">
@@ -237,7 +237,7 @@ export default function VideoModal({
 									key={video.id}
 									type="button"
 									onClick={() => setSelectedVideo(video)}
-									className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
+									className="group p-2.5 rounded-xl bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/50 text-left transition-all active:scale-[0.98] flex flex-col justify-between gap-1.5 shadow-xs"
 								>
 									<div className="flex items-center justify-between gap-2">
 										<h4 className="text-xs font-bold text-[#0f172a] dark:text-white truncate leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -272,7 +272,7 @@ export default function VideoModal({
 										key={cat}
 										type="button"
 										onClick={() => setSelectedCategory(cat)}
-										className="group px-3 py-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.98] flex items-center justify-between gap-2 shadow-xs hover:shadow-md cursor-pointer"
+										className="group px-3 py-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 text-left transition-all active:scale-[0.98] flex items-center justify-between gap-2 shadow-xs hover:shadow-md cursor-pointer"
 									>
 										<div className="flex items-baseline gap-1.5 min-w-0">
 											<span className="font-sans text-xs font-extrabold text-[#0f172a] dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
@@ -327,7 +327,7 @@ export default function VideoModal({
 						<button
 							type="button"
 							onClick={() => setIsQROpen(false)}
-							className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#e2e8f0] dark:border-[#222228]"
+							className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#d7dfe9] dark:border-[#2a2a32]"
 						>
 							닫기
 						</button>

@@ -19,7 +19,7 @@ const ListContext = React.createContext<{ depth: number; isOrdered: boolean }>({
 
 function FluidTable({ children }: { children: React.ReactNode }) {
 	return (
-		<div className="w-full my-3 overflow-x-auto rounded-xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#09090b] shadow-xs">
+		<div className="w-full my-3 overflow-x-auto rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32] bg-white dark:bg-[#09090b] shadow-xs">
 			<table className="w-full min-w-[340px] text-left border-collapse text-xs leading-snug">
 				{children}
 			</table>
@@ -162,7 +162,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 								{(ctx) => {
 									if (ctx.isOrdered && ctx.depth === 1) {
 										return (
-											<li className={`relative flex flex-col rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] p-3 [counter-increment:step-counter] ${textSize.body}`}>
+											<li className={`relative flex flex-col rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] p-3 [counter-increment:step-counter] ${textSize.body}`}>
 												<div className="flex items-start gap-2">
 													<span className="flex items-center justify-center w-5 h-5 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 tabular-nums font-bold text-[10px] shrink-0 before:content-[counter(step-counter)]" />
 													<div className="flex-1 min-w-0 text-[#0f172a] dark:text-[#f4f4f5] break-keep">
@@ -188,7 +188,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 					},
 					thead({ children }) {
 						return (
-							<thead className="bg-[#f1f5f9] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228] text-[#0f172a] dark:text-white font-bold whitespace-nowrap">
+							<thead className="bg-[#f1f5f9] dark:bg-[#16161c] border-b border-[#d7dfe9] dark:border-[#2a2a32] text-[#0f172a] dark:text-white font-bold whitespace-nowrap">
 								{children}
 							</thead>
 						);
@@ -226,7 +226,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 						if (isInline) {
 							return (
 								<code
-									className="px-1.5 py-0.5 rounded-md bg-[#f1f5f9] dark:bg-[#16161c] text-blue-600 dark:text-blue-400 text-[11px] font-bold border border-[#e2e8f0] dark:border-[#222228]"
+									className="px-1.5 py-0.5 rounded-md bg-[#f1f5f9] dark:bg-[#16161c] text-blue-600 dark:text-blue-400 text-[11px] font-bold border border-[#d7dfe9] dark:border-[#2a2a32]"
 									{...props}
 								>
 									{children}
@@ -234,7 +234,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 							);
 						}
 						return (
-							<pre className="p-3 my-2 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] border border-[#e2e8f0] dark:border-[#222228] overflow-x-auto text-xs">
+							<pre className="p-3 my-2 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] border border-[#d7dfe9] dark:border-[#2a2a32] overflow-x-auto text-xs">
 								<code className={className} {...props}>
 									{children}
 								</code>
@@ -250,7 +250,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 							<figure className="my-3 block group">
 								<div
 									onClick={() => onImageClick?.(src, alt)}
-									className="relative overflow-hidden rounded-xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#09090b] cursor-zoom-in transition-all hover:border-blue-500/40"
+									className="relative overflow-hidden rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32] bg-white dark:bg-[#09090b] cursor-zoom-in transition-all hover:border-blue-500/40"
 									aria-hidden="true"
 								>
 									<img
@@ -345,7 +345,7 @@ export function ManualViewer({ category, activeItemId, fontSizeStep = 0 }: Manua
 							className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
 								isHighlight
 									? "border-blue-500/80 bg-[#f1f5f9] dark:bg-[#16161c] shadow-[0_0_20px_rgba(37,99,235,0.15)]"
-									: "border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] hover:border-blue-500/30 dark:hover:border-[#222228]"
+									: "border-[#d7dfe9] dark:border-[#2a2a32] bg-white dark:bg-[#111115] hover:border-blue-500/30 dark:hover:border-[#2a2a32]"
 							}`}
 						>
 							{/* 카드 헤더 (토글) */}
@@ -384,7 +384,7 @@ export function ManualViewer({ category, activeItemId, fontSizeStep = 0 }: Manua
 								</div>
 
 								<div
-									className={`w-8 h-8 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center transition-transform duration-200 shrink-0 text-[#64748b] dark:text-[#a1a1aa] ${
+									className={`w-8 h-8 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center transition-transform duration-200 shrink-0 text-[#64748b] dark:text-[#a1a1aa] ${
 										isExpanded ? "rotate-180 text-[#0f172a] dark:text-white" : ""
 									}`}
 								>
@@ -394,7 +394,7 @@ export function ManualViewer({ category, activeItemId, fontSizeStep = 0 }: Manua
 
 							{/* 본문 렌더러 */}
 							{isExpanded && (
-								<div className="px-4 pb-5 sm:px-6 sm:pb-6 pt-2 border-t border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115]">
+								<div className="px-4 pb-5 sm:px-6 sm:pb-6 pt-2 border-t border-[#d7dfe9] dark:border-[#2a2a32] bg-white dark:bg-[#111115]">
 									<MarkdownRenderer
 										content={item.content}
 										onImageClick={(src, alt) => setZoomImage({ src, alt })}
@@ -424,7 +424,7 @@ export function ManualViewer({ category, activeItemId, fontSizeStep = 0 }: Manua
 						<button
 							type="button"
 							onClick={() => setZoomImage(null)}
-							className="absolute -top-10 right-0 w-8 h-8 rounded-xl bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#0f172a] dark:text-white flex items-center justify-center"
+							className="absolute -top-10 right-0 w-8 h-8 rounded-xl bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#0f172a] dark:text-white flex items-center justify-center"
 							aria-label="닫기"
 						>
 							<X size={16} />
@@ -432,7 +432,7 @@ export function ManualViewer({ category, activeItemId, fontSizeStep = 0 }: Manua
 						<img
 							src={zoomImage.src}
 							alt={zoomImage.alt || "확대 이미지"}
-							className="max-w-full max-h-[80vh] object-contain rounded-xl border border-[#e2e8f0] dark:border-[#222228]"
+							className="max-w-full max-h-[80vh] object-contain rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32]"
 						/>
 					</div>
 				</div>

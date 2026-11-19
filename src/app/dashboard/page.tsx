@@ -81,7 +81,7 @@ export default function DashboardPage() {
 	return (
 		<main
 			id="main-content"
-			className="relative flex min-h-screen flex-col items-center justify-center p-4 md:p-8 font-sans bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] overflow-x-hidden transition-colors"
+			className="fixed inset-0 sm:relative sm:inset-auto flex h-dvh sm:h-auto sm:min-h-screen flex-col items-center justify-center p-4 md:p-8 font-sans bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden sm:overflow-x-hidden sm:overflow-y-auto overscroll-none touch-none sm:touch-auto transition-colors"
 		>
 			<h1 className="sr-only">한강수계 수질자동측정망 통합 관제 대시보드</h1>
 
@@ -94,9 +94,9 @@ export default function DashboardPage() {
 				}}
 			/>
 
-			<div className="w-full max-w-6xl flex flex-col items-center gap-5 sm:gap-7 relative z-10 bg-white dark:bg-[#111115] rounded-3xl p-5 sm:p-6 md:p-10 border border-[#e2e8f0] dark:border-[#222228] shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_20px_50px_rgba(0,0,0,0.5)] transition-colors">
+			<div className="w-full max-w-6xl flex flex-col items-center gap-5 sm:gap-7 relative z-10 bg-white dark:bg-[#111115] rounded-3xl p-5 sm:p-6 md:p-10 border border-[#d7dfe9] dark:border-[#2a2a32] shadow-[0_4px_20px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_20px_50px_rgba(0,0,0,0.5)] transition-colors">
 				{/* 상단 통합 헤더 */}
-				<header className="w-full flex items-center justify-between gap-3 pb-3.5 sm:pb-5 border-b border-[#e2e8f0] dark:border-[#222228]">
+				<header className="w-full flex items-center justify-between gap-3 pb-3.5 sm:pb-5 border-b border-[#d7dfe9] dark:border-[#2a2a32]">
 					<div className="flex items-center gap-2 min-w-0">
 						<Activity
 							size={18}
@@ -112,13 +112,13 @@ export default function DashboardPage() {
 						<ThemeToggle />
 						<Link
 							href="/architecture"
-							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
+							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
 						>
 							<span>구조도 뷰어</span>
 						</Link>
 						<Link
 							href="/dev"
-							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
+							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
 						>
 							<span>/dev 검증기</span>
 						</Link>
@@ -130,7 +130,7 @@ export default function DashboardPage() {
 					<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
 						{NAV_SERVICES.slice(0, 2).map((item) => (
 							<Link key={item.title} href={item.href} className="block h-full">
-								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
+								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
 									<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
 										<Image
 											src={item.imgSrc}
@@ -163,7 +163,7 @@ export default function DashboardPage() {
 								href={item.href}
 								className="block h-full"
 							>
-								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
+								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
 									<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
 										<Image
 											src={item.imgSrc}
@@ -188,7 +188,7 @@ export default function DashboardPage() {
 				</nav>
 
 				{/* 2. 업무 유틸리티 도구함 바 (정적 SSR 렌더링, 모바일 숨김) */}
-				<section className="hidden sm:flex w-full pt-6 border-t border-[#e2e8f0] dark:border-[#222228] flex-col gap-4">
+				<section className="hidden sm:flex w-full pt-6 border-t border-[#d7dfe9] dark:border-[#2a2a32] flex-col gap-4">
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1">
 						<div className="flex items-center gap-2.5">
 							<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
@@ -211,7 +211,7 @@ export default function DashboardPage() {
 							return (
 								<div
 									key={tool.name}
-									className="group relative flex items-center justify-between p-3.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-200 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+									className="group relative flex items-center justify-between p-3.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-all duration-200 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
 								>
 									<a
 										href={tool.file}
@@ -220,7 +220,7 @@ export default function DashboardPage() {
 										className="flex items-center gap-3 min-w-0 flex-1 mr-2"
 										title={`${tool.name} 새 탭에서 열기`}
 									>
-										<div className="w-9 h-9 rounded-xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:border-blue-500/30 flex items-center justify-center shrink-0 transition-colors">
+										<div className="w-9 h-9 rounded-xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:border-blue-500/30 flex items-center justify-center shrink-0 transition-colors">
 											<Icon className="w-4 h-4" />
 										</div>
 										<div className="min-w-0">

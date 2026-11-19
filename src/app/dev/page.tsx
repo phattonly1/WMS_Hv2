@@ -74,11 +74,11 @@ export default function DeploymentGuardPage() {
 
 			<div className="max-w-5xl mx-auto space-y-6 relative z-10">
 				{/* 1. 상단 내비게이션 바 (Surface Container & Tactile) */}
-				<header className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
+				<header className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
 					<div className="flex items-center gap-3">
 						<Link
 							href="/dashboard"
-							className="p-2.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5] transition-colors"
+							className="p-2.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5] transition-colors"
 						>
 							<ArrowLeft className="w-4 h-4" />
 						</Link>
@@ -159,7 +159,7 @@ export default function DeploymentGuardPage() {
 
 				{/* 3. 5대 감시 지표 벤토 그리드 */}
 				<div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
 						<div className="flex items-center justify-between text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							<span>하드코딩 위반</span>
 							<Palette className="w-4 h-4 text-purple-500 dark:text-purple-400" />
@@ -172,7 +172,7 @@ export default function DeploymentGuardPage() {
 						</div>
 					</div>
 
-					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
 						<div className="flex items-center justify-between text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							<span>고립된 파일</span>
 							<FileX className="w-4 h-4 text-rose-500 dark:text-rose-400" />
@@ -185,7 +185,7 @@ export default function DeploymentGuardPage() {
 						</div>
 					</div>
 
-					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
 						<div className="flex items-center justify-between text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							<span>죽은 코드 (Exports)</span>
 							<Code2 className="w-4 h-4 text-amber-500 dark:text-amber-400" />
@@ -198,7 +198,7 @@ export default function DeploymentGuardPage() {
 						</div>
 					</div>
 
-					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
 						<div className="flex items-center justify-between text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							<span>미사용 패키지</span>
 							<PackageX className="w-4 h-4 text-sky-500 dark:text-sky-400" />
@@ -211,7 +211,7 @@ export default function DeploymentGuardPage() {
 						</div>
 					</div>
 
-					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+					<div className="p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
 						<div className="flex items-center justify-between text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							<span>환경변수 불일치</span>
 							<KeyRound className="w-4 h-4 text-blue-500 dark:text-blue-400" />
@@ -243,7 +243,7 @@ export default function DeploymentGuardPage() {
 								{report.hardcodedViolations.map((v: HardcodedViolation, i: number) => (
 									<div
 										key={`${v.file}-${v.line}-${i}`}
-										className="p-3 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228] text-xs space-y-1"
+										className="p-3 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs space-y-1"
 									>
 										<div className="flex items-center justify-between gap-2">
 											<span className="font-mono text-purple-600 dark:text-purple-400 font-bold truncate">
@@ -283,7 +283,7 @@ export default function DeploymentGuardPage() {
 								{report.orphanFiles.map((issue: GuardIssue) => (
 									<div
 										key={issue.target}
-										className="flex items-center justify-between p-3 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228] text-xs"
+										className="flex items-center justify-between p-3 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs"
 									>
 										<div>
 											<div className="font-mono text-[#0f172a] dark:text-[#f4f4f5] font-semibold">
@@ -319,7 +319,7 @@ export default function DeploymentGuardPage() {
 								{report.unusedExports.map((issue: GuardIssue) => (
 									<div
 										key={`${issue.target}:${issue.line ?? 0}`}
-										className="p-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228] text-xs flex items-center justify-between"
+										className="p-2.5 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs flex items-center justify-between"
 									>
 										<span className="font-mono text-amber-600 dark:text-amber-300 font-semibold">
 											{issue.target}
@@ -335,7 +335,7 @@ export default function DeploymentGuardPage() {
 
 					{/* 미사용 환경변수 리스트 */}
 					{report && report.envIssues.length > 0 && (
-						<div className="p-5 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] space-y-3">
+						<div className="p-5 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-3">
 							<div className="text-xs font-semibold text-sky-600 dark:text-sky-400 flex items-center gap-1.5">
 								<KeyRound className="w-4 h-4" />
 								코드에서 아직 사용하지 않는 환경변수 ({report.envIssues.length}개)
@@ -344,7 +344,7 @@ export default function DeploymentGuardPage() {
 								{report.envIssues.map((issue: GuardIssue) => (
 									<div
 										key={issue.target}
-										className="p-3 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228] text-xs flex items-center justify-between"
+										className="p-3 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs flex items-center justify-between"
 									>
 										<span className="font-mono text-sky-600 dark:text-sky-300 font-semibold">
 											{issue.target}
@@ -360,7 +360,7 @@ export default function DeploymentGuardPage() {
 
 					{/* 100% 클린 상태 */}
 					{isClean && (
-						<div className="p-10 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-center space-y-3 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+						<div className="p-10 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] text-center space-y-3 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
 							<div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
 								<CheckCircle2 className="w-6 h-6" />
 							</div>
@@ -375,7 +375,7 @@ export default function DeploymentGuardPage() {
 				</div>
 
 				{/* 푸터 */}
-				<footer className="pt-4 border-t border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between text-[11px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
+				<footer className="pt-4 border-t border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-between text-[11px] font-mono text-[#64748b] dark:text-[#a1a1aa]">
 					<div className="flex items-center gap-3">
 						<span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
 							<Activity className="w-3.5 h-3.5" />

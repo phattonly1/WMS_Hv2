@@ -144,7 +144,7 @@ export default function ManualNavigationModal({
 										onSelectItem(res.categoryId, res.item.id);
 										onClose();
 									}}
-									className="w-full px-3 py-2 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-all active:scale-[0.99] flex items-center justify-between gap-2 group shadow-xs"
+									className="w-full px-3 py-2 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 text-left transition-all active:scale-[0.99] flex items-center justify-between gap-2 group shadow-xs"
 								>
 									<div className="flex items-center gap-2 min-w-0 flex-1">
 										<span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
@@ -167,7 +167,7 @@ export default function ManualNavigationModal({
 				/* 카테고리별 탐색 뷰 (StationListModal 스타일 3분할 순환 내비게이터) */
 				<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
 					{/* 카테고리 전환 퀵 내비게이터 바 (원형 순환 Infinite Loop) */}
-					<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none shrink-0 h-9">
+					<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-b border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold select-none shrink-0 h-9">
 						<button
 							type="button"
 							onClick={() =>
@@ -175,13 +175,13 @@ export default function ManualNavigationModal({
 									(activeCatIndex - 1 + categories.length) % categories.length,
 								)
 							}
-							className="h-full flex items-center justify-center gap-1 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors px-2 border-r border-[#e2e8f0] dark:border-[#222228] active:scale-95 cursor-pointer"
+							className="h-full flex items-center justify-center gap-1 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors px-2 border-r border-[#d7dfe9] dark:border-[#2a2a32] active:scale-95 cursor-pointer"
 						>
 							<ChevronLeft size={15} strokeWidth={2.5} />
 							<span className="truncate">{prevCategory?.name || "이전"}</span>
 						</button>
 
-						<div className="h-full flex items-center justify-center px-2 text-center border-r border-[#e2e8f0] dark:border-[#222228] font-bold text-[#0f172a] dark:text-white">
+						<div className="h-full flex items-center justify-center px-2 text-center border-r border-[#d7dfe9] dark:border-[#2a2a32] font-bold text-[#0f172a] dark:text-white">
 							<span className="truncate flex items-center gap-1 text-blue-600 dark:text-blue-400">
 								<span className="truncate">{activeCategory?.name}</span>
 								<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#71717a] shrink-0">
@@ -225,7 +225,7 @@ export default function ManualNavigationModal({
 										className={`w-full px-3 py-2 rounded-xl border flex items-center justify-between gap-2 text-left transition-all active:scale-[0.99] group ${
 											isItemActive
 												? "bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400"
-												: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/30 text-[#0f172a] dark:text-[#f4f4f5]"
+												: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/30 text-[#0f172a] dark:text-[#f4f4f5]"
 										}`}
 									>
 										<div className="flex items-center gap-2 min-w-0 flex-1">
@@ -244,7 +244,7 @@ export default function ManualNavigationModal({
 
 										<div className="flex items-center gap-1.5 shrink-0">
 											{item.badge && (
-												<span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-white dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] border border-[#e2e8f0] dark:border-[#222228]">
+												<span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-white dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] border border-[#d7dfe9] dark:border-[#2a2a32]">
 													{item.badge}
 												</span>
 											)}

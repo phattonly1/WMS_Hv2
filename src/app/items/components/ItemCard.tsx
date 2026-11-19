@@ -23,13 +23,13 @@ export default function ItemCard({
 }: ItemCardProps) {
 	if (viewMode === "list") {
 		return (
-			<div className="rounded-2xl p-3 flex flex-col gap-2 group bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:border-blue-500/40 transition-all duration-200">
+			<div className="rounded-2xl p-3 flex flex-col gap-2 group bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:border-blue-500/40 transition-all duration-200">
 				<div className="flex gap-3 items-center">
 					{/* 이미지/아이콘 */}
 					<button
 						type="button"
 						aria-label={`${item.name} 이미지 확대보기`}
-						className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex-shrink-0 flex items-center justify-center overflow-hidden cursor-pointer p-0"
+						className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] flex-shrink-0 flex items-center justify-center overflow-hidden cursor-pointer p-0"
 						onClick={() => item.image_url && onZoom(item.image_url)}
 					>
 						{item.image_url ? (
@@ -52,7 +52,7 @@ export default function ItemCard({
 						</h3>
 						<div className="flex items-center gap-1.5 mt-1 w-full overflow-hidden">
 							{item.manufacturer && (
-								<span className="text-[10px] px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#e2e8f0] dark:border-white/10 uppercase tracking-tight">
+								<span className="text-[10px] px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#d7dfe9] dark:border-white/10 uppercase tracking-tight">
 									{item.manufacturer}
 								</span>
 							)}
@@ -68,7 +68,7 @@ export default function ItemCard({
 							className={`px-3 py-1 rounded-lg tabular-nums font-bold text-sm transition-all ${
 								item.quantity < 10
 									? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shadow-xs"
-									: "bg-black/5 dark:bg-white/5 text-[#0f172a] dark:text-white border border-[#e2e8f0] dark:border-white/10"
+									: "bg-black/5 dark:bg-white/5 text-[#0f172a] dark:text-white border border-[#d7dfe9] dark:border-white/10"
 							}`}
 						>
 							{item.quantity}
@@ -77,11 +77,11 @@ export default function ItemCard({
 				</div>
 
 				{/* 하단 액션 버튼들 */}
-				<div className="flex gap-2 pt-2.5 mt-0.5 border-t border-[#e2e8f0] dark:border-[#222228]">
+				<div className="flex gap-2 pt-2.5 mt-0.5 border-t border-[#d7dfe9] dark:border-[#2a2a32]">
 					<button
 						type="button"
 						onClick={() => onEdit(item)}
-						className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 transition-all border border-[#e2e8f0] dark:border-[#222228] shrink-0"
+						className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 transition-all border border-[#d7dfe9] dark:border-[#2a2a32] shrink-0"
 						title="정보 수정"
 					>
 						<PenLine size={16} />
@@ -96,7 +96,7 @@ export default function ItemCard({
 					<button
 						type="button"
 						onClick={() => onQR(item)}
-						className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 transition-all border border-[#e2e8f0] dark:border-[#222228] shrink-0"
+						className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 transition-all border border-[#d7dfe9] dark:border-[#2a2a32] shrink-0"
 						title="QR 코드 보기"
 					>
 						<QrCode size={16} />
@@ -108,7 +108,7 @@ export default function ItemCard({
 
 	// Photo View
 	return (
-		<div className="rounded-2xl overflow-hidden group bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:border-blue-500/40 transition-all duration-200">
+		<div className="rounded-2xl overflow-hidden group bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] hover:border-blue-500/40 transition-all duration-200">
 			{/* 사진 영역 */}
 			<button
 				type="button"
@@ -132,7 +132,7 @@ export default function ItemCard({
 					className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs tabular-nums font-bold shadow-md ${
 						item.quantity < 10
 							? "bg-amber-500/20 text-amber-600 dark:text-amber-300 border border-amber-500/30"
-							: "bg-white/90 dark:bg-[#111115]/90 text-[#0f172a] dark:text-white border border-[#e2e8f0] dark:border-white/20"
+							: "bg-white/90 dark:bg-[#111115]/90 text-[#0f172a] dark:text-white border border-[#d7dfe9] dark:border-white/20"
 					}`}
 				>
 					{item.quantity}
@@ -146,7 +146,7 @@ export default function ItemCard({
 				</h3>
 				<div className="flex items-center gap-1.5 w-full overflow-hidden">
 					{item.manufacturer && (
-						<span className="text-[10px] px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#e2e8f0] dark:border-white/10 uppercase tracking-tight">
+						<span className="text-[10px] px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] font-semibold whitespace-nowrap shrink-0 border border-[#d7dfe9] dark:border-white/10 uppercase tracking-tight">
 							{item.manufacturer}
 						</span>
 					)}

@@ -42,7 +42,7 @@ export default function LogList({
 					return (
 						<div
 							key={log.id}
-							className={`rounded-2xl p-4 border border-[#e2e8f0] dark:border-[#222228] border-l-4 ${borderAccent} bg-white dark:bg-[#111115] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-all`}
+							className={`rounded-2xl p-4 border border-[#d7dfe9] dark:border-[#2a2a32] border-l-4 ${borderAccent} bg-white dark:bg-[#111115] shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-all`}
 						>
 							<div className="flex justify-between items-center gap-3">
 								{/* 좌측: 날짜, 이름, 물품명 */}
@@ -107,7 +107,7 @@ export default function LogList({
 											className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all ${
 												log.status === "done"
 													? "bg-emerald-500 text-white shadow-emerald-500/20"
-													: "bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white border border-[#e2e8f0] dark:border-[#222228]"
+													: "bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white border border-[#d7dfe9] dark:border-[#2a2a32]"
 											}`}
 											title={
 												log.status === "done"
@@ -126,7 +126,7 @@ export default function LogList({
 										<button
 											type="button"
 											onClick={() => onOpenReturnModal(log)}
-											className="px-3 py-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#0f172a] dark:text-white text-[11px] font-bold border border-[#e2e8f0] dark:border-[#222228] transition-all flex items-center gap-1.5 active:scale-95 shrink-0"
+											className="px-3 py-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#0f172a] dark:text-white text-[11px] font-bold border border-[#d7dfe9] dark:border-[#2a2a32] transition-all flex items-center gap-1.5 active:scale-95 shrink-0"
 										>
 											<RefreshCw size={12} /> 조절
 										</button>

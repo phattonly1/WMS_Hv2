@@ -103,7 +103,7 @@ export function Modal({
 				animate={{ y: 0, opacity: 1 }}
 				exit={{ y: 60, opacity: 0 }}
 				transition={{ type: "spring", damping: 28, stiffness: 320 }}
-				className={`relative w-full ${maxWidth} flex flex-col z-10 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-2xl dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.7)] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden transition-colors ${resolvedSheetClass}`}
+				className={`relative w-full ${maxWidth} flex flex-col z-10 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-2xl dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.7)] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden transition-colors ${resolvedSheetClass}`}
 			>
 				{/* 모바일 상단 드래그 핸들 (헤더 상단 중앙 얇은 바) */}
 				<div
@@ -122,14 +122,14 @@ export function Modal({
 							if ((e.target as HTMLElement).closest("button")) return;
 							dragControls.start(e);
 						}}
-						className="relative px-3 sm:px-4 py-1.5 flex items-center justify-between border-b border-[#e2e8f0] dark:border-[#222228] shrink-0 min-h-[38px] select-none gap-2"
+						className="relative px-3 sm:px-4 py-1.5 flex items-center justify-between border-b border-[#d7dfe9] dark:border-[#2a2a32] shrink-0 min-h-[38px] select-none gap-2"
 					>
 						<div className="flex items-center gap-1.5 min-w-0 flex-1">
 							{onBack && (
 								<button
 									type="button"
 									onClick={onBack}
-									className="w-6 h-6 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
+									className="w-6 h-6 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
 								>
 									<ChevronLeft size={14} />
 								</button>
@@ -157,7 +157,7 @@ export function Modal({
 								type="button"
 								onClick={onClose}
 								aria-label="닫기"
-								className="w-6 h-6 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center active:scale-95 transition-all"
+								className="w-6 h-6 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center active:scale-95 transition-all"
 							>
 								<X size={14} strokeWidth={2.5} />
 							</button>

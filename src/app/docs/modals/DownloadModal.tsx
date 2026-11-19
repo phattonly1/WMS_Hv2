@@ -228,7 +228,7 @@ export default function DownloadModal({
 							return (
 								<div
 									key={item.path}
-									className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-colors gap-2"
+									className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-colors gap-2"
 								>
 									<div
 										onClick={() => {
@@ -243,7 +243,7 @@ export default function DownloadModal({
 										}`}
 										aria-hidden="true"
 									>
-										<div className="w-6 h-6 rounded-lg bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center shrink-0">
+										<div className="w-6 h-6 rounded-lg bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center shrink-0">
 											{getFileIcon(item.name, item.isFolder)}
 										</div>
 										<p className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">

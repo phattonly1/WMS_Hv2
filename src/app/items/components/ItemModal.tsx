@@ -154,7 +154,7 @@ export default function ItemModal({
 						id="item-name"
 						name="item-name"
 						required
-						className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-2xl h-13 px-4 border border-[#e2e8f0] dark:border-[#222228] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-bold text-base placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+						className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-2xl h-13 px-4 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-bold text-base placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 						placeholder="물품 이름을 입력하세요"
 						value={formData.name || ""}
 						onChange={(e) =>
@@ -175,7 +175,7 @@ export default function ItemModal({
 						<input
 							id="item-device"
 							name="item-device"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#e2e8f0] dark:border-[#222228] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 							placeholder="기기명"
 							value={formData.device || ""}
 							onChange={(e) =>
@@ -193,7 +193,7 @@ export default function ItemModal({
 						<input
 							id="item-manufacturer"
 							name="item-manufacturer"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#e2e8f0] dark:border-[#222228] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 							placeholder="제조사"
 							value={formData.manufacturer || ""}
 							onChange={(e) =>
@@ -218,7 +218,7 @@ export default function ItemModal({
 						<input
 							id="item-unit"
 							name="item-unit"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#e2e8f0] dark:border-[#222228] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 							placeholder="예: ml, 병, EA"
 							value={formData.unit || ""}
 							onChange={(e) =>
@@ -233,7 +233,7 @@ export default function ItemModal({
 						>
 							수량
 						</label>
-						<div className="flex items-center bg-[#f8fafc] dark:bg-[#16161c] rounded-xl border border-[#e2e8f0] dark:border-[#222228] h-11 px-1 overflow-hidden transition-all focus-within:ring-2 focus-within:ring-blue-500/50 focus-within:border-blue-500">
+						<div className="flex items-center bg-[#f8fafc] dark:bg-[#16161c] rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32] h-11 px-1 overflow-hidden transition-all focus-within:ring-2 focus-within:ring-blue-500/50 focus-within:border-blue-500">
 							<button
 								type="button"
 								onClick={() =>
@@ -283,8 +283,8 @@ export default function ItemModal({
 					<span className="text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa] ml-1 block">
 						물품 이미지
 					</span>
-					<div className="flex gap-4 items-center bg-[#f1f5f9]/60 dark:bg-[#16161c]/60 p-3 rounded-2xl border border-dashed border-[#e2e8f0] dark:border-[#222228]">
-						<div className="w-20 h-20 rounded-xl bg-white dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center overflow-hidden shrink-0 relative group">
+					<div className="flex gap-4 items-center bg-[#f1f5f9]/60 dark:bg-[#16161c]/60 p-3 rounded-2xl border border-dashed border-[#d7dfe9] dark:border-[#2a2a32]">
+						<div className="w-20 h-20 rounded-xl bg-white dark:bg-[#09090b] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center overflow-hidden shrink-0 relative group">
 							{formData.image_url ? (
 								<Image
 									src={formData.image_url}
@@ -331,11 +331,11 @@ export default function ItemModal({
 				</div>
 
 				{/* 하단 저장 버튼 */}
-				<div className="flex gap-3 pt-3 border-t border-[#e2e8f0] dark:border-[#222228]">
+				<div className="flex gap-3 pt-3 border-t border-[#d7dfe9] dark:border-[#2a2a32]">
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex-1 h-12 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-sm transition-all border border-[#e2e8f0] dark:border-[#222228]"
+						className="flex-1 h-12 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-sm transition-all border border-[#d7dfe9] dark:border-[#2a2a32]"
 					>
 						취소
 					</button>

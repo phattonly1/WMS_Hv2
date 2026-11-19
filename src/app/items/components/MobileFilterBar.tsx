@@ -48,15 +48,15 @@ export default function MobileFilterBar({
 	const [showDeviceDropdown, setShowDeviceDropdown] = useState(false);
 
 	return (
-		<div className="lg:hidden fixed bottom-0 left-0 right-0 w-full overflow-visible flex-shrink-0 z-50 bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#e2e8f0] dark:border-[#222228] pb-safe transition-colors">
+		<div className="lg:hidden fixed bottom-0 left-0 right-0 w-full overflow-visible flex-shrink-0 z-50 bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#d7dfe9] dark:border-[#2a2a32] pb-safe transition-colors">
 			{/* 1. 세부 기기 필터 (제조사 선택시에만 노출) */}
 			{activeTab === "inventory" && filterManufacturer !== "ALL" && (
-				<div className="px-3 py-2 border-b border-[#e2e8f0] dark:border-[#222228]">
+				<div className="px-3 py-2 border-b border-[#d7dfe9] dark:border-[#2a2a32]">
 					<div className="relative">
 						<button
 							type="button"
 							onClick={() => setShowDeviceDropdown(!showDeviceDropdown)}
-							className="w-full flex items-center justify-between px-3.5 h-10 bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl text-xs font-semibold text-[#0f172a] dark:text-white transition-all"
+							className="w-full flex items-center justify-between px-3.5 h-10 bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl text-xs font-semibold text-[#0f172a] dark:text-white transition-all"
 						>
 							<span className="flex items-center gap-2 truncate">
 								<span className="text-blue-600 dark:text-blue-400 font-bold">
@@ -80,7 +80,7 @@ export default function MobileFilterBar({
 									className="fixed inset-0 z-40"
 									onClick={() => setShowDeviceDropdown(false)}
 								/>
-								<div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl shadow-2xl z-50 overflow-hidden">
+								<div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-2xl shadow-2xl z-50 overflow-hidden">
 									<div className="max-h-60 overflow-y-auto p-1">
 										{subDevices.map((device: string) => (
 											<button
@@ -110,7 +110,7 @@ export default function MobileFilterBar({
 			{/* 2. 탭 전환 + 검색창 + 재고 토글 */}
 			<div className="flex items-center gap-2 px-3 py-2">
 				{/* 탭 버튼 */}
-				<div className="flex items-center gap-1 bg-[#f1f5f9] dark:bg-[#16161c] p-1 rounded-xl border border-[#e2e8f0] dark:border-[#222228] shrink-0">
+				<div className="flex items-center gap-1 bg-[#f1f5f9] dark:bg-[#16161c] p-1 rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32] shrink-0">
 					<button
 						type="button"
 						onClick={() => setActiveTab("inventory")}
@@ -150,7 +150,7 @@ export default function MobileFilterBar({
 				</div>
 
 				{/* 검색창 컨테이너 */}
-				<div className="flex-1 min-w-0 h-[44px] rounded-xl flex items-center px-2 bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] focus-within:border-blue-500/50 relative">
+				<div className="flex-1 min-w-0 h-[44px] rounded-xl flex items-center px-2 bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] focus-within:border-blue-500/50 relative">
 					<div className="relative">
 						<button
 							type="button"
@@ -176,8 +176,8 @@ export default function MobileFilterBar({
 									className="fixed inset-0 z-40"
 									onClick={() => setShowManufDropdown(false)}
 								/>
-								<div className="absolute bottom-full left-0 mb-3 w-52 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl shadow-2xl z-50 overflow-hidden">
-									<div className="p-3 border-b border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#111115]">
+								<div className="absolute bottom-full left-0 mb-3 w-52 bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-2xl shadow-2xl z-50 overflow-hidden">
+									<div className="p-3 border-b border-[#d7dfe9] dark:border-[#2a2a32] bg-[#f8fafc] dark:bg-[#111115]">
 										<p className="text-[10px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider px-1">
 											제조사 선택
 										</p>
@@ -233,7 +233,7 @@ export default function MobileFilterBar({
 					className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all shrink-0 border ${
 						showInStockOnly
 							? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
-							: "bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228] hover:text-[#0f172a] dark:hover:text-white"
+							: "bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] border-[#d7dfe9] dark:border-[#2a2a32] hover:text-[#0f172a] dark:hover:text-white"
 					}`}
 					title={showInStockOnly ? "전체 보기" : "재고 있는 것만 보기"}
 				>

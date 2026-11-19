@@ -82,7 +82,7 @@ export function LauncherCard() {
 				onClick={handleCopyLauncher}
 				className="block h-full w-full text-left cursor-pointer"
 			>
-				<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] h-full min-h-[160px]">
+				<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] h-full min-h-[160px]">
 					<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
 						<Image
 							src="/icons/icon-chart-bg.png"
@@ -129,7 +129,7 @@ export function LauncherCard() {
 
 			{/* 5초 토스트 알림창 */}
 			{showToast && (
-				<div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92vw] max-w-[480px] bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] flex items-start gap-3.5 transition-all text-[#0f172a] dark:text-[#f4f4f5] animate-in fade-in slide-in-from-top-4 duration-200">
+				<div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92vw] max-w-[480px] bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] flex items-start gap-3.5 transition-all text-[#0f172a] dark:text-[#f4f4f5] animate-in fade-in slide-in-from-top-4 duration-200">
 					<div className="flex-1 min-w-0 pr-1">
 						<div className="flex items-center gap-2 flex-wrap">
 							<span className="font-bold text-sm text-[#0f172a] dark:text-white tracking-tight break-keep">
@@ -143,15 +143,15 @@ export function LauncherCard() {
 
 						<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] mt-1.5 leading-relaxed break-keep">
 							WMS 사이트 화면에서{" "}
-							<kbd className="px-1.5 py-0.5 text-[11px] font-mono font-semibold bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded text-[#0f172a] dark:text-white shadow-xs">
+							<kbd className="px-1.5 py-0.5 text-[11px] font-mono font-semibold bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded text-[#0f172a] dark:text-white shadow-xs">
 								F12
 							</kbd>{" "}
 							콘솔 열고{" "}
-							<kbd className="px-1.5 py-0.5 text-[11px] font-mono font-semibold bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded text-[#0f172a] dark:text-white shadow-xs">
+							<kbd className="px-1.5 py-0.5 text-[11px] font-mono font-semibold bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded text-[#0f172a] dark:text-white shadow-xs">
 								Ctrl+V
 							</kbd>{" "}
 							후{" "}
-							<kbd className="px-1.5 py-0.5 text-[11px] font-mono font-semibold bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded text-[#0f172a] dark:text-white shadow-xs">
+							<kbd className="px-1.5 py-0.5 text-[11px] font-mono font-semibold bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded text-[#0f172a] dark:text-white shadow-xs">
 								Enter
 							</kbd>
 							를 누르세요.

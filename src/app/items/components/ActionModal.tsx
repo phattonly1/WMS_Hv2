@@ -107,13 +107,13 @@ export default function ActionModal({
 		>
 			<div className="space-y-2.5">
 				{/* 1. 올인원 인라인 스텝퍼 + 퀵 버튼 */}
-				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-2.5 rounded-2xl border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between gap-2">
+				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-2.5 rounded-2xl border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-between gap-2">
 					{/* 수량 감소 / 표시 / 증가 */}
 					<div className="flex items-center gap-1.5">
 						<button
 							type="button"
 							onClick={() => setActionQty((prev) => Math.max(1, prev - 1))}
-							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
+							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
 							aria-label="수량 감소"
 						>
 							<Minus size={14} />
@@ -124,7 +124,7 @@ export default function ActionModal({
 						<button
 							type="button"
 							onClick={() => setActionQty((prev) => prev + 1)}
-							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
+							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
 							aria-label="수량 증가"
 						>
 							<Plus size={14} />
@@ -141,7 +141,7 @@ export default function ActionModal({
 								key={add}
 								type="button"
 								onClick={() => setActionQty((prev) => prev + add)}
-								className="px-2 py-1 rounded-lg bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-[11px] font-bold tabular-nums text-[#64748b] dark:text-[#a1a1aa] hover:text-blue-600 dark:hover:text-blue-400 active:scale-95 transition-all shadow-2xs"
+								className="px-2 py-1 rounded-lg bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] text-[11px] font-bold tabular-nums text-[#64748b] dark:text-[#a1a1aa] hover:text-blue-600 dark:hover:text-blue-400 active:scale-95 transition-all shadow-2xs"
 							>
 								+{add}
 							</button>
@@ -162,7 +162,7 @@ export default function ActionModal({
 							id="action-user"
 							name="action-user"
 							placeholder="이름 입력"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-9 px-2.5 text-center font-bold text-[#0f172a] dark:text-white text-xs focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-9 px-2.5 text-center font-bold text-[#0f172a] dark:text-white text-xs focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 							value={actionUser}
 							onChange={(e) => setActionUser(e.target.value)}
 						/>
@@ -179,7 +179,7 @@ export default function ActionModal({
 							id="action-note"
 							name="action-note"
 							placeholder={isReq ? "입고 사유" : "사용 목적"}
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-9 px-2.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-9 px-2.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 							value={actionNote}
 							onChange={(e) => setActionNote(e.target.value)}
 						/>
@@ -191,7 +191,7 @@ export default function ActionModal({
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#e2e8f0] dark:border-[#222228] active:scale-98"
+						className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#d7dfe9] dark:border-[#2a2a32] active:scale-98"
 					>
 						취소
 					</button>

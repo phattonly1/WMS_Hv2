@@ -103,7 +103,7 @@ export default function ReturnModal({
 							? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
 							: isTakingBack
 								? "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa]"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa]"
 					}`}
 				>
 					<div className="flex items-center gap-1.5">
@@ -124,7 +124,7 @@ export default function ReturnModal({
 
 				{/* 원래 수량 / 현재 반납된 수량 */}
 				<div className="grid grid-cols-2 gap-3">
-					<div className="p-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
+					<div className="p-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32]">
 						<p className="text-[10px] font-semibold text-[#64748b] dark:text-[#a1a1aa] mb-1">
 							원 불출 수량
 						</p>
@@ -132,7 +132,7 @@ export default function ReturnModal({
 							{originalQty}개
 						</p>
 					</div>
-					<div className="p-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228]">
+					<div className="p-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32]">
 						<p className="text-[10px] font-semibold text-[#64748b] dark:text-[#a1a1aa] mb-1">
 							현재 반납 완료
 						</p>
@@ -143,7 +143,7 @@ export default function ReturnModal({
 				</div>
 
 				{/* 사용 중 수량 조절 인터페이스 */}
-				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-4 rounded-2xl border border-[#e2e8f0] dark:border-[#222228] space-y-3">
+				<div className="bg-[#f8fafc] dark:bg-[#16161c] p-4 rounded-2xl border border-[#d7dfe9] dark:border-[#2a2a32] space-y-3">
 					<p className="text-center text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
 						현재 사용 중 수량 조절
 					</p>
@@ -151,7 +151,7 @@ export default function ReturnModal({
 						<button
 							type="button"
 							onClick={() => setCurrentOutQty((prev) => Math.max(0, prev - 1))}
-							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
+							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
 							aria-label="사용 중 수량 감소 (반납)"
 						>
 							<Minus size={20} />
@@ -177,7 +177,7 @@ export default function ReturnModal({
 							onClick={() =>
 								setCurrentOutQty((prev) => Math.min(originalQty, prev + 1))
 							}
-							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
+							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
 							aria-label="사용 중 수량 증가"
 						>
 							<Plus size={20} />
@@ -200,7 +200,7 @@ export default function ReturnModal({
 							placeholder="이름을 입력하세요"
 							value={userName}
 							onChange={(e) => setUserName(e.target.value)}
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-11 px-3.5 text-center font-bold text-[#0f172a] dark:text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-11 px-3.5 text-center font-bold text-[#0f172a] dark:text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 						/>
 					</div>
 					<div className="space-y-1.5">
@@ -216,7 +216,7 @@ export default function ReturnModal({
 							placeholder="반납 사유 또는 특이사항 (선택)"
 							value={note}
 							onChange={(e) => setNote(e.target.value)}
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-11 px-3.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-11 px-3.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
 						/>
 					</div>
 				</div>
@@ -226,7 +226,7 @@ export default function ReturnModal({
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex-1 h-12 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-sm transition-all border border-[#e2e8f0] dark:border-[#222228]"
+						className="flex-1 h-12 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-sm transition-all border border-[#d7dfe9] dark:border-[#2a2a32]"
 					>
 						취소
 					</button>

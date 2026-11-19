@@ -120,6 +120,22 @@ export default function DocsClientView({
 		};
 	}, [handleScrollUpdate]);
 
+	// 모달 또는 목차가 열렸을 때 뒤 배경(docs 페이지) 스크롤 차단
+	useEffect(() => {
+		const isOverlayOpen = isNavOpen || activeModal !== null;
+		if (isOverlayOpen) {
+			document.documentElement.style.overflow = "hidden";
+			document.body.style.overflow = "hidden";
+		} else {
+			document.documentElement.style.overflow = "";
+			document.body.style.overflow = "";
+		}
+		return () => {
+			document.documentElement.style.overflow = "";
+			document.body.style.overflow = "";
+		};
+	}, [isNavOpen, activeModal]);
+
 	// Cmd/Ctrl + K 키보드 단축키
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
@@ -177,11 +193,11 @@ export default function DocsClientView({
 			/>
 
 			{/* 상단 내비게이션 바 (items 헤더와 동일한 풀폭 스타일, 스크롤 시 자연스럽게 사라짐) */}
-			<header className="relative h-14 px-4 lg:px-6 border-b border-[#e2e8f0] dark:border-[#222228] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between gap-2 shrink-0 z-20 transition-colors">
+			<header className="relative h-14 px-4 lg:px-6 border-b border-[#d7dfe9] dark:border-[#2a2a32] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between gap-2 shrink-0 z-20 transition-colors">
 				<div className="flex items-center gap-3 min-w-0">
 					<Link
 						href="/dashboard"
-						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
+						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
 						title="대시보드로 돌아가기"
 						aria-label="대시보드로 돌아가기"
 					>
@@ -205,7 +221,7 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => setActiveModal("download")}
-						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 					>
 						<FolderDown
 							size={14}
@@ -216,7 +232,7 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => setActiveModal("video")}
-						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 					>
 						<Video
 							size={14}
@@ -227,7 +243,7 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => setActiveModal("reagent")}
-						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 					>
 						<FlaskConical
 							size={14}
@@ -273,7 +289,7 @@ export default function DocsClientView({
 								className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
 									activeCategoryId === cat.id
 										? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
-										: "bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:border-blue-500/30"
+										: "bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:border-blue-500/30"
 								}`}
 							>
 								{cat.name} ({cat.items.length})
@@ -298,17 +314,17 @@ export default function DocsClientView({
 					type="button"
 					onClick={scrollToTop}
 					aria-label="맨 위로 이동"
-					className="hidden sm:flex fixed bottom-8 right-6 z-40 w-10 h-10 rounded-full bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white border border-[#e2e8f0] dark:border-[#222228] shadow-lg items-center justify-center transition-all hover:bg-[#f1f5f9] dark:hover:bg-white/10 active:scale-95"
+					className="hidden sm:flex fixed bottom-8 right-6 z-40 w-10 h-10 rounded-full bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white border border-[#d7dfe9] dark:border-[#2a2a32] shadow-lg items-center justify-center transition-all hover:bg-[#f1f5f9] dark:hover:bg-white/10 active:scale-95"
 				>
 					<ArrowUp size={16} strokeWidth={2.5} />
 				</button>
 			)}
 
 			{/* 모바일 전용 하단 고정 액션바 */}
-			<div className="sm:hidden fixed bottom-0 left-0 right-0 z-[1100] bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#e2e8f0] dark:border-[#222228] transition-colors pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+			<div className="sm:hidden fixed bottom-0 left-0 right-0 z-[1100] bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#d7dfe9] dark:border-[#2a2a32] transition-colors pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
 				{/* 카테고리 퀵 내비게이터 (모달 또는 목차가 닫혀있을 때만 노출) */}
 				{!activeModal && !isNavOpen && (
-					<div className="grid grid-cols-3 items-center border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none">
+					<div className="grid grid-cols-3 items-center border-b border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold select-none">
 						<button
 							type="button"
 							onClick={() => {
@@ -317,7 +333,7 @@ export default function DocsClientView({
 									setActiveItemId(null);
 								}
 							}}
-							className="h-9 flex items-center justify-center gap-1 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white border-r border-[#e2e8f0] dark:border-[#222228] px-2 active:scale-95 transition-all cursor-pointer"
+							className="h-9 flex items-center justify-center gap-1 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white border-r border-[#d7dfe9] dark:border-[#2a2a32] px-2 active:scale-95 transition-all cursor-pointer"
 						>
 							<ChevronLeft size={14} />
 							<span className="truncate">{prevCategory?.name || "이전"}</span>
@@ -327,7 +343,7 @@ export default function DocsClientView({
 							type="button"
 							onClick={scrollToTop}
 							title="맨 위로 이동"
-							className={`relative h-9 flex items-center justify-center gap-1.5 px-2 text-center border-r border-[#e2e8f0] dark:border-[#222228] font-bold text-xs active:scale-95 transition-all cursor-pointer overflow-hidden ${
+							className={`relative h-9 flex items-center justify-center gap-1.5 px-2 text-center border-r border-[#d7dfe9] dark:border-[#2a2a32] font-bold text-xs active:scale-95 transition-all cursor-pointer overflow-hidden ${
 								showScrollTop
 									? "bg-blue-500/10 text-blue-600 dark:text-blue-400 font-extrabold shadow-inner"
 									: "text-[#0f172a] dark:text-[#f4f4f5] hover:text-blue-600 dark:hover:text-blue-400"
@@ -378,7 +394,7 @@ export default function DocsClientView({
 						className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer ${
 							activeModal === "reagent"
 								? "bg-emerald-500/10 border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] text-emerald-600 dark:text-emerald-400"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] text-emerald-600 dark:text-emerald-400"
 						}`}
 						title="시약"
 						aria-label="시약 모달 열기"
@@ -397,7 +413,7 @@ export default function DocsClientView({
 						className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer ${
 							activeModal === "video"
 								? "bg-indigo-500/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-400"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] text-indigo-600 dark:text-indigo-400"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] text-indigo-600 dark:text-indigo-400"
 						}`}
 						title="동영상"
 						aria-label="동영상 모달 열기"
@@ -416,7 +432,7 @@ export default function DocsClientView({
 						className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 active:scale-95 transition-all cursor-pointer ${
 							activeModal === "download"
 								? "bg-amber-500/10 border-amber-500/40 text-amber-600 dark:text-amber-400"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] text-amber-600 dark:text-amber-400"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] text-amber-600 dark:text-amber-400"
 						}`}
 						title="다운로드"
 						aria-label="보관함 모달 열기"
@@ -425,7 +441,7 @@ export default function DocsClientView({
 					</button>
 
 					{/* 4. 중앙 공용 검색창 */}
-					<div className="flex-1 min-w-0 h-9 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#e2e8f0] dark:border-[#222228] focus-within:border-blue-500/50 flex items-center px-2.5 transition-colors">
+					<div className="flex-1 min-w-0 h-9 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#d7dfe9] dark:border-[#2a2a32] focus-within:border-blue-500/50 flex items-center px-2.5 transition-colors">
 						<Search
 							size={13}
 							className="text-[#64748b] dark:text-[#a1a1aa] mr-1 shrink-0"
@@ -495,7 +511,7 @@ export default function DocsClientView({
 						className={`h-9 px-2.5 rounded-xl border flex items-center justify-center gap-0.5 shrink-0 active:scale-95 transition-all cursor-pointer select-none font-bold text-xs ${
 							fontSizeStep > 0
 								? "bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 						}`}
 						title={`본문 글자 크기: ${fontSizeStep === 2 ? "크게 (125%)" : fontSizeStep === 1 ? "중간 (110%)" : "기본 (100%)"}`}
 						aria-label="본문 글자 크기 조절"

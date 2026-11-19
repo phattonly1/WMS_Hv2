@@ -118,7 +118,7 @@ export default function ReagentModal({
 					/* 측정소 상세 시약 목록 */
 					<div className="space-y-2">
 						{/* 장비 정보 인라인 요약 바 */}
-						<div className="px-2 py-1.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px]">
+						<div className="px-2 py-1.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px]">
 							<span className="inline-flex items-center gap-1">
 								<span className="text-[#64748b] dark:text-[#a1a1aa]">TOC</span>
 								<b className="text-[#0f172a] dark:text-white">{selectedStation.toc?.equipment || "-"}</b>
@@ -163,7 +163,7 @@ export default function ReagentModal({
 											{group.reagents.map((r) => (
 												<div
 													key={`${group.category}-${r.name}`}
-													className="p-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-1"
+													className="p-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-1"
 												>
 													<div className="flex items-center justify-between gap-2">
 														<div className="flex items-center gap-1.5 min-w-0">
@@ -181,7 +181,7 @@ export default function ReagentModal({
 														</span>
 													</div>
 
-													<div className="space-y-0.5 bg-white dark:bg-[#09090b] p-1.5 rounded-lg border border-[#e2e8f0] dark:border-[#222228] text-xs">
+													<div className="space-y-0.5 bg-white dark:bg-[#09090b] p-1.5 rounded-lg border border-[#d7dfe9] dark:border-[#2a2a32] text-xs">
 														{r.steps.map((step) => (
 															<div
 																key={step}
@@ -226,7 +226,7 @@ export default function ReagentModal({
 										key={station.name}
 										type="button"
 										onClick={() => setSelectedStation(station)}
-										className="px-2 py-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 text-left transition-colors flex items-center justify-between"
+										className="px-2 py-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 text-left transition-colors flex items-center justify-between"
 									>
 										<div className="flex items-center gap-1.5 min-w-0">
 											<MapPin size={11} className="text-blue-600 dark:text-blue-400 shrink-0" />
@@ -253,7 +253,7 @@ export default function ReagentModal({
 												{group.items.map((r) => (
 													<div
 														key={`${group.category}-${r.name}-${r.manufacturer}`}
-														className="p-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] space-y-1"
+														className="p-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-1"
 													>
 														<div className="flex items-center justify-between gap-2">
 															<span className="text-xs font-bold text-[#0f172a] dark:text-white">
@@ -263,7 +263,7 @@ export default function ReagentModal({
 																{r.manufacturer}
 															</span>
 														</div>
-														<div className="bg-white dark:bg-[#09090b] p-1.5 rounded-lg text-xs text-[#334155] dark:text-[#d4d4d8] space-y-0.5 border border-[#e2e8f0] dark:border-[#222228]">
+														<div className="bg-white dark:bg-[#09090b] p-1.5 rounded-lg text-xs text-[#334155] dark:text-[#d4d4d8] space-y-0.5 border border-[#d7dfe9] dark:border-[#2a2a32]">
 															{r.steps.map((s) => (
 																<p key={s}>{s}</p>
 															))}

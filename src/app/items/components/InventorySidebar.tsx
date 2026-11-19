@@ -49,10 +49,10 @@ export default function InventorySidebar({
 	const [showDeviceDropdown, setShowDeviceDropdown] = useState(false);
 
 	return (
-		<aside className="hidden lg:flex lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100dvh-5.5rem)] w-[240px] flex-shrink-0 flex-col p-4 gap-6 overflow-y-auto border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
+		<aside className="hidden lg:flex lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100dvh-5.5rem)] w-[240px] flex-shrink-0 flex-col p-4 gap-6 overflow-y-auto border border-[#d7dfe9] dark:border-[#2a2a32] bg-white dark:bg-[#111115] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
 			{/* 검색창 */}
 			<div>
-				<div className="h-[40px] rounded-xl flex items-center px-3 bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] transition-all focus-within:border-blue-500/50 mb-6">
+				<div className="h-[40px] rounded-xl flex items-center px-3 bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] transition-all focus-within:border-blue-500/50 mb-6">
 					<Search
 						size={16}
 						className="text-[#64748b] dark:text-[#a1a1aa] mr-2 shrink-0 group-focus-within:text-blue-500 dark:group-focus-within:text-blue-400"
@@ -156,7 +156,7 @@ export default function InventorySidebar({
 								<button
 									type="button"
 									onClick={() => setShowDeviceDropdown(!showDeviceDropdown)}
-									className="w-full flex items-center justify-between px-3.5 h-[40px] bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl text-xs font-semibold text-[#0f172a] dark:text-white hover:border-blue-500/40 transition-all"
+									className="w-full flex items-center justify-between px-3.5 h-[40px] bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl text-xs font-semibold text-[#0f172a] dark:text-white hover:border-blue-500/40 transition-all"
 								>
 									<span className="truncate">
 										{filterDevice === "ALL" ? "모든 세부 기기" : filterDevice}
@@ -175,7 +175,7 @@ export default function InventorySidebar({
 											className="fixed inset-0 z-40"
 											onClick={() => setShowDeviceDropdown(false)}
 										/>
-										<div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl shadow-2xl z-50 overflow-hidden">
+										<div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl shadow-2xl z-50 overflow-hidden">
 											<div className="max-h-60 overflow-y-auto p-1">
 												{subDevices.map((device: string) => (
 													<button
@@ -208,7 +208,7 @@ export default function InventorySidebar({
 								className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
 									showInStockOnly
 										? "bg-emerald-500 border-emerald-500 text-white"
-										: "border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#16161c]"
+										: "border-[#d7dfe9] dark:border-[#2a2a32] bg-[#f8fafc] dark:bg-[#16161c]"
 								}`}
 							>
 								{showInStockOnly && <Check size={12} strokeWidth={3} />}

@@ -19,11 +19,11 @@ export default function ArchitecturePageClient() {
 
 			<div className="max-w-7xl mx-auto space-y-6 relative z-10">
 				{/* 상단 내비게이션 바 */}
-				<header className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] shadow-sm transition-colors">
+				<header className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-sm transition-colors">
 					<div className="flex items-center gap-3">
 						<Link
 							href="/dashboard"
-							className="p-2.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5] transition-colors"
+							className="p-2.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-[#f4f4f5] transition-colors"
 						>
 							<ArrowLeft className="w-4 h-4" />
 						</Link>

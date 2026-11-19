@@ -51,7 +51,7 @@ export default function ReagentSheetMetaModal({
 						value={sheetTitle}
 						onChange={(e) => setSheetTitle(e.target.value)}
 						placeholder="예: 10차 시약 주문 (11월 분)"
-						className="w-full h-11 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
+						className="w-full h-11 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
 					/>
 				</div>
 
@@ -69,7 +69,7 @@ export default function ReagentSheetMetaModal({
 							value={sheetDeadline}
 							onChange={(e) => setSheetDeadline(e.target.value)}
 							placeholder="예: 11/20"
-							className="w-full h-11 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
+							className="w-full h-11 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-mono text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
 						/>
 					</div>
 					<div className="space-y-1.5">
@@ -85,7 +85,7 @@ export default function ReagentSheetMetaModal({
 							value={sheetDelivery}
 							onChange={(e) => setSheetDelivery(e.target.value)}
 							placeholder="예: 11/27"
-							className="w-full h-11 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-mono text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
+							className="w-full h-11 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-mono text-[#0f172a] dark:text-white outline-none focus:border-[#2563eb]"
 						/>
 					</div>
 				</div>
@@ -94,7 +94,7 @@ export default function ReagentSheetMetaModal({
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex-1 h-12 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] font-bold text-xs cursor-pointer"
+						className="flex-1 h-12 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] font-bold text-xs cursor-pointer"
 					>
 						취소
 					</button>

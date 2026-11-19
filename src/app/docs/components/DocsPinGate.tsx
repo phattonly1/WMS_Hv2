@@ -243,7 +243,7 @@ export function DocsPinGate({
 						className={`w-full aspect-square text-center text-lg sm:text-xl font-black rounded-2xl transition-all duration-200 outline-none caret-transparent disabled:opacity-50 ${
 							error
 								? "bg-red-500/10 border-2 border-red-500 text-red-500"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#0f172a] dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+								: "bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#0f172a] dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
 						} ${
 							digit && !error
 								? "bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400"

@@ -100,7 +100,7 @@ export default function DesktopReagentWorkspace({
 	return (
 		<div className="hidden lg:flex flex-1 max-w-[1600px] mx-auto w-full flex-row overflow-x-hidden pt-4 px-4 gap-4 relative min-h-0">
 			{/* 좌측 사이드바 (데스크톱): 주문 회차 선택 전용 */}
-			<aside className="w-[240px] shrink-0 flex flex-col p-4 overflow-y-auto border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] mb-4">
+			<aside className="w-[240px] shrink-0 flex flex-col p-4 overflow-y-auto border border-[#d7dfe9] dark:border-[#2a2a32] bg-white dark:bg-[#111115] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] mb-4">
 				<div className="flex items-center justify-between mb-3 px-1">
 					<h3 className="text-[11px] font-bold text-[#64748b] dark:text-[#a1a1aa] uppercase tracking-wider">
 						주문 회차 (시트)
@@ -168,7 +168,7 @@ export default function DesktopReagentWorkspace({
 			{/* 우측 메인 영역 (데스크톱) */}
 			<main className="flex-1 flex flex-col min-w-0 min-h-0 pb-4 gap-3">
 				{/* 현재 시트 배너 & 마감일/납기일 수정/삭제 */}
-				<div className="bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl p-3.5 px-5 flex items-center justify-between gap-3 shrink-0 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+				<div className="bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-2xl p-3.5 px-5 flex items-center justify-between gap-3 shrink-0 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
 					<div className="flex items-center gap-3 min-w-0">
 						<div>
 							<div className="flex items-center gap-2">
@@ -198,7 +198,7 @@ export default function DesktopReagentWorkspace({
 							className={`h-10 px-3 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 active:scale-95 ${
 								showReferenceCols
 									? "bg-blue-500/10 border-blue-500/30 text-[#2563eb] dark:text-[#60a5fa]"
-									: "bg-[#f8fafc] dark:bg-[#16161c] border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+									: "bg-[#f8fafc] dark:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 							}`}
 							title="작년 주문량, 매뉴얼 열 표시/숨김"
 						>
@@ -208,7 +208,7 @@ export default function DesktopReagentWorkspace({
 
 						{!isSummaryView && currentSheet && (
 							<>
-								<div className="h-10 flex items-center gap-1.5 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs">
+								<div className="h-10 flex items-center gap-1.5 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs">
 									<Calendar
 										size={13}
 										className="text-amber-500 dark:text-[#fbbf24]"
@@ -220,7 +220,7 @@ export default function DesktopReagentWorkspace({
 										{currentSheet.deadline}
 									</span>
 								</div>
-								<div className="h-10 flex items-center gap-1.5 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs">
+								<div className="h-10 flex items-center gap-1.5 px-3 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs">
 									<Calendar
 										size={13}
 										className="text-emerald-500 dark:text-[#34d399]"
@@ -235,7 +235,7 @@ export default function DesktopReagentWorkspace({
 								<button
 									type="button"
 									onClick={onOpenEditSheetModal}
-									className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+									className="w-10 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
 									title="마감일/납기일 수정"
 								>
 									<PenLine size={15} />
@@ -256,7 +256,7 @@ export default function DesktopReagentWorkspace({
 				</div>
 
 				{/* 데스크톱 전체 엑셀 매트릭스 테이블 컨테이너 */}
-				<div className="flex-1 min-h-0 bg-white dark:bg-[#111115] border border-[#e2e8f0] dark:border-[#222228] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] flex flex-col overflow-hidden">
+				<div className="flex-1 min-h-0 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] flex flex-col overflow-hidden">
 					{loading ? (
 						<div className="h-full flex items-center justify-center p-12 text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							시약 주문 시트 데이터를 불러오는 중...
@@ -270,7 +270,7 @@ export default function DesktopReagentWorkspace({
 								{/* 1. 상단 제목(헤더) 독립 고정 (스크롤바 너비만큼 우측 패딩으로 1px 오차 없이 일치) */}
 								<div
 									style={{ paddingRight: `${scrollbarWidth}px` }}
-									className="shrink-0 bg-[#f1f5f9] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228]"
+									className="shrink-0 bg-[#f1f5f9] dark:bg-[#16161c] border-b border-[#d7dfe9] dark:border-[#2a2a32]"
 								>
 									<table className="w-full border-collapse text-xs table-fixed">
 										<colgroup>
@@ -291,25 +291,25 @@ export default function DesktopReagentWorkspace({
 										</colgroup>
 										<thead className="bg-[#f1f5f9] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5]">
 											<tr>
-												<th className="py-2 px-2 text-center font-bold border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap">
+												<th className="py-2 px-2 text-center font-bold border-r border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap">
 													측정항목
 												</th>
-												<th className="py-2 px-2.5 text-left font-bold border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap">
+												<th className="py-2 px-2.5 text-left font-bold border-r border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap">
 													측정기기
 												</th>
-												<th className="py-2 px-2 text-center font-bold border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap">
+												<th className="py-2 px-2 text-center font-bold border-r border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap">
 													회사명
 												</th>
-												<th className="py-2 px-2.5 text-left font-bold border-r-2 border-[#cbd5e1] dark:border-[#33333e] whitespace-nowrap">
+												<th className="py-2 px-2.5 text-left font-bold border-r-2 border-[#d7dfe9] dark:border-[#33333e] whitespace-nowrap">
 													제조시약명
 												</th>
 												{showReferenceCols && (
 													<>
-														<th className="py-1.5 px-2 text-center text-[11px] text-[#64748b] dark:text-[#a1a1aa] border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap">
+														<th className="py-1.5 px-2 text-center text-[11px] text-[#64748b] dark:text-[#a1a1aa] border-r border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap">
 															<div>작년 주문량</div>
 															<div className="text-[10px]">(1달, 기기 당)</div>
 														</th>
-														<th className="py-1.5 px-2 text-center text-[11px] text-[#64748b] dark:text-[#a1a1aa] border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap">
+														<th className="py-1.5 px-2 text-center text-[11px] text-[#64748b] dark:text-[#a1a1aa] border-r border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap">
 															<div>매뉴얼</div>
 															<div className="text-[10px]">(1달, 기기 당)</div>
 														</th>
@@ -322,7 +322,7 @@ export default function DesktopReagentWorkspace({
 															key={person}
 															onMouseEnter={() => setHoveredCol(person)}
 															onMouseLeave={() => setHoveredCol(null)}
-															className={`py-2 px-2 text-center font-bold border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap transition-colors ${
+															className={`py-2 px-2 text-center font-bold border-r border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap transition-colors ${
 																isColActive
 																	? "bg-blue-500/15 text-[#2563eb] dark:text-[#60a5fa]"
 																	: ""
@@ -335,7 +335,7 @@ export default function DesktopReagentWorkspace({
 												<th
 													onMouseEnter={() => setHoveredCol("__sum__")}
 													onMouseLeave={() => setHoveredCol(null)}
-													className={`py-2 px-2.5 text-center font-bold border-r border-[#e2e8f0] dark:border-[#222228] whitespace-nowrap transition-colors ${
+													className={`py-2 px-2.5 text-center font-bold border-r border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap transition-colors ${
 														hoveredCol === "__sum__"
 															? "bg-blue-500/25 text-[#2563eb] dark:text-[#60a5fa]"
 															: "bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa]"
@@ -400,7 +400,7 @@ export default function DesktopReagentWorkspace({
 															? "bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border-emerald-500/20"
 															: row.category === "TN"
 																? "bg-amber-500/10 text-amber-600 dark:text-[#fbbf24] border-amber-500/20"
-																: "bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228]";
+																: "bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] border-[#d7dfe9] dark:border-[#2a2a32]";
 
 												return (
 													<tr
@@ -411,14 +411,14 @@ export default function DesktopReagentWorkspace({
 																: ""
 														} ${
 															isCategoryEnd
-																? "border-b-2 border-[#cbd5e1] dark:border-[#33333e]"
+																? "border-b-2 border-[#d7dfe9] dark:border-[#33333e]"
 																: ""
 														}`}
 													>
 														{rowSpan ? (
 															<td
 																rowSpan={rowSpan}
-																className="py-1 px-2 text-center align-middle border-r border-b-2 border-[#cbd5e1] dark:border-[#33333e] bg-white dark:bg-[#111115] whitespace-nowrap"
+																className="py-1 px-2 text-center align-middle border-r border-b-2 border-[#d7dfe9] dark:border-[#33333e] bg-white dark:bg-[#111115] whitespace-nowrap"
 															>
 																<span
 																	className={`inline-block px-1.5 py-1 rounded-md font-mono font-bold text-[10px] border shadow-2xs ${catBadgeClass}`}
@@ -428,15 +428,15 @@ export default function DesktopReagentWorkspace({
 															</td>
 														) : null}
 
-														<td className="py-1 px-2.5 font-mono font-semibold text-[11px] text-[#475569] dark:text-[#a1a1aa] group-hover:text-[#0f172a] dark:group-hover:text-white border-r border-[#e2e8f0] dark:border-[#1a1a20] whitespace-nowrap transition-colors">
+														<td className="py-1 px-2.5 font-mono font-semibold text-[11px] text-[#475569] dark:text-[#a1a1aa] group-hover:text-[#0f172a] dark:group-hover:text-white border-r border-[#d7dfe9] dark:border-[#1a1a20] whitespace-nowrap transition-colors">
 															{row.device}
 														</td>
 
-														<td className="py-1 px-1.5 text-center text-[11px] text-[#64748b] dark:text-[#a1a1aa] border-r border-[#e2e8f0] dark:border-[#1a1a20] whitespace-nowrap">
+														<td className="py-1 px-1.5 text-center text-[11px] text-[#64748b] dark:text-[#a1a1aa] border-r border-[#d7dfe9] dark:border-[#1a1a20] whitespace-nowrap">
 															{row.company || "-"}
 														</td>
 
-														<td className="py-1 px-2.5 font-bold text-xs text-[#0f172a] dark:text-white group-hover:text-[#2563eb] dark:group-hover:text-[#60a5fa] border-r-2 border-[#cbd5e1] dark:border-[#33333e] whitespace-nowrap transition-colors">
+														<td className="py-1 px-2.5 font-bold text-xs text-[#0f172a] dark:text-white group-hover:text-[#2563eb] dark:group-hover:text-[#60a5fa] border-r-2 border-[#d7dfe9] dark:border-[#33333e] whitespace-nowrap transition-colors">
 															{row.reagentName || (
 																<span className="text-[#64748b] dark:text-[#a1a1aa] font-normal">
 																	{row.device}
@@ -446,10 +446,10 @@ export default function DesktopReagentWorkspace({
 
 														{showReferenceCols && (
 															<>
-																<td className="py-1 px-2 text-center font-mono text-xs text-[#64748b] dark:text-[#a1a1aa] border-r border-[#e2e8f0] dark:border-[#1a1a20] whitespace-nowrap">
+																<td className="py-1 px-2 text-center font-mono text-xs text-[#64748b] dark:text-[#a1a1aa] border-r border-[#d7dfe9] dark:border-[#1a1a20] whitespace-nowrap">
 																	{row.lastYearAvg || "-"}
 																</td>
-																<td className="py-1 px-2 text-center font-mono text-xs text-[#64748b] dark:text-[#a1a1aa] border-r border-[#e2e8f0] dark:border-[#1a1a20] whitespace-nowrap">
+																<td className="py-1 px-2 text-center font-mono text-xs text-[#64748b] dark:text-[#a1a1aa] border-r border-[#d7dfe9] dark:border-[#1a1a20] whitespace-nowrap">
 																	{row.manualAvg || "-"}
 																</td>
 															</>
@@ -470,7 +470,7 @@ export default function DesktopReagentWorkspace({
 																		key={person}
 																		onMouseEnter={() => setHoveredCol(person)}
 																		onMouseLeave={() => setHoveredCol(null)}
-																		className={`py-1 px-1 text-center font-mono border-r border-[#e2e8f0] dark:border-[#1a1a20] whitespace-nowrap transition-colors ${
+																		className={`py-1 px-1 text-center font-mono border-r border-[#d7dfe9] dark:border-[#1a1a20] whitespace-nowrap transition-colors ${
 																			isColActive
 																				? "bg-blue-500/10 dark:bg-blue-500/15"
 																				: isGreenCell
@@ -507,7 +507,7 @@ export default function DesktopReagentWorkspace({
 																	key={person}
 																	onMouseEnter={() => setHoveredCol(person)}
 																	onMouseLeave={() => setHoveredCol(null)}
-																	className={`p-0.5 border-r border-[#e2e8f0] dark:border-[#1a1a20] transition-colors ${
+																	className={`p-0.5 border-r border-[#d7dfe9] dark:border-[#1a1a20] transition-colors ${
 																		isColActive
 																			? "bg-blue-500/10 dark:bg-blue-500/15"
 																			: isGreenCell
@@ -585,7 +585,7 @@ export default function DesktopReagentWorkspace({
 														<td
 															onMouseEnter={() => setHoveredCol("__sum__")}
 															onMouseLeave={() => setHoveredCol(null)}
-															className={`py-1 px-2.5 text-center font-mono font-bold border-r border-[#e2e8f0] dark:border-[#1a1a20] whitespace-nowrap transition-colors ${
+															className={`py-1 px-2.5 text-center font-mono font-bold border-r border-[#d7dfe9] dark:border-[#1a1a20] whitespace-nowrap transition-colors ${
 																hoveredCol === "__sum__"
 																	? "bg-blue-500/20"
 																	: "bg-blue-500/5"
@@ -611,7 +611,7 @@ export default function DesktopReagentWorkspace({
 								{/* 3. 하단 합계(tfoot) 독립 고정 (스크롤바 너비만큼 우측 패딩으로 1px 오차 없이 일치) */}
 								<div
 									style={{ paddingRight: `${scrollbarWidth}px` }}
-									className="shrink-0 border-t-2 border-[#cbd5e1] dark:border-[#33333e] bg-[#f1f5f9] dark:bg-[#16161c]"
+									className="shrink-0 border-t-2 border-[#d7dfe9] dark:border-[#33333e] bg-[#f1f5f9] dark:bg-[#16161c]"
 								>
 									<table className="w-full border-collapse text-xs table-fixed font-bold">
 										<colgroup>
@@ -634,14 +634,14 @@ export default function DesktopReagentWorkspace({
 											<tr>
 												<td
 													colSpan={4}
-													className="py-2 px-3 text-right text-xs text-[#0f172a] dark:text-white border-r-2 border-[#cbd5e1] dark:border-[#33333e]"
+													className="py-2 px-3 text-right text-xs text-[#0f172a] dark:text-white border-r-2 border-[#d7dfe9] dark:border-[#33333e]"
 												>
 													측정소별 총 주문량 합계 (L)
 												</td>
 												{showReferenceCols && (
 													<>
-														<td className="border-r border-[#e2e8f0] dark:border-[#222228]" />
-														<td className="border-r border-[#e2e8f0] dark:border-[#222228]" />
+														<td className="border-r border-[#d7dfe9] dark:border-[#2a2a32]" />
+														<td className="border-r border-[#d7dfe9] dark:border-[#2a2a32]" />
 													</>
 												)}
 												{PEOPLE_LIST.map((p) => {
@@ -651,7 +651,7 @@ export default function DesktopReagentWorkspace({
 															key={p}
 															onMouseEnter={() => setHoveredCol(p)}
 															onMouseLeave={() => setHoveredCol(null)}
-															className={`py-2 px-2 text-center font-mono text-xs border-r border-[#e2e8f0] dark:border-[#222228] transition-colors ${
+															className={`py-2 px-2 text-center font-mono text-xs border-r border-[#d7dfe9] dark:border-[#2a2a32] transition-colors ${
 																isColActive
 																	? "bg-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] font-bold"
 																	: "text-[#0f172a] dark:text-white"
@@ -664,7 +664,7 @@ export default function DesktopReagentWorkspace({
 												<td
 													onMouseEnter={() => setHoveredCol("__sum__")}
 													onMouseLeave={() => setHoveredCol(null)}
-													className={`py-2 px-2.5 text-center font-mono text-xs text-[#2563eb] dark:text-[#60a5fa] border-r border-[#e2e8f0] dark:border-[#222228] transition-colors ${
+													className={`py-2 px-2.5 text-center font-mono text-xs text-[#2563eb] dark:text-[#60a5fa] border-r border-[#d7dfe9] dark:border-[#2a2a32] transition-colors ${
 														hoveredCol === "__sum__"
 															? "bg-blue-500/25 font-bold"
 															: "bg-blue-500/15"
