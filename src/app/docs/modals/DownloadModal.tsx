@@ -209,7 +209,7 @@ export default function DownloadModal({
 				title="보관함 보안 코드 입력"
 				onVerified={loadRootFiles}
 			>
-				<div className="space-y-1 pr-0.5">
+				<div className="space-y-1.5 pr-0.5">
 					{isPending ? (
 						<div className="py-12 flex flex-col items-center justify-center text-xs text-[#64748b] dark:text-[#a1a1aa] gap-2">
 							<Loader2
@@ -228,7 +228,7 @@ export default function DownloadModal({
 							return (
 								<div
 									key={item.path}
-									className="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-colors gap-2"
+									className="flex items-center justify-between px-3 py-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-colors gap-3"
 								>
 									<div
 										onClick={() => {
@@ -238,48 +238,50 @@ export default function DownloadModal({
 												handlePreviewPdf(item);
 											}
 										}}
-										className={`flex items-center gap-2 min-w-0 flex-1 ${
+										className={`flex items-center gap-2.5 min-w-0 flex-1 py-0.5 ${
 											item.isFolder || canPreview ? "cursor-pointer" : ""
 										}`}
 										aria-hidden="true"
 									>
-										<div className="w-6 h-6 rounded-lg bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center shrink-0">
+										<div className="w-8 h-8 rounded-lg bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center shrink-0">
 											{getFileIcon(item.name, item.isFolder)}
 										</div>
-										<p className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
-											{item.name}
-										</p>
+										<div className="min-w-0 flex-1">
+											<p className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
+												{item.name}
+											</p>
+											<p className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa] mt-0.5">
+												{item.isFolder
+													? "폴더"
+													: formatBytes(item.metadata?.size)}
+											</p>
+										</div>
 									</div>
 
-									<div className="flex items-center gap-1.5 shrink-0">
-										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa]">
-											{item.isFolder
-												? "폴더"
-												: formatBytes(item.metadata?.size)}
-										</span>
-										{canPreview && (
-											<button
-												type="button"
-												onClick={() => handlePreviewPdf(item)}
-												title="전체 화면으로 미리보기"
-												aria-label="전체 화면으로 미리보기"
-												className="p-1 rounded-lg text-blue-600 dark:text-blue-400 hover:bg-blue-500/10 transition-colors shrink-0 active:scale-95"
-											>
-												<Eye size={13} />
-											</button>
-										)}
-										{!item.isFolder && (
+									{!item.isFolder && (
+										<div className="flex items-center gap-2 shrink-0">
+											{canPreview && (
+												<button
+													type="button"
+													onClick={() => handlePreviewPdf(item)}
+													title="전체 화면으로 미리보기"
+													aria-label="전체 화면으로 미리보기"
+													className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 flex items-center justify-center transition-all shrink-0 active:scale-95"
+												>
+													<Eye size={16} />
+												</button>
+											)}
 											<button
 												type="button"
 												onClick={() => handleDownloadSingle(item)}
 												title="다운로드"
 												aria-label="다운로드"
-												className="p-1 rounded-lg text-[#64748b] dark:text-[#a1a1aa] hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors shrink-0 active:scale-95"
+												className="w-9 h-9 rounded-xl bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-500/40 flex items-center justify-center transition-all shrink-0 active:scale-95"
 											>
-												<Download size={13} />
+												<Download size={16} />
 											</button>
-										)}
-									</div>
+										</div>
+									)}
 								</div>
 							);
 						})

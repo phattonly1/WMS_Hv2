@@ -1,7 +1,10 @@
 import { ChevronLeft, type LucideIcon, X } from "lucide-react";
 import type React from "react";
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 import { motion, useDragControls } from "framer-motion";
+
+// 전역 단일 모달 레지스트리: 새 모달이 열리면 기존 열린 모달을 자동으로 닫아 겹침 방지
+let activeModalInstance: { id: string; close: () => void } | null = null;
 
 export interface ModalProps {
 	isOpen: boolean;
@@ -46,6 +49,30 @@ export function Modal({
 	preventBodyLock = false,
 }: ModalProps) {
 	const dragControls = useDragControls();
+	const modalId = useId();
+	const onCloseRef = useRef(onClose);
+	onCloseRef.current = onClose;
+
+	// 전역 상호 배제: 이 모달이 열릴 때 기존에 열려 있던 다른 모달을 자동으로 닫음
+	useEffect(() => {
+		if (isOpen) {
+			if (activeModalInstance && activeModalInstance.id !== modalId) {
+				activeModalInstance.close();
+			}
+			activeModalInstance = {
+				id: modalId,
+				close: () => onCloseRef.current(),
+			};
+		} else if (activeModalInstance?.id === modalId) {
+			activeModalInstance = null;
+		}
+
+		return () => {
+			if (activeModalInstance?.id === modalId) {
+				activeModalInstance = null;
+			}
+		};
+	}, [isOpen, modalId]);
 
 	// size prop 기반 모바일 시트 높이 산출 (half: 45svh 검색창 연동 절반 크기 + 키보드 활성화 시 상단 가용 영역 최대 확보, standard: 최대 80dvh 표준 크기)
 	const resolvedSheetClass =

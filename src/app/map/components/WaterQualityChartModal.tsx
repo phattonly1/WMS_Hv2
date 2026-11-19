@@ -72,7 +72,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		shortLabel: "pH",
 		unit: "",
 		color: "#f43f5e",
-		decimals: 2,
+		decimals: 1,
 	},
 	{
 		key: "doc",
@@ -88,7 +88,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		shortLabel: "TOC",
 		unit: "mg/L",
 		color: "#10b981",
-		decimals: 2,
+		decimals: 1,
 	},
 	{
 		key: "tp",
@@ -376,24 +376,26 @@ export function WaterQualityChartModal({
 									setActiveMetric(m.key);
 									setHoverIdx(null);
 								}}
-								className={`relative h-[44px] px-2 py-1.5 rounded-xl flex flex-col justify-between text-left transition-all active:scale-95 border ${
-									isSelected
-										? hasAnomaly
-											? isLow
-												? "bg-rose-500/15 dark:bg-rose-500/25 border-rose-500 dark:border-rose-400 shadow-xs ring-1 ring-rose-500/30"
-												: "bg-amber-500/15 dark:bg-amber-500/25 border-amber-500 dark:border-amber-400 shadow-xs ring-1 ring-amber-500/30"
-											: "bg-white dark:bg-[#2a2a32] border-blue-500 dark:border-blue-400 shadow-xs ring-1 ring-blue-500/20"
-										: hasAnomaly
-											? isLow
-												? "bg-rose-500/10 dark:bg-rose-500/15 border-rose-400/60 dark:border-rose-500/40"
-												: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-400/60 dark:border-amber-500/40"
-											: "bg-white/70 dark:bg-white/[0.03] hover:bg-white dark:hover:bg-white/[0.06] border-transparent"
-								}`}
+								className="w-full text-left active:scale-95 transition-transform min-w-0"
 							>
-								{/* 1줄: 지표 약칭 */}
-								<div className="w-full flex items-center justify-between leading-none">
-									<span
-										className={`text-[10px] font-bold tracking-tight whitespace-nowrap ${
+								<fieldset
+									className={`w-full min-w-0 h-[38px] px-2 pt-0.5 pb-1.5 rounded-xl flex items-center justify-center transition-all border ${
+										isSelected
+											? hasAnomaly
+												? isLow
+													? "bg-rose-500/15 dark:bg-rose-500/25 border-rose-500 dark:border-rose-400 shadow-xs ring-1 ring-rose-500/30"
+													: "bg-amber-500/15 dark:bg-amber-500/25 border-amber-500 dark:border-amber-400 shadow-xs ring-1 ring-amber-500/30"
+												: "bg-white dark:bg-[#2a2a32] border-blue-500 dark:border-blue-400 shadow-xs ring-1 ring-blue-500/20"
+											: hasAnomaly
+												? isLow
+													? "bg-rose-500/10 dark:bg-rose-500/15 border-rose-400/60 dark:border-rose-500/40"
+													: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-400/60 dark:border-amber-500/40"
+												: "bg-white/70 dark:bg-white/[0.03] hover:bg-white dark:hover:bg-white/[0.06] border-black/[0.08] dark:border-white/15"
+									}`}
+								>
+									{/* 테두리 상단 제목: 지표 약칭 */}
+									<legend
+										className={`px-1 text-[9.5px] font-bold tracking-tight leading-none whitespace-nowrap ${
 											hasAnomaly
 												? isLow
 													? "text-rose-600 dark:text-rose-300 font-black"
@@ -404,38 +406,38 @@ export function WaterQualityChartModal({
 										}`}
 									>
 										{m.shortLabel}
-									</span>
-								</div>
+									</legend>
 
-								{/* 2줄: 현재 측정값 (일시 결측이지만 48h 내 최근값이 있으면 회색 숫자로 표시) */}
-								<div className="w-full flex items-baseline justify-between leading-none">
-									{isCurrentValid ? (
-										<span
-											className={`text-[12px] font-black tracking-tight tabular-nums whitespace-nowrap ${
-												hasAnomaly
-													? isLow
-														? "text-rose-600 dark:text-rose-200"
-														: "text-amber-600 dark:text-amber-200"
-													: isSelected
-														? "text-blue-600 dark:text-blue-300"
-														: "text-slate-900 dark:text-white"
-											}`}
-										>
-											{currentVal.toFixed(m.decimals)}
-										</span>
-									) : fallbackEntry ? (
-										<span
-											title={`현재 결측 (최근 측정: ${fallbackEntry.val.toFixed(m.decimals)})`}
-											className="text-[12px] font-bold tracking-tight tabular-nums whitespace-nowrap text-slate-400 dark:text-slate-500"
-										>
-											{fallbackEntry.val.toFixed(m.decimals)}
-										</span>
-									) : (
-										<span className="text-[10px] font-bold text-slate-300 dark:text-slate-600">
-											-
-										</span>
-									)}
-								</div>
+									{/* 현재 측정값 (일시 결측이지만 48h 내 최근값이 있으면 회색 숫자로 표시) */}
+									<div className="w-full flex items-center justify-center leading-none">
+										{isCurrentValid ? (
+											<span
+												className={`text-[12px] font-black tracking-tight tabular-nums whitespace-nowrap ${
+													hasAnomaly
+														? isLow
+															? "text-rose-600 dark:text-rose-200"
+															: "text-amber-600 dark:text-amber-200"
+														: isSelected
+															? "text-blue-600 dark:text-blue-300"
+															: "text-slate-900 dark:text-white"
+												}`}
+											>
+												{currentVal.toFixed(m.decimals)}
+											</span>
+										) : fallbackEntry ? (
+											<span
+												title={`현재 결측 (최근 측정: ${fallbackEntry.val.toFixed(m.decimals)})`}
+												className="text-[12px] font-bold tracking-tight tabular-nums whitespace-nowrap text-slate-400 dark:text-slate-500"
+											>
+												{fallbackEntry.val.toFixed(m.decimals)}
+											</span>
+										) : (
+											<span className="text-[10px] font-bold text-slate-300 dark:text-slate-600">
+												-
+											</span>
+										)}
+									</div>
+								</fieldset>
 							</button>
 						);
 					})}

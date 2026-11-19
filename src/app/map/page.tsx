@@ -243,8 +243,6 @@ export default function MapPage() {
 						<div
 							onClick={() => {
 								setIsAdminMenuOpen(false);
-								setSelectedStation(null);
-								setChartStation(null);
 								setIsSidebarOpen(true);
 							}}
 							className="flex-1 flex items-center gap-1.5 min-w-0 pl-2.5 pr-1.5 h-9 bg-white/50 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/10 border border-black/[0.06] dark:border-white/10 rounded-xl cursor-text transition-colors"
@@ -261,14 +259,10 @@ export default function MapPage() {
 								onChange={(e) => {
 									setSearchTerm(e.target.value);
 									setIsAdminMenuOpen(false);
-									setSelectedStation(null);
-									setChartStation(null);
 									setIsSidebarOpen(true);
 								}}
 								onFocus={() => {
 									setIsAdminMenuOpen(false);
-									setSelectedStation(null);
-									setChartStation(null);
 									setIsSidebarOpen(true);
 								}}
 								placeholder="측정소명/초성 검색"
@@ -292,8 +286,6 @@ export default function MapPage() {
 									onClick={(e) => {
 										e.stopPropagation();
 										setIsAdminMenuOpen(false);
-										setSelectedStation(null);
-										setChartStation(null);
 										setIsSidebarOpen(true);
 									}}
 									title="측정소 목록"
@@ -1042,9 +1034,9 @@ export default function MapPage() {
 			/>
 
 			{/* ============================================================ */}
-			{/* 8. 모바일 인터랙티브 바텀 시트 (선택 시 슬라이드 업, 차트 모달 열릴 땐 숨김) */}
+			{/* 8. 측정소 상세 모달 (전역 Modal 상호 배제 자동 적용)         */}
 			{/* ============================================================ */}
-			{!isEditMode && !isUiHidden && selectedStation && !chartStation && (
+			{!isEditMode && !isUiHidden && selectedStation && (
 				<StationBottomSheet
 					station={selectedStation}
 					onClose={() => setSelectedStation(null)}

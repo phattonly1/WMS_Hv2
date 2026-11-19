@@ -2,13 +2,14 @@
 
 import {
 	ArrowLeft,
+	ChevronRight,
 	Download,
 	FlaskConical,
 	Plus,
 	UserCheck,
 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
 	deleteReagentSheet,
@@ -273,6 +274,14 @@ export default function ReagentsPage() {
 					cells: {
 						...s.cells,
 						[row.id]: nextRowCells,
+						...(nextValue && s.cells.__no_order__?.[person]
+							? {
+									__no_order__: {
+										...s.cells.__no_order__,
+										[person]: "",
+									},
+								}
+							: {}),
 					},
 				};
 			}),
@@ -285,6 +294,9 @@ export default function ReagentsPage() {
 				person,
 				nextValue,
 			);
+			if (res.success && nextValue && activeTargetSheet.cells.__no_order__?.[person]) {
+				await updateReagentCell(targetSheetId, "__no_order__", person, "");
+			}
 			if (!res.success) {
 				toast.error(res.error || "저장에 실패했습니다.");
 				await loadSheets(targetSheetId);
@@ -300,6 +312,80 @@ export default function ReagentsPage() {
 			setSavingCell(false);
 		}
 	};
+
+	const handleMarkNoOrder = async (person: ReagentPerson) => {
+		const activeTargetSheet = currentSheet ?? sheets[sheets.length - 1];
+		if (!activeTargetSheet || savingCell) return;
+
+		const targetSheetId = activeTargetSheet.id;
+		const personRowIds = PERSON_GREEN_ROWS[person];
+		const filledRowIds = personRowIds.filter(
+			(rowId) => Boolean(activeTargetSheet.cells[rowId]?.[person]),
+		);
+
+		setSavingCell(true);
+		setSheets((prev) =>
+			prev.map((s) => {
+				if (s.id !== targetSheetId) return s;
+				const nextCells = { ...s.cells };
+				for (const rowId of filledRowIds) {
+					const rowMap = { ...(nextCells[rowId] || {}) };
+					delete rowMap[person];
+					nextCells[rowId] = rowMap;
+				}
+				nextCells.__no_order__ = {
+					...(nextCells.__no_order__ || {}),
+					[person]: "1",
+				};
+				return { ...s, cells: nextCells };
+			}),
+		);
+
+		try {
+			await Promise.all([
+				...filledRowIds.map((rowId) =>
+					updateReagentCell(targetSheetId, rowId, person, ""),
+				),
+				updateReagentCell(targetSheetId, "__no_order__", person, "1"),
+			]);
+			toast.success(`${person} · 이번 회차 주문 없음으로 저장되었습니다.`);
+			setMobilePerson(null);
+		} catch {
+			toast.error("저장에 실패했습니다.");
+			await loadSheets(targetSheetId);
+		} finally {
+			setSavingCell(false);
+		}
+	};
+
+	const [isHoldingNoOrder, setIsHoldingNoOrder] = useState(false);
+	const noOrderHoldTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	const startHoldNoOrder = (person: ReagentPerson) => {
+		if (savingCell) return;
+		setIsHoldingNoOrder(true);
+		noOrderHoldTimerRef.current = setTimeout(() => {
+			setIsHoldingNoOrder(false);
+			noOrderHoldTimerRef.current = null;
+			handleMarkNoOrder(person);
+		}, 2000);
+	};
+
+	const cancelHoldNoOrder = () => {
+		if (noOrderHoldTimerRef.current) {
+			clearTimeout(noOrderHoldTimerRef.current);
+			noOrderHoldTimerRef.current = null;
+		}
+		setIsHoldingNoOrder(false);
+	};
+
+	useEffect(() => {
+		return () => {
+			if (noOrderHoldTimerRef.current) {
+				clearTimeout(noOrderHoldTimerRef.current);
+			}
+		};
+	}, []);
 
 	// 새 회차 모달 열기 (데스크톱)
 	const handleOpenNewSheetModal = () => {
@@ -451,15 +537,14 @@ export default function ReagentsPage() {
 							</h1>
 							{mobilePerson && (
 								<div className="lg:hidden flex items-center gap-1.5 shrink-0">
-									<span className="text-[#d7dfe9] dark:text-[#2a2a32]">·</span>
-									<span className="text-sm font-bold text-[#2563eb] dark:text-[#2563eb]">
+									<ChevronRight
+										size={14}
+										strokeWidth={2.5}
+										className="text-[#94a3b8] dark:text-[#52525b]"
+									/>
+									<span className="text-sm font-black text-[#0f172a] dark:text-white">
 										{mobilePerson}
 									</span>
-									{(columnTotals.totals[mobilePerson] || 0) > 0 && (
-										<span className="px-1.5 py-0.5 rounded-md bg-blue-500/10 text-[#2563eb] dark:text-[#2563eb] font-bold text-[11px] tabular-nums">
-											{columnTotals.totals[mobilePerson]}L
-										</span>
-									)}
 								</div>
 							)}
 						</div>
@@ -503,46 +588,50 @@ export default function ReagentsPage() {
 							데이터를 불러오는 중...
 						</div>
 					) : !mobilePerson ? (
-						/* 1) 모바일 초기 진입: 이름 선택 화면만 노출 */
-						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-3xl p-5 shadow-sm space-y-4">
-							<div className="flex items-center gap-3 pb-3 border-b border-[#d7dfe9] dark:border-[#2a2a32]">
-								<div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#2563eb] flex items-center justify-center shrink-0">
-									<UserCheck size={20} />
-								</div>
-								<div className="min-w-0">
-									<h2 className="text-base font-bold text-[#0f172a] dark:text-white break-keep">
-										측정소를 선택하세요
-									</h2>
-									<p className="text-xs text-[#64748b] dark:text-[#a1a1aa] break-keep truncate">
-										측정소의 시약 목록만 표시됩니다
-									</p>
-								</div>
-							</div>
-
+						/* 1) 모바일 초기 진입: 측정소 선택 그리드 */
+						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-3xl p-4 sm:p-5 shadow-sm">
 							<div className="grid grid-cols-2 gap-3">
 								{PEOPLE_LIST.map((person) => {
 									const count = PERSON_GREEN_ROWS[person].length;
 									const totalL = columnTotals.totals[person] || 0;
+									const activeTargetSheet =
+										currentSheet ?? sheets[sheets.length - 1];
+									const isNoOrder =
+										totalL === 0 &&
+										activeTargetSheet?.cells.__no_order__?.[person] === "1";
 									return (
 										<button
 											key={person}
 											type="button"
 											onClick={() => handleSelectMobilePerson(person)}
-											className="min-h-[82px] py-3.5 px-4 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-[#2563eb] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-between transition-all active:scale-95 cursor-pointer"
+											className="min-h-[82px] py-3.5 px-3.5 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] hover:border-blue-500/60 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-between gap-2 transition-all active:scale-95 cursor-pointer group"
 										>
-											<div className="text-left space-y-0.5">
-												<div className="text-base font-bold text-[#0f172a] dark:text-white">
+											<div className="text-left space-y-0.5 min-w-0">
+												<div className="text-base font-black tracking-tight text-[#0f172a] dark:text-white truncate">
 													{person}
 												</div>
 												<div className="text-xs text-[#64748b] dark:text-[#a1a1aa]">
 													시약 <span className="tabular-nums font-semibold">{count}</span>종
 												</div>
 											</div>
-											{totalL > 0 && (
-												<span className="px-2.5 py-1 rounded-xl bg-blue-500/10 text-[#2563eb] dark:text-[#2563eb] font-bold text-sm tabular-nums">
-													{totalL}L
+											<div className="flex items-center gap-1 shrink-0">
+												<span
+													className={`px-2 py-1 rounded-xl font-black tabular-nums border ${
+														totalL > 0
+															? "text-sm bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30"
+															: isNoOrder
+																? "text-[11px] bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+																: "text-sm bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#64748b] border-transparent"
+													}`}
+												>
+													{totalL > 0 ? `${totalL}L` : isNoOrder ? "주문없음" : "0L"}
 												</span>
-											)}
+												<ChevronRight
+													size={15}
+													strokeWidth={2.5}
+													className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors"
+												/>
+											</div>
 										</button>
 									);
 								})}
@@ -591,36 +680,55 @@ export default function ReagentsPage() {
 
 											const innerGridClass = isMergedRow
 												? group.rows.length === 1
-													? "grid grid-cols-1 gap-x-2 gap-y-[15px]"
-													: "grid grid-cols-2 gap-x-2 gap-y-[15px]"
-												: "grid grid-cols-3 gap-x-2 gap-y-[15px]";
+													? "grid grid-cols-1 gap-2"
+													: "grid grid-cols-2 gap-2"
+												: "grid grid-cols-3 gap-2";
 
 											const trayTitle = group.companyLabel
 												? `${group.companyLabel} ${group.category}`
 												: group.category;
 
+											const catHeaderBgClass =
+												group.category === "TOC"
+													? "bg-blue-500/10 border-b border-blue-500/15"
+													: group.category === "TP"
+														? "bg-emerald-500/10 border-b border-emerald-500/15"
+														: group.category === "TN"
+															? "bg-amber-500/10 border-b border-amber-500/15"
+															: "bg-slate-500/10 border-b border-slate-500/15";
+
+											const catBadgeClass =
+												group.category === "TOC"
+													? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/25"
+													: group.category === "TP"
+														? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/25"
+														: group.category === "TN"
+															? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/25"
+															: "bg-slate-500/15 text-[#64748b] dark:text-[#a1a1aa] border-slate-500/25";
+
 											return (
 												<section
 													key={group.key}
-													className={`p-2.5 rounded-2xl bg-[#f1f5f9]/90 dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-2 min-w-0 ${colSpanClass}`}
+													className={`rounded-2xl overflow-hidden bg-[#f1f5f9]/90 dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] min-w-0 ${colSpanClass}`}
 												>
-													{/* 제조사 + 측정항목 트레이 헤더 */}
-													<div className="flex items-center gap-1.5 px-1">
-														<span
-															className={`w-1.5 h-1.5 rounded-full shrink-0 ${catDotClass}`}
-														/>
-														<span
-															className={`text-xs font-bold tracking-tight truncate ${catTextClass}`}
-														>
-															{trayTitle}
+													{/* 상단 컬러 헤더 바: 제조사(굵은 흰색/검정) + 항목 배지 */}
+													<div
+														className={`px-2.5 py-1 flex items-center gap-1.5 ${catHeaderBgClass}`}
+													>
+														<span className="text-xs font-black tracking-tight text-[#0f172a] dark:text-white truncate">
+															{group.companyLabel || group.category}
 														</span>
-														<span className="text-[11px] font-semibold tabular-nums text-[#64748b] dark:text-[#64748b] shrink-0">
-															{group.rows.length}
-														</span>
+														{group.companyLabel && (
+															<span
+																className={`text-[10px] font-black px-1.5 py-0.5 rounded-md border leading-none shrink-0 ${catBadgeClass}`}
+															>
+																{group.category}
+															</span>
+														)}
 													</div>
 
 													{/* 해당 항목 시약 그리드 (상하 2단 중앙 키캡형) */}
-													<div className={innerGridClass}>
+													<div className={`p-2 ${innerGridClass}`}>
 														{group.rows.map((row) => {
 															const rawVal =
 																activeTargetSheet?.cells[row.id]?.[
@@ -644,7 +752,7 @@ export default function ReagentsPage() {
 																	onClick={() =>
 																		handleOpenCellModal(row, mobilePerson)
 																	}
-																	className={`min-h-[82px] px-1.5 py-2.5 rounded-xl bg-white dark:bg-[#111115] border flex flex-col items-center justify-center gap-1.5 text-center transition-all active:scale-95 cursor-pointer shadow-2xs min-w-0 ${
+																	className={`min-h-[72px] px-1.5 py-2 rounded-xl bg-white dark:bg-[#111115] border flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 cursor-pointer shadow-2xs min-w-0 ${
 																		parsed.total > 0
 																			? "border-blue-500/40 dark:border-blue-500/40"
 																			: "border-[#d7dfe9]/80 dark:border-[#2a2a32]"
@@ -654,23 +762,23 @@ export default function ReagentsPage() {
 																		{mainName}
 																	</span>
 
-																	<div className="flex items-center justify-center gap-1 min-w-0 w-full">
+																	<div className="flex flex-col items-center justify-center gap-0.5 min-w-0 w-full">
+																		<span
+																			className={`tabular-nums leading-none shrink-0 ${
+																				parsed.total > 0
+																					? "text-base font-black text-blue-600 dark:text-blue-400"
+																					: "text-sm font-bold text-[#64748b] dark:text-[#64748b]"
+																			}`}
+																		>
+																			{parsed.total}L
+																		</span>
 																		{showBreakdown && (
-																			<span className="text-[11px] font-medium tabular-nums text-[#64748b] dark:text-[#a1a1aa] truncate">
+																			<span className="text-[10px] font-semibold tabular-nums px-1.5 py-0.5 rounded-md bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#a1a1aa] leading-none truncate max-w-full">
 																				{parsed.breakdownText
 																					.replace(/\s*×\s*/g, "×")
 																					.replace(/개/g, "")}
 																			</span>
 																		)}
-																		<span
-																			className={`text-sm font-bold tabular-nums shrink-0 ${
-																				parsed.total > 0
-																					? "text-[#2563eb] dark:text-[#2563eb]"
-																					: "text-[#64748b] dark:text-[#64748b]"
-																			}`}
-																		>
-																			{parsed.total}L
-																		</span>
 																	</div>
 																</button>
 															);
@@ -682,6 +790,37 @@ export default function ReagentsPage() {
 									</div>
 								);
 							})}
+
+							{/* 이번 회차 주문 없음 (2초 꾹 누르기) */}
+							<button
+								type="button"
+								disabled={savingCell}
+								onPointerDown={() => startHoldNoOrder(mobilePerson)}
+								onPointerUp={cancelHoldNoOrder}
+								onPointerLeave={cancelHoldNoOrder}
+								onPointerCancel={cancelHoldNoOrder}
+								onContextMenu={(e) => e.preventDefault()}
+								className="relative overflow-hidden w-full py-2.5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-bold text-[#64748b] dark:text-[#a1a1aa] transition-colors disabled:opacity-50 cursor-pointer select-none touch-none"
+							>
+								<span
+									className={`absolute inset-y-0 left-0 bg-rose-500/20 dark:bg-rose-500/30 pointer-events-none ${
+										isHoldingNoOrder
+											? "w-full transition-[width] duration-[2000ms] ease-linear"
+											: "w-0 transition-[width] duration-150 ease-out"
+									}`}
+								/>
+								<span
+									className={`relative z-10 ${
+										isHoldingNoOrder
+											? "text-rose-600 dark:text-rose-400"
+											: ""
+									}`}
+								>
+									{isHoldingNoOrder
+										? "계속 누르고 있으세요..."
+										: "이번 회차 주문 없음 (2초 꾹 누르기)"}
+								</span>
+							</button>
 						</div>
 					)}
 				</main>

@@ -49,7 +49,7 @@ export default function DocsClientView({
 	// 데스크톱 / 모바일 공용 스크롤 이벤트 처리
 	const handleScrollUpdate = useCallback(
 		(scrollTop: number, scrollHeight: number, clientHeight: number) => {
-			setShowScrollTop(scrollTop > 200);
+			setShowScrollTop(scrollTop > 40);
 			const maxScroll = scrollHeight - clientHeight;
 			if (maxScroll > 0) {
 				const progress = Math.min(
@@ -387,7 +387,6 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => {
-							setIsNavOpen(false);
 							setSharedSearchQuery("");
 							setActiveModal(activeModal === "reagent" ? null : "reagent");
 						}}
@@ -406,7 +405,6 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => {
-							setIsNavOpen(false);
 							setSharedSearchQuery("");
 							setActiveModal(activeModal === "video" ? null : "video");
 						}}
@@ -425,7 +423,6 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => {
-							setIsNavOpen(false);
 							setSharedSearchQuery("");
 							setActiveModal(activeModal === "download" ? null : "download");
 						}}
@@ -487,7 +484,6 @@ export default function DocsClientView({
 								type="button"
 								onClick={(e) => {
 									e.stopPropagation();
-									setActiveModal(null);
 									setSharedSearchQuery("");
 									setIsNavOpen(!isNavOpen);
 								}}

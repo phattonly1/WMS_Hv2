@@ -584,7 +584,7 @@ export function getMobileReagentLabel(row: ReagentRowSpec): {
 	}
 	const companyBadge =
 		row.company === "백년기술"
-			? "백년"
+			? "백년기술"
 			: row.company === "동일시마즈"
 				? "시마즈"
 				: row.company === "코비"

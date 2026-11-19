@@ -220,20 +220,20 @@ export default function ReagentModal({
 					/* 메인: 측정소별 or 전체 시약 */
 					<div className="space-y-2">
 						{activeTab === "stations" ? (
-							<div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
+							<div className="grid grid-cols-4 gap-2">
 								{filteredStations.map((station) => (
 									<button
 										key={station.name}
 										type="button"
 										onClick={() => setSelectedStation(station)}
-										className="px-2 py-2 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 text-left transition-colors flex items-center justify-between"
+										className="min-h-[78px] p-2.5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 active:scale-95 transition-all flex flex-col items-center justify-center gap-1.5 text-center"
 									>
-										<div className="flex items-center gap-1.5 min-w-0">
-											<MapPin size={11} className="text-blue-600 dark:text-blue-400 shrink-0" />
-											<span className="text-xs font-bold text-[#0f172a] dark:text-white truncate break-keep">
-												{station.name}
-											</span>
+										<div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+											<MapPin size={15} />
 										</div>
+										<span className="text-xs font-bold text-[#0f172a] dark:text-white truncate w-full break-keep">
+											{station.name}
+										</span>
 									</button>
 								))}
 							</div>
