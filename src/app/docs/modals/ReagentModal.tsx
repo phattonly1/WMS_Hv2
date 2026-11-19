@@ -185,7 +185,7 @@ export default function ReagentModal({
 														{r.steps.map((step) => (
 															<div
 																key={step}
-																className="flex items-start justify-between gap-2 text-[#334155] dark:text-[#d4d4d8]"
+																className="flex items-start justify-between gap-2 text-[#0f172a] dark:text-[#f4f4f5]"
 															>
 																<span className="break-keep">{step}</span>
 																<button
@@ -263,7 +263,7 @@ export default function ReagentModal({
 																{r.manufacturer}
 															</span>
 														</div>
-														<div className="bg-white dark:bg-[#09090b] p-1.5 rounded-lg text-xs text-[#334155] dark:text-[#d4d4d8] space-y-0.5 border border-[#d7dfe9] dark:border-[#2a2a32]">
+														<div className="bg-white dark:bg-[#09090b] p-1.5 rounded-lg text-xs text-[#0f172a] dark:text-[#f4f4f5] space-y-0.5 border border-[#d7dfe9] dark:border-[#2a2a32]">
 															{r.steps.map((s) => (
 																<p key={s}>{s}</p>
 															))}

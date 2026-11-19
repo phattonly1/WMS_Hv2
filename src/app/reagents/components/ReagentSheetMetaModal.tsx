@@ -102,7 +102,7 @@ export default function ReagentSheetMetaModal({
 						type="button"
 						onClick={onSave}
 						disabled={savingSheet}
-						className="flex-[2] h-12 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs cursor-pointer disabled:opacity-50"
+						className="flex-[2] h-12 rounded-xl bg-[#2563eb] hover:bg-[#2563eb] text-white font-bold text-xs cursor-pointer disabled:opacity-50"
 					>
 						{savingSheet
 							? "저장 중..."

@@ -113,7 +113,7 @@ export default function ActionModal({
 						<button
 							type="button"
 							onClick={() => setActionQty((prev) => Math.max(1, prev - 1))}
-							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
+							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-lg flex items-center justify-center text-[#0f172a] dark:text-[#f4f4f5] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
 							aria-label="수량 감소"
 						>
 							<Minus size={14} />
@@ -124,7 +124,7 @@ export default function ActionModal({
 						<button
 							type="button"
 							onClick={() => setActionQty((prev) => prev + 1)}
-							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-lg flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
+							className="w-8 h-8 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-lg flex items-center justify-center text-[#0f172a] dark:text-[#f4f4f5] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all shadow-2xs"
 							aria-label="수량 증가"
 						>
 							<Plus size={14} />
@@ -162,7 +162,7 @@ export default function ActionModal({
 							id="action-user"
 							name="action-user"
 							placeholder="이름 입력"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-9 px-2.5 text-center font-bold text-[#0f172a] dark:text-white text-xs focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-9 px-2.5 text-center font-bold text-[#0f172a] dark:text-white text-xs focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 							value={actionUser}
 							onChange={(e) => setActionUser(e.target.value)}
 						/>
@@ -179,7 +179,7 @@ export default function ActionModal({
 							id="action-note"
 							name="action-note"
 							placeholder={isReq ? "입고 사유" : "사용 목적"}
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-9 px-2.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-9 px-2.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-1.5 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 							value={actionNote}
 							onChange={(e) => setActionNote(e.target.value)}
 						/>

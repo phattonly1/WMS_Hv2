@@ -12,7 +12,7 @@ export default function ArchitecturePageClient() {
 			<div
 				className="absolute inset-0 pointer-events-none opacity-[0.03] dark:invert"
 				style={{
-					backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+					backgroundImage: "radial-gradient(#09090b 1px, transparent 1px)",
 					backgroundSize: "20px 20px",
 				}}
 			/>

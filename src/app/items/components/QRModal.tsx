@@ -112,7 +112,7 @@ export default function QRModal({ isOpen, onClose, item }: QRModalProps) {
 				</div>
 
 				{item?.code && (
-					<p className="text-[11px] font-mono text-[#64748b] dark:text-[#71717a]">
+					<p className="text-[11px] font-mono text-[#64748b] dark:text-[#64748b]">
 						ID: {item.code}
 					</p>
 				)}

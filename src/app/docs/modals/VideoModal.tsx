@@ -35,7 +35,9 @@ export default function VideoModal({
 
 	const qrUrl =
 		process.env.NEXT_PUBLIC_QR_GATE_URL ||
-		"https://wms-qr.phattonly1.workers.dev";
+		(typeof window !== "undefined"
+			? `${window.location.origin}/docs?modal=video`
+			: "");
 
 	const downloadQR = () => {
 		if (!qrRef.current) return;
@@ -319,7 +321,7 @@ export default function VideoModal({
 						</div>
 					</div>
 
-					<p className="text-[11px] text-[#64748b] dark:text-[#71717a]">
+					<p className="text-[11px] text-[#64748b] dark:text-[#64748b]">
 						스캔 시 동영상 매뉴얼 즉시 오픈
 					</p>
 

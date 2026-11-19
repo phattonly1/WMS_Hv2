@@ -151,7 +151,7 @@ function ThumbnailCard({
 			className={`group flex flex-col items-center rounded-xl p-1.5 transition-all active:scale-95 border text-center cursor-pointer ${
 				isActive
 					? "bg-blue-600/15 border-blue-500 ring-2 ring-blue-500/40 shadow-lg"
-					: "bg-white dark:bg-[#16161c] hover:bg-[#f1f5f9] dark:hover:bg-[#1e1e26] border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 dark:hover:border-white/20"
+					: "bg-white dark:bg-[#16161c] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 dark:hover:border-white/20"
 			}`}
 		>
 			<div className="w-full aspect-[1/1.414] rounded-lg bg-white/95 overflow-hidden flex items-center justify-center relative shadow-xs">
@@ -687,7 +687,7 @@ function PdfViewerContent() {
 					<button
 						type="button"
 						onClick={handleClose}
-						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#334155] dark:text-[#e4e4e7] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
+						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#d7dfe9] dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#0f172a] dark:text-[#f4f4f5] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
 						aria-label="뒤로가기"
 						title={isGridOpen ? "본문으로 돌아가기" : "보관함으로 돌아가기"}
 					>
@@ -759,7 +759,7 @@ function PdfViewerContent() {
 										className={`h-8 px-2.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border-r border-[#d7dfe9] dark:border-[#2a2a32] mr-0.5 ${
 											isInverted
 												? "bg-indigo-600 text-white"
-												: "text-[#334155] dark:text-[#e4e4e7] hover:bg-black/5 dark:hover:bg-white/10"
+												: "text-[#0f172a] dark:text-[#f4f4f5] hover:bg-black/5 dark:hover:bg-white/10"
 										}`}
 										title="색반전 보정 (브라우저 강제 다크모드 대응)"
 									>
@@ -779,7 +779,7 @@ function PdfViewerContent() {
 												className={`h-8 px-2 rounded-xl text-xs font-bold tabular-nums transition-colors cursor-pointer ${
 													isSelected
 														? "bg-blue-600 text-white"
-														: "text-[#334155] dark:text-[#e4e4e7] hover:bg-black/5 dark:hover:bg-white/10"
+														: "text-[#0f172a] dark:text-[#f4f4f5] hover:bg-black/5 dark:hover:bg-white/10"
 												}`}
 											>
 												{Math.round(zVal * 100)}%
@@ -797,7 +797,7 @@ function PdfViewerContent() {
 							className={`h-9 px-2.5 rounded-xl border text-xs font-bold tabular-nums transition-all active:scale-95 cursor-pointer disabled:opacity-30 flex items-center gap-1 ${
 								isZoomMenuOpen || zoom > 1 || isInverted
 									? "bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400"
-									: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border-[#d7dfe9] dark:border-[#2a2a32] text-[#334155] dark:text-[#e4e4e7]"
+									: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#d7dfe9] dark:hover:bg-white/10 border-[#d7dfe9] dark:border-[#2a2a32] text-[#0f172a] dark:text-[#f4f4f5]"
 							}`}
 							title="배율 및 색반전 설정"
 							aria-label="배율 및 색반전 설정"

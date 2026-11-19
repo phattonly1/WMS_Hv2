@@ -47,7 +47,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		label: "수온",
 		shortLabel: "수온",
 		unit: "℃",
-		color: "#38bdf8",
+		color: "#2563eb",
 		decimals: 1,
 	},
 	{
@@ -63,7 +63,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		label: "EC(전도도)",
 		shortLabel: "EC",
 		unit: "μS",
-		color: "#059669",
+		color: "#10b981",
 		decimals: 0,
 	},
 	{
@@ -79,7 +79,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		label: "DO(용존산소)",
 		shortLabel: "DO",
 		unit: "mg/L",
-		color: "#06b6d4",
+		color: "#2563eb",
 		decimals: 1,
 	},
 	{
@@ -103,7 +103,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		label: "TN(총질소)",
 		shortLabel: "TN",
 		unit: "mg/L",
-		color: "#60a5fa",
+		color: "#2563eb",
 		decimals: 3,
 	},
 	{
@@ -111,7 +111,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		label: "탁도",
 		shortLabel: "탁도",
 		unit: "NTU",
-		color: "#fbbf24",
+		color: "#f59e0b",
 		decimals: 1,
 	},
 	{
@@ -119,7 +119,7 @@ const METRIC_CONFIGS: MetricConfig[] = [
 		label: "클로로필-a",
 		shortLabel: "Chl-a",
 		unit: "mg/m³",
-		color: "#84cc16",
+		color: "#10b981",
 		decimals: 1,
 	},
 ];
@@ -382,7 +382,7 @@ export function WaterQualityChartModal({
 											? isLow
 												? "bg-rose-500/15 dark:bg-rose-500/25 border-rose-500 dark:border-rose-400 shadow-xs ring-1 ring-rose-500/30"
 												: "bg-amber-500/15 dark:bg-amber-500/25 border-amber-500 dark:border-amber-400 shadow-xs ring-1 ring-amber-500/30"
-											: "bg-white dark:bg-[#22222c] border-blue-500 dark:border-blue-400 shadow-xs ring-1 ring-blue-500/20"
+											: "bg-white dark:bg-[#2a2a32] border-blue-500 dark:border-blue-400 shadow-xs ring-1 ring-blue-500/20"
 										: hasAnomaly
 											? isLow
 												? "bg-rose-500/10 dark:bg-rose-500/15 border-rose-400/60 dark:border-rose-500/40"
@@ -614,7 +614,7 @@ export function WaterQualityChartModal({
 											key={`dash-${idx}`}
 											d={d}
 											fill="none"
-											stroke="#94a3b8"
+											stroke="#64748b"
 											strokeWidth="1.8"
 											strokeDasharray="3 3"
 											strokeLinecap="round"
@@ -643,7 +643,7 @@ export function WaterQualityChartModal({
 											x2={activePoint.x}
 											y2={chartData.svgHeight - 4}
 											stroke={
-												activePoint.isValid ? selectedConfig.color : "#94a3b8"
+												activePoint.isValid ? selectedConfig.color : "#64748b"
 											}
 											strokeWidth="1"
 											strokeDasharray="2 2"
@@ -658,7 +658,7 @@ export function WaterQualityChartModal({
 											cy={activePoint.y}
 											r="3.5"
 											fill={
-												activePoint.isValid ? selectedConfig.color : "#94a3b8"
+												activePoint.isValid ? selectedConfig.color : "#64748b"
 											}
 											stroke="#ffffff"
 											strokeWidth="1.8"

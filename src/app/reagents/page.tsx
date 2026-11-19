@@ -442,7 +442,7 @@ export default function ReagentsPage() {
 						</Link>
 					)}
 					<div className="flex items-center gap-2 min-w-0">
-						<div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
+						<div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#2563eb] flex items-center justify-center shrink-0">
 							<FlaskConical size={16} strokeWidth={2.4} />
 						</div>
 						<div className="flex items-center gap-1.5 min-w-0">
@@ -451,12 +451,12 @@ export default function ReagentsPage() {
 							</h1>
 							{mobilePerson && (
 								<div className="lg:hidden flex items-center gap-1.5 shrink-0">
-									<span className="text-[#cbd5e1] dark:text-[#3f3f46]">·</span>
-									<span className="text-sm font-bold text-[#2563eb] dark:text-[#60a5fa]">
+									<span className="text-[#d7dfe9] dark:text-[#2a2a32]">·</span>
+									<span className="text-sm font-bold text-[#2563eb] dark:text-[#2563eb]">
 										{mobilePerson}
 									</span>
 									{(columnTotals.totals[mobilePerson] || 0) > 0 && (
-										<span className="px-1.5 py-0.5 rounded-md bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] font-bold text-[11px] tabular-nums">
+										<span className="px-1.5 py-0.5 rounded-md bg-blue-500/10 text-[#2563eb] dark:text-[#2563eb] font-bold text-[11px] tabular-nums">
 											{columnTotals.totals[mobilePerson]}L
 										</span>
 									)}
@@ -473,7 +473,7 @@ export default function ReagentsPage() {
 					<button
 						type="button"
 						onClick={handleDownloadExcel}
-						className="hidden lg:flex h-10 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-600 dark:text-[#34d399] font-bold text-xs items-center gap-1.5 transition-all active:scale-95 whitespace-nowrap shrink-0 cursor-pointer"
+						className="hidden lg:flex h-10 px-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-600 dark:text-[#10b981] font-bold text-xs items-center gap-1.5 transition-all active:scale-95 whitespace-nowrap shrink-0 cursor-pointer"
 						title="원본 양식 엑셀(.xlsx) 다운로드"
 					>
 						<Download size={15} />
@@ -483,7 +483,7 @@ export default function ReagentsPage() {
 					<button
 						type="button"
 						onClick={handleOpenNewSheetModal}
-						className="hidden lg:flex h-10 px-3.5 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs items-center gap-1.5 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] active:scale-95 whitespace-nowrap shrink-0 cursor-pointer"
+						className="hidden lg:flex h-10 px-3.5 rounded-xl bg-[#2563eb] hover:bg-[#2563eb] text-white font-bold text-xs items-center gap-1.5 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] active:scale-95 whitespace-nowrap shrink-0 cursor-pointer"
 					>
 						<Plus size={16} strokeWidth={2.5} />
 						<span>새 회차 추가</span>
@@ -506,7 +506,7 @@ export default function ReagentsPage() {
 						/* 1) 모바일 초기 진입: 이름 선택 화면만 노출 */
 						<div className="w-full max-w-md mx-auto bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-3xl p-5 shadow-sm space-y-4">
 							<div className="flex items-center gap-3 pb-3 border-b border-[#d7dfe9] dark:border-[#2a2a32]">
-								<div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#60a5fa] flex items-center justify-center shrink-0">
+								<div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-[#2563eb] dark:text-[#2563eb] flex items-center justify-center shrink-0">
 									<UserCheck size={20} />
 								</div>
 								<div className="min-w-0">
@@ -539,7 +539,7 @@ export default function ReagentsPage() {
 												</div>
 											</div>
 											{totalL > 0 && (
-												<span className="px-2.5 py-1 rounded-xl bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] font-bold text-sm tabular-nums">
+												<span className="px-2.5 py-1 rounded-xl bg-blue-500/10 text-[#2563eb] dark:text-[#2563eb] font-bold text-sm tabular-nums">
 													{totalL}L
 												</span>
 											)}
@@ -567,20 +567,20 @@ export default function ReagentsPage() {
 										{block.map((group) => {
 											const catDotClass =
 												group.category === "TOC"
-													? "bg-[#2563eb] dark:bg-[#60a5fa]"
+													? "bg-[#2563eb] dark:bg-[#2563eb]"
 													: group.category === "TP"
-														? "bg-emerald-500 dark:bg-[#34d399]"
+														? "bg-emerald-500 dark:bg-[#10b981]"
 														: group.category === "TN"
-															? "bg-amber-500 dark:bg-[#fbbf24]"
+															? "bg-amber-500 dark:bg-[#f59e0b]"
 															: "bg-[#64748b] dark:bg-[#a1a1aa]";
 
 											const catTextClass =
 												group.category === "TOC"
-													? "text-[#2563eb] dark:text-[#60a5fa]"
+													? "text-[#2563eb] dark:text-[#2563eb]"
 													: group.category === "TP"
-														? "text-emerald-600 dark:text-[#34d399]"
+														? "text-emerald-600 dark:text-[#10b981]"
 														: group.category === "TN"
-															? "text-amber-600 dark:text-[#fbbf24]"
+															? "text-amber-600 dark:text-[#f59e0b]"
 															: "text-[#64748b] dark:text-[#a1a1aa]";
 
 											const colSpanClass = isMergedRow
@@ -602,7 +602,7 @@ export default function ReagentsPage() {
 											return (
 												<section
 													key={group.key}
-													className={`p-2.5 rounded-2xl bg-[#eef2f6]/90 dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-2 min-w-0 ${colSpanClass}`}
+													className={`p-2.5 rounded-2xl bg-[#f1f5f9]/90 dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-2 min-w-0 ${colSpanClass}`}
 												>
 													{/* 제조사 + 측정항목 트레이 헤더 */}
 													<div className="flex items-center gap-1.5 px-1">
@@ -614,7 +614,7 @@ export default function ReagentsPage() {
 														>
 															{trayTitle}
 														</span>
-														<span className="text-[11px] font-semibold tabular-nums text-[#94a3b8] dark:text-[#52525b] shrink-0">
+														<span className="text-[11px] font-semibold tabular-nums text-[#64748b] dark:text-[#64748b] shrink-0">
 															{group.rows.length}
 														</span>
 													</div>
@@ -665,8 +665,8 @@ export default function ReagentsPage() {
 																		<span
 																			className={`text-sm font-bold tabular-nums shrink-0 ${
 																				parsed.total > 0
-																					? "text-[#2563eb] dark:text-[#60a5fa]"
-																					: "text-[#94a3b8] dark:text-[#52525b]"
+																					? "text-[#2563eb] dark:text-[#2563eb]"
+																					: "text-[#64748b] dark:text-[#64748b]"
 																			}`}
 																		>
 																			{parsed.total}L

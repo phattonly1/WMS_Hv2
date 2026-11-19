@@ -30,14 +30,14 @@ const BG_PALETTES = [
 const TEXT_COLORS = [
 	"#f43f5e", // Rose 500
 	"#f59e0b", // Amber 500
-	"#fbbf24", // Amber 400 Soft
+	"#f59e0b", // Amber 400 Soft
 	"#10b981", // Emerald 500
-	"#06b6d4", // Water Cyan Accent
-	"#38bdf8", // Sky 500 Info
+	"#2563eb", // Water Cyan Accent
+	"#2563eb", // Sky 500 Info
 	"#2563eb", // Glacier Cobalt Primary
-	"#60a5fa", // Blue Telemetry
-	"#f87171", // Rose Soft Text
-	"#34d399", // Emerald Soft Text
+	"#2563eb", // Blue Telemetry
+	"#f43f5e", // Rose Soft Text
+	"#10b981", // Emerald Soft Text
 ];
 
 const FUN_EMOJIS = [
@@ -303,7 +303,7 @@ export default function BabyPlayPage() {
 						style={{
 							color: item.color,
 							textShadow:
-								"3px 3px 0 #fff, -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff",
+								"3px 3px 0 #ffffff, -3px -3px 0 #ffffff, 3px -3px 0 #ffffff, -3px 3px 0 #ffffff",
 						}}
 					>
 						{item.char}

@@ -166,7 +166,7 @@ export default function StationEditorPage() {
 				<div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
 					<Link
 						href="/map"
-						className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:bg-[#e2e8f0] dark:hover:bg-[#27272a] flex items-center justify-center transition-all shadow-xs shrink-0"
+						className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:bg-[#d7dfe9] dark:hover:bg-[#2a2a32] flex items-center justify-center transition-all shadow-xs shrink-0"
 						title="지도로 돌아가기"
 						aria-label="지도로 돌아가기"
 					>
@@ -210,7 +210,7 @@ export default function StationEditorPage() {
 				<div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
 					<ThemeToggle className="sm:!w-9 sm:!h-9 !rounded-xl" />
 					{/* 탭 전환 버튼 */}
-					<div className="h-8 sm:h-9 flex items-center bg-[#f1f5f9] dark:bg-[#18181b] p-0.5 rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32]">
+					<div className="h-8 sm:h-9 flex items-center bg-[#f1f5f9] dark:bg-[#111115] p-0.5 rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32]">
 						<button
 							type="button"
 							onClick={() => handleTabChange("manager")}
@@ -247,8 +247,8 @@ export default function StationEditorPage() {
 							disabled={isSaving || !isDirty}
 							className={`h-8 sm:h-9 flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
 								isDirty
-									? "bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-sm active:scale-95 cursor-pointer"
-									: "bg-[#f1f5f9] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#52525b] border border-[#d7dfe9] dark:border-[#2a2a32] cursor-not-allowed"
+									? "bg-[#2563eb] text-white hover:bg-[#2563eb] shadow-sm active:scale-95 cursor-pointer"
+									: "bg-[#f1f5f9] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] border border-[#d7dfe9] dark:border-[#2a2a32] cursor-not-allowed"
 							}`}
 						>
 							<Save size={14} className="shrink-0" />

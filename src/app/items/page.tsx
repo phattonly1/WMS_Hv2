@@ -322,8 +322,8 @@ function ItemsContent() {
 							aria-label="리스트 뷰"
 							className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
 								viewMode === "list"
-									? "bg-white dark:bg-[#222228] text-[#0f172a] dark:text-white font-bold shadow-sm"
-									: "text-[#64748b] dark:text-[#71717a] hover:text-[#0f172a] dark:hover:text-[#a1a1aa]"
+									? "bg-white dark:bg-[#2a2a32] text-[#0f172a] dark:text-white font-bold shadow-sm"
+									: "text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-[#a1a1aa]"
 							}`}
 						>
 							<List size={15} strokeWidth={2} />
@@ -336,8 +336,8 @@ function ItemsContent() {
 							aria-label="포토 뷰"
 							className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
 								viewMode === "photo"
-									? "bg-white dark:bg-[#222228] text-[#0f172a] dark:text-white font-bold shadow-sm"
-									: "text-[#64748b] dark:text-[#71717a] hover:text-[#0f172a] dark:hover:text-[#a1a1aa]"
+									? "bg-white dark:bg-[#2a2a32] text-[#0f172a] dark:text-white font-bold shadow-sm"
+									: "text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-[#a1a1aa]"
 							}`}
 						>
 							<Grid3X3 size={15} strokeWidth={2} />
@@ -389,11 +389,11 @@ function ItemsContent() {
 					) : activeTab === "inventory" ? (
 						filteredItems.length === 0 ? (
 							<div className="h-64 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-[#111115] rounded-3xl border border-[#d7dfe9] dark:border-[#2a2a32]">
-								<Package className="w-10 h-10 text-[#64748b] dark:text-[#52525b] mb-2" />
+								<Package className="w-10 h-10 text-[#64748b] dark:text-[#64748b] mb-2" />
 								<p className="text-sm font-bold text-[#0f172a] dark:text-white">
 									해당하는 소모품이 없습니다
 								</p>
-								<p className="text-xs text-[#64748b] dark:text-[#71717a] mt-1">
+								<p className="text-xs text-[#64748b] dark:text-[#64748b] mt-1">
 									필터 조건을 조정하거나 검색어를 확인해주세요.
 								</p>
 							</div>
@@ -443,7 +443,7 @@ function ItemsContent() {
 							</button>
 							<div className="bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] px-4 h-9 rounded-xl flex items-center">
 								<span className="text-xs tabular-nums font-bold text-[#0f172a] dark:text-white">
-									{currentPage} <span className="text-[#64748b] dark:text-[#52525b] mx-1">/</span>{" "}
+									{currentPage} <span className="text-[#64748b] dark:text-[#64748b] mx-1">/</span>{" "}
 									{totalPages}
 								</span>
 							</div>

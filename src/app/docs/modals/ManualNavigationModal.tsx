@@ -132,7 +132,7 @@ export default function ManualNavigationModal({
 				<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
 					<div className="flex-1 overflow-y-auto overscroll-contain p-2 space-y-1">
 						{searchResults.length === 0 ? (
-							<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#71717a]">
+							<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#64748b]">
 								'{query}' 일치하는 문서가 없습니다.
 							</div>
 						) : (
@@ -156,7 +156,7 @@ export default function ManualNavigationModal({
 									</div>
 									<ChevronRight
 										size={14}
-										className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
+										className="text-[#64748b] dark:text-[#64748b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
 									/>
 								</button>
 							))
@@ -184,7 +184,7 @@ export default function ManualNavigationModal({
 						<div className="h-full flex items-center justify-center px-2 text-center border-r border-[#d7dfe9] dark:border-[#2a2a32] font-bold text-[#0f172a] dark:text-white">
 							<span className="truncate flex items-center gap-1 text-blue-600 dark:text-blue-400">
 								<span className="truncate">{activeCategory?.name}</span>
-								<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#71717a] shrink-0">
+								<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#64748b] shrink-0">
 									({activeCatIndex + 1}/{categories.length})
 								</span>
 							</span>
@@ -205,7 +205,7 @@ export default function ManualNavigationModal({
 					{/* 선택된 카테고리의 문서 목록 */}
 					<div className="flex-1 overflow-y-auto overscroll-contain p-2 space-y-1">
 						{!activeCategory || activeCategory.items.length === 0 ? (
-							<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
+							<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#64748b]">
 								문서가 없습니다.
 							</div>
 						) : (
@@ -250,7 +250,7 @@ export default function ManualNavigationModal({
 											)}
 											<ChevronRight
 												size={13}
-												className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
+												className="text-[#64748b] dark:text-[#64748b] group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors"
 											/>
 										</div>
 									</button>

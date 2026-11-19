@@ -67,7 +67,7 @@ export default function DeploymentGuardPage() {
 			<div
 				className="absolute inset-0 pointer-events-none opacity-[0.03] dark:invert"
 				style={{
-					backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+					backgroundImage: "radial-gradient(#09090b 1px, transparent 1px)",
 					backgroundSize: "20px 20px",
 				}}
 			/>
@@ -256,7 +256,7 @@ export default function DeploymentGuardPage() {
 										<div className="text-[#0f172a] dark:text-[#f4f4f5] font-semibold break-keep">
 											{v.detail}
 										</div>
-										<div className="font-mono text-[11px] bg-black/5 dark:bg-white/5 p-1.5 rounded text-[#475569] dark:text-[#d4d4d8] truncate">
+										<div className="font-mono text-[11px] bg-black/5 dark:bg-white/5 p-1.5 rounded text-[#0f172a] dark:text-[#f4f4f5] truncate">
 											코드: {v.snippet}
 										</div>
 										<div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">

@@ -128,7 +128,7 @@ export default function ReagentAmountModal({
 											<span
 												className={`text-base tabular-nums font-bold leading-none ${
 													isActive
-														? "text-[#2563eb] dark:text-[#60a5fa]"
+														? "text-[#2563eb] dark:text-[#2563eb]"
 														: "text-[#0f172a] dark:text-white"
 												}`}
 											>
@@ -139,7 +139,7 @@ export default function ReagentAmountModal({
 												className={`px-2.5 py-0.5 rounded-lg tabular-nums text-[11px] font-bold leading-tight transition-colors ${
 													isActive
 														? "bg-[#2563eb] text-white shadow-2xs"
-														: "bg-black/5 dark:bg-white/5 text-[#94a3b8] dark:text-[#71717a]"
+														: "bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#64748b]"
 												}`}
 											>
 												{count}개
@@ -152,7 +152,7 @@ export default function ReagentAmountModal({
 							{/* 하단 1: 입력 구성 내용 (예시 C: 1줄 칩/뱃지형 압축) */}
 							<div className="h-11 px-3.5 rounded-2xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-between text-xs font-bold">
 								<div className="flex items-center gap-2 min-w-0">
-									<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 text-[#2563eb] dark:text-[#60a5fa] tabular-nums text-xs shrink-0">
+									<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 text-[#2563eb] dark:text-[#2563eb] tabular-nums text-xs shrink-0">
 										총 {modalPreview.total}L
 									</span>
 									<span className="text-[#64748b] dark:text-[#a1a1aa] shrink-0">
@@ -164,7 +164,7 @@ export default function ReagentAmountModal({
 												{modalPreview.breakdownText}
 											</span>
 										) : (
-											<span className="text-[#94a3b8] dark:text-[#71717a] font-normal">
+											<span className="text-[#64748b] dark:text-[#64748b] font-normal">
 												카드를 눌러 추가
 											</span>
 										)}
@@ -224,7 +224,7 @@ export default function ReagentAmountModal({
 							type="button"
 							onClick={handleResetBuckets}
 							disabled={modalPreview.total === 0}
-							className="flex-1 h-11 px-4 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 disabled:opacity-30 border border-rose-500/20 text-rose-600 dark:text-[#f87171] font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer whitespace-nowrap"
+							className="flex-1 h-11 px-4 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 disabled:opacity-30 border border-rose-500/20 text-rose-600 dark:text-[#f43f5e] font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer whitespace-nowrap"
 						>
 							<RotateCcw size={14} />
 							<span>초기화</span>
@@ -240,7 +240,7 @@ export default function ReagentAmountModal({
 								)
 							}
 							disabled={savingCell}
-							className="flex-1 h-11 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs transition-all shadow-sm cursor-pointer disabled:opacity-50 flex items-center justify-center"
+							className="flex-1 h-11 rounded-xl bg-[#2563eb] hover:bg-[#2563eb] text-white font-bold text-xs transition-all shadow-sm cursor-pointer disabled:opacity-50 flex items-center justify-center"
 						>
 							{savingCell ? "저장 중..." : "저장하기"}
 						</button>

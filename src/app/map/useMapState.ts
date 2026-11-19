@@ -275,7 +275,7 @@ export function useMapState(
 				lng,
 				type: "poi",
 				river: "han",
-				color: "#ef4444",
+				color: "#f43f5e",
 				category: "댐/보",
 				reg_no: 1,
 				description: `${name} 주요 수질 관리 관심지점`,

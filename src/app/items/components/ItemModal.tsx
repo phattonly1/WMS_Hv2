@@ -154,7 +154,7 @@ export default function ItemModal({
 						id="item-name"
 						name="item-name"
 						required
-						className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-2xl h-13 px-4 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-bold text-base placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+						className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-2xl h-13 px-4 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-bold text-base placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 						placeholder="물품 이름을 입력하세요"
 						value={formData.name || ""}
 						onChange={(e) =>
@@ -175,7 +175,7 @@ export default function ItemModal({
 						<input
 							id="item-device"
 							name="item-device"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 							placeholder="기기명"
 							value={formData.device || ""}
 							onChange={(e) =>
@@ -193,7 +193,7 @@ export default function ItemModal({
 						<input
 							id="item-manufacturer"
 							name="item-manufacturer"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 							placeholder="제조사"
 							value={formData.manufacturer || ""}
 							onChange={(e) =>
@@ -218,7 +218,7 @@ export default function ItemModal({
 						<input
 							id="item-unit"
 							name="item-unit"
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-[#f4f4f5] rounded-xl h-11 px-3.5 border border-[#d7dfe9] dark:border-[#2a2a32] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:border-blue-500 transition-all font-semibold text-sm placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 							placeholder="예: ml, 병, EA"
 							value={formData.unit || ""}
 							onChange={(e) =>
@@ -296,13 +296,13 @@ export default function ItemModal({
 								/>
 							) : (
 								<Package
-									className="text-[#64748b] dark:text-[#3f3f46] w-8 h-8"
+									className="text-[#64748b] dark:text-[#2a2a32] w-8 h-8"
 									aria-hidden="true"
 								/>
 							)}
 						</div>
 						<div className="flex-1 min-w-0 space-y-2">
-							<p className="text-[11px] text-[#64748b] dark:text-[#71717a] leading-tight">
+							<p className="text-[11px] text-[#64748b] dark:text-[#64748b] leading-tight">
 								512x512px 권장 (JPG, PNG, WEBP)
 							</p>
 							<input

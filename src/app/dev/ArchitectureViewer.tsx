@@ -17,11 +17,11 @@ import { useRef, useState } from "react";
 import { FILE_DIAGRAM_NODES, type FileNodeStory } from "./architectureData";
 
 const BADGE_STYLES: Record<FileNodeStory["badgeColor"], string> = {
-	blue: "bg-blue-500/10 text-[#2563eb] dark:text-[#60a5fa] border-blue-500/20",
+	blue: "bg-blue-500/10 text-[#2563eb] dark:text-[#2563eb] border-blue-500/20",
 	amber:
-		"bg-amber-500/10 text-amber-600 dark:text-[#fbbf24] border-amber-500/20",
+		"bg-amber-500/10 text-amber-600 dark:text-[#f59e0b] border-amber-500/20",
 	emerald:
-		"bg-emerald-500/10 text-emerald-600 dark:text-[#34d399] border-emerald-500/20",
+		"bg-emerald-500/10 text-emerald-600 dark:text-[#10b981] border-emerald-500/20",
 };
 
 type NodeTone = "blue" | "amber" | "emerald";
@@ -38,22 +38,22 @@ const TONE_PALETTE: Record<
 > = {
 	blue: {
 		border: "#2563eb",
-		headerBg: "#18181b",
-		badgeText: "#60a5fa",
+		headerBg: "#111115",
+		badgeText: "#2563eb",
 		titleText: "#f4f4f5",
 		dot: "#2563eb",
 	},
 	amber: {
 		border: "#f59e0b",
-		headerBg: "#18181b",
-		badgeText: "#fbbf24",
+		headerBg: "#111115",
+		badgeText: "#f59e0b",
 		titleText: "#f4f4f5",
 		dot: "#f59e0b",
 	},
 	emerald: {
 		border: "#10b981",
-		headerBg: "#18181b",
-		badgeText: "#34d399",
+		headerBg: "#111115",
+		badgeText: "#10b981",
 		titleText: "#f4f4f5",
 		dot: "#10b981",
 	},
@@ -190,7 +190,7 @@ export function ArchitectureViewer() {
 					width={w}
 					height={h}
 					rx={12}
-					fill={isSelected ? "#18181b" : "#111115"}
+					fill={isSelected ? "#111115" : "#111115"}
 					stroke={isSelected ? "#ffffff" : pal.border}
 					strokeWidth={isSelected ? 3 : 1.8}
 					strokeDasharray={isExternal && !isSelected ? "6 4" : undefined}
@@ -209,7 +209,7 @@ export function ArchitectureViewer() {
 					y1={y + headerH}
 					x2={x + w - 1}
 					y2={y + headerH}
-					stroke="#27272a"
+					stroke="#2a2a32"
 					strokeWidth="1"
 				/>
 
@@ -280,11 +280,11 @@ export function ArchitectureViewer() {
 		tone: "default" | "amber" | "blue" | "sky" | "emerald" = "default",
 	) => {
 		const toneMap = {
-			default: { stroke: "#3f3f46", text: "#d4d4d8", fill: "#111115" },
-			amber: { stroke: "#f59e0b", text: "#fbbf24", fill: "#18181b" },
-			blue: { stroke: "#2563eb", text: "#93c5fd", fill: "#18181b" },
-			sky: { stroke: "#0284c7", text: "#38bdf8", fill: "#18181b" },
-			emerald: { stroke: "#10b981", text: "#34d399", fill: "#18181b" },
+			default: { stroke: "#2a2a32", text: "#f4f4f5", fill: "#111115" },
+			amber: { stroke: "#f59e0b", text: "#f59e0b", fill: "#111115" },
+			blue: { stroke: "#2563eb", text: "#2563eb", fill: "#111115" },
+			sky: { stroke: "#2563eb", text: "#2563eb", fill: "#111115" },
+			emerald: { stroke: "#10b981", text: "#10b981", fill: "#111115" },
 		}[tone];
 
 		return (
@@ -320,7 +320,7 @@ export function ArchitectureViewer() {
 					dx="0"
 					dy="0"
 					stdDeviation="8"
-					floodColor="#38bdf8"
+					floodColor="#2563eb"
 					floodOpacity="0.6"
 				/>
 			</filter>
@@ -334,7 +334,7 @@ export function ArchitectureViewer() {
 				markerHeight="6"
 				orient="auto-start-reverse"
 			>
-				<path d="M 0 1 L 10 5 L 0 9 z" fill="#71717a" />
+				<path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b" />
 			</marker>
 			<marker
 				id="arrow-amber"
@@ -356,7 +356,7 @@ export function ArchitectureViewer() {
 				markerHeight="6.5"
 				orient="auto-start-reverse"
 			>
-				<path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+				<path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
 			</marker>
 			<marker
 				id="arrow-emerald"
@@ -474,7 +474,7 @@ export function ArchitectureViewer() {
 						<button
 							type="button"
 							onClick={() => setIsFullscreen((v) => !v)}
-							className="min-h-[38px] px-3 rounded-xl bg-[#2563eb] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:bg-[#1d4ed8] transition-colors"
+							className="min-h-[38px] px-3 rounded-xl bg-[#2563eb] text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:bg-[#2563eb] transition-colors"
 							title="전체화면 토글"
 						>
 							{isFullscreen ? (
@@ -509,7 +509,7 @@ export function ArchitectureViewer() {
 				>
 					{/* 하단 컬러 범례 바 */}
 					{diagramMode === "ai" ? (
-						<div className="absolute bottom-3 right-3 z-10 flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-xl bg-[#111115]/90 backdrop-blur-sm border border-[#2a2a32] text-[11px] font-mono text-[#d4d4d8]">
+						<div className="absolute bottom-3 right-3 z-10 flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-xl bg-[#111115]/90 backdrop-blur-sm border border-[#2a2a32] text-[11px] font-mono text-[#f4f4f5]">
 							<span className="text-[#a1a1aa] font-sans mr-1">🔍 섹션 바로가기:</span>
 							<button
 								type="button"
@@ -517,7 +517,7 @@ export function ArchitectureViewer() {
 								className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
 									selectedId === "ai_panel_how_it_works"
 										? "bg-[#2563eb] text-white font-bold"
-										: "text-[#60a5fa] hover:bg-[#2563eb]/20"
+										: "text-[#2563eb] hover:bg-[#2563eb]/20"
 								}`}
 							>
 								1. HOW AI WORKS
@@ -528,7 +528,7 @@ export function ArchitectureViewer() {
 								className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
 									selectedId === "ai_panel_core_features"
 										? "bg-[#f59e0b] text-white font-bold"
-										: "text-[#fbbf24] hover:bg-[#f59e0b]/20"
+										: "text-[#f59e0b] hover:bg-[#f59e0b]/20"
 								}`}
 							>
 								2. CORE AI FEATURES
@@ -539,23 +539,23 @@ export function ArchitectureViewer() {
 								className={`px-2 py-0.5 rounded cursor-pointer transition-colors ${
 									selectedId === "ai_panel_pipeline"
 										? "bg-[#10b981] text-white font-bold"
-										: "text-[#34d399] hover:bg-[#10b981]/20"
+										: "text-[#10b981] hover:bg-[#10b981]/20"
 								}`}
 							>
 								3. DEV-TO-CLOUD PIPELINE
 							</button>
 						</div>
 					) : (
-						<div className="absolute bottom-3 right-3 z-10 flex flex-wrap items-center gap-3 px-3.5 py-2 rounded-xl bg-[#111115] border border-[#2a2a32] text-[11px] font-mono text-[#d4d4d8] pointer-events-none">
-							<span className="flex items-center gap-1.5 font-bold text-[#60a5fa]">
+						<div className="absolute bottom-3 right-3 z-10 flex flex-wrap items-center gap-3 px-3.5 py-2 rounded-xl bg-[#111115] border border-[#2a2a32] text-[11px] font-mono text-[#f4f4f5] pointer-events-none">
+							<span className="flex items-center gap-1.5 font-bold text-[#2563eb]">
 								<span className="w-2.5 h-2.5 rounded-xs bg-[#2563eb]" />
 								🖥️ 프론트엔드 (UI · 화면 · 클라이언트)
 							</span>
-							<span className="flex items-center gap-1.5 font-bold text-[#fbbf24]">
+							<span className="flex items-center gap-1.5 font-bold text-[#f59e0b]">
 								<span className="w-2.5 h-2.5 rounded-xs bg-[#f59e0b]" />
 								⚙️ 백엔드 (서버 · API · 미들웨어)
 							</span>
-							<span className="flex items-center gap-1.5 font-bold text-[#34d399]">
+							<span className="flex items-center gap-1.5 font-bold text-[#10b981]">
 								<span className="w-2.5 h-2.5 rounded-xs bg-[#10b981]" />
 								🌐 외부 연동 (NIER 수질 · DB · 인프라)
 							</span>
@@ -612,7 +612,7 @@ export function ArchitectureViewer() {
 											}
 											stroke={
 												selectedId === "ai_panel_how_it_works"
-													? "#60a5fa"
+													? "#2563eb"
 													: "#2563eb"
 											}
 											strokeWidth={
@@ -621,7 +621,7 @@ export function ArchitectureViewer() {
 											strokeDasharray={
 												selectedId === "ai_panel_how_it_works" ? "none" : "6 6"
 											}
-											className="hover:stroke-[#60a5fa] hover:stroke-[3px]"
+											className="hover:stroke-[#2563eb] hover:stroke-[3px]"
 										/>
 									</g>
 
@@ -646,7 +646,7 @@ export function ArchitectureViewer() {
 											}
 											stroke={
 												selectedId === "ai_panel_core_features"
-													? "#fbbf24"
+													? "#f59e0b"
 													: "#f59e0b"
 											}
 											strokeWidth={
@@ -657,7 +657,7 @@ export function ArchitectureViewer() {
 													? "none"
 													: "6 6"
 											}
-											className="hover:stroke-[#fbbf24] hover:stroke-[3px]"
+											className="hover:stroke-[#f59e0b] hover:stroke-[3px]"
 										/>
 									</g>
 
@@ -682,14 +682,14 @@ export function ArchitectureViewer() {
 											}
 											stroke={
 												selectedId === "ai_panel_pipeline"
-													? "#34d399"
+													? "#10b981"
 													: "#10b981"
 											}
 											strokeWidth={selectedId === "ai_panel_pipeline" ? 4 : 0}
 											strokeDasharray={
 												selectedId === "ai_panel_pipeline" ? "none" : "6 6"
 											}
-											className="hover:stroke-[#34d399] hover:stroke-[3px]"
+											className="hover:stroke-[#10b981] hover:stroke-[3px]"
 										/>
 									</g>
 								</svg>
@@ -709,7 +709,7 @@ export function ArchitectureViewer() {
 								{/* 1. 사용자 접속(640,78) -> 로그인 페이지(640,150) */}
 								<path
 									d="M 640 78 L 640 150"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.4"
 									fill="none"
 									markerEnd="url(#arrow-blue)"
@@ -729,7 +729,7 @@ export function ArchitectureViewer() {
 								{/* 3. 로그인 페이지(640,192) 우측(770,192) -> 로그인 완료 이동 -> 메인 대시보드(1060,192) 좌측(930,192) */}
 								<path
 									d="M 770 192 L 925 192"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.8"
 									fill="none"
 									markerEnd="url(#arrow-blue)"
@@ -758,13 +758,13 @@ export function ArchitectureViewer() {
 								{/* 5. 메인 대시보드(/dashboard, 1060,234) 하단 -> 6대 핵심 서비스 분기 버스 (전용 통로 Y=355) */}
 								<path
 									d="M 1060 234 L 1060 355"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.4"
 									fill="none"
 								/>
 								<path
 									d="M 220 355 L 1630 355"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.4"
 									fill="none"
 								/>
@@ -772,7 +772,7 @@ export function ArchitectureViewer() {
 									<path
 										key={`sum-front-${xPos}`}
 										d={`M ${xPos} 355 L ${xPos} 385`}
-										stroke="#38bdf8"
+										stroke="#2563eb"
 										strokeWidth="2.2"
 										fill="none"
 										markerEnd="url(#arrow-blue)"
@@ -788,7 +788,7 @@ export function ArchitectureViewer() {
 										height="44"
 										rx="22"
 										fill="#2563eb"
-										stroke="#60a5fa"
+										stroke="#2563eb"
 										strokeWidth="2"
 									/>
 									<text
@@ -948,7 +948,7 @@ export function ArchitectureViewer() {
 										width="380"
 										height="34"
 										rx="8"
-										fill="#1e40af"
+										fill="#2563eb"
 										opacity="0.9"
 									/>
 									<text
@@ -991,7 +991,7 @@ export function ArchitectureViewer() {
 										x="1580"
 										y="137"
 										textAnchor="middle"
-										fill="#fbbf24"
+										fill="#f59e0b"
 										fontSize="13.5"
 										fontWeight="700"
 										fontFamily="monospace"
@@ -1016,7 +1016,7 @@ export function ArchitectureViewer() {
 								{/* [Flow 2] 우측 proxy.ts(1580,232 하단) -> 좌측 로그인 페이지(730,295 상단) [Y=265 전용 통로] */}
 								<path
 									d="M 1580 232 L 1580 265 L 730 265 L 730 295"
-									stroke="#71717a"
+									stroke="#64748b"
 									strokeWidth="2"
 									strokeDasharray="5 5"
 									fill="none"
@@ -1027,7 +1027,7 @@ export function ArchitectureViewer() {
 								{/* [Flow 3] 좌측 로그인 페이지(835,365) -> 우측 백엔드 세션 검증 다이아몬드(1520,365) [Y=365 직결] */}
 								<path
 									d="M 835 365 L 1515 365"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.4"
 									fill="none"
 									markerEnd="url(#arrow-blue)"
@@ -1047,7 +1047,7 @@ export function ArchitectureViewer() {
 								{/* [Flow 5] 우측 세션 다이아몬드(1650,465 하단) -> 좌측 메인 대시보드(835,520) [Y=520 직결] */}
 								<path
 									d="M 1650 465 L 1650 520 L 835 520"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.8"
 									fill="none"
 									markerEnd="url(#arrow-blue)"
@@ -1086,13 +1086,13 @@ export function ArchitectureViewer() {
 								{/* [Flow 7] 메인 대시보드(680,562 하단) -> 좌측 3대 서비스 UI 버스 [전용 통로 Y=695] */}
 								<path
 									d="M 680 562 L 680 695"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.4"
 									fill="none"
 								/>
 								<path
 									d="M 350 695 L 1040 695"
-									stroke="#38bdf8"
+									stroke="#2563eb"
 									strokeWidth="2.4"
 									fill="none"
 								/>
@@ -1100,7 +1100,7 @@ export function ArchitectureViewer() {
 									<path
 										key={`flow-dash-row1-${xPos}`}
 										d={`M ${xPos} 695 L ${xPos} 735`}
-										stroke="#38bdf8"
+										stroke="#2563eb"
 										strokeWidth="2.2"
 										fill="none"
 										markerEnd="url(#arrow-blue)"
@@ -1215,7 +1215,7 @@ export function ArchitectureViewer() {
 								{/* [Flow 15] 공통 UI 컴포넌트(1030,1058 상단) -> 실무 화면 UI 적용 [전용 통로 Y=1015] */}
 								<path
 									d="M 1030 1058 L 1030 1015 L 680 1015 L 680 825"
-									stroke="#71717a"
+									stroke="#64748b"
 									strokeWidth="1.6"
 									strokeDasharray="5 5"
 									fill="none"
@@ -1235,7 +1235,7 @@ export function ArchitectureViewer() {
 										height="44"
 										rx="22"
 										fill="#2563eb"
-										stroke="#60a5fa"
+										stroke="#2563eb"
 										strokeWidth="2"
 									/>
 									<text
@@ -1434,7 +1434,7 @@ export function ArchitectureViewer() {
 									<polygon
 										points="1650,265 1780,365 1650,465 1520,365"
 										fill={
-											selectedId === "middleware_auth" ? "#18181b" : "#111115"
+											selectedId === "middleware_auth" ? "#111115" : "#111115"
 										}
 										stroke={
 											selectedId === "middleware_auth" ? "#ffffff" : "#f59e0b"
@@ -1456,7 +1456,7 @@ export function ArchitectureViewer() {
 										x="1650"
 										y="364"
 										textAnchor="middle"
-										fill="#fbbf24"
+										fill="#f59e0b"
 										fontSize="13"
 										fontWeight="700"
 									>
@@ -1466,7 +1466,7 @@ export function ArchitectureViewer() {
 										x="1650"
 										y="386"
 										textAnchor="middle"
-										fill="#d4d4d8"
+										fill="#f4f4f5"
 										fontSize="11"
 									>
 										(utils/supabase/middleware.ts)
@@ -1618,7 +1618,7 @@ export function ArchitectureViewer() {
 							{selectedNode.title}
 						</h3>
 					</div>
-					<span className="font-mono text-xs text-[#2563eb] dark:text-[#60a5fa] font-bold">
+					<span className="font-mono text-xs text-[#2563eb] dark:text-[#2563eb] font-bold">
 						{selectedNode.path}
 					</span>
 				</div>
@@ -1630,7 +1630,7 @@ export function ArchitectureViewer() {
 							className="p-4 rounded-xl bg-[#f8fafc] dark:bg-[#09090b] border border-[#d7dfe9] dark:border-[#2a2a32] space-y-1.5"
 						>
 							<div className="flex items-center gap-2">
-								<FileCode2 className="w-4 h-4 text-[#2563eb] dark:text-[#60a5fa] shrink-0" />
+								<FileCode2 className="w-4 h-4 text-[#2563eb] dark:text-[#2563eb] shrink-0" />
 								<span className="font-mono text-xs sm:text-sm font-bold text-[#0f172a] dark:text-[#f4f4f5] break-all">
 									{file.name}
 								</span>

@@ -516,27 +516,27 @@ export function getDeadlineDDay(deadline: string | undefined): {
 		return {
 			text: "마감",
 			badgeClass:
-				"bg-black/5 dark:bg-white/5 text-[#94a3b8] dark:text-[#52525b] border-transparent",
+				"bg-black/5 dark:bg-white/5 text-[#64748b] dark:text-[#64748b] border-transparent",
 		};
 	}
 	if (diffDays === 0) {
 		return {
 			text: "D-Day",
 			badgeClass:
-				"bg-rose-500/15 text-rose-600 dark:text-[#f87171] border-rose-500/30",
+				"bg-rose-500/15 text-rose-600 dark:text-[#f43f5e] border-rose-500/30",
 		};
 	}
 	if (diffDays <= 3) {
 		return {
 			text: `D-${diffDays}`,
 			badgeClass:
-				"bg-amber-500/15 text-amber-600 dark:text-[#fbbf24] border-amber-500/30",
+				"bg-amber-500/15 text-amber-600 dark:text-[#f59e0b] border-amber-500/30",
 		};
 	}
 	return {
 		text: `D-${diffDays}`,
 		badgeClass:
-			"bg-blue-500/15 text-[#2563eb] dark:text-[#60a5fa] border-blue-500/30",
+			"bg-blue-500/15 text-[#2563eb] dark:text-[#2563eb] border-blue-500/30",
 	};
 }
 

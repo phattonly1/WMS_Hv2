@@ -34,7 +34,7 @@ export default function MobileReagentBottomBar({
 					className="w-full min-w-0 h-11 px-3.5 rounded-xl bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-between gap-2 text-xs cursor-pointer active:scale-[0.99] transition-all"
 				>
 					<div className="flex items-center gap-1.5 min-w-0 truncate">
-						<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 border border-blue-500/30 tabular-nums font-bold text-xs text-[#2563eb] dark:text-[#60a5fa] shrink-0">
+						<span className="px-2 py-0.5 rounded-lg bg-blue-500/15 border border-blue-500/30 tabular-nums font-bold text-xs text-[#2563eb] dark:text-[#2563eb] shrink-0">
 							{currentSheet
 								? formatSheetShortTitle(currentSheet.title)
 								: "선택"}
@@ -52,12 +52,12 @@ export default function MobileReagentBottomBar({
 					</div>
 					<div className="flex items-center gap-2 text-xs tabular-nums shrink-0 whitespace-nowrap">
 						{currentSheet && currentSheet.deadline !== "-" && (
-							<span className="text-amber-600 dark:text-[#fbbf24] font-semibold">
+							<span className="text-amber-600 dark:text-[#f59e0b] font-semibold">
 								마감 <span>{currentSheet.deadline}</span>
 							</span>
 						)}
 						{currentSheet && (
-							<span className="text-emerald-600 dark:text-[#34d399] font-bold">
+							<span className="text-emerald-600 dark:text-[#10b981] font-bold">
 								납기 <span>{currentSheet.deliveryDate}</span>
 							</span>
 						)}
@@ -90,7 +90,7 @@ export default function MobileReagentBottomBar({
 									}}
 									className={`w-full min-h-[48px] py-2 px-3.5 rounded-2xl text-xs font-bold flex items-center justify-between cursor-pointer transition-all active:scale-[0.98] ${
 										isSelected
-											? "bg-blue-500/15 text-[#2563eb] dark:text-[#60a5fa] border border-blue-500/30"
+											? "bg-blue-500/15 text-[#2563eb] dark:text-[#2563eb] border border-blue-500/30"
 											: "bg-[#f8fafc] dark:bg-[#16161c] text-[#0f172a] dark:text-white hover:bg-black/5 dark:hover:bg-white/5 border border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
@@ -117,11 +117,11 @@ export default function MobileReagentBottomBar({
 									</div>
 									<div className="flex items-center gap-2 text-xs tabular-nums shrink-0 ml-2 whitespace-nowrap">
 										{s.deadline !== "-" && (
-											<span className="text-amber-600 dark:text-[#fbbf24] font-semibold">
+											<span className="text-amber-600 dark:text-[#f59e0b] font-semibold">
 												마감 <span>{s.deadline}</span>
 											</span>
 										)}
-										<span className="text-emerald-600 dark:text-[#34d399] font-bold">
+										<span className="text-emerald-600 dark:text-[#10b981] font-bold">
 											납기 <span>{s.deliveryDate}</span>
 										</span>
 									</div>

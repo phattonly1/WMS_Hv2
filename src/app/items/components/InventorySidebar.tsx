@@ -143,7 +143,7 @@ export default function InventorySidebar({
 				)}
 			</div>
 
-			<div className="h-px bg-[#e2e8f0] dark:bg-[#222228]" />
+			<div className="h-px bg-[#d7dfe9] dark:bg-[#2a2a32]" />
 
 			{activeTab === "inventory" ? (
 				<>

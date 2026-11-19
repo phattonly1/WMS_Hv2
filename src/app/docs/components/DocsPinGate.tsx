@@ -248,7 +248,7 @@ export function DocsPinGate({
 							digit && !error
 								? "bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400"
 								: ""
-						} placeholder:text-[#94a3b8] dark:placeholder:text-white/20`}
+						} placeholder:text-[#64748b] dark:placeholder:text-white/20`}
 					/>
 				))}
 			</div>

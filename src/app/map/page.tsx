@@ -488,10 +488,10 @@ export default function MapPage() {
 						{/* 1단. 마커 수질 칩 표시 (4열 정사각형 타일) */}
 						<div className="space-y-1 relative">
 							<div className="flex items-center justify-between px-0.5 leading-none">
-								<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#94a3b8]">
+								<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#64748b]">
 									마커 수질 칩
 								</span>
-								<span className="text-[9px] text-[#94a3b8] dark:text-[#71717a]">
+								<span className="text-[9px] text-[#64748b] dark:text-[#64748b]">
 									단일 선택
 								</span>
 							</div>
@@ -506,7 +506,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.waterChip === "default"
 											? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<Droplets size={15} strokeWidth={2.4} />
@@ -524,7 +524,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.waterChip === "toc"
 											? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<span className="text-[11px] font-black leading-none tracking-tight">
@@ -544,7 +544,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.waterChip === "ec"
 											? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<span className="text-[11px] font-black leading-none tracking-tight">
@@ -564,7 +564,7 @@ export default function MapPage() {
 										filters.waterChip !== "ec" &&
 										filters.waterChip !== "none"
 											? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<div className="flex items-center gap-0.5">
@@ -604,8 +604,8 @@ export default function MapPage() {
 									}}
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.waterChip === "none"
-											? "bg-[#27272a] text-white font-bold border-white/20 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											? "bg-[#2a2a32] text-white font-bold border-white/20 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<EyeOff size={15} strokeWidth={2.4} />
@@ -646,7 +646,7 @@ export default function MapPage() {
 													className={`h-[62px] sm:h-[72px] px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 border ${
 														isSelected
 															? "bg-sky-600 text-white border-sky-500 font-bold shadow-xs"
-															: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-black/5 dark:hover:bg-white/5 text-[#334155] dark:text-[#cbd5e1] border-[#d7dfe9] dark:border-[#2a2a32]"
+															: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-[#d7dfe9] border-[#d7dfe9] dark:border-[#2a2a32]"
 													}`}
 												>
 													<span className="text-[11px] font-black leading-none tracking-tight">
@@ -669,7 +669,7 @@ export default function MapPage() {
 
 						{/* 2단. 지도 · 측정망 (5열 정사각형 타일) */}
 						<div className="space-y-1">
-							<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#94a3b8] block px-0.5 leading-none">
+							<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#64748b] block px-0.5 leading-none">
 								지도 · 측정망
 							</span>
 							<div className="grid grid-cols-5 gap-1.5">
@@ -679,7 +679,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										isSat
 											? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<Layers size={15} strokeWidth={2.4} />
@@ -694,7 +694,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										isInverted
 											? "bg-indigo-600 text-white font-bold border-indigo-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<SunMoon size={15} strokeWidth={2.4} />
@@ -711,7 +711,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.station
 											? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<MapPin size={15} strokeWidth={2.4} />
@@ -728,7 +728,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.small
 											? "bg-teal-600 text-white font-bold border-teal-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<MapPin size={15} strokeWidth={2.4} />
@@ -745,7 +745,7 @@ export default function MapPage() {
 									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.poi
 											? "bg-rose-600 text-white font-bold border-rose-500 shadow-xs"
-											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
+											: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-white border-[#d7dfe9] dark:border-[#2a2a32]"
 									}`}
 								>
 									<MapPin size={15} strokeWidth={2.4} />
@@ -760,10 +760,10 @@ export default function MapPage() {
 						<div className="space-y-1">
 							<div className="flex items-center justify-between px-0.5 leading-none">
 								<div className="flex items-center gap-1.5">
-									<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#94a3b8]">
+									<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#64748b]">
 										수계 표시 · 강조
 									</span>
-									<span className="text-[8.5px] text-[#94a3b8] dark:text-[#71717a]">
+									<span className="text-[8.5px] text-[#64748b] dark:text-[#64748b]">
 										(끔➔켬➔강조)
 									</span>
 								</div>
@@ -873,7 +873,7 @@ export default function MapPage() {
 													? "font-black shadow-md ring-2 ring-white/50 ring-offset-1 dark:ring-offset-black"
 													: isActive
 														? "font-bold shadow-xs"
-														: "bg-[#f8fafc] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#71717a] border-[#d7dfe9] dark:border-[#2a2a32]"
+														: "bg-[#f8fafc] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] border-[#d7dfe9] dark:border-[#2a2a32]"
 											}`}
 										>
 											{isHigh ? (
@@ -884,7 +884,7 @@ export default function MapPage() {
 													style={{
 														backgroundColor: isActive
 															? conf.color
-															: "#94a3b8",
+															: "#64748b",
 														opacity: isActive ? 1 : 0.4,
 													}}
 												/>
@@ -967,7 +967,7 @@ export default function MapPage() {
 						</div>
 
 						{/* 공간정보 및 데이터 출처 (Attribution) */}
-						<div className="pt-1.5 border-t border-[#d7dfe9]/80 dark:border-[#2a2a32]/80 flex items-center justify-between gap-1 text-[9.5px] text-[#94a3b8] dark:text-[#71717a] leading-none">
+						<div className="pt-1.5 border-t border-[#d7dfe9]/80 dark:border-[#2a2a32]/80 flex items-center justify-between gap-1 text-[9.5px] text-[#64748b] dark:text-[#64748b] leading-none">
 							<span className="font-medium tracking-tight">공간정보 출처</span>
 							<div className="flex items-center gap-1.5">
 								<span>지도: 국토교통부 VWorld</span>

@@ -89,7 +89,7 @@ export default function DashboardPage() {
 			<div
 				className="absolute inset-0 pointer-events-none opacity-[0.03] dark:invert"
 				style={{
-					backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+					backgroundImage: "radial-gradient(#09090b 1px, transparent 1px)",
 					backgroundSize: "20px 20px",
 				}}
 			/>
@@ -112,7 +112,7 @@ export default function DashboardPage() {
 						<ThemeToggle />
 						<Link
 							href="/architecture"
-							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
+							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#2563eb] dark:text-[#2563eb] hover:underline transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
 						>
 							<span>구조도 뷰어</span>
 						</Link>

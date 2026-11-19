@@ -169,16 +169,14 @@ export async function runDeploymentGuard(): Promise<DeploymentGuardReport> {
 	const hardcodedViolations: HardcodedViolation[] = [];
 
 	const APPROVED_HEX_WHITELIST = new Set([
-		"#09090b", "#111115", "#16161c", "#1a1a20", "#222228", "#33333e",
-		"#2563eb", "#1d4ed8", "#1e40af", "#0284c7", "#38bdf8", "#06b6d4",
-		"#10b981", "#059669", "#34d399", "#6ee7b7", "#f59e0b", "#f43f5e",
-		"#ef4444", "#f87171", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe", "#eff6ff",
-		"#18181b", "#27272a", "#3f3f46", "#52525b", "#71717a", "#fbbf24",
-		"#facc15", "#ffffff", "#f4f4f5", "#d4d4d8", "#a1a1aa", "#000000",
-		"#000", "#fff",
-		// Light Mode M3 Tokens
-		"#f8fafc", "#f1f5f9", "#e2e8f0", "#cbd5e1", "#94a3b8", "#64748b",
-		"#475569", "#334155", "#1e293b", "#0f172a",
+		// Dark Neutrals (5)
+		"#09090b", "#111115", "#16161c", "#2a2a32", "#f4f4f5",
+		// Light Neutrals (5)
+		"#f8fafc", "#ffffff", "#f1f5f9", "#d7dfe9", "#0f172a",
+		// Muted Text (2)
+		"#64748b", "#a1a1aa",
+		// Primary & Status (4)
+		"#2563eb", "#10b981", "#f59e0b", "#f43f5e",
 	]);
 
 	const scanHardcoding = (dir: string) => {

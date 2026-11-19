@@ -151,7 +151,7 @@ export default function ReturnModal({
 						<button
 							type="button"
 							onClick={() => setCurrentOutQty((prev) => Math.max(0, prev - 1))}
-							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
+							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl flex items-center justify-center text-[#0f172a] dark:text-[#f4f4f5] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
 							aria-label="사용 중 수량 감소 (반납)"
 						>
 							<Minus size={20} />
@@ -168,7 +168,7 @@ export default function ReturnModal({
 							>
 								{currentOutQty}
 							</div>
-							<p className="text-[10px] font-semibold text-[#64748b] dark:text-[#71717a] mt-0.5">
+							<p className="text-[10px] font-semibold text-[#64748b] dark:text-[#64748b] mt-0.5">
 								사용 중
 							</p>
 						</div>
@@ -177,7 +177,7 @@ export default function ReturnModal({
 							onClick={() =>
 								setCurrentOutQty((prev) => Math.min(originalQty, prev + 1))
 							}
-							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl flex items-center justify-center text-[#334155] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
+							className="w-12 h-12 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl flex items-center justify-center text-[#0f172a] dark:text-[#f4f4f5] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 active:scale-95 transition-all"
 							aria-label="사용 중 수량 증가"
 						>
 							<Plus size={20} />
@@ -200,7 +200,7 @@ export default function ReturnModal({
 							placeholder="이름을 입력하세요"
 							value={userName}
 							onChange={(e) => setUserName(e.target.value)}
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-11 px-3.5 text-center font-bold text-[#0f172a] dark:text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-11 px-3.5 text-center font-bold text-[#0f172a] dark:text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 						/>
 					</div>
 					<div className="space-y-1.5">
@@ -216,7 +216,7 @@ export default function ReturnModal({
 							placeholder="반납 사유 또는 특이사항 (선택)"
 							value={note}
 							onChange={(e) => setNote(e.target.value)}
-							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-11 px-3.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b]"
+							className="w-full bg-[#f8fafc] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] rounded-xl h-11 px-3.5 text-center text-xs text-[#0f172a] dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 transition-all placeholder:text-[#64748b] dark:placeholder:text-[#64748b]"
 						/>
 					</div>
 				</div>
@@ -239,7 +239,7 @@ export default function ReturnModal({
 								? "bg-emerald-600 hover:bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
 								: isTakingBack
 									? "bg-amber-600 hover:bg-amber-500 shadow-[0_0_20px_rgba(217,119,6,0.3)]"
-									: "bg-[#e2e8f0] dark:bg-[#27272a] text-[#64748b] dark:text-[#71717a]"
+									: "bg-[#d7dfe9] dark:bg-[#2a2a32] text-[#64748b] dark:text-[#64748b]"
 						}`}
 					>
 						{isSubmitting

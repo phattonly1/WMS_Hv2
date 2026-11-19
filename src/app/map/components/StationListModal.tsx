@@ -177,7 +177,7 @@ export function StationListModal({
 						<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
 							<div className="flex-1 overflow-y-auto overscroll-contain p-2 space-y-1">
 								{searchResults.length === 0 ? (
-									<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#71717a]">
+									<div className="py-16 text-center text-xs text-[#64748b] dark:text-[#64748b]">
 										'{searchTerm}' 일치하는 측정소가 없습니다.
 									</div>
 								) : (
@@ -227,7 +227,7 @@ export function StationListModal({
 
 												<Eye
 													size={13}
-													className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
+													className="text-[#64748b] dark:text-[#64748b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
 												/>
 											</button>
 										);
@@ -239,12 +239,12 @@ export function StationListModal({
 						/* 수계별 탐색 뷰 (2열 독립 스크롤 + 하단 수계 전환바) */
 						<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
 							{/* 2열 독립 분할 스크롤 영역 (국가망 | 소규모) */}
-							<div className="flex-1 grid grid-cols-2 divide-x divide-[#e2e8f0] dark:divide-[#222228] min-h-0">
+							<div className="flex-1 grid grid-cols-2 divide-x divide-[#d7dfe9] dark:divide-[#2a2a32] min-h-0">
 								{/* 좌측: 국가 측정망 */}
 								<div className="flex flex-col min-h-0">
 									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5">
 										{nationalStations.length === 0 ? (
-											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
+											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#64748b]">
 												해당 없음
 											</div>
 										) : (
@@ -278,7 +278,7 @@ export function StationListModal({
 								<div className="flex flex-col min-h-0">
 									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5">
 										{smallStations.length === 0 ? (
-											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
+											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#64748b]">
 												해당 없음
 											</div>
 										) : (
@@ -333,7 +333,7 @@ export function StationListModal({
 										style={{ color: activeCategory?.color }}
 									>
 										<span className="truncate">{activeCategory?.label}</span>
-										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#71717a] shrink-0">
+										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#64748b] shrink-0">
 											({activeCatIndex + 1}/{CATEGORIES.length})
 										</span>
 									</span>

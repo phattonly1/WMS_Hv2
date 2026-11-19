@@ -121,7 +121,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 					},
 					blockquote({ children }) {
 						return (
-							<blockquote className={`my-3 p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 text-[#475569] dark:text-[#a1a1aa] leading-relaxed break-keep ${textSize.body}`}>
+							<blockquote className={`my-3 p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 text-[#0f172a] dark:text-[#a1a1aa] leading-relaxed break-keep ${textSize.body}`}>
 								{children}
 							</blockquote>
 						);
@@ -202,7 +202,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 					},
 					tbody({ children }) {
 						return (
-							<tbody className="divide-y divide-[#e2e8f0] dark:divide-[#222228] font-normal">
+							<tbody className="divide-y divide-[#d7dfe9] dark:divide-[#2a2a32] font-normal">
 								{children}
 							</tbody>
 						);
@@ -216,7 +216,7 @@ function MarkdownRenderer({ content, onImageClick, fontSizeStep = 0 }: MarkdownR
 					},
 					td({ children }) {
 						return (
-							<td className={`py-2 px-3 text-[#334155] dark:text-[#d4d4d8] leading-relaxed break-keep align-top ${textSize.table}`}>
+							<td className={`py-2 px-3 text-[#0f172a] dark:text-[#f4f4f5] leading-relaxed break-keep align-top ${textSize.table}`}>
 								{children}
 							</td>
 						);
