@@ -15,6 +15,10 @@ import {
 	RIVER_ICONS,
 	type Station,
 } from "../stationData";
+import {
+	NATIONAL_STATION_ORDER_NAMES,
+	SMALL_STATION_ORDER_NAMES,
+} from "../stations/stationOrder";
 
 export interface StationListModalProps {
 	isOpen: boolean;
@@ -80,10 +84,33 @@ export function StationListModal({
 }: StationListModalProps) {
 	const [activeCatIndex, setActiveCatIndex] = useState<number>(0);
 
+	const getOrderIndex = (name: string, orderList: string[]) => {
+		const short = name.replace(/\s*(수질자동)?(측정소|감시망)$/g, "").trim();
+		const idx = orderList.findIndex(
+			(target) => short === target || short.startsWith(target),
+		);
+		return idx === -1 ? Number.MAX_SAFE_INTEGER : idx;
+	};
+
 	const allTargetStations = useMemo(() => {
 		return stations
 			.filter((s) => s.type === "station" || s.type === "small")
-			.sort((a, b) => a.name.localeCompare(b.name, "ko"));
+			.sort((a, b) => {
+				const orderA = getOrderIndex(
+					a.name,
+					a.type === "station"
+						? NATIONAL_STATION_ORDER_NAMES
+						: SMALL_STATION_ORDER_NAMES,
+				);
+				const orderB = getOrderIndex(
+					b.name,
+					b.type === "station"
+						? NATIONAL_STATION_ORDER_NAMES
+						: SMALL_STATION_ORDER_NAMES,
+				);
+				if (orderA !== orderB) return orderA - orderB;
+				return a.name.localeCompare(b.name, "ko");
+			});
 	}, [stations]);
 
 	const activeCategory = CATEGORIES[activeCatIndex];

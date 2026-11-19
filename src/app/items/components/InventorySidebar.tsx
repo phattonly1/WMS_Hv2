@@ -49,7 +49,7 @@ export default function InventorySidebar({
 	const [showDeviceDropdown, setShowDeviceDropdown] = useState(false);
 
 	return (
-		<aside className="hidden lg:flex w-[240px] flex-shrink-0 flex-col p-4 gap-6 overflow-y-auto border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
+		<aside className="hidden lg:flex lg:sticky lg:top-[4.5rem] lg:max-h-[calc(100dvh-5.5rem)] w-[240px] flex-shrink-0 flex-col p-4 gap-6 overflow-y-auto border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] rounded-2xl shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-colors">
 			{/* 검색창 */}
 			<div>
 				<div className="h-[40px] rounded-xl flex items-center px-3 bg-[#f8fafc] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] transition-all focus-within:border-blue-500/50 mb-6">

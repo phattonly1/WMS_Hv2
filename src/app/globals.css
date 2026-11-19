@@ -107,3 +107,13 @@ body {
 ::-webkit-scrollbar-corner {
 	background: transparent;
 }
+
+/* 특정 페이지(docs, items) 윈도우 스크롤바 숨김 */
+.scrollbar-hide {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}

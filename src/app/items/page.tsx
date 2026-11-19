@@ -68,7 +68,36 @@ function ItemsContent() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
 	const [selectedLog, setSelectedLog] = useState<Log | null>(null);
+	const [scrollProgress, setScrollProgress] = useState(0);
 	const ITEMS_PER_PAGE = 16;
+
+	// 윈도우 스크롤바 숨김 및 상단 헤더 스크롤 진행률 계산
+	useEffect(() => {
+		document.documentElement.classList.add("scrollbar-hide");
+		document.body.classList.add("scrollbar-hide");
+
+		const handleScroll = () => {
+			const maxScroll =
+				document.documentElement.scrollHeight - window.innerHeight;
+			if (maxScroll > 0) {
+				const progress = Math.min(
+					100,
+					Math.max(0, Math.round((window.scrollY / maxScroll) * 100)),
+				);
+				setScrollProgress(progress);
+			} else {
+				setScrollProgress(0);
+			}
+		};
+
+		handleScroll();
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+			document.documentElement.classList.remove("scrollbar-hide");
+			document.body.classList.remove("scrollbar-hide");
+		};
+	}, []);
 
 	const router = useRouter();
 	const searchParams = useSearchParams();
@@ -236,9 +265,14 @@ function ItemsContent() {
 	};
 
 	return (
-		<div className="h-[100dvh] overflow-hidden flex flex-col bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] transition-colors">
+		<div className="min-h-dvh flex flex-col bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] transition-colors">
 			{/* Top Header Navigation */}
-			<header className="h-14 px-4 lg:px-6 border-b border-[#e2e8f0] dark:border-[#222228] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between shrink-0 z-20 transition-colors">
+			<header className="sticky top-0 h-14 px-4 lg:px-6 border-b border-[#e2e8f0] dark:border-[#222228] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between shrink-0 z-20 transition-colors">
+				{/* 스크롤 진행률 게이지 바 (헤더 하단 2px) */}
+				<div
+					className="absolute bottom-0 left-0 h-0.5 bg-blue-600 dark:bg-blue-400 transition-all duration-150 ease-out pointer-events-none"
+					style={{ width: `${scrollProgress}%` }}
+				/>
 				<div className="flex items-center gap-3">
 					<Link
 						href="/dashboard"
@@ -318,7 +352,7 @@ function ItemsContent() {
 			</div>
 
 			{/* Main Workspace with Sidebar */}
-			<div className="flex-1 max-w-7xl mx-auto w-full flex overflow-x-hidden pt-2 lg:pt-4 relative min-h-0">
+			<div className="flex-1 max-w-7xl mx-auto w-full flex items-start pt-2 lg:pt-4 relative">
 				{/* Desktop Sidebar */}
 				<InventorySidebar
 					activeTab={activeTab}
@@ -339,7 +373,7 @@ function ItemsContent() {
 				/>
 
 				{/* Content Area */}
-				<main className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-3 pb-24 lg:p-6 lg:pb-6">
+				<main className="flex-1 min-w-0 p-3 pb-36 lg:p-6 lg:pb-10">
 					{loading ? (
 						<div
 							className={
