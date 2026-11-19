@@ -151,7 +151,7 @@ function ThumbnailCard({
 			className={`group flex flex-col items-center rounded-xl p-1.5 transition-all active:scale-95 border text-center cursor-pointer ${
 				isActive
 					? "bg-blue-600/15 border-blue-500 ring-2 ring-blue-500/40 shadow-lg"
-					: "bg-[#16161c] hover:bg-[#1e1e26] border-[#222228] hover:border-white/20"
+					: "bg-white dark:bg-[#16161c] hover:bg-[#f1f5f9] dark:hover:bg-[#1e1e26] border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 dark:hover:border-white/20"
 			}`}
 		>
 			<div className="w-full aspect-[1/1.414] rounded-lg bg-white/95 overflow-hidden flex items-center justify-center relative shadow-xs">
@@ -180,7 +180,7 @@ function ThumbnailCard({
 				className={`mt-1.5 text-[11px] font-bold tabular-nums px-2 py-0.5 rounded-md ${
 					isActive
 						? "bg-blue-600 text-white"
-						: "text-[#a1a1aa] group-hover:text-white"
+						: "text-[#64748b] dark:text-[#a1a1aa] group-hover:text-[#0f172a] dark:group-hover:text-white"
 				}`}
 			>
 				{pageNumber}쪽
@@ -395,7 +395,39 @@ function PdfViewerContent() {
 		}
 	}, [isGridOpen, pageNum]);
 
-	// 4. PC 키보드 화살표(←/→) 및 Esc 단축키 지원
+	// 4. 두 손가락 핀치 줌 시 브라우저 전체 화면 확대(하단바 이탈)를 막고 내부 PDF 캔버스만 확대하도록 non-passive touchmove 등록
+	useEffect(() => {
+		const el = containerRef.current;
+		if (!el || isGridOpen) return;
+
+		const handleNativeTouchMove = (e: TouchEvent) => {
+			if (e.touches.length === 2 && pinchRef.current && canvasRef.current) {
+				e.preventDefault();
+				const t1 = e.touches[0]!;
+				const t2 = e.touches[1]!;
+				const dist = Math.hypot(
+					t2.clientX - t1.clientX,
+					t2.clientY - t1.clientY,
+				);
+				const rawRatio = dist / pinchRef.current.initialDist;
+				const targetZoom = Math.min(
+					3,
+					Math.max(1, pinchRef.current.initialZoom * rawRatio),
+				);
+				const visualScale = targetZoom / pinchRef.current.initialZoom;
+				pinchRef.current.currentScale = visualScale;
+				canvasRef.current.style.transformOrigin = "center top";
+				canvasRef.current.style.transform = `scale(${visualScale})`;
+			}
+		};
+
+		el.addEventListener("touchmove", handleNativeTouchMove, { passive: false });
+		return () => {
+			el.removeEventListener("touchmove", handleNativeTouchMove);
+		};
+	}, [isGridOpen]);
+
+	// 5. PC 키보드 화살표(←/→) 및 Esc 단축키 지원
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "Escape" && isGridOpen) {
@@ -463,10 +495,10 @@ function PdfViewerContent() {
 	};
 
 	return (
-		<div className="fixed inset-0 h-dvh w-full bg-[#09090b] text-white flex flex-col overflow-hidden overscroll-none select-none">
+		<div className="fixed inset-0 h-dvh w-full bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-white flex flex-col overflow-hidden overscroll-none select-none transition-colors">
 			{/* 상단 바 없이 화면 전체를 쓰는 메인 뷰어 / 썸네일 그리드 영역 */}
 			{isGridOpen && pdfDoc ? (
-				<div className="flex-1 w-full overflow-y-auto overscroll-contain p-3 sm:p-5 bg-[#09090b]">
+				<div className="flex-1 w-full overflow-y-auto overscroll-contain p-3 sm:p-5 bg-[#f8fafc] dark:bg-[#09090b] transition-colors">
 					<div className="max-w-6xl mx-auto">
 						<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5 sm:gap-3.5 pb-4">
 							{Array.from({ length: numPages }, (_, idx) => idx + 1).map(
@@ -511,39 +543,11 @@ function PdfViewerContent() {
 						}
 						if (e.touches.length !== 1) return;
 						const t = e.touches[0]!;
-						// 화면 가장자리(24px 이내) 터치 시 브라우저 뒤로가기 스와이프 제스처 방지
-						if (t.clientX < 24 || t.clientX > window.innerWidth - 24) {
-							e.preventDefault();
-						}
 						touchStartRef.current = {
 							x: t.clientX,
 							y: t.clientY,
 							time: Date.now(),
 						};
-					}}
-					onTouchMove={(e) => {
-						if (
-							e.touches.length === 2 &&
-							pinchRef.current &&
-							canvasRef.current
-						) {
-							e.preventDefault();
-							const t1 = e.touches[0]!;
-							const t2 = e.touches[1]!;
-							const dist = Math.hypot(
-								t2.clientX - t1.clientX,
-								t2.clientY - t1.clientY,
-							);
-							const rawRatio = dist / pinchRef.current.initialDist;
-							const targetZoom = Math.min(
-								3,
-								Math.max(1, pinchRef.current.initialZoom * rawRatio),
-							);
-							const visualScale = targetZoom / pinchRef.current.initialZoom;
-							pinchRef.current.currentScale = visualScale;
-							canvasRef.current.style.transformOrigin = "center top";
-							canvasRef.current.style.transform = `scale(${visualScale})`;
-						}
 					}}
 					onTouchEnd={(e) => {
 						lastTouchEndTimeRef.current = Date.now();
@@ -641,10 +645,10 @@ function PdfViewerContent() {
 							}
 						}
 					}}
-					className="flex-1 w-full overflow-auto overscroll-none flex flex-col items-center justify-start p-2 sm:p-4 bg-[#09090b] cursor-pointer"
+					className="flex-1 w-full overflow-auto overscroll-none touch-pan-x touch-pan-y flex flex-col items-center justify-start p-2 sm:p-4 bg-[#f1f5f9] dark:bg-[#09090b] cursor-pointer transition-colors"
 				>
 					{isLoading ? (
-						<div className="my-auto flex flex-col items-center justify-center gap-2.5 text-xs text-[#a1a1aa]">
+						<div className="my-auto flex flex-col items-center justify-center gap-2.5 text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							<Loader2 size={26} className="animate-spin text-blue-500" />
 							<span className="font-semibold">
 								문서를 불러오는 중...{" "}
@@ -652,7 +656,7 @@ function PdfViewerContent() {
 							</span>
 						</div>
 					) : error ? (
-						<div className="my-auto flex flex-col items-center justify-center gap-3 text-xs text-[#a1a1aa]">
+						<div className="my-auto flex flex-col items-center justify-center gap-3 text-xs text-[#64748b] dark:text-[#a1a1aa]">
 							<p>{error}</p>
 							<button
 								type="button"
@@ -665,7 +669,7 @@ function PdfViewerContent() {
 					) : (
 						<canvas
 							ref={canvasRef}
-							className="bg-white rounded-md shadow-2xl max-w-none my-auto"
+							className="bg-white rounded-md shadow-lg dark:shadow-2xl max-w-none my-auto"
 							style={
 								isInverted
 									? { filter: "invert(1) hue-rotate(180deg) contrast(0.95)" }
@@ -676,14 +680,14 @@ function PdfViewerContent() {
 				</main>
 			)}
 
-			{/* 하단 고정 1줄 통합 컨트롤 바 (좌측 [←] 단독 분리 + 중앙 [< ▦ 1/185 >] + 우측 [100%·반전팝업] [저장]) */}
-			<footer className="shrink-0 z-30 bg-[#111115]/95 backdrop-blur-md border-t border-[#222228] px-2.5 py-2 pb-[calc(env(safe-area-inset-bottom)+8px)]">
+			{/* 하단 고정 1줄 통합 컨트롤 바 (/docs 하단바와 동일한 라이트/다크 테마 연동) */}
+			<footer className="shrink-0 z-30 bg-white/95 dark:bg-[#111115]/95 backdrop-blur-md border-t border-[#e2e8f0] dark:border-[#222228] px-2.5 py-2 pb-[calc(env(safe-area-inset-bottom)+8px)] shadow-[0_-4px_20px_rgba(0,0,0,0.06)] transition-colors">
 				<div className="max-w-2xl mx-auto flex items-center justify-between gap-1.5">
 					{/* 1. 좌측 끝: 뒤로가기 단독 배치 */}
 					<button
 						type="button"
 						onClick={handleClose}
-						className="w-9 h-9 rounded-xl bg-[#16161c] hover:bg-white/10 border border-[#222228] flex items-center justify-center text-[#e4e4e7] hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
+						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#334155] dark:text-[#e4e4e7] hover:text-[#0f172a] dark:hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
 						aria-label="뒤로가기"
 						title={isGridOpen ? "본문으로 돌아가기" : "보관함으로 돌아가기"}
 					>
@@ -691,7 +695,7 @@ function PdfViewerContent() {
 					</button>
 
 					{/* 2. 중앙: 페이지 이동 & 전체 썸네일 모아보기 통합 (< ▦ 1 / 185 >) */}
-					<div className="flex items-center bg-[#16161c] border border-[#222228] rounded-xl h-9 p-0.5 min-w-0">
+					<div className="flex items-center bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl h-9 p-0.5 min-w-0">
 						<button
 							type="button"
 							disabled={pageNum <= 1 || isLoading || isGridOpen}
@@ -699,7 +703,7 @@ function PdfViewerContent() {
 								setPageNum((p) => Math.max(1, p - 1));
 								containerRef.current?.scrollTo({ top: 0 });
 							}}
-							className="w-9 sm:w-12 h-8 rounded-lg hover:bg-white/10 active:bg-white/15 flex items-center justify-center text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer shrink-0"
+							className="w-9 sm:w-12 h-8 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 active:bg-black/10 dark:active:bg-white/15 flex items-center justify-center text-[#0f172a] dark:text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer shrink-0"
 							aria-label="이전 페이지"
 						>
 							<ChevronLeft size={17} strokeWidth={2.5} />
@@ -709,15 +713,19 @@ function PdfViewerContent() {
 							disabled={numPages <= 0 || isLoading}
 							onClick={() => setIsGridOpen((prev) => !prev)}
 							title="터치하여 전체 페이지 썸네일 보기"
-							className={`px-2.5 sm:px-3.5 h-8 rounded-lg text-xs font-bold tabular-nums whitespace-nowrap flex items-center justify-center gap-1.5 border-x border-[#222228] transition-all active:scale-95 cursor-pointer disabled:opacity-35 ${
+							className={`px-2.5 sm:px-3.5 h-8 rounded-lg text-xs font-bold tabular-nums whitespace-nowrap flex items-center justify-center gap-1.5 border-x border-[#e2e8f0] dark:border-[#222228] transition-all active:scale-95 cursor-pointer disabled:opacity-35 ${
 								isGridOpen
 									? "bg-blue-600 border-transparent text-white shadow-xs"
-									: "hover:bg-white/5 text-white"
+									: "hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white"
 							}`}
 						>
 							<LayoutGrid
 								size={13}
-								className={isGridOpen ? "text-white" : "text-blue-400"}
+								className={
+									isGridOpen
+										? "text-white"
+										: "text-blue-600 dark:text-blue-400"
+								}
 							/>
 							<span>{numPages > 0 ? `${pageNum} / ${numPages}` : "- / -"}</span>
 						</button>
@@ -728,7 +736,7 @@ function PdfViewerContent() {
 								setPageNum((p) => Math.min(numPages, p + 1));
 								containerRef.current?.scrollTo({ top: 0 });
 							}}
-							className="w-9 sm:w-12 h-8 rounded-lg hover:bg-white/10 active:bg-white/15 flex items-center justify-center text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer shrink-0"
+							className="w-9 sm:w-12 h-8 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 active:bg-black/10 dark:active:bg-white/15 flex items-center justify-center text-[#0f172a] dark:text-white disabled:opacity-30 active:scale-95 transition-all cursor-pointer shrink-0"
 							aria-label="다음 페이지"
 						>
 							<ChevronRight size={17} strokeWidth={2.5} />
@@ -744,14 +752,14 @@ function PdfViewerContent() {
 									onClick={() => setIsZoomMenuOpen(false)}
 									aria-hidden="true"
 								/>
-								<div className="absolute bottom-11 right-0 z-20 bg-[#16161c]/95 backdrop-blur-md border border-[#222228] rounded-2xl p-1 shadow-2xl flex flex-row items-center gap-1 whitespace-nowrap">
+								<div className="absolute bottom-11 right-0 z-20 bg-white/95 dark:bg-[#16161c]/95 backdrop-blur-md border border-[#e2e8f0] dark:border-[#222228] rounded-2xl p-1 shadow-2xl flex flex-row items-center gap-1 whitespace-nowrap">
 									<button
 										type="button"
 										onClick={toggleInvert}
-										className={`h-8 px-2.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border-r border-[#222228] mr-0.5 ${
+										className={`h-8 px-2.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border-r border-[#e2e8f0] dark:border-[#222228] mr-0.5 ${
 											isInverted
 												? "bg-indigo-600 text-white"
-												: "text-[#e4e4e7] hover:bg-white/10"
+												: "text-[#334155] dark:text-[#e4e4e7] hover:bg-black/5 dark:hover:bg-white/10"
 										}`}
 										title="색반전 보정 (브라우저 강제 다크모드 대응)"
 									>
@@ -771,7 +779,7 @@ function PdfViewerContent() {
 												className={`h-8 px-2 rounded-xl text-xs font-bold tabular-nums transition-colors cursor-pointer ${
 													isSelected
 														? "bg-blue-600 text-white"
-														: "text-[#e4e4e7] hover:bg-white/10"
+														: "text-[#334155] dark:text-[#e4e4e7] hover:bg-black/5 dark:hover:bg-white/10"
 												}`}
 											>
 												{Math.round(zVal * 100)}%
@@ -788,14 +796,17 @@ function PdfViewerContent() {
 							onClick={() => setIsZoomMenuOpen((prev) => !prev)}
 							className={`h-9 px-2.5 rounded-xl border text-xs font-bold tabular-nums transition-all active:scale-95 cursor-pointer disabled:opacity-30 flex items-center gap-1 ${
 								isZoomMenuOpen || zoom > 1 || isInverted
-									? "bg-blue-600/15 border-blue-500/40 text-blue-400"
-									: "bg-[#16161c] hover:bg-white/10 border-[#222228] text-[#e4e4e7]"
+									? "bg-blue-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400"
+									: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-white/10 border-[#e2e8f0] dark:border-[#222228] text-[#334155] dark:text-[#e4e4e7]"
 							}`}
 							title="배율 및 색반전 설정"
 							aria-label="배율 및 색반전 설정"
 						>
 							{isInverted && (
-								<SunMoon size={12} className="text-indigo-400 shrink-0" />
+								<SunMoon
+									size={12}
+									className="text-indigo-600 dark:text-indigo-400 shrink-0"
+								/>
 							)}
 							<span>{Math.round(zoom * 100)}%</span>
 						</button>
@@ -821,12 +832,12 @@ export default function PdfViewerPage() {
 	return (
 		<Suspense
 			fallback={
-				<div className="fixed inset-0 h-dvh w-full bg-[#09090b] flex items-center justify-center text-xs text-[#a1a1aa]">
+				<div className="fixed inset-0 h-dvh w-full bg-[#f8fafc] dark:bg-[#09090b] flex items-center justify-center text-xs text-[#64748b] dark:text-[#a1a1aa]">
 					로딩 중...
 				</div>
 			}
 		>
-			<div className="fixed inset-0 h-dvh w-full bg-[#09090b] text-white flex flex-col">
+			<div className="fixed inset-0 h-dvh w-full bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-white flex flex-col transition-colors">
 				<DocsPinGate title="매뉴얼 뷰어 보안 코드 입력">
 					<PdfViewerContent />
 				</DocsPinGate>

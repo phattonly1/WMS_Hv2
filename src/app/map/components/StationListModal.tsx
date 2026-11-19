@@ -6,13 +6,13 @@ import {
 	ChevronRight,
 	Eye,
 	List,
+	MapPin,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import {
 	RIVER_CONFIG,
 	RIVER_ICONS,
-	type RiverType,
 	type Station,
 } from "../stationData";
 
@@ -25,16 +25,44 @@ export interface StationListModalProps {
 	searchResults?: Station[];
 }
 
+type ListCategoryId =
+	| "bukhan"
+	| "namhan_wonju"
+	| "namhan_han"
+	| "imjin"
+	| "pyeongtaek";
+
 interface CategoryInfo {
-	id: RiverType;
+	id: ListCategoryId;
 	label: string;
 	color: string;
 }
 
+const WONJU_SMALL_NAMES = [
+	"대가리천",
+	"장평천",
+	"구안천",
+	"동진천",
+	"요도천",
+	"원곡천",
+	"영덕천",
+	"앙성천",
+	"전천",
+	"원주천",
+];
+
+const isWonjuNamhan = (s: Station) => {
+	if (s.river !== "namhan" && s.river !== "han") return false;
+	if (s.type === "small") {
+		return WONJU_SMALL_NAMES.some((n) => s.name.includes(n));
+	}
+	return s.office === "원주지방환경청";
+};
+
 const CATEGORIES: CategoryInfo[] = [
 	{ id: "bukhan", label: "북한강", color: RIVER_CONFIG.bukhan.color },
-	{ id: "namhan", label: "남한강", color: RIVER_CONFIG.namhan.color },
-	{ id: "han", label: "한강본류", color: RIVER_CONFIG.han.color },
+	{ id: "namhan_wonju", label: "남한강(원주)", color: RIVER_CONFIG.namhan.color },
+	{ id: "namhan_han", label: "남한강·본류", color: RIVER_CONFIG.han.color },
 	{ id: "imjin", label: "임진강", color: RIVER_CONFIG.imjin.color },
 	{ id: "pyeongtaek", label: "평택호", color: RIVER_CONFIG.pyeongtaek.color },
 ];
@@ -64,19 +92,29 @@ export function StationListModal({
 	const nextCategory =
 		CATEGORIES[(activeCatIndex + 1) % CATEGORIES.length];
 
+	const matchesCategory = (s: Station, catId?: ListCategoryId) => {
+		if (!catId) return false;
+		if (catId === "namhan_wonju") return isWonjuNamhan(s);
+		if (catId === "namhan_han")
+			return (s.river === "namhan" || s.river === "han") && !isWonjuNamhan(s);
+		return s.river === catId;
+	};
+
 	const nationalStations = useMemo(() => {
 		return allTargetStations.filter(
-			(s) => s.river === activeCategory?.id && s.type === "station",
+			(s) => s.type === "station" && matchesCategory(s, activeCategory?.id),
 		);
 	}, [allTargetStations, activeCategory?.id]);
 
 	const smallStations = useMemo(() => {
 		return allTargetStations.filter(
-			(s) => s.river === activeCategory?.id && s.type === "small",
+			(s) => s.type === "small" && matchesCategory(s, activeCategory?.id),
 		);
 	}, [allTargetStations, activeCategory?.id]);
 
 	const isSearching = searchTerm.trim().length > 0;
+	const formatShortName = (name: string) =>
+		name.replace(/\s*(수질자동)?(측정소|감시망)$/g, "").trim() || name;
 
 	return (
 		<Modal
@@ -86,11 +124,24 @@ export function StationListModal({
 			subtitle={
 				isSearching
 					? `${searchResults.length}개소`
-					: undefined
+					: activeCategory?.label
 			}
 			icon={List}
-			maxWidth="max-w-md"
 			size="half"
+			headerAction={
+				!isSearching && (
+					<div className="flex items-center gap-1.5 text-[10px] font-semibold tabular-nums">
+						<span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa]">
+							<span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+							<span>국가 {nationalStations.length}</span>
+						</span>
+						<span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa]">
+							<span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
+							<span>소규모 {smallStations.length}</span>
+						</span>
+					</div>
+				)
+			}
 			contentClassName="!p-0 overflow-hidden"
 		>
 			{/* 본문 영역 */}
@@ -158,10 +209,81 @@ export function StationListModal({
 							</div>
 						</div>
 					) : (
-						/* 수계별 탐색 뷰 (2열 독립 스크롤) */
+						/* 수계별 탐색 뷰 (2열 독립 스크롤 + 하단 수계 전환바) */
 						<div className="flex-1 flex flex-col min-h-0 bg-white dark:bg-[#09090b]">
-							{/* 수계 전환 퀵 내비게이터 바 (원형 순환 Infinite Loop) */}
-							<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-b border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none shrink-0 h-9">
+							{/* 2열 독립 분할 스크롤 영역 (국가망 | 소규모) */}
+							<div className="flex-1 grid grid-cols-2 divide-x divide-[#e2e8f0] dark:divide-[#222228] min-h-0">
+								{/* 좌측: 국가 측정망 */}
+								<div className="flex flex-col min-h-0">
+									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5">
+										{nationalStations.length === 0 ? (
+											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
+												해당 없음
+											</div>
+										) : (
+											<div className="grid grid-cols-2 gap-x-1.5 gap-y-2.5">
+												{nationalStations.map((station, idx) => (
+													<button
+														key={station.id || `nat-${station.name}-${idx}`}
+														type="button"
+														onClick={() => {
+															onSelectStation(station);
+															onClose();
+														}}
+														className="h-12 px-1.5 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/40 flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 group"
+													>
+														<Building2
+															size={13}
+															strokeWidth={2.3}
+															className="text-blue-500/80 dark:text-blue-400/80 group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors"
+														/>
+														<span className="text-[11px] font-bold text-[#0f172a] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none truncate max-w-full">
+															{formatShortName(station.name)}
+														</span>
+													</button>
+												))}
+											</div>
+										)}
+									</div>
+								</div>
+
+								{/* 우측: 소규모 감시망 */}
+								<div className="flex flex-col min-h-0">
+									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5">
+										{smallStations.length === 0 ? (
+											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
+												해당 없음
+											</div>
+										) : (
+											<div className="grid grid-cols-2 gap-x-1.5 gap-y-2.5">
+												{smallStations.map((station, idx) => (
+													<button
+														key={station.id || `sml-${station.name}-${idx}`}
+														type="button"
+														onClick={() => {
+															onSelectStation(station);
+															onClose();
+														}}
+														className="h-12 px-1.5 rounded-xl bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-cyan-500/40 flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 group"
+													>
+														<MapPin
+															size={13}
+															strokeWidth={2.3}
+															className="text-cyan-500/80 dark:text-cyan-400/80 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 shrink-0 transition-colors"
+														/>
+														<span className="text-[11px] font-bold text-[#0f172a] dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors leading-none truncate max-w-full">
+															{formatShortName(station.name)}
+														</span>
+													</button>
+												))}
+											</div>
+										)}
+									</div>
+								</div>
+							</div>
+
+							{/* 하단 수계 전환 퀵 내비게이터 바 (원형 순환 Infinite Loop) */}
+							<div className="grid grid-cols-3 items-center bg-[#f8fafc] dark:bg-[#16161c] border-t border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold select-none shrink-0 h-9">
 								<button
 									type="button"
 									onClick={() =>
@@ -202,95 +324,6 @@ export function StationListModal({
 									</span>
 									<ChevronRight size={15} strokeWidth={2.5} />
 								</button>
-							</div>
-
-							{/* 2열 독립 분할 스크롤 영역 (국가망 | 소규모) */}
-							<div className="flex-1 grid grid-cols-2 divide-x divide-[#e2e8f0] dark:divide-[#222228] min-h-0">
-								{/* 좌측: 국가 측정망 */}
-								<div className="flex flex-col min-h-0">
-									<div className="px-3 py-1.5 bg-[#f8fafc] dark:bg-[#111115] border-b border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between shrink-0">
-										<div className="flex items-center gap-1.5">
-											<span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-											<span className="text-[11px] font-bold text-[#0f172a] dark:text-white tracking-tight">
-												국가망
-											</span>
-										</div>
-										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa]">
-											{nationalStations.length}개소
-										</span>
-									</div>
-
-									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5 space-y-1">
-										{nationalStations.length === 0 ? (
-											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
-												해당 없음
-											</div>
-										) : (
-											nationalStations.map((station, idx) => (
-												<button
-													key={station.id || `nat-${station.name}-${idx}`}
-													type="button"
-													onClick={() => {
-														onSelectStation(station);
-														onClose();
-													}}
-													className="w-full px-2.5 py-2 rounded-lg bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-blue-500/30 flex items-center justify-between text-left transition-all active:scale-[0.98] group"
-												>
-													<span className="text-xs font-bold text-[#0f172a] dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
-														{station.name}
-													</span>
-													<Eye
-														size={12}
-														className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 ml-1 transition-colors"
-													/>
-												</button>
-											))
-										)}
-									</div>
-								</div>
-
-								{/* 우측: 소규모 감시망 */}
-								<div className="flex flex-col min-h-0">
-									<div className="px-3 py-1.5 bg-[#f8fafc] dark:bg-[#111115] border-b border-[#e2e8f0] dark:border-[#222228] flex items-center justify-between shrink-0">
-										<div className="flex items-center gap-1.5">
-											<span className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
-											<span className="text-[11px] font-bold text-[#0f172a] dark:text-white tracking-tight">
-												소규모
-											</span>
-										</div>
-										<span className="text-[10px] tabular-nums text-[#64748b] dark:text-[#a1a1aa]">
-											{smallStations.length}개소
-										</span>
-									</div>
-
-									<div className="flex-1 overflow-y-auto overscroll-contain p-1.5 space-y-1">
-										{smallStations.length === 0 ? (
-											<div className="py-12 text-center text-[11px] text-[#64748b] dark:text-[#71717a]">
-												해당 없음
-											</div>
-										) : (
-											smallStations.map((station, idx) => (
-												<button
-													key={station.id || `sml-${station.name}-${idx}`}
-													type="button"
-													onClick={() => {
-														onSelectStation(station);
-														onClose();
-													}}
-													className="w-full px-2.5 py-2 rounded-lg bg-[#f8fafc] dark:bg-[#111115] hover:bg-[#f1f5f9] dark:hover:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] hover:border-cyan-500/30 flex items-center justify-between text-left transition-all active:scale-[0.98] group"
-												>
-													<span className="text-xs font-bold text-[#0f172a] dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors truncate">
-														{station.name}
-													</span>
-													<Eye
-														size={12}
-														className="text-[#94a3b8] dark:text-[#52525b] group-hover:text-cyan-600 dark:group-hover:text-cyan-400 shrink-0 ml-1 transition-colors"
-													/>
-												</button>
-											))
-										)}
-									</div>
-								</div>
 							</div>
 						</div>
 					)}

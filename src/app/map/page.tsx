@@ -6,7 +6,9 @@ import {
 	ChevronLeft,
 	Crosshair,
 	Database,
+	Droplets,
 	Eye,
+	EyeOff,
 	Layers,
 	List,
 	Map as MapIcon,
@@ -55,8 +57,10 @@ export default function MapPage() {
 
 	// 인터페이스 숨김(클린 지도 뷰) 상태
 	const [isUiHidden, setIsUiHidden] = useState(false);
-	// 하단 필터 팝오버 상태
-	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	// 통합 설정 모달 활성 탭 (표시 설정 / 관리 도구)
+	const [settingsTab, setSettingsTab] = useState<"display" | "admin">(
+		"display",
+	);
 	// 마커 수질 칩 상세 지표 커스텀 팝오버 열림 상태
 	const [isDetailChipOpen, setIsDetailChipOpen] = useState(false);
 
@@ -185,11 +189,7 @@ export default function MapPage() {
 
 	// 모달 또는 시트가 하나라도 열려 있는지 여부
 	const isAnyModalOpen = Boolean(
-		isFilterOpen ||
-			isSidebarOpen ||
-			isAdminMenuOpen ||
-			selectedStation ||
-			chartStation,
+		isSidebarOpen || isAdminMenuOpen || selectedStation || chartStation,
 	);
 
 	return (
@@ -218,36 +218,30 @@ export default function MapPage() {
 			)}
 
 			{/* ============================================================ */}
-			{/* 1-1. 하단 통합 1줄 바 (왼쪽 필터 + 중간 검색 + 오른쪽 목록)   */}
+			{/* 1-1. 하단 통합 1줄 바 (왼쪽 GPS + 중간 검색·목록 + 오른쪽 설정) */}
 			{/* ============================================================ */}
 			{!isEditMode && !isUiHidden && (
 				<div className="absolute bottom-[calc(env(safe-area-inset-bottom)+14px)] inset-x-3.5 z-[1100] pointer-events-none flex flex-col items-center">
 					{/* 통합 1줄 바 컨테이너 (바텀시트와 동일한 Frosted Island Glass 적용) */}
 					<div className="pointer-events-auto w-full max-w-md h-12 rounded-2xl bg-white/80 dark:bg-[#111115]/90 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] border border-black/[0.08] dark:border-white/10 flex items-center px-1.5 gap-1.5">
-						{/* 1. 왼쪽: 필터 버튼 (아이콘 전용) */}
+						{/* 1. 왼쪽: GPS 내 위치 추적 버튼 */}
 						<button
-							onClick={() => {
-								setIsSidebarOpen(false);
-								setIsAdminMenuOpen(false);
-								setSelectedStation(null);
-								setChartStation(null);
-								setIsFilterOpen(!isFilterOpen);
-							}}
-							aria-label="레이어 필터 열기"
-							title="필터"
+							type="button"
+							onClick={toggleGPS}
+							aria-label="GPS 추적"
+							title="내 위치 추적"
 							className={`w-9 h-9 rounded-xl flex items-center justify-center active:scale-95 transition-all shrink-0 border ${
-								isFilterOpen
-									? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-transparent shadow-xs"
+								isTracking
+									? "bg-rose-500 text-white border-rose-400 shadow-xs animate-pulse"
 									: "bg-white/60 dark:bg-white/10 hover:bg-white dark:hover:bg-white/20 border-black/[0.06] dark:border-white/10 text-slate-800 dark:text-slate-200"
 							}`}
 						>
-							<SlidersHorizontal size={17} strokeWidth={2.5} />
+							<Crosshair size={17} strokeWidth={2.5} />
 						</button>
 
 						{/* 2. 중간: 검색창 (바텀시트 요약 칩 스타일) */}
 						<div
 							onClick={() => {
-								setIsFilterOpen(false);
 								setIsAdminMenuOpen(false);
 								setSelectedStation(null);
 								setChartStation(null);
@@ -266,14 +260,12 @@ export default function MapPage() {
 								value={searchTerm}
 								onChange={(e) => {
 									setSearchTerm(e.target.value);
-									setIsFilterOpen(false);
 									setIsAdminMenuOpen(false);
 									setSelectedStation(null);
 									setChartStation(null);
 									setIsSidebarOpen(true);
 								}}
 								onFocus={() => {
-									setIsFilterOpen(false);
 									setIsAdminMenuOpen(false);
 									setSelectedStation(null);
 									setChartStation(null);
@@ -299,7 +291,6 @@ export default function MapPage() {
 									type="button"
 									onClick={(e) => {
 										e.stopPropagation();
-										setIsFilterOpen(false);
 										setIsAdminMenuOpen(false);
 										setSelectedStation(null);
 										setChartStation(null);
@@ -314,19 +305,19 @@ export default function MapPage() {
 							)}
 						</div>
 
-						{/* 3. 오른쪽: 관리도구 */}
+						{/* 2. 오른쪽: 테마 + 통합 지도 설정/관리 */}
 						<div className="flex items-center gap-1.5 shrink-0">
-							<ThemeToggle />
+							<ThemeToggle className="!w-9 !h-9 !rounded-xl !bg-white/60 dark:!bg-white/10 hover:!bg-white dark:hover:!bg-white/20 !border-black/[0.06] dark:!border-white/10" />
 							<button
 								onClick={() => {
-									setIsFilterOpen(false);
 									setIsSidebarOpen(false);
 									setSelectedStation(null);
 									setChartStation(null);
+									setIsDetailChipOpen(false);
 									setIsAdminMenuOpen(!isAdminMenuOpen);
 								}}
-								aria-label="관리 도구 열기"
-								title="관리 도구"
+								aria-label="지도 설정 및 관리 도구 열기"
+								title="지도 설정 · 관리"
 								className={`w-9 h-9 rounded-xl flex items-center justify-center active:scale-95 transition-all border ${
 									isAdminMenuOpen
 										? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-transparent shadow-xs"
@@ -422,34 +413,7 @@ export default function MapPage() {
 			/>
 
 			{/* ============================================================ */}
-			{/* 4. 우측 플로팅 GPS 버튼 (모달 열림 시 뒤로가기와 동일하게 숨김)*/}
-			{/* ============================================================ */}
-			{!isEditMode && !isUiHidden && !isAnyModalOpen && (
-				<div className="absolute bottom-[calc(env(safe-area-inset-bottom)+76px)] right-3.5 z-[1050] flex flex-col items-center gap-2 pointer-events-auto">
-					{/* GPS 내 위치 추적 단독 유지 */}
-					<button
-						onClick={toggleGPS}
-						aria-label="GPS 추적"
-						title="내 위치 추적"
-						style={{
-							backgroundColor: isTracking
-								? "#f43f5e"
-								: "rgba(255, 255, 255, 0.15)",
-							backdropFilter: "blur(6px)",
-							WebkitBackdropFilter: "blur(6px)",
-							color: isTracking ? "#ffffff" : "#09090b",
-						}}
-						className={`w-10 h-10 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] border border-white/40 flex items-center justify-center active:scale-95 transition-all ${
-							isTracking ? "animate-pulse" : "hover:bg-white/30"
-						}`}
-					>
-						<Crosshair size={20} strokeWidth={2.8} />
-					</button>
-				</div>
-			)}
-
-			{/* ============================================================ */}
-			{/* 4-1. 인터페이스 숨김 모드 복원 버튼 (우상단 동일 위치)      */}
+			{/* 4. 인터페이스 숨김 모드 복원 버튼 (우상단 동일 위치)        */}
 			{/* ============================================================ */}
 			{!isEditMode && isUiHidden && (
 				<div className="absolute top-[calc(env(safe-area-inset-top)+10px)] right-3.5 z-[1300] pointer-events-auto animate-in fade-in duration-200">
@@ -475,314 +439,196 @@ export default function MapPage() {
 			)}
 
 			{/* ============================================================ */}
-			{/* 5. 관리자 액션 모달 (공통 M3 Modal 규격 전역 참조)          */}
+			{/* 5. 통합 지도 설정 및 관리 모달 (2탭: 표시 설정 / 관리 도구)   */}
 			{/* ============================================================ */}
 			<Modal
 				isOpen={!isEditMode && isAdminMenuOpen}
-				onClose={() => setIsAdminMenuOpen(false)}
-				title="관리 도구"
+				onClose={() => {
+					setIsAdminMenuOpen(false);
+					setIsDetailChipOpen(false);
+				}}
+				title="지도 설정"
 				icon={Settings}
-			>
-				<div className="grid grid-cols-2 gap-2.5">
-					{/* 1. 지도 레이어 (위성 / 일반) 토글 */}
-					<button
-						type="button"
-						onClick={() => {
-							toggleLayer();
-							setIsAdminMenuOpen(false);
-						}}
-						className={`aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border transition-all active:scale-95 ${
-							isSat
-								? "bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/20"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white border-[#e2e8f0] dark:border-[#222228]"
-						}`}
-					>
-						<div
-							className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-								isSat
-									? "bg-white/20 text-white"
-									: "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+				size="half"
+				headerAction={
+					<div className="flex items-center p-0.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 text-[11px] font-bold">
+						<button
+							type="button"
+							onClick={() => {
+								setSettingsTab("display");
+								setIsDetailChipOpen(false);
+							}}
+							className={`px-2 py-0.5 rounded-md transition-colors ${
+								settingsTab === "display"
+									? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-2xs"
+									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 							}`}
 						>
-							<Layers size={16} strokeWidth={2.4} />
-						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								{isSat ? "위성지도" : "일반지도"}
-							</span>
-							<span
-								className={`text-[10px] block ${isSat ? "text-blue-100" : "text-[#64748b] dark:text-[#a1a1aa]"}`}
-							>
-								{isSat ? "ON (일반으로 전환)" : "VWorld 영상 전환"}
-							</span>
-						</div>
-					</button>
-
-					{/* 2. 기기 통계 요약 */}
-					<Link
-						href="/map/stations?tab=summary"
-						onClick={() => setIsAdminMenuOpen(false)}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-					>
-						<div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-							<Table2 size={16} strokeWidth={2.4} />
-						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								기기 통계
-							</span>
-							<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] block">
-								항목별 집계표
-							</span>
-						</div>
-					</Link>
-
-					{/* 3. 측정망 지도 편집 */}
-					<button
-						type="button"
-						onClick={() => {
-							setIsEditMode(true);
-							setIsAdminMenuOpen(false);
-						}}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-					>
-						<div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-							<MapIcon size={16} strokeWidth={2.4} />
-						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								지도 편집
-							</span>
-							<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] block">
-								위치·관심지점 조정
-							</span>
-						</div>
-					</button>
-
-					{/* 4. 측정소 제원 관리 */}
-					<Link
-						href={
-							selectedStation
-								? `/map/stations?id=${selectedStation.id}`
-								: "/map/stations"
-						}
-						onClick={() => setIsAdminMenuOpen(false)}
-						className="aspect-[1.25/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95"
-					>
-						<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-							<Database size={16} strokeWidth={2.4} />
-						</div>
-						<div className="text-center">
-							<span className="text-xs font-bold tracking-tight block">
-								제원 관리
-							</span>
-							<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] block">
-								장비 등록·연혁
-							</span>
-						</div>
-					</Link>
-
-					{/* 5. 지도 색반전 (브라우저 강제 다크/반전 보정) 토글 - 하단 가로 전폭 배치 */}
-					<button
-						type="button"
-						onClick={toggleInvert}
-						className={`col-span-2 py-3 px-4 rounded-2xl flex items-center justify-between border transition-all active:scale-95 ${
-							isInverted
-								? "bg-indigo-600 text-white border-indigo-500 shadow-md shadow-indigo-500/20"
-								: "bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white border-[#e2e8f0] dark:border-[#222228]"
-						}`}
-					>
-						<div className="flex items-center gap-2.5">
-							<div
-								className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
-									isInverted
-										? "bg-white/20 text-white"
-										: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
-								}`}
-							>
-								<SunMoon size={16} strokeWidth={2.4} />
-							</div>
-							<div className="text-left">
-								<span className="text-xs font-bold tracking-tight block">
-									{isInverted ? "색반전 켜짐 (보정 활성화)" : "지도 색반전"}
+							표시 설정
+						</button>
+						<button
+							type="button"
+							onClick={() => {
+								setSettingsTab("admin");
+								setIsDetailChipOpen(false);
+							}}
+							className={`px-2 py-0.5 rounded-md transition-colors ${
+								settingsTab === "admin"
+									? "bg-white dark:bg-[#16161c] text-[#0f172a] dark:text-white shadow-2xs"
+									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+							}`}
+						>
+							관리 도구
+						</button>
+					</div>
+				}
+			>
+				{settingsTab === "display" ? (
+					<div className="flex-1 flex flex-col justify-between gap-2 text-[11px]">
+						{/* 1단. 마커 수질 칩 표시 (4열 정사각형 타일) */}
+						<div className="space-y-1 relative">
+							<div className="flex items-center justify-between px-0.5 leading-none">
+								<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#94a3b8]">
+									마커 수질 칩
 								</span>
-								<span
-									className={`text-[10px] block ${
-										isInverted
-											? "text-indigo-100"
-											: "text-[#64748b] dark:text-[#a1a1aa]"
+								<span className="text-[9px] text-[#94a3b8] dark:text-[#71717a]">
+									단일 선택
+								</span>
+							</div>
+
+							<div className="grid grid-cols-5 gap-1.5">
+								<button
+									type="button"
+									onClick={() => {
+										setFilters({ ...filters, waterChip: "default" });
+										setIsDetailChipOpen(false);
+									}}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
+										filters.waterChip === "default"
+											? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
 									}`}
 								>
-									{isInverted
-										? "클릭 시 원본 색상으로 복원"
-										: "브라우저 강제 반전 보정"}
-								</span>
-							</div>
-						</div>
-						<span
-							className={`text-xs font-bold ${
-								isInverted
-									? "text-white"
-									: "text-indigo-600 dark:text-indigo-400"
-							}`}
-						>
-							{isInverted ? "ON" : "OFF"}
-						</span>
-					</button>
-				</div>
-			</Modal>
+									<Droplets size={15} strokeWidth={2.4} />
+									<span className="text-[10px] font-bold leading-none">
+										기본
+									</span>
+								</button>
 
-			{/* ============================================================ */}
-			{/* 5-1. 표시 레이어 필터 모달 (초슬림 인라인 4단 압축 규격)    */}
-			{/* ============================================================ */}
-			<Modal
-				isOpen={!isEditMode && isFilterOpen}
-				onClose={() => setIsFilterOpen(false)}
-				title="표시 레이어 설정"
-				icon={SlidersHorizontal}
-				contentClassName="p-2.5 sm:p-4 overflow-y-hidden"
-			>
-				<div className="space-y-2.5 text-[11px] pb-0.5">
-					{/* 1단 (최상단). 마커 수질 칩 표시 */}
-					<div className="space-y-1">
-						<div className="flex items-center justify-between">
-							<span className="text-[10.5px] font-semibold text-[#0f172a] dark:text-[#f1f5f9]">
-								마커 수질 칩 표시
-							</span>
-							<span className="text-[9.5px] text-[#94a3b8] dark:text-[#71717a]">
-								단일 선택
-							</span>
-						</div>
+								<button
+									type="button"
+									onClick={() => {
+										setFilters({ ...filters, waterChip: "toc" });
+										setIsDetailChipOpen(false);
+									}}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
+										filters.waterChip === "toc"
+											? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<span className="text-[11px] font-black leading-none tracking-tight">
+										TOC
+									</span>
+									<span className="text-[9px] font-semibold opacity-80 leading-none">
+										유기탄소
+									</span>
+								</button>
 
-						{/* 상단 3분할 탭: 기본 / TOC / 숨김 */}
-						<div className="grid grid-cols-3 gap-1 bg-transparent">
-							<button
-								type="button"
-								onClick={() => setFilters({ ...filters, waterChip: "default" })}
-								className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
-									filters.waterChip === "default"
-										? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
-										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<span className="whitespace-nowrap font-bold">
-									기본 (수온+WQI)
-								</span>
-							</button>
-							<button
-								type="button"
-								onClick={() => setFilters({ ...filters, waterChip: "toc" })}
-								className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
-									filters.waterChip === "toc"
-										? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
-										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<span className="whitespace-nowrap font-bold">
-									TOC (유기탄소)
-								</span>
-							</button>
-							<button
-								type="button"
-								onClick={() => setFilters({ ...filters, waterChip: "none" })}
-								className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
-									filters.waterChip === "none"
-										? "bg-[#27272a] text-white font-bold border-white/20 shadow-xs"
-										: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
-								}`}
-							>
-								<span className="whitespace-nowrap font-bold">숨김</span>
-							</button>
-						</div>
+								<button
+									type="button"
+									onClick={() => {
+										setFilters({ ...filters, waterChip: "ec" });
+										setIsDetailChipOpen(false);
+									}}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
+										filters.waterChip === "ec"
+											? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<span className="text-[11px] font-black leading-none tracking-tight">
+										EC
+									</span>
+									<span className="text-[9px] font-semibold opacity-80 leading-none">
+										전도도
+									</span>
+								</button>
 
-						{/* 하단 상세 지표 커스텀 인라인 셀렉터 바 (h-7) */}
-						<div className="relative">
-							<div
-								onClick={() => setIsDetailChipOpen(!isDetailChipOpen)}
-								className={`w-full h-7 px-2.5 rounded-md flex items-center justify-between border cursor-pointer select-none transition-all active:scale-[0.99] ${
-									filters.waterChip !== "default" &&
-									filters.waterChip !== "toc" &&
-									filters.waterChip !== "none"
-										? "bg-sky-50 dark:bg-sky-950/40 border-sky-400 dark:border-sky-600/70 shadow-xs"
-										: "bg-[#f8fafc] dark:bg-[#18181b] border-[#e2e8f0] dark:border-[#222228] hover:border-black/20 dark:hover:border-white/20"
-								}`}
-							>
-								{/* 라벨 / 선택 뱃지 표시 영역 */}
-								<div className="flex items-center gap-1.5 min-w-0">
-									{filters.waterChip !== "default" &&
-									filters.waterChip !== "toc" &&
-									filters.waterChip !== "none" ? (
-										<div className="flex items-center gap-1">
-											<span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse shrink-0" />
-											<span className="text-[10px] font-bold text-sky-600 dark:text-sky-300 truncate">
-												{
-													{
-														tp: "총인 (TP)",
-														tn: "총질소 (TN)",
-														wtrtp: "수온 (°C)",
-														wqi: "수질점수 (WQI)",
-														ph: "수소이온농도 (pH)",
-														doc: "용존산소 (DO)",
-														ec: "전기전도도 (EC)",
-														tur: "탁도 (NTU)",
-														chla: "클로로필-a (Chl-a)",
-													}[filters.waterChip]
-												}
-											</span>
-											<span className="text-[9px] font-mono text-sky-500/70 dark:text-sky-400/60 ml-0.5">
-												표시 중
-											</span>
-										</div>
-									) : (
-										<span className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] truncate font-medium">
-											기타 상세 지표 선택 (총인, 총질소, 수온, WQI 등)
-										</span>
-									)}
-								</div>
-
-								{/* 우측 초기화 / 화살표 버튼 */}
-								<div className="flex items-center gap-1 shrink-0 ml-1">
-									{filters.waterChip !== "default" &&
+								<button
+									type="button"
+									onClick={() => setIsDetailChipOpen(!isDetailChipOpen)}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border px-1 ${
+										filters.waterChip !== "default" &&
 										filters.waterChip !== "toc" &&
-										filters.waterChip !== "none" && (
-											<button
-												type="button"
-												title="기본값으로 복귀"
-												onClick={(e) => {
-													e.stopPropagation();
-													setFilters({ ...filters, waterChip: "default" });
-													setIsDetailChipOpen(false);
-												}}
-												className="p-0.5 rounded text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-											>
-												<X size={11} strokeWidth={2.5} />
-											</button>
-										)}
-									<ChevronDown
-										size={11}
-										strokeWidth={2.5}
-										className={`text-[#64748b] dark:text-[#a1a1aa] transition-transform duration-200 ${
-											isDetailChipOpen ? "rotate-180" : ""
-										}`}
-									/>
-								</div>
+										filters.waterChip !== "ec" &&
+										filters.waterChip !== "none"
+											? "bg-sky-600 text-white font-bold border-sky-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<div className="flex items-center gap-0.5">
+										<SlidersHorizontal size={13} strokeWidth={2.4} />
+										<ChevronDown
+											size={11}
+											strokeWidth={2.5}
+											className={`transition-transform duration-200 ${
+												isDetailChipOpen ? "rotate-180" : ""
+											}`}
+										/>
+									</div>
+									<span className="text-[10px] font-bold leading-none truncate max-w-full">
+										{filters.waterChip !== "default" &&
+										filters.waterChip !== "toc" &&
+										filters.waterChip !== "ec" &&
+										filters.waterChip !== "none"
+											? {
+													tp: "총인",
+													tn: "총질소",
+													wtrtp: "수온",
+													wqi: "WQI",
+													ph: "pH",
+													doc: "DO",
+													tur: "탁도",
+													chla: "Chl-a",
+												}[filters.waterChip]
+											: "상세"}
+									</span>
+								</button>
+
+								<button
+									type="button"
+									onClick={() => {
+										setFilters({ ...filters, waterChip: "none" });
+										setIsDetailChipOpen(false);
+									}}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
+										filters.waterChip === "none"
+											? "bg-[#27272a] text-white font-bold border-white/20 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<EyeOff size={15} strokeWidth={2.4} />
+									<span className="text-[10px] font-bold leading-none">
+										숨김
+									</span>
+								</button>
 							</div>
 
-							{/* 커스텀 팝오버 메뉴 */}
+							{/* 상세 지표 팝오버 메뉴 (2x4 정사각형 타일) */}
 							{isDetailChipOpen && (
-								<div className="absolute top-full left-0 right-0 mt-1 z-30 p-1 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-lg shadow-xl shadow-black/20 animate-in fade-in zoom-in-95 duration-150">
-									<div className="grid grid-cols-3 gap-1 text-[10.5px]">
+								<div className="absolute top-full left-0 right-0 mt-1.5 z-30 p-1.5 bg-white dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] rounded-xl shadow-xl shadow-black/20 animate-in fade-in zoom-in-95 duration-150">
+									<div className="grid grid-cols-4 gap-1.5">
 										{(
 											[
-												{ key: "tp", label: "총인 (TP)" },
-												{ key: "tn", label: "총질소 (TN)" },
-												{ key: "wtrtp", label: "수온 (°C)" },
-												{ key: "wqi", label: "수질점수 (WQI)" },
-												{ key: "ph", label: "수소이온 (pH)" },
-												{ key: "doc", label: "용존산소 (DO)" },
-												{ key: "ec", label: "전도도 (EC)" },
-												{ key: "tur", label: "탁도 (NTU)" },
-												{ key: "chla", label: "클로로필-a" },
+												{ key: "tp", code: "TP", label: "총인" },
+												{ key: "tn", code: "TN", label: "총질소" },
+												{ key: "wtrtp", code: "수온", label: "°C" },
+												{ key: "wqi", code: "WQI", label: "수질점수" },
+												{ key: "ph", code: "pH", label: "수소이온" },
+												{ key: "doc", code: "DO", label: "용존산소" },
+												{ key: "tur", code: "탁도", label: "NTU" },
+												{ key: "chla", code: "Chl-a", label: "클로로필" },
 											] as const
 										).map((item) => {
 											const isSelected = filters.waterChip === item.key;
@@ -797,13 +643,22 @@ export default function MapPage() {
 														});
 														setIsDetailChipOpen(false);
 													}}
-													className={`h-7 px-2.5 rounded-md flex items-center justify-center text-center transition-all active:scale-95 border ${
+													className={`h-[62px] sm:h-[72px] px-1 rounded-xl flex flex-col items-center justify-center gap-1 text-center transition-all active:scale-95 border ${
 														isSelected
-															? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-300 border-sky-400 dark:border-sky-600 font-bold shadow-xs"
-															: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-black/5 dark:hover:bg-white/5 text-[#334155] dark:text-[#cbd5e1] border-transparent font-medium"
+															? "bg-sky-600 text-white border-sky-500 font-bold shadow-xs"
+															: "bg-[#f8fafc] dark:bg-[#111115] hover:bg-black/5 dark:hover:bg-white/5 text-[#334155] dark:text-[#cbd5e1] border-[#e2e8f0] dark:border-[#222228]"
 													}`}
 												>
-													<span className="truncate">{item.label}</span>
+													<span className="text-[11px] font-black leading-none tracking-tight">
+														{item.code}
+													</span>
+													<span
+														className={`text-[9px] font-semibold leading-none truncate max-w-full ${
+															isSelected ? "text-sky-100" : "opacity-70"
+														}`}
+													>
+														{item.label}
+													</span>
 												</button>
 											);
 										})}
@@ -811,223 +666,317 @@ export default function MapPage() {
 								</div>
 							)}
 						</div>
-					</div>
 
-					{/* 2단. 측정망 유형 */}
-					<div className="space-y-1.5 pt-1 border-t border-[#e2e8f0] dark:border-[#222228]">
-						<div className="space-y-0.5">
-							<span className="text-[10px] font-medium text-[#64748b] dark:text-[#94a3b8] block">
-								측정망 유형
+						{/* 2단. 지도 · 측정망 (5열 정사각형 타일) */}
+						<div className="space-y-1">
+							<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#94a3b8] block px-0.5 leading-none">
+								지도 · 측정망
 							</span>
-							<div className="grid grid-cols-3 gap-1">
+							<div className="grid grid-cols-5 gap-1.5">
+								<button
+									type="button"
+									onClick={toggleLayer}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
+										isSat
+											? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<Layers size={15} strokeWidth={2.4} />
+									<span className="text-[10px] font-bold leading-none">
+										{isSat ? "위성" : "일반"}
+									</span>
+								</button>
+
+								<button
+									type="button"
+									onClick={toggleInvert}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
+										isInverted
+											? "bg-indigo-600 text-white font-bold border-indigo-500 shadow-xs"
+											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
+									}`}
+								>
+									<SunMoon size={15} strokeWidth={2.4} />
+									<span className="text-[10px] font-bold leading-none">
+										색반전
+									</span>
+								</button>
+
 								<button
 									type="button"
 									onClick={() =>
 										setFilters({ ...filters, station: !filters.station })
 									}
-									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.station
 											? "bg-blue-600 text-white font-bold border-blue-500 shadow-xs"
 											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
 									}`}
 								>
-									<MapPin size={10} strokeWidth={2.5} className="shrink-0" />
-									<span className="whitespace-nowrap">국가 측정망</span>
+									<MapPin size={15} strokeWidth={2.4} />
+									<span className="text-[10px] font-bold leading-none">
+										국가
+									</span>
 								</button>
+
 								<button
 									type="button"
 									onClick={() =>
 										setFilters({ ...filters, small: !filters.small })
 									}
-									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.small
 											? "bg-teal-600 text-white font-bold border-teal-500 shadow-xs"
 											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
 									}`}
 								>
-									<MapPin size={10} strokeWidth={2.5} className="shrink-0" />
-									<span className="whitespace-nowrap">소규모 감시망</span>
+									<MapPin size={15} strokeWidth={2.4} />
+									<span className="text-[10px] font-bold leading-none">
+										소규모
+									</span>
 								</button>
+
 								<button
 									type="button"
-									onClick={() => setFilters({ ...filters, poi: !filters.poi })}
-									className={`h-7 rounded-md flex items-center justify-center gap-1 transition-all active:scale-95 text-[10.5px] border ${
+									onClick={() =>
+										setFilters({ ...filters, poi: !filters.poi })
+									}
+									className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 border ${
 										filters.poi
 											? "bg-rose-600 text-white font-bold border-rose-500 shadow-xs"
 											: "bg-[#f8fafc] dark:bg-[#18181b] text-[#64748b] dark:text-[#94a3b8] hover:text-[#0f172a] dark:hover:text-white border-[#e2e8f0] dark:border-[#222228]"
 									}`}
 								>
-									<MapPin size={10} strokeWidth={2.5} className="shrink-0" />
-									<span className="whitespace-nowrap">관심 지점</span>
-								</button>
-							</div>
-						</div>
-					</div>
-
-					{/* 3단. 수계 표시 및 흐름 강조 통합 (h-7) */}
-					<div className="space-y-1 pt-1 border-t border-[#e2e8f0] dark:border-[#222228]">
-						<div className="flex items-center justify-between px-0.5">
-							<div className="flex items-center gap-1.5">
-								<span className="text-[10px] font-medium text-[#64748b] dark:text-[#94a3b8]">
-									수계 표시 및 강조
-								</span>
-								<span className="text-[8.5px] text-[#94a3b8] dark:text-[#71717a]">
-									(순환: 끔 ➔ 켬 ➔ 강조)
-								</span>
-							</div>
-							<div className="flex items-center gap-2">
-								{filters.highlightedRiver && (
-									<button
-										type="button"
-										onClick={() =>
-											setFilters({ ...filters, highlightedRiver: null })
-										}
-										className="text-[9px] font-semibold text-amber-500 hover:underline"
-									>
-										강조 해제
-									</button>
-								)}
-								<button
-									type="button"
-									onClick={() => {
-										const allOn = Object.values(filters.rivers).every(Boolean);
-										setFilters({
-											...filters,
-											rivers: {
-												bukhan: !allOn,
-												namhan: !allOn,
-												han: !allOn,
-												imjin: !allOn,
-												pyeongtaek: !allOn,
-											},
-										});
-									}}
-									className="text-[9.5px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
-								>
-									{Object.values(filters.rivers).every(Boolean)
-										? "전체 해제"
-										: "전체 선택"}
+									<MapPin size={15} strokeWidth={2.4} />
+									<span className="text-[10px] font-bold leading-none">
+										관심
+									</span>
 								</button>
 							</div>
 						</div>
 
-						<div className="grid grid-cols-5 gap-1">
-							{(
-								["bukhan", "namhan", "han", "imjin", "pyeongtaek"] as const
-							).map((rv) => {
-								const conf = RIVER_CONFIG[rv];
-								const isActive = filters.rivers[rv];
-								const isHigh = filters.highlightedRiver === rv;
-
-								// 3단계 순환 탭: [꺼짐] ➔ [일반 켜짐] ➔ [강조 (★)] ➔ [꺼짐]
-								const handleRiverClick = () => {
-									setFilters((prev) => {
-										const currentActive = prev.rivers[rv];
-										const currentHigh = prev.highlightedRiver === rv;
-
-										if (!currentActive) {
-											// 1. 꺼진 상태에서 탭 -> [일반 켜짐]
-											return {
-												...prev,
-												rivers: {
-													...prev.rivers,
-													[rv]: true,
-												},
-												highlightedRiver:
-													prev.highlightedRiver === rv
-														? null
-														: prev.highlightedRiver,
-											};
-										} else if (currentActive && !currentHigh) {
-											// 2. 켜진 상태에서 탭 (두 번째 탭) -> [강조 켜짐]
-											return {
-												...prev,
-												rivers: {
-													...prev.rivers,
-													[rv]: true,
-												},
-												highlightedRiver: rv,
-											};
-										} else {
-											// 3. 강조 상태에서 탭 -> [완전 꺼짐]
-											return {
-												...prev,
-												rivers: {
-													...prev.rivers,
-													[rv]: false,
-												},
-												highlightedRiver:
-													prev.highlightedRiver === rv
-														? null
-														: prev.highlightedRiver,
-											};
-										}
-									});
-								};
-
-								return (
+						{/* 3단. 수계 표시 및 흐름 강조 (5열 정사각형 타일) */}
+						<div className="space-y-1">
+							<div className="flex items-center justify-between px-0.5 leading-none">
+								<div className="flex items-center gap-1.5">
+									<span className="text-[10px] font-semibold text-[#64748b] dark:text-[#94a3b8]">
+										수계 표시 · 강조
+									</span>
+									<span className="text-[8.5px] text-[#94a3b8] dark:text-[#71717a]">
+										(끔➔켬➔강조)
+									</span>
+								</div>
+								<div className="flex items-center gap-2">
+									{filters.highlightedRiver && (
+										<button
+											type="button"
+											onClick={() =>
+												setFilters({ ...filters, highlightedRiver: null })
+											}
+											className="text-[9px] font-semibold text-amber-500 hover:underline"
+										>
+											강조 해제
+										</button>
+									)}
 									<button
-										key={rv}
 										type="button"
-										onClick={handleRiverClick}
-										style={{
-											backgroundColor: isHigh
-												? conf.color
-												: isActive
-													? `${conf.color}25`
-													: undefined,
-											borderColor: isHigh
-												? conf.color
-												: isActive
-													? `${conf.color}80`
-													: undefined,
-											color: isHigh
-												? "#ffffff"
-												: isActive
-													? conf.color
-													: undefined,
+										onClick={() => {
+											const allOn = Object.values(filters.rivers).every(
+												Boolean,
+											);
+											setFilters({
+												...filters,
+												rivers: {
+													bukhan: !allOn,
+													namhan: !allOn,
+													han: !allOn,
+													imjin: !allOn,
+													pyeongtaek: !allOn,
+												},
+											});
 										}}
-										className={`h-7 rounded-lg flex items-center justify-center gap-1 border transition-all active:scale-95 relative select-none ${
-											isHigh
-												? "font-black shadow-md ring-2 ring-white/50 ring-offset-1 dark:ring-offset-black"
-												: isActive
-													? "font-bold shadow-xs"
-													: "bg-[#f8fafc] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#71717a] border-[#e2e8f0] dark:border-[#222228]"
-										}`}
+										className="text-[9.5px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
 									>
-										{!isHigh && (
-											<span
-												className="w-1.5 h-1.5 rounded-full shrink-0"
-												style={{
-													backgroundColor: isActive ? conf.color : "#94a3b8",
-													opacity: isActive ? 1 : 0.4,
-												}}
-											/>
-										)}
-										{isHigh && (
-											<span className="text-[9px] leading-none shrink-0">
-												★
-											</span>
-										)}
-										<span className="text-[10px] tracking-tight truncate">
-											{conf.label.replace("수계", "").replace("본류", "")}
-										</span>
+										{Object.values(filters.rivers).every(Boolean)
+											? "전체 해제"
+											: "전체 선택"}
 									</button>
-								);
-							})}
-						</div>
-					</div>
+								</div>
+							</div>
 
-					{/* 4단 (최하단). 공간정보 및 데이터 출처 (Attribution) */}
-					<div className="pt-2 border-t border-[#e2e8f0]/80 dark:border-[#222228]/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[9px] text-[#94a3b8] dark:text-[#71717a]">
-						<span className="font-medium tracking-tight">공간정보 출처</span>
-						<div className="flex items-center gap-1.5">
-							<span>지도: 국토교통부 VWorld</span>
-							<span className="opacity-40">•</span>
-							<span>하천: HDX (OSM)</span>
+							<div className="grid grid-cols-5 gap-1.5">
+								{(
+									["bukhan", "namhan", "han", "imjin", "pyeongtaek"] as const
+								).map((rv) => {
+									const conf = RIVER_CONFIG[rv];
+									const isActive = filters.rivers[rv];
+									const isHigh = filters.highlightedRiver === rv;
+
+									const handleRiverClick = () => {
+										setFilters((prev) => {
+											const currentActive = prev.rivers[rv];
+											const currentHigh = prev.highlightedRiver === rv;
+
+											if (!currentActive) {
+												return {
+													...prev,
+													rivers: { ...prev.rivers, [rv]: true },
+													highlightedRiver:
+														prev.highlightedRiver === rv
+															? null
+															: prev.highlightedRiver,
+												};
+											} else if (currentActive && !currentHigh) {
+												return {
+													...prev,
+													rivers: { ...prev.rivers, [rv]: true },
+													highlightedRiver: rv,
+												};
+											} else {
+												return {
+													...prev,
+													rivers: { ...prev.rivers, [rv]: false },
+													highlightedRiver:
+														prev.highlightedRiver === rv
+															? null
+															: prev.highlightedRiver,
+												};
+											}
+										});
+									};
+
+									return (
+										<button
+											key={rv}
+											type="button"
+											onClick={handleRiverClick}
+											style={{
+												backgroundColor: isHigh
+													? conf.color
+													: isActive
+														? `${conf.color}20`
+														: undefined,
+												borderColor: isHigh
+													? conf.color
+													: isActive
+														? `${conf.color}80`
+														: undefined,
+												color: isHigh
+													? "#ffffff"
+													: isActive
+														? conf.color
+														: undefined,
+											}}
+											className={`h-[47px] sm:h-[55px] rounded-xl flex flex-col items-center justify-center gap-1.5 border transition-all active:scale-95 relative select-none ${
+												isHigh
+													? "font-black shadow-md ring-2 ring-white/50 ring-offset-1 dark:ring-offset-black"
+													: isActive
+														? "font-bold shadow-xs"
+														: "bg-[#f8fafc] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#71717a] border-[#e2e8f0] dark:border-[#222228]"
+											}`}
+										>
+											{isHigh ? (
+												<span className="text-xs leading-none">★</span>
+											) : (
+												<span
+													className="w-2.5 h-2.5 rounded-full shrink-0"
+													style={{
+														backgroundColor: isActive
+															? conf.color
+															: "#94a3b8",
+														opacity: isActive ? 1 : 0.4,
+													}}
+												/>
+											)}
+											<span className="text-[10px] tracking-tight leading-none truncate max-w-full px-0.5">
+												{conf.label.replace("수계", "").replace("본류", "")}
+											</span>
+										</button>
+									);
+								})}
+							</div>
 						</div>
 					</div>
-				</div>
+				) : (
+					<div className="flex-1 flex flex-col justify-between gap-2">
+						<div className="grid grid-cols-3 gap-2 py-1">
+							{/* 1. 측정망 지도 편집 */}
+							<button
+								type="button"
+								onClick={() => {
+									setIsEditMode(true);
+									setIsAdminMenuOpen(false);
+								}}
+								className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95 px-1.5"
+							>
+								<div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+									<MapIcon size={16} strokeWidth={2.4} />
+								</div>
+								<div className="text-center">
+									<span className="text-xs font-bold tracking-tight block">
+										지도 편집
+									</span>
+									<span className="text-[9.5px] text-[#64748b] dark:text-[#a1a1aa] block">
+										위치·관심지점
+									</span>
+								</div>
+							</button>
+
+							{/* 2. 기기 통계 요약 */}
+							<Link
+								href="/map/stations?tab=summary"
+								onClick={() => setIsAdminMenuOpen(false)}
+								className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95 px-1.5"
+							>
+								<div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+									<Table2 size={16} strokeWidth={2.4} />
+								</div>
+								<div className="text-center">
+									<span className="text-xs font-bold tracking-tight block">
+										기기 통계
+									</span>
+									<span className="text-[9.5px] text-[#64748b] dark:text-[#a1a1aa] block">
+										항목별 집계표
+									</span>
+								</div>
+							</Link>
+
+							{/* 3. 측정소 제원 관리 */}
+							<Link
+								href={
+									selectedStation
+										? `/map/stations?id=${selectedStation.id}`
+										: "/map/stations"
+								}
+								onClick={() => setIsAdminMenuOpen(false)}
+								className="aspect-[1/1] rounded-2xl flex flex-col items-center justify-center gap-1.5 border border-[#e2e8f0] dark:border-[#222228] bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/5 text-[#0f172a] dark:text-white transition-all active:scale-95 px-1.5"
+							>
+								<div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+									<Database size={16} strokeWidth={2.4} />
+								</div>
+								<div className="text-center">
+									<span className="text-xs font-bold tracking-tight block">
+										제원 관리
+									</span>
+									<span className="text-[9.5px] text-[#64748b] dark:text-[#a1a1aa] block">
+										장비·연혁
+									</span>
+								</div>
+							</Link>
+						</div>
+
+						{/* 공간정보 및 데이터 출처 (Attribution) */}
+						<div className="pt-1.5 border-t border-[#e2e8f0]/80 dark:border-[#222228]/80 flex items-center justify-between gap-1 text-[9.5px] text-[#94a3b8] dark:text-[#71717a] leading-none">
+							<span className="font-medium tracking-tight">공간정보 출처</span>
+							<div className="flex items-center gap-1.5">
+								<span>지도: 국토교통부 VWorld</span>
+								<span className="opacity-40">•</span>
+								<span>하천: HDX (OSM)</span>
+							</div>
+						</div>
+					</div>
+				)}
 			</Modal>
 
 			{/* ============================================================ */}

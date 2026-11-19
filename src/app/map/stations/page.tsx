@@ -150,9 +150,9 @@ export default function StationEditorPage() {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col items-center justify-center min-h-screen bg-[#09090b] text-white font-sans">
+			<div className="flex flex-col items-center justify-center min-h-screen bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-white font-sans">
 				<div className="w-10 h-10 border-4 border-[#2563eb] border-t-transparent rounded-full animate-spin mb-4" />
-				<p className="text-sm font-bold text-[#a1a1aa] tracking-widest">
+				<p className="text-sm font-bold text-[#64748b] dark:text-[#a1a1aa] tracking-widest">
 					데이터를 불러오는 중...
 				</p>
 			</div>
@@ -160,15 +160,15 @@ export default function StationEditorPage() {
 	}
 
 	return (
-		<div className="flex flex-col min-h-screen h-screen bg-[#09090b] text-[#f4f4f5] [word-break:keep-all] overflow-hidden">
+		<div className="flex flex-col min-h-screen h-screen bg-[#f8fafc] dark:bg-[#09090b] text-[#0f172a] dark:text-[#f4f4f5] [word-break:keep-all] overflow-hidden transition-colors">
 			{/* M3 표준 상단 헤더 */}
-			<header className="h-14 border-b border-[#222228] bg-[#111115] px-4 flex items-center justify-between shrink-0 z-30">
-				<div className="flex items-center gap-3">
+			<header className="h-14 border-b border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] px-2.5 sm:px-4 flex items-center justify-between gap-2 shrink-0 z-30 transition-colors">
+				<div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
 					<Link
-						href="/dashboard"
-						className="w-9 h-9 rounded-xl bg-[#16161c] border border-[#222228] text-[#a1a1aa] hover:text-white hover:bg-[#27272a] flex items-center justify-center transition-all shadow-sm shrink-0"
-						title="대시보드로 돌아가기"
-						aria-label="대시보드로 돌아가기"
+						href="/map"
+						className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:bg-[#e2e8f0] dark:hover:bg-[#27272a] flex items-center justify-center transition-all shadow-xs shrink-0"
+						title="지도로 돌아가기"
+						aria-label="지도로 돌아가기"
 					>
 						<svg
 							className="w-4 h-4"
@@ -186,51 +186,56 @@ export default function StationEditorPage() {
 					</Link>
 
 					{activeTab === "summary" ? (
-						<h1 className="font-bold text-sm sm:text-base text-white tracking-tight">
+						<h1 className="font-bold text-sm sm:text-base text-[#0f172a] dark:text-white tracking-tight truncate">
 							기기 통계 요약
 						</h1>
 					) : (
 						<button
 							type="button"
 							onClick={() => setIsSidebarOpen(true)}
-							className="flex items-center gap-1.5 text-left py-0.5"
+							className="flex items-center gap-1 text-left py-0.5 min-w-0"
 							title="측정소 목록 열기"
 						>
-							<span className="font-bold text-sm sm:text-base text-white tracking-tight truncate">
+							<span className="font-bold text-sm sm:text-base text-[#0f172a] dark:text-white tracking-tight truncate">
 								{selectedStation?.name || "측정소 선택"}
 							</span>
-							<ChevronDown size={14} className="text-[#a1a1aa]" />
+							<ChevronDown
+								size={14}
+								className="text-[#64748b] dark:text-[#a1a1aa] shrink-0"
+							/>
 						</button>
 					)}
 				</div>
 
-				<div className="flex items-center gap-2">
-					<ThemeToggle />
+				<div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+					<ThemeToggle className="sm:!w-9 sm:!h-9 !rounded-xl" />
 					{/* 탭 전환 버튼 */}
-					<div className="flex items-center bg-[#18181b] p-1 rounded-xl border border-[#222228]">
+					<div className="h-8 sm:h-9 flex items-center bg-[#f1f5f9] dark:bg-[#18181b] p-0.5 rounded-xl border border-[#e2e8f0] dark:border-[#222228]">
 						<button
 							type="button"
 							onClick={() => handleTabChange("manager")}
-							className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+							className={`h-full flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 rounded-[9px] text-xs font-bold whitespace-nowrap transition-all ${
 								activeTab === "manager"
 									? "bg-[#2563eb] text-white shadow-sm"
-									: "text-[#a1a1aa] hover:text-white"
+									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 							}`}
 						>
-							<Database size={13} />
-							<span>제원 관리</span>
+							<Database size={13} className="shrink-0" />
+							<span className="hidden sm:inline">제원 관리</span>
+							<span className="sm:hidden">제원</span>
 						</button>
 						<button
 							type="button"
 							onClick={() => handleTabChange("summary")}
-							className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+							className={`h-full flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 rounded-[9px] text-xs font-bold whitespace-nowrap transition-all ${
 								activeTab === "summary"
 									? "bg-[#2563eb] text-white shadow-sm"
-									: "text-[#a1a1aa] hover:text-white"
+									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 							}`}
 						>
-							<Table2 size={13} />
-							<span>기기 통계</span>
+							<Table2 size={13} className="shrink-0" />
+							<span className="hidden sm:inline">기기 통계</span>
+							<span className="sm:hidden">통계</span>
 						</button>
 					</div>
 
@@ -240,13 +245,13 @@ export default function StationEditorPage() {
 							type="button"
 							onClick={handleSave}
 							disabled={isSaving || !isDirty}
-							className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+							className={`h-8 sm:h-9 flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
 								isDirty
 									? "bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-sm active:scale-95 cursor-pointer"
-									: "bg-[#18181b] text-[#52525b] border border-[#222228] cursor-not-allowed"
+									: "bg-[#f1f5f9] dark:bg-[#18181b] text-[#94a3b8] dark:text-[#52525b] border border-[#e2e8f0] dark:border-[#222228] cursor-not-allowed"
 							}`}
 						>
-							<Save size={14} />
+							<Save size={14} className="shrink-0" />
 							<span>{isSaving ? "저장 중..." : "저장"}</span>
 						</button>
 					)}

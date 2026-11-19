@@ -333,7 +333,7 @@ export function WaterQualityChartModal({
 			onClose={onClose}
 			title={`${stationName} 실시간 수질`}
 			icon={Droplets}
-			maxWidth="max-w-md"
+			size="half"
 			headerAction={
 				latestMeasureTime ? (
 					<span className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-lg border border-black/5 dark:border-white/5">

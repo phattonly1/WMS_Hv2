@@ -185,13 +185,13 @@ export function StationBottomSheet({
 						animate={{ y: 0, opacity: 1 }}
 						exit={{ y: 20, opacity: 0 }}
 						transition={{ type: "spring", damping: 28, stiffness: 320 }}
-						className="pointer-events-auto w-full max-w-md px-3 py-2 rounded-2xl bg-white/95 dark:bg-[#111115]/95 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-amber-500/40 dark:border-amber-400/30 flex items-center gap-2 overflow-x-auto thin-scrollbar"
+						className="pointer-events-auto w-full max-w-md px-3 py-2 rounded-2xl bg-white/95 dark:bg-[#111115]/95 backdrop-blur-2xl shadow-[0_8px_24px_rgba(0,0,0,0.12)] border border-amber-500/40 dark:border-amber-400/30 flex flex-wrap items-center gap-1.5"
 					>
-						<span className="inline-flex items-center gap-1 text-[10.5px] font-black text-amber-700 dark:text-amber-300 shrink-0">
+						<span className="inline-flex items-center gap-1 text-[10.5px] font-black text-amber-700 dark:text-amber-300 shrink-0 mr-0.5">
 							<AlertTriangle size={13} strokeWidth={2.6} className="shrink-0" />
 							<span>이상치 알림</span>
 						</span>
-						<div className="flex items-center gap-1.5 shrink-0">
+						<div className="flex flex-wrap items-center gap-1.5">
 							{anomalies.map((anom) => (
 								<button
 									key={anom.key}
