@@ -73,6 +73,20 @@ function evaluateAnomaly(
 	return null;
 }
 
+// 일반항목(pH, 수온, DO, EC + 선택 탁도)이 모두 null(미수신)인지 판별
+export function isGeneralMetricsUnreceived(
+	waterQuality: RealtimeWaterQuality | null | undefined,
+): boolean {
+	if (!waterQuality) return false;
+	return (
+		waterQuality.ph === null &&
+		waterQuality.wtrtp === null &&
+		waterQuality.doc === null &&
+		waterQuality.ec === null &&
+		waterQuality.tur === null
+	);
+}
+
 // 1. 국가 측정소 마커
 export const StationMarker = React.memo(function StationMarker({
 	station,
@@ -100,8 +114,12 @@ export const StationMarker = React.memo(function StationMarker({
 							? "#ef4444"
 							: "#64748b";
 
-	// 1. 자동 상시 감시: EC 50% 이하 급감 또는 150% 이상 급등 여부
-	const ecAnomaly = evaluateAnomaly(waterQuality, "ec");
+	// 1. 중요 상시 감시 2대 상태:
+	//  (A) 일반항목(pH, 수온, DO, EC, 탁도) 모두 null -> '미수신' (진회색 Slate)
+	//  (B) EC 전일 평균 대비 50% 이하 급감 -> 'EC 급감' (빨간색 Rose, EC 급등은 제외)
+	const isUnreceived = isGeneralMetricsUnreceived(waterQuality);
+	const rawEcAnomaly = evaluateAnomaly(waterQuality, "ec");
+	const ecLowAnomaly = rawEcAnomaly?.type === "low" ? rawEcAnomaly : null;
 
 	// 2. 전체 측정항목 중 50% 이하 또는 150% 이상인 모든 이상 항목 산출
 	const allAnomalies: MetricAnomalyInfo[] = [];
@@ -112,8 +130,10 @@ export const StationMarker = React.memo(function StationMarker({
 		}
 	}
 
-	// EC 외에 다른 항목 중 50% 이하 또는 150% 이상인 항목들
-	const otherAnomalies = allAnomalies.filter((d) => d.key !== "ec");
+	// EC 급감을 제외한 기타 이상 항목들 (EC 급등은 기타 이상 항목으로 분류)
+	const otherAnomalies = allAnomalies.filter(
+		(d) => !(d.key === "ec" && d.type === "low"),
+	);
 	const otherCount = otherAnomalies.length;
 
 	// 현재 선택된 칩 모드(chipMode) 자체가 이상치인지 확인
@@ -123,32 +143,39 @@ export const StationMarker = React.memo(function StationMarker({
 		? allAnomalies.find((d) => d.key === selectedMetricKey) || null
 		: null;
 
-	// 현재 칩에 직접 표시된 항목(선택된 지표 + 상시 표기되는 EC)을 제외한 '다른 항목' 이상 목록
+	// 현재 칩에 직접 표시된 항목(선택된 지표 + 상시 표기되는 EC 급감)을 제외한 '다른 항목' 이상 목록
 	const unshownOtherAnomalies = allAnomalies.filter(
-		(d) => d.key !== "ec" && d.key !== selectedMetricKey,
+		(d) => !(d.key === "ec" && d.type === "low") && d.key !== selectedMetricKey,
 	);
 	const unshownOtherCount = unshownOtherAnomalies.length;
 
-	// 마커 센터 링 경고 펄스: EC 급감/급등 시 작동
-	const hasEcWarning = Boolean(ecAnomaly);
+	// 마커 센터 링 중요 경고 펄스: 일반항목 미수신 또는 EC 급감(50% 이하) 시에만 작동
+	const hasEcLowWarning = Boolean(ecLowAnomaly);
+	const hasCriticalWarning = isUnreceived || hasEcLowWarning;
+
 	// 칩 자체 배경색 경고 여부:
-	// - 기본(default) 모드일 때는 EC 또는 기타 이상이 있으면 경고 배경 표시
-	// - 특정 수질 칩(TOC, TP, 탁도 등)을 선택했을 때는 '선택한 그 지표(또는 상시 감시 EC)'가 이상일 때만 칩 전체 배경을 경고색으로 칠함!
-	//   (다른 항목만 이상일 때는 칩 배경은 정상 흰색/다크로 유지하고 우측 '+N' 배지만 주황색으로 표시해 혼동 방지)
-	const isChipSelfWarning = selectedMetricKey
-		? Boolean(selectedMetricAnomaly || ecAnomaly)
-		: hasEcWarning || otherCount > 0;
-	const chipWarningType: "low" | "high" | null = selectedMetricAnomaly
-		? selectedMetricAnomaly.type
-		: ecAnomaly
-			? ecAnomaly.type
-			: otherCount > 0
-				? "high"
-				: null;
+	// - 미수신일 때는 진회색(Slate) 경고 배경
+	// - 기본(default) 모드일 때는 EC 급감 또는 기타 이상이 있으면 경고 배경 표시
+	// - 특정 수질 칩(TOC, TP, 탁도 등)을 선택했을 때는 '선택한 그 지표(또는 상시 감시 EC 급감)'가 이상일 때만 칩 전체 배경을 경고색으로 칠함
+	const isChipSelfWarning = isUnreceived
+		? true
+		: selectedMetricKey
+			? Boolean(selectedMetricAnomaly || ecLowAnomaly)
+			: hasEcLowWarning || otherCount > 0;
+	const chipWarningType: "unreceived" | "low" | "high" | null = isUnreceived
+		? "unreceived"
+		: selectedMetricAnomaly
+			? selectedMetricAnomaly.type
+			: ecLowAnomaly
+				? "low"
+				: otherCount > 0
+					? "high"
+					: null;
 
 	// 선택된 칩 모드에 따른 텍스트 계산
 	const getChipText = (): string | null => {
 		if (!waterQuality || chipMode === "none") return null;
+		if (isUnreceived) return "미수신";
 		switch (chipMode) {
 			case "default": {
 				const parts: string[] = [];
@@ -203,19 +230,19 @@ export const StationMarker = React.memo(function StationMarker({
 	};
 
 	const chipText = getChipText();
-	// 마커 코어 링 색상: EC 급감 시 로즈 레드(#ef4444), EC 급등 시 앰버(#f59e0b), 평소엔 수계 기본 색상
-	const ringColor = hasEcWarning
-		? ecAnomaly?.type === "low"
+	// 마커 코어 링 색상: 미수신 시 진회색(#475569), EC 급감 시 로즈 레드(#ef4444), 평소엔 수계 기본 색상
+	const ringColor = isUnreceived
+		? "#475569"
+		: hasEcLowWarning
 			? "#ef4444"
-			: "#f59e0b"
-		: color;
+			: color;
 
 	return (
 		<div className="relative group cursor-pointer select-none hover:z-[9999]">
-			{/* 1. 센터 관측 코어 - EC 50% 이하 급감 또는 150% 이상 급등 시 펄스 링 경고 */}
+			{/* 1. 센터 관측 코어 - 미수신(진회색) 또는 EC 50% 이하 급감(빨간색) 시에만 펄스 링 경고 */}
 			<div className="relative w-0 h-0 flex items-center justify-center">
 				<div className="relative flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-125">
-					{(isSelected || hasEcWarning) && (
+					{(isSelected || hasCriticalWarning) && (
 						<>
 							<span
 								className="absolute w-8 h-8 rounded-full animate-ping opacity-65 pointer-events-none"
@@ -232,11 +259,11 @@ export const StationMarker = React.memo(function StationMarker({
 					<div
 						className="w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-sm"
 						style={{
-							backgroundColor: hasEcWarning
-								? ecAnomaly?.type === "low"
+							backgroundColor: isUnreceived
+								? "rgba(241, 245, 249, 0.92)"
+								: hasEcLowWarning
 									? "rgba(255, 241, 242, 0.9)"
-									: "rgba(254, 243, 199, 0.9)"
-								: "rgba(255, 255, 255, 0.65)",
+									: "rgba(255, 255, 255, 0.65)",
 							border: `2.5px solid ${ringColor}`,
 						}}
 					>
@@ -255,11 +282,11 @@ export const StationMarker = React.memo(function StationMarker({
 								"-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 0 5px rgba(255,255,255,0.95), 0 2px 4px rgba(0,0,0,0.25)",
 						}}
 						className={`text-[11px] leading-none font-black tracking-tight whitespace-nowrap ${
-							hasEcWarning
-								? ecAnomaly?.type === "low"
+							isUnreceived
+								? "text-slate-700"
+								: hasEcLowWarning
 									? "text-rose-700"
-									: "text-amber-700"
-								: "text-slate-950"
+									: "text-slate-950"
 						}`}
 					>
 						{station.name.replace(" 측정소", "")}
@@ -268,14 +295,16 @@ export const StationMarker = React.memo(function StationMarker({
 					{/* 실시간 수질 미니 칩 (반투명 배경 레이어와 텍스트 분리로 PC 1x 모니터에서도 또렷한 렌더링 보장) */}
 					{chipText && (
 						<span className="relative inline-flex items-center h-[18px] px-1.5 rounded-full whitespace-nowrap">
-							{/* 반투명 배경 전용 레이어 (선택한 수질 항목 자체가 이상이거나 EC 이상일 때만 전체 배경 경고색 적용) */}
+							{/* 반투명 배경 전용 레이어 (미수신=진회색, 급감=빨간색, 기타급등=주황색) */}
 							<span
 								aria-hidden="true"
 								className={`absolute inset-0 rounded-full shadow-xs border ${
 									isChipSelfWarning
-										? chipWarningType === "low"
-											? "bg-rose-600/90 border-rose-400 ring-2 ring-rose-500/40"
-											: "bg-amber-600/90 border-amber-300 ring-2 ring-amber-500/40"
+										? chipWarningType === "unreceived"
+											? "bg-slate-600/95 border-slate-400 ring-2 ring-slate-500/40"
+											: chipWarningType === "low"
+												? "bg-rose-600/90 border-rose-400 ring-2 ring-rose-500/40"
+												: "bg-amber-600/90 border-amber-300 ring-2 ring-amber-500/40"
 										: "bg-white/85 dark:bg-slate-900/85 border-slate-300/90 dark:border-slate-600/90"
 								}`}
 							/>
@@ -296,26 +325,29 @@ export const StationMarker = React.memo(function StationMarker({
 								/>
 								<span>{chipText}</span>
 
-								{/* 0) 선택된 단일 수질 칩(EC 제외) 자체가 급감/급등일 때 직접 ↓/↑% 표기 */}
-								{selectedMetricAnomaly &&
-									selectedMetricAnomaly.key !== "ec" && (
+								{/* 0) 선택된 단일 수질 칩(EC 급감 제외) 자체가 급감/급등일 때 직접 ↓/↑% 표기 */}
+								{!isUnreceived &&
+									selectedMetricAnomaly &&
+									!(
+										selectedMetricAnomaly.key === "ec" &&
+										selectedMetricAnomaly.type === "low"
+									) && (
 										<span className="ml-0.5 px-1 py-0.5 rounded bg-black/25 text-[9px] font-mono font-black tracking-tighter leading-none text-white">
 											{selectedMetricAnomaly.type === "low" ? "↓" : "↑"}
 											{Math.round(selectedMetricAnomaly.ratio * 100)}%
 										</span>
 									)}
 
-								{/* 1) EC 급감(↓) 또는 급등(↑) 상시 표기 */}
-								{ecAnomaly && (
+								{/* 1) EC 급감(↓) 상시 표기 */}
+								{!isUnreceived && ecLowAnomaly && (
 									<span className="ml-0.5 px-1 py-0.5 rounded bg-black/25 text-[9px] font-mono font-black tracking-tighter leading-none text-white">
-										{selectedMetricKey === "ec" ? "" : "EC "}
-										{ecAnomaly.type === "low" ? "↓" : "↑"}
-										{Math.round(ecAnomaly.ratio * 100)}%
+										{selectedMetricKey === "ec" ? "" : "EC "}↓
+										{Math.round(ecLowAnomaly.ratio * 100)}%
 									</span>
 								)}
 
 								{/* 2) 현재 칩에 표시되지 않은 '다른 항목'이 급감/급등일 때 '+N' 배지 표기 */}
-								{unshownOtherCount > 0 && (
+								{!isUnreceived && unshownOtherCount > 0 && (
 									<span
 										className={`ml-0.5 px-1 py-0.5 rounded text-[9px] font-mono font-black tracking-tighter leading-none ${
 											isChipSelfWarning
@@ -350,31 +382,31 @@ export const StationMarker = React.memo(function StationMarker({
 							</span>
 						</div>
 
-						{/* EC 이상 배너 (EC 급감/급등 시 상단 표시) */}
-						{ecAnomaly && (
-							<div
-								className={`mb-1.5 px-2 py-1 rounded-lg border text-[9px] leading-tight ${
-									ecAnomaly.type === "low"
-										? "bg-rose-500/20 border-rose-500/40 text-rose-200"
-										: "bg-amber-500/20 border-amber-500/40 text-amber-200"
-								}`}
-							>
-								<div
-									className={`font-black mb-0.5 ${
-										ecAnomaly.type === "low" ? "text-rose-300" : "text-amber-300"
-									}`}
-								>
-									{ecAnomaly.type === "low"
-										? "🚨 EC 전일 평균 대비 50% 이하 급감"
-										: "⚠️ EC 전일 평균 대비 150% 이상 급등"}
+						{/* 미수신 배너 (일반항목 모두 null일 때 상단 표시) */}
+						{isUnreceived && (
+							<div className="mb-1.5 px-2 py-1 rounded-lg border bg-slate-500/25 border-slate-400/40 text-slate-200 text-[9px] leading-tight">
+								<div className="font-black text-slate-100 mb-0.5">
+									⚪ 일반항목 데이터 미수신
+								</div>
+								<div className="text-slate-300">
+									수온 · pH · DO · EC · 탁도 항목이 수신되지 않고 있습니다.
+								</div>
+							</div>
+						)}
+
+						{/* EC 급감 배너 (EC 50% 이하 급감 시 상단 표시) */}
+						{ecLowAnomaly && (
+							<div className="mb-1.5 px-2 py-1 rounded-lg border bg-rose-500/20 border-rose-500/40 text-rose-200 text-[9px] leading-tight">
+								<div className="font-black text-rose-300 mb-0.5">
+									🚨 EC 전일 평균 대비 50% 이하 급감
 								</div>
 								<div className="flex items-center justify-between font-mono">
 									<span>
-										현재 {Math.round(ecAnomaly.currentVal)} µS (전일평균{" "}
-										{Math.round(ecAnomaly.prevAvgVal)} µS)
+										현재 {Math.round(ecLowAnomaly.currentVal)} µS (전일평균{" "}
+										{Math.round(ecLowAnomaly.prevAvgVal)} µS)
 									</span>
 									<span className="font-black">
-										전일의 {Math.round(ecAnomaly.ratio * 100)}%
+										전일의 {Math.round(ecLowAnomaly.ratio * 100)}%
 									</span>
 								</div>
 							</div>

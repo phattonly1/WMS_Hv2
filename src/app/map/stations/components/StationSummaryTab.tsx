@@ -254,7 +254,7 @@ export function StationSummaryTab({ stations }: StationSummaryTabProps) {
 			{/* ============================================================ */}
 			{/* 📊 상단 기기 요약 알약 칩 바 (모바일/데스크톱 공통 표시) */}
 			{/* ============================================================ */}
-			<div className="bg-white dark:bg-slate-900/90 p-1.5 sm:p-2 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-xs flex items-center justify-center sm:justify-start gap-1 overflow-x-auto thin-scrollbar">
+			<div className="bg-white dark:bg-slate-900/90 p-1.5 sm:p-2 rounded-2xl border border-slate-200/80 dark:border-white/10 shadow-xs flex flex-wrap items-center justify-between gap-2 overflow-x-auto thin-scrollbar">
 				<div className="flex items-center gap-1 shrink-0 py-0.5">
 					<div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex flex-col items-center justify-center shrink-0 shadow-2xs">
 						<span className="text-[8px] font-black leading-none opacity-80 mb-0.5">
@@ -278,6 +278,17 @@ export function StationSummaryTab({ stations }: StationSummaryTabProps) {
 							</span>
 						</div>
 					))}
+				</div>
+
+				{/* 백년기술 TN/TP 세부 모델명 변경 참고 메모 */}
+				<div className="px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[10.5px] text-amber-700 dark:text-amber-300 font-bold leading-snug">
+					<span className="font-black mr-1">[메모] 백년기술 TN·TP 모델명 변경:</span>
+					<span>
+						인제·미산 TN (<code className="font-mono">Robochem A4-TN</code> →{" "}
+						<code className="font-mono">Robochem TN-2060</code>) / 평창강·단양·화천 TP (
+						<code className="font-mono">Robochem TP-2002</code> →{" "}
+						<code className="font-mono">Robochem A4-TP</code>)
+					</span>
 				</div>
 			</div>
 

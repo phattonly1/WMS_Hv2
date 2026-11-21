@@ -225,6 +225,7 @@ export const EQUIPMENT_PRESETS: Equipment[] = [
 	{ item: "TOC", manufacturer: "시마즈", model: "TOC-4110" },
 	{ item: "TOC", manufacturer: "KOBI", model: "HATA-4000" },
 	{ item: "TOC", manufacturer: "KOBI", model: "HATA-4000B" },
+	{ item: "TOC", manufacturer: "KOBI", model: "HATA-4000H" },
 	{ item: "TOC", manufacturer: "비엘프로세스", model: "Star TOCk" },
 	// 총질소 (TN)
 	{ item: "TN", manufacturer: "KOBI", model: "HATN-4000" },
@@ -238,6 +239,7 @@ export const EQUIPMENT_PRESETS: Equipment[] = [
 	{ item: "TP", manufacturer: "KOBI", model: "HATP-4000H" },
 	{ item: "TP", manufacturer: "KOBI", model: "HATP-2000" },
 	{ item: "TP", manufacturer: "백년기술", model: "Robochem TP-2002" },
+	{ item: "TP", manufacturer: "백년기술", model: "Robochem A4-TP" },
 	{ item: "TP", manufacturer: "백년기술", model: "Robochem TP" },
 	{ item: "TP", manufacturer: "Moni", model: "Moni-TP 3000" },
 	// Bio
@@ -251,4 +253,5 @@ export const EQUIPMENT_PRESETS: Equipment[] = [
 	// VOCs
 	{ item: "VOCs", manufacturer: "PerkinElmer", model: "Clarus 680" },
 	{ item: "VOCs", manufacturer: "PerkinElmer", model: "Clarus 680 (APK2950W)" },
+	{ item: "VOCs", manufacturer: "PerkinElmer", model: "Clarus 690 (APK2950W)" },
 ];

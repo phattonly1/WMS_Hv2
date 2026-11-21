@@ -50,7 +50,7 @@ export async function upsertStation(stationData: Partial<Station>) {
 	if (rest.description !== undefined) item.description = rest.description;
 	if (rest.features) item.features = rest.features;
 	if (rest.instruments) item.instruments = rest.instruments;
-	if (rest.history) item.history = rest.history;
+	if (rest.history) item.change_reason = JSON.stringify(rest.history);
 
 	const isUuid =
 		/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(

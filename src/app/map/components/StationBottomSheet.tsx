@@ -24,6 +24,7 @@ import {
 	RIVER_ICONS,
 	type Station,
 } from "../stationData";
+import { isGeneralMetricsUnreceived } from "./VectorMarkers";
 
 interface StationBottomSheetProps {
 	station: Station | null;
@@ -127,9 +128,11 @@ export function StationBottomSheet({
 		.replace("원주지방환경청", "원주청")
 		.replace(/유역환경청|지방환경청/, "청");
 
+	const isUnreceived = isGeneralMetricsUnreceived(latestWq);
+
 	// 실시간 수질 전일 평균 대비 이상치(50% 이하 급감 / 150% 이상 급등) 항목 계산
 	const anomalies = (() => {
-		if (!latestWq?.prevAvg) return [];
+		if (!latestWq?.prevAvg || isUnreceived) return [];
 		const list: {
 			key: WaterQualityMetricKey;
 			label: string;
@@ -167,103 +170,120 @@ export function StationBottomSheet({
 	})();
 
 	return (
-		<>
-			{/* 모달 바깥 상단: 실시간 수질 진입 칩 + 이상치 플로팅 알림 바 */}
-			{!isSimpleModal && (
-				<div className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+70px+45svh+8px)] sm:bottom-[calc(87.5dvh+8px)] z-[1010] pointer-events-none flex justify-center px-3.5">
-					<div className="pointer-events-auto w-full max-w-xl flex flex-wrap items-center gap-1.5">
-						<button
-							type="button"
-							onClick={() => onOpenWaterQuality?.(station)}
-							title="실시간 수질 24시간 추이 창 열기"
-							className="px-3 py-1.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-[0_6px_20px_rgba(37,99,235,0.35)] border border-blue-400/30 flex items-center gap-1.5 text-[11px] font-black tracking-tight active:scale-95 transition-all shrink-0"
-						>
-							<BarChart3 size={13} strokeWidth={2.5} className="shrink-0" />
-							<span>실시간 수질</span>
-						</button>
-
-						{anomalies.length > 0 && (
-							<div className="px-2.5 py-1 rounded-full bg-white/95 dark:bg-[#111115]/95 backdrop-blur-2xl shadow-[0_6px_20px_rgba(0,0,0,0.18)] border border-amber-500/40 dark:border-amber-400/30 flex flex-wrap items-center gap-1">
-								<span className="inline-flex items-center gap-1 text-[10px] font-black text-amber-700 dark:text-amber-300 shrink-0 mr-0.5">
-									<AlertTriangle
-										size={12}
-										strokeWidth={2.6}
-										className="shrink-0"
-									/>
-									<span>이상치</span>
-								</span>
-								{anomalies.map((anom) => (
-									<button
-										key={anom.key}
-										type="button"
-										onClick={() => onOpenWaterQuality?.(station, anom.key)}
-										title={`클릭 시 ${anom.label} 24시간 추이 확인`}
-										className={`px-1.5 py-0.5 rounded-full text-[9.5px] tabular-nums font-black tracking-tight flex items-center gap-1 active:scale-95 transition-transform ${
-											anom.type === "low"
-												? "bg-rose-600 text-white"
-												: "bg-amber-500 text-white"
-										}`}
-									>
-										<span>{anom.label}</span>
-										<span>
-											{anom.type === "low" ? "↓" : "↑"}
-											{Math.round(anom.ratio * 100)}%
-										</span>
-									</button>
-								))}
-							</div>
-						)}
-					</div>
-				</div>
-			)}
-
-			<Modal
-				isOpen={Boolean(station)}
-				onClose={onClose}
-				title={station.name}
-				subtitle={
-					showAllHistory
-						? `주요 연혁 (${history.length})`
-						: isSimpleModal
-							? station.type === "small"
-								? "소규모 감시망"
-								: "관심지점"
-							: config.label
-				}
-				icon={Icon}
-				size="half"
-				onBack={showAllHistory ? () => setShowAllHistory(false) : undefined}
-				headerAction={
-					!isSimpleModal ? (
-						<div className="flex items-center gap-1 mr-0.5">
-							<span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 dark:text-slate-300 bg-black/[0.04] dark:bg-white/[0.06] px-1.5 py-0.5 rounded-md border border-black/[0.06] dark:border-white/10 shrink-0">
-								<Building2
+		<Modal
+			isOpen={Boolean(station)}
+			onClose={onClose}
+			title={station.name}
+			subtitle={
+				showAllHistory
+					? `주요 연혁 (${history.length})`
+					: isSimpleModal
+						? station.type === "small"
+							? "소규모 감시망"
+							: "관심지점"
+						: config.label
+			}
+			icon={Icon}
+			size="half"
+			noBackdrop={true}
+			preventBodyLock={true}
+			containerClassName="z-[1000] px-3.5 pb-[calc(env(safe-area-inset-bottom)+70px)]"
+			sheetClassName="h-auto max-h-[45svh] sm:max-h-[42dvh] rounded-3xl"
+			onBack={showAllHistory ? () => setShowAllHistory(false) : undefined}
+			headerAction={
+				!isSimpleModal ? (
+					<div className="flex items-center gap-1 mr-0.5">
+						<span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 dark:text-slate-300 bg-black/[0.04] dark:bg-white/[0.06] px-1.5 py-0.5 rounded-md border border-black/[0.06] dark:border-white/10 shrink-0">
+							<Building2
+								size={10}
+								className="shrink-0 text-slate-500 dark:text-slate-400"
+							/>
+							<span>{shortOffice}</span>
+						</span>
+						{station.install_date && (
+							<span className="inline-flex items-center gap-1 text-[10px] font-bold tabular-nums text-slate-600 dark:text-slate-300 bg-black/[0.04] dark:bg-white/[0.06] px-1.5 py-0.5 rounded-md border border-black/[0.06] dark:border-white/10 shrink-0">
+								<Calendar
 									size={10}
 									className="shrink-0 text-slate-500 dark:text-slate-400"
 								/>
-								<span>{shortOffice}</span>
+								{station.install_date.slice(0, 7)}
 							</span>
-							{station.install_date && (
-								<span className="inline-flex items-center gap-1 text-[10px] font-bold tabular-nums text-slate-600 dark:text-slate-300 bg-black/[0.04] dark:bg-white/[0.06] px-1.5 py-0.5 rounded-md border border-black/[0.06] dark:border-white/10 shrink-0">
-									<Calendar
-										size={10}
-										className="shrink-0 text-slate-500 dark:text-slate-400"
-									/>
-									{station.install_date.slice(0, 7)}
-								</span>
-							)}
-						</div>
-					) : (
-						<span
-							className="text-[10px] font-black px-1.5 py-0.5 rounded-md text-white shrink-0 mr-0.5"
-							style={{ backgroundColor: config.color }}
+						)}
+					</div>
+				) : (
+					<span
+						className="text-[10px] font-black px-1.5 py-0.5 rounded-md text-white shrink-0 mr-0.5"
+						style={{ backgroundColor: config.color }}
+					>
+						{config.label}
+					</span>
+				)
+			}
+		>
+			{/* 상단 실시간 수질 진입 칩 + 이상치/미수신 알림 바 */}
+			{!isSimpleModal && (
+				<div className="flex flex-wrap items-center gap-1.5 pb-2 mb-2 border-b border-black/[0.08] dark:border-white/10">
+					<button
+						type="button"
+						onClick={() => onOpenWaterQuality?.(station)}
+						title="실시간 수질 48시간 추이 창 열기"
+						className="px-2.5 py-1 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-xs border border-blue-400/30 flex items-center gap-1 text-[10.5px] font-black tracking-tight active:scale-95 transition-all shrink-0"
+					>
+						<BarChart3 size={12} strokeWidth={2.5} className="shrink-0" />
+						<span>실시간 수질</span>
+					</button>
+
+					{isUnreceived && (
+						<button
+							type="button"
+							onClick={() => onOpenWaterQuality?.(station)}
+							title="일반항목 미수신 (클릭 시 48시간 수질 확인)"
+							className="px-2.5 py-1 rounded-full bg-slate-600 text-white shadow-xs border border-slate-400/50 flex items-center gap-1 text-[10px] font-black tracking-tight active:scale-95 transition-transform"
 						>
-							{config.label}
-						</span>
-					)
-				}
-			>
-				{isSimpleModal ? (
+							<AlertTriangle
+								size={11}
+								strokeWidth={2.6}
+								className="shrink-0"
+							/>
+							<span>일반항목 미수신</span>
+						</button>
+					)}
+
+					{anomalies.length > 0 && (
+						<div className="px-2 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/30 flex flex-wrap items-center gap-1">
+							<span className="inline-flex items-center gap-1 text-[10px] font-black text-amber-700 dark:text-amber-300 shrink-0 mr-0.5">
+								<AlertTriangle
+									size={11}
+									strokeWidth={2.6}
+									className="shrink-0"
+								/>
+								<span>이상치</span>
+							</span>
+							{anomalies.map((anom) => (
+								<button
+									key={anom.key}
+									type="button"
+									onClick={() => onOpenWaterQuality?.(station, anom.key)}
+									title={`클릭 시 ${anom.label} 48시간 추이 확인`}
+									className={`px-1.5 py-0.5 rounded-full text-[9.5px] tabular-nums font-black tracking-tight flex items-center gap-1 active:scale-95 transition-transform ${
+										anom.type === "low"
+											? "bg-rose-600 text-white"
+											: "bg-amber-500 text-white"
+									}`}
+								>
+									<span>{anom.label}</span>
+									<span>
+										{anom.type === "low" ? "↓" : "↑"}
+										{Math.round(anom.ratio * 100)}%
+									</span>
+								</button>
+							))}
+						</div>
+					)}
+				</div>
+			)}
+
+			{isSimpleModal ? (
 					<div className="space-y-2 py-1">
 						{station.address && (
 							<div className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300 bg-black/[0.03] dark:bg-white/[0.05] px-3 py-2 rounded-xl border border-black/[0.06] dark:border-white/10">
@@ -304,22 +324,38 @@ export function StationBottomSheet({
 					<div className="space-y-2.5">
 						{/* 2열 벤토 레이아웃: [1열 1/3: 채수시설 정보 / 채수시설 용량] + [2열 2/3: 장비정보] */}
 						<div className="grid grid-cols-3 gap-2 items-stretch pt-0.5">
-							{/* 1열 (1/3): 1행 채수시설 정보 + 2행 채수시설 용량 */}
-							<div className="col-span-1 flex flex-col gap-1.5 min-w-0">
-								<fieldset className="flex-1 min-w-0 px-2 pt-1 pb-2 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/15 flex flex-col justify-center">
-									<legend className="px-1 text-[9.5px] font-bold text-slate-500 dark:text-slate-400 leading-none whitespace-nowrap">
-										채수시설 정보
-									</legend>
-									<span className="text-xs font-black text-slate-900 dark:text-white min-h-[16px]" />
-								</fieldset>
+							{/* 1열 (1/3): 1행 채수시설 정보 + 2행 측정소 크기 */}
+							{(() => {
+								const rawFacility =
+									station.facility_type && station.facility_type !== "건물식"
+										? station.facility_type
+										: "";
+								const [facilityLabel, sizeLabel] = rawFacility.includes("|")
+									? rawFacility.split("|")
+									: [rawFacility, ""];
 
-								<fieldset className="flex-1 min-w-0 px-2 pt-1 pb-2 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/15 flex flex-col justify-center">
-									<legend className="px-1 text-[9.5px] font-bold text-slate-500 dark:text-slate-400 leading-none whitespace-nowrap">
-										채수시설 용량
-									</legend>
-									<span className="text-xs font-black text-slate-900 dark:text-white min-h-[16px]" />
-								</fieldset>
-							</div>
+								return (
+									<div className="col-span-1 flex flex-col gap-1.5 min-w-0">
+										<fieldset className="flex-1 min-w-0 px-2 pt-1 pb-2 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/15 flex flex-col justify-center">
+											<legend className="px-1 text-[9.5px] font-bold text-slate-500 dark:text-slate-400 leading-none whitespace-nowrap">
+												채수시설 정보
+											</legend>
+											<span className="text-xs font-black text-slate-900 dark:text-white min-h-[16px] flex items-center justify-center text-center leading-tight break-keep">
+												{facilityLabel || "-"}
+											</span>
+										</fieldset>
+
+										<fieldset className="flex-1 min-w-0 px-2 pt-1 pb-2 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/15 flex flex-col justify-center">
+											<legend className="px-1 text-[9.5px] font-bold text-slate-500 dark:text-slate-400 leading-none whitespace-nowrap">
+												측정소 크기
+											</legend>
+											<span className="text-[11px] font-black tabular-nums text-slate-900 dark:text-white min-h-[16px] flex items-center justify-center text-center leading-tight break-keep">
+												{sizeLabel || "-"}
+											</span>
+										</fieldset>
+									</div>
+								);
+							})()}
 
 							{/* 2열 (2/3): 장비정보 */}
 							<fieldset className="col-span-2 min-w-0 px-2.5 pt-1.5 pb-2.5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/15 flex flex-col justify-center">
@@ -401,8 +437,7 @@ export function StationBottomSheet({
 							)}
 						</div>
 					</div>
-			)}
+				)}
 		</Modal>
-		</>
 	);
 }

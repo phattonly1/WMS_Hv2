@@ -127,14 +127,14 @@ export async function updateSession(request: NextRequest) {
 		return NextResponse.redirect(url);
 	}
 
-	// 30분 미활동 체크
+	// 1일 미활동 체크
 	if (user) {
 		const lastActive = request.cookies.get("sb-session-active")?.value;
-		const THIRTY_MINUTES = 30 * 60 * 1000;
+		const ONE_DAY = 24 * 60 * 60 * 1000;
 		const now = Date.now();
 		const parsed = Number(lastActive);
 
-		if (!lastActive || Number.isNaN(parsed) || now - parsed > THIRTY_MINUTES) {
+		if (!lastActive || Number.isNaN(parsed) || now - parsed > ONE_DAY) {
 			// 세션 만료 처리
 			user = null;
 			const response =
@@ -156,10 +156,10 @@ export async function updateSession(request: NextRequest) {
 			}
 			return response;
 		} else {
-			// 활동 타이머 갱신 (30분)
+			// 활동 타이머 갱신 (1일)
 			supabaseResponse.cookies.set("sb-session-active", now.toString(), {
 				path: "/",
-				maxAge: 30 * 60,
+				maxAge: 24 * 60 * 60,
 				httpOnly: true,
 				sameSite: "lax",
 			});

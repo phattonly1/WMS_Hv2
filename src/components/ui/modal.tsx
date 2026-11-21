@@ -22,6 +22,7 @@ export interface ModalProps {
 	containerClassName?: string | undefined;
 	sheetClassName?: string | undefined;
 	preventBodyLock?: boolean | undefined;
+	noBackdrop?: boolean | undefined;
 }
 
 /**
@@ -47,6 +48,7 @@ export function Modal({
 	containerClassName = "z-[1000] px-3.5 pb-[calc(env(safe-area-inset-bottom)+70px)] sm:p-4 md:p-6",
 	sheetClassName,
 	preventBodyLock = false,
+	noBackdrop = false,
 }: ModalProps) {
 	const dragControls = useDragControls();
 	const modalId = useId();
@@ -106,14 +108,16 @@ export function Modal({
 	return (
 		<div
 			role="dialog"
-			aria-modal="true"
-			className={`fixed inset-0 flex items-end sm:items-center justify-center overflow-hidden overscroll-none ${containerClassName}`}
+			aria-modal={!noBackdrop}
+			className={`fixed inset-0 flex ${noBackdrop ? "items-end pointer-events-none" : "items-end sm:items-center"} justify-center overflow-hidden overscroll-none ${containerClassName}`}
 		>
-			<div
-				className="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity pointer-events-auto touch-none overscroll-none"
-				onClick={onClose}
-				aria-hidden="true"
-			/>
+			{!noBackdrop && (
+				<div
+					className="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity pointer-events-auto touch-none overscroll-none"
+					onClick={onClose}
+					aria-hidden="true"
+				/>
+			)}
 
 			<motion.div
 				drag="y"
@@ -130,7 +134,7 @@ export function Modal({
 				animate={{ y: 0, opacity: 1 }}
 				exit={{ y: 60, opacity: 0 }}
 				transition={{ type: "spring", damping: 28, stiffness: 320 }}
-				className={`relative w-full ${maxWidth} flex flex-col z-10 bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-2xl dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.7)] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden transition-colors ${resolvedSheetClass}`}
+				className={`relative w-full ${maxWidth} flex flex-col z-10 pointer-events-auto bg-white dark:bg-[#111115] border border-[#d7dfe9] dark:border-[#2a2a32] shadow-2xl dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.7)] text-[#0f172a] dark:text-[#f4f4f5] overflow-hidden transition-colors ${resolvedSheetClass}`}
 			>
 				{/* 모바일 상단 드래그 핸들 (헤더 상단 중앙 얇은 바) */}
 				<div

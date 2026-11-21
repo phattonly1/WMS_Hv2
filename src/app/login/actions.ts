@@ -22,11 +22,11 @@ export async function login(formData: FormData) {
 		return { error: "잘못된 패스코드입니다." };
 	}
 
-	// 30분 활동 세션 증명 쿠키 발급
+	// 1일 활동 세션 증명 쿠키 발급
 	const cookieStore = await cookies();
 	cookieStore.set("sb-session-active", Date.now().toString(), {
 		path: "/",
-		maxAge: 30 * 60,
+		maxAge: 24 * 60 * 60,
 		httpOnly: true,
 		sameSite: "lax",
 	});

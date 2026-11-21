@@ -74,9 +74,20 @@ export async function fetchStations(): Promise<Station[]> {
 					typeof m.install_date === "string" ? m.install_date : undefined,
 				instruments,
 				features: Array.isArray(m.features) ? (m.features as string[]) : [],
-				history: Array.isArray(m.history)
-					? (m.history as { date: string; desc: string }[])
-					: [],
+				history: (() => {
+					if (Array.isArray(m.history)) {
+						return m.history as { date: string; desc: string }[];
+					}
+					if (typeof m.change_reason === "string" && m.change_reason.trim().startsWith("[")) {
+						try {
+							const parsed = JSON.parse(m.change_reason);
+							if (Array.isArray(parsed)) return parsed;
+						} catch {
+							// ignore parse error
+						}
+					}
+					return [];
+				})(),
 				angle: 0,
 			};
 		},
