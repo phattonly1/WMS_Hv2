@@ -6,7 +6,6 @@ import {
 	Download,
 	FlaskConical,
 	Plus,
-	UserCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -654,24 +653,6 @@ export default function ReagentsPage() {
 										}
 									>
 										{block.map((group) => {
-											const catDotClass =
-												group.category === "TOC"
-													? "bg-[#2563eb] dark:bg-[#2563eb]"
-													: group.category === "TP"
-														? "bg-emerald-500 dark:bg-[#10b981]"
-														: group.category === "TN"
-															? "bg-amber-500 dark:bg-[#f59e0b]"
-															: "bg-[#64748b] dark:bg-[#a1a1aa]";
-
-											const catTextClass =
-												group.category === "TOC"
-													? "text-[#2563eb] dark:text-[#2563eb]"
-													: group.category === "TP"
-														? "text-emerald-600 dark:text-[#10b981]"
-														: group.category === "TN"
-															? "text-amber-600 dark:text-[#f59e0b]"
-															: "text-[#64748b] dark:text-[#a1a1aa]";
-
 											const colSpanClass = isMergedRow
 												? group.rows.length === 1
 													? "col-span-1"
@@ -683,10 +664,6 @@ export default function ReagentsPage() {
 													? "grid grid-cols-1 gap-2"
 													: "grid grid-cols-2 gap-2"
 												: "grid grid-cols-3 gap-2";
-
-											const trayTitle = group.companyLabel
-												? `${group.companyLabel} ${group.category}`
-												: group.category;
 
 											const catHeaderBgClass =
 												group.category === "TOC"

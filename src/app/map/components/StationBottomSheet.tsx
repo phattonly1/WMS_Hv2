@@ -119,7 +119,6 @@ export function StationBottomSheet({
 	const history = parseStationArray<{ date: string; desc: string }>(
 		station.history,
 	);
-	const features = parseStationArray<string>(station.features);
 	const instruments = parseStationArray<string>(station.instruments);
 	const isSimpleModal = station.type === "small" || station.type === "poi";
 

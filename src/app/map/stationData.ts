@@ -1,8 +1,13 @@
 // 측정소 타입 및 설정 (클라이언트용)
 // 데이터는 Supabase에서 가져옴 (actions.ts 참조)
 
-import { AlertTriangle, Droplets, Mountain, Waves } from "lucide-react";
-import type React from "react";
+import {
+	AlertTriangle,
+	Droplets,
+	type LucideIcon,
+	Mountain,
+	Waves,
+} from "lucide-react";
 
 export type RiverType = "han" | "bukhan" | "namhan" | "imjin" | "pyeongtaek";
 export type StationType = "station" | "small" | "poi";
@@ -95,7 +100,7 @@ export interface Station {
 }
 
 // 수계별 아이콘 매핑
-export const RIVER_ICONS: Record<RiverType, React.ElementType> = {
+export const RIVER_ICONS: Record<RiverType, LucideIcon> = {
 	han: Droplets,
 	bukhan: Mountain,
 	namhan: Waves,
