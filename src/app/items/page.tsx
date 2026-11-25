@@ -21,8 +21,8 @@ import {
 	toggleReqStatus,
 	upsertSupply,
 } from "@/actions/supplies";
-import { useLogs, useSupplies } from "@/utils/supabase/hooks";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useLogs, useSupplies } from "@/utils/supabase/hooks";
 import InventorySidebar from "./components/InventorySidebar";
 import ItemCard from "./components/ItemCard";
 import ItemCardSkeleton from "./components/ItemCardSkeleton";
@@ -276,14 +276,14 @@ function ItemsContent() {
 				<div className="flex items-center gap-3">
 					<Link
 						href="/dashboard"
-						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95"
+						className="w-8 h-8 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95"
 						aria-label="대시보드로 돌아가기"
 					>
-						<ArrowLeft size={18} />
+						<ArrowLeft size={16} />
 					</Link>
 					<div className="flex items-center gap-2">
-						<div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-							<Package size={16} strokeWidth={2.4} />
+						<div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+							<Package size={15} strokeWidth={2.4} />
 						</div>
 						<div>
 							<h1 className="text-sm font-bold text-[#0f172a] dark:text-white tracking-tight break-keep">
@@ -293,7 +293,7 @@ function ItemsContent() {
 					</div>
 				</div>
 
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-1.5">
 					<ThemeToggle />
 					{activeTab === "inventory" && (
 						<button
@@ -303,15 +303,15 @@ function ItemsContent() {
 								setIsItemModalOpen(true);
 							}}
 							aria-label="소모품 추가"
-							className="h-9 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(37,99,235,0.25)] active:scale-95"
+							className="h-8 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(37,99,235,0.25)] active:scale-95"
 						>
-							<Plus size={16} strokeWidth={2.5} />
+							<Plus size={14} strokeWidth={2.5} />
 							<span className="hidden sm:inline">물품 추가</span>
 						</button>
 					)}
 
 					<div
-						className="flex gap-1 bg-[#f1f5f9] dark:bg-[#16161c] p-1 rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32]"
+						className="h-8 flex items-center gap-0.5 bg-[#f1f5f9] dark:bg-[#16161c] p-0.5 rounded-lg border border-[#d7dfe9] dark:border-[#2a2a32]"
 						role="tablist"
 					>
 						<button
@@ -320,13 +320,13 @@ function ItemsContent() {
 							role="tab"
 							aria-selected={viewMode === "list"}
 							aria-label="리스트 뷰"
-							className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
+							className={`w-7 h-full rounded-md flex items-center justify-center transition-all ${
 								viewMode === "list"
 									? "bg-white dark:bg-[#2a2a32] text-[#0f172a] dark:text-white font-bold shadow-sm"
 									: "text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-[#a1a1aa]"
 							}`}
 						>
-							<List size={15} strokeWidth={2} />
+							<List size={14} strokeWidth={2} />
 						</button>
 						<button
 							type="button"
@@ -334,13 +334,13 @@ function ItemsContent() {
 							role="tab"
 							aria-selected={viewMode === "photo"}
 							aria-label="포토 뷰"
-							className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
+							className={`w-7 h-full rounded-md flex items-center justify-center transition-all ${
 								viewMode === "photo"
 									? "bg-white dark:bg-[#2a2a32] text-[#0f172a] dark:text-white font-bold shadow-sm"
 									: "text-[#64748b] dark:text-[#64748b] hover:text-[#0f172a] dark:hover:text-[#a1a1aa]"
 							}`}
 						>
-							<Grid3X3 size={15} strokeWidth={2} />
+							<Grid3X3 size={14} strokeWidth={2} />
 						</button>
 					</div>
 				</div>
@@ -443,7 +443,10 @@ function ItemsContent() {
 							</button>
 							<div className="bg-white dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] px-4 h-9 rounded-xl flex items-center">
 								<span className="text-xs tabular-nums font-bold text-[#0f172a] dark:text-white">
-									{currentPage} <span className="text-[#64748b] dark:text-[#64748b] mx-1">/</span>{" "}
+									{currentPage}{" "}
+									<span className="text-[#64748b] dark:text-[#64748b] mx-1">
+										/
+									</span>{" "}
 									{totalPages}
 								</span>
 							</div>
@@ -587,7 +590,9 @@ function ItemsContent() {
 
 export default function ItemsPage() {
 	return (
-		<Suspense fallback={<div className="min-h-screen bg-slate-50 dark:bg-[#09090b]" />}>
+		<Suspense
+			fallback={<div className="min-h-screen bg-slate-50 dark:bg-[#09090b]" />}
+		>
 			<ItemsContent />
 		</Suspense>
 	);

@@ -111,6 +111,12 @@ export default function DashboardPage() {
 					<div className="flex items-center gap-1.5 shrink-0">
 						<ThemeToggle />
 						<Link
+							href="/contracts"
+							className="hidden lg:inline-flex h-8 px-3 rounded-lg bg-[#eff6ff] dark:bg-[#16161c] border border-[#bfdbfe] dark:border-[#222228] text-xs font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
+						>
+							<span>구매계약</span>
+						</Link>
+						<Link
 							href="/architecture"
 							className="hidden sm:inline-flex h-8 px-3 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#2563eb] dark:text-[#2563eb] hover:underline transition-colors items-center gap-1.5 whitespace-nowrap shrink-0"
 						>
@@ -158,11 +164,7 @@ export default function DashboardPage() {
 						</div>
 
 						{NAV_SERVICES.slice(2).map((item) => (
-							<Link
-								key={item.title}
-								href={item.href}
-								className="block h-full"
-							>
+							<Link key={item.title} href={item.href} className="block h-full">
 								<div className="group relative flex flex-col items-center justify-between p-4 sm:p-5 rounded-2xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] hover:border-blue-500/40 transition-all duration-300 shadow-sm dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)] cursor-pointer h-full min-h-[160px]">
 									<div className="my-auto relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
 										<Image

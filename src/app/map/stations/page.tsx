@@ -4,13 +4,13 @@ import { ChevronDown, Database, List, Save, Table2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useStations } from "@/utils/supabase/hooks";
 import { upsertStation } from "../actions";
 import type { Station } from "../stationData";
 import { StationForm } from "./components/StationForm";
 import { StationSidebar } from "./components/StationSidebar";
 import { StationSummaryTab } from "./components/StationSummaryTab";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 type TabType = "manager" | "summary";
 
@@ -166,7 +166,7 @@ export default function StationEditorPage() {
 				<div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
 					<Link
 						href="/map"
-						className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:bg-[#d7dfe9] dark:hover:bg-[#2a2a32] flex items-center justify-center transition-all shadow-xs shrink-0"
+						className="w-8 h-8 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white hover:bg-[#d7dfe9] dark:hover:bg-[#2a2a32] flex items-center justify-center transition-all shadow-xs shrink-0"
 						title="지도로 돌아가기"
 						aria-label="지도로 돌아가기"
 					>
@@ -207,14 +207,14 @@ export default function StationEditorPage() {
 					)}
 				</div>
 
-				<div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-					<ThemeToggle className="sm:!w-9 sm:!h-9 !rounded-xl" />
+				<div className="flex items-center gap-1.5 shrink-0">
+					<ThemeToggle />
 					{/* 탭 전환 버튼 */}
-					<div className="h-8 sm:h-9 flex items-center bg-[#f1f5f9] dark:bg-[#111115] p-0.5 rounded-xl border border-[#d7dfe9] dark:border-[#2a2a32]">
+					<div className="h-8 flex items-center bg-[#f1f5f9] dark:bg-[#111115] p-0.5 rounded-lg border border-[#d7dfe9] dark:border-[#2a2a32]">
 						<button
 							type="button"
 							onClick={() => handleTabChange("manager")}
-							className={`h-full flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 rounded-[9px] text-xs font-bold whitespace-nowrap transition-all ${
+							className={`h-full flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 rounded-md text-xs font-bold whitespace-nowrap transition-all ${
 								activeTab === "manager"
 									? "bg-[#2563eb] text-white shadow-sm"
 									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
@@ -227,7 +227,7 @@ export default function StationEditorPage() {
 						<button
 							type="button"
 							onClick={() => handleTabChange("summary")}
-							className={`h-full flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 rounded-[9px] text-xs font-bold whitespace-nowrap transition-all ${
+							className={`h-full flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 rounded-md text-xs font-bold whitespace-nowrap transition-all ${
 								activeTab === "summary"
 									? "bg-[#2563eb] text-white shadow-sm"
 									: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
@@ -245,7 +245,7 @@ export default function StationEditorPage() {
 							type="button"
 							onClick={handleSave}
 							disabled={isSaving || !isDirty}
-							className={`h-8 sm:h-9 flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+							className={`h-8 flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
 								isDirty
 									? "bg-[#2563eb] text-white hover:bg-[#2563eb] shadow-sm active:scale-95 cursor-pointer"
 									: "bg-[#f1f5f9] dark:bg-[#111115] text-[#64748b] dark:text-[#64748b] border border-[#d7dfe9] dark:border-[#2a2a32] cursor-not-allowed"

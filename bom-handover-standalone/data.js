@@ -1,0 +1,3985 @@
+window.BOM_DATA = {
+  "HATOX-2000": {
+    "label": "HATOX-2000",
+    "partsMaster": [
+      {
+        "partCode": "P0068",
+        "name": "PUMP TUBE (시료공급 펌프튜브)",
+        "qty": 2,
+        "unit": "Pack",
+        "unitPrice": 200000,
+        "isAnnualStandard": true,
+        "spec": "#16용 · 펌프 1·2·3·4 (좌우 4개) · 교체 6개월",
+        "altPart": "[Masterflex] 정밀 정량 펌프용 튜빙 (PharMed BPT, LS16, 6508-16)"
+      },
+      {
+        "partCode": "P0157",
+        "name": "PUMP TUBE",
+        "qty": 2,
+        "unit": "Pack",
+        "unitPrice": 100000,
+        "isAnnualStandard": true,
+        "spec": "#14용 · 펌프 5 (중간 1개) · 교체 6개월",
+        "altPart": "[Masterflex] 정밀 정량 펌프용 튜빙 (PharMed BPT, LS14, 6508-14)"
+      },
+      {
+        "partCode": "P0213",
+        "name": "TUBE (시료이송 튜브 1)",
+        "qty": 20,
+        "unit": "m",
+        "unitPrice": 3000,
+        "isAnnualStandard": true,
+        "spec": "우레탄 4×2 (외경 Ø4/내경 Ø2) · 교체 3개월",
+        "altPart": "우레탄 튜브 4×2 (외경 Ø4 / 내경 Ø2)"
+      },
+      {
+        "partCode": "P0007",
+        "name": "TUBE (시료이송 튜브 2)",
+        "qty": 40,
+        "unit": "m",
+        "unitPrice": 4000,
+        "isAnnualStandard": true,
+        "spec": "우레탄 6×4 (외경 Ø6/내경 Ø4) · 교체 3개월",
+        "altPart": "우레탄 튜브 6×4 (외경 Ø6 / 내경 Ø4)"
+      },
+      {
+        "partCode": "P0139",
+        "name": "Ion Exchange membrane (이온교환막)",
+        "qty": 2,
+        "unit": "SET",
+        "unitPrice": 750000,
+        "isAnnualStandard": true,
+        "spec": "부드러운 면→양극부 조립 · 교체 6개월"
+      },
+      {
+        "partCode": "P0176",
+        "name": "주사기",
+        "qty": 2,
+        "unit": "EA",
+        "unitPrice": 4000,
+        "isAnnualStandard": true,
+        "spec": "50cc 유로 세척용 (Ø6·Ø4 튜브 체결)"
+      },
+      {
+        "partCode": "P0281",
+        "name": "UV 램프",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 180000,
+        "isAnnualStandard": true,
+        "spec": "배양액 저장조 내 장착 · 밝기 이상 시 교체"
+      },
+      {
+        "partCode": "P0242F",
+        "name": "미생물연료전지-센서케이블(전면부)",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 20000,
+        "isAnnualStandard": true,
+        "spec": "전면 BNC 연결 (신호 0/NaN 시 점검)"
+      },
+      {
+        "partCode": "P0018",
+        "name": "제어부 메인보드",
+        "qty": 1,
+        "unit": "식",
+        "spec": "항온용 RELAY · 제어용 SSR 포함 (교체 2~3년)"
+      },
+      {
+        "partCode": "P0199",
+        "name": "SMPS(75) 12V",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "제어부 전원 (AC 220V)"
+      },
+      {
+        "partCode": "P0019",
+        "name": "DAQ BOARD",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "PCI 슬롯 장착 (Disconnect 시 슬롯·케이블 확인)"
+      },
+      {
+        "partCode": "P0020",
+        "name": "PC 터치 모니터",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "전면 컬러 터치 스크린"
+      },
+      {
+        "partCode": "P0284",
+        "name": "PC 메인보드",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "점검 6개월 · 교체 2~3년"
+      },
+      {
+        "partCode": "P0285",
+        "name": "PC 하드디스크",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "점검 6개월 · 교체 4~5년"
+      },
+      {
+        "partCode": "P0284C",
+        "name": "PC CPU",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "CPU FAN 점검 2개월 · 교체 1~2년"
+      },
+      {
+        "partCode": "P0002",
+        "name": "PC 세트",
+        "qty": 1,
+        "unit": "SET"
+      },
+      {
+        "partCode": "P0002R",
+        "name": "PC 세트",
+        "qty": 1,
+        "unit": "SET"
+      },
+      {
+        "partCode": "P0191",
+        "name": "유량센서",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "시료 부족 경보 시 작동 확인"
+      },
+      {
+        "partCode": "P0106",
+        "name": "SPG 감속기 (250B)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "점검 3개월 · 교체 3~4년"
+      },
+      {
+        "partCode": "P0108",
+        "name": "SPG 모터",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "점검 3개월 · 교체 3~4년"
+      },
+      {
+        "partCode": "P0104",
+        "name": "SPG 모터",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "점검 3개월 · 교체 3~4년"
+      },
+      {
+        "partCode": "P0039",
+        "name": "SPG 모터 커플링",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 54000,
+        "spec": "펌프 헤드 분리 시 주의"
+      },
+      {
+        "partCode": "P0086",
+        "name": "SPG 모터 지지대",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0070",
+        "name": "펌프헤드(#14)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "중간 1개 · 펌프 5 (증류수)"
+      },
+      {
+        "partCode": "P0071",
+        "name": "펌프헤드(#16)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "좌우 4개 · 펌프 1·2(시료), 3·4(배양액)"
+      },
+      {
+        "partCode": "P0154",
+        "name": "에어 펌프 (220V)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "증류수 폭기용 (펌프5와 동시 작동)"
+      },
+      {
+        "partCode": "P0049",
+        "name": "온도컨트롤러",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "정상 유지 33~37℃ (월간 점검)"
+      },
+      {
+        "partCode": "P0047",
+        "name": "온도센서 (0.5M)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "분석부 가열기③ 제어용"
+      },
+      {
+        "partCode": "P0201",
+        "name": "혼합기 모터 + 필름콘덴서",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 131000,
+        "spec": "점검 6개월 · 교체 1~2년"
+      },
+      {
+        "partCode": "P0084",
+        "name": "혼합기 모터 블럭 (흰색)",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0263",
+        "name": "혼합기 세트",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "점검 6개월 · 교체 1~2년"
+      },
+      {
+        "partCode": "P0150",
+        "name": "펌프튜브용 피팅",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0058",
+        "name": "투터치 피팅 (Φ6)",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 18000
+      },
+      {
+        "partCode": "P0059",
+        "name": "투터치 피팅 (Φ0604)",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0062",
+        "name": "혼합기용 ㄱ자 피팅 (청색)",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0005",
+        "name": "3-way valve (220V-0124)",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 1185000,
+        "spec": "점검 3개월 · 교체 2~3년"
+      },
+      {
+        "partCode": "P0111",
+        "name": "UNIONS BULKHEAD",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 24000,
+        "spec": "패널 관통용 (피팅 체결)"
+      },
+      {
+        "partCode": "P0155",
+        "name": "플로우 스위치",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "센서 공급 시료 유무 감지"
+      },
+      {
+        "partCode": "P0249",
+        "name": "POWER ARRESTER",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "전원 서지 보호기"
+      },
+      {
+        "partCode": "P0006",
+        "name": "냉온소자",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "항온부 열전소자 (40℃↑/20℃↓ 시 교체)"
+      },
+      {
+        "partCode": "P0050",
+        "name": "워터자켓",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "6각 볼트 6개 분해 · 3개월 내부 세척"
+      },
+      {
+        "partCode": "P0171",
+        "name": "항온장치(자체제작)",
+        "qty": 1,
+        "unit": "식",
+        "spec": "점검 6개월 · 교체 2~3년"
+      },
+      {
+        "partCode": "P0082",
+        "name": "항온장치 케이스",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0168",
+        "name": "미생물연료전지-케이스",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0040",
+        "name": "미생물연료전지(자체제작)",
+        "qty": 1,
+        "unit": "식",
+        "spec": "음극/양극 탄소전극 (6각 볼트 6개 분해)"
+      },
+      {
+        "partCode": "P0078",
+        "name": "항온장치 피팅",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "Ø4 원터치 (우레탄 4×2용)"
+      },
+      {
+        "partCode": "P0079",
+        "name": "항온장치 피팅",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "Ø4 원터치 (우레탄 4×2용)"
+      },
+      {
+        "partCode": "P0177",
+        "name": "Y자 피팅",
+        "qty": 1,
+        "unit": "EA"
+      },
+      {
+        "partCode": "P0242",
+        "name": "미생물연료전지-센서케이블(후면)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "후면 → 제어부 BNC 연결"
+      }
+    ],
+    "sections": [
+      {
+        "id": "control",
+        "stepNo": "3.3",
+        "title": "3.3. 제어부 후면",
+        "pageNo": "p.5",
+        "imageSrc": "./images/hatox-2000-control.png",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①~⑨",
+            "name": "PC 부품",
+            "desc": "컴퓨터 전원/포트/모니터/PCI 카드부",
+            "defaultPartCodes": [
+              "P0019",
+              "P0020",
+              "P0284",
+              "P0285",
+              "P0284C",
+              "P0002",
+              "P0002R"
+            ],
+            "subItems": [
+              {
+                "circle": "①",
+                "name": "컴퓨터 전원 연결부",
+                "desc": "전원 코드 연결용 (AC 220V)"
+              },
+              {
+                "circle": "②",
+                "name": "마우스/키보드 연결 단자",
+                "desc": "마우스 및 키보드 연결용 (필요 시)"
+              },
+              {
+                "circle": "③",
+                "name": "시리얼 포트 연결 단자",
+                "desc": "RS232 통신용 케이블 연결용"
+              },
+              {
+                "circle": "④",
+                "name": "컴퓨터 VGA 단자",
+                "desc": "모니터 연결용"
+              },
+              {
+                "circle": "⑤",
+                "name": "컴퓨터 USB 단자",
+                "desc": "컴퓨터 제어 장치 연결을 위한 USB 포트 (키보드, 마우스, 메모리 연결용)"
+              },
+              {
+                "circle": "⑥",
+                "name": "LAN 단자",
+                "desc": "컴퓨터에 LAN 연결용"
+              },
+              {
+                "circle": "⑦",
+                "name": "모니터 연결 단자",
+                "desc": "모니터 연결용"
+              },
+              {
+                "circle": "⑧",
+                "name": "통신 연결 단자",
+                "desc": "통신 연결용"
+              },
+              {
+                "circle": "⑨",
+                "name": "PCI 카드 연결 단자",
+                "desc": "PCI 카드 연결 단자"
+              }
+            ]
+          },
+          {
+            "no": 10,
+            "circle": "⑩~⑯",
+            "name": "제어부",
+            "desc": "펌프/장치/센서/외부출력/제어부 전원",
+            "defaultPartCodes": [
+              "P0018",
+              "P0199",
+              "P0249"
+            ],
+            "subItems": [
+              {
+                "circle": "⑩",
+                "name": "펌프 연결 단자",
+                "desc": "펌프 제어용 케이블 연결용"
+              },
+              {
+                "circle": "⑪",
+                "name": "장치 연결 단자",
+                "desc": "장치 제어용 케이블 연결용"
+              },
+              {
+                "circle": "⑫",
+                "name": "센서 연결 단자",
+                "desc": "센서의 BNC 케이블 연결용"
+              },
+              {
+                "circle": "⑬",
+                "name": "컴퓨터용 PCI 연결용 케이블",
+                "desc": "컴퓨터 제어 신호 및 신호값 전달을 위한 PCI 연결용 케이블"
+              },
+              {
+                "circle": "⑭",
+                "name": "외부출력단자 1",
+                "desc": "4~20mA 신호 출력"
+              },
+              {
+                "circle": "⑮",
+                "name": "외부출력단자 2",
+                "desc": "시료나 시약 감지 센서 및 수위 센서 연결용 단자 (레벨 1: 센서 A / 레벨 2: 센서 B / 레벨 3: 배양액 수위)"
+              },
+              {
+                "circle": "⑯",
+                "name": "제어부 전원 연결부",
+                "desc": "전원 코드 연결용 (AC 220V)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "front",
+        "stepNo": "3.4",
+        "title": "3.4. 분석부 전면",
+        "pageNo": "p.6",
+        "imageSrc": "./images/hatox-2000-front.png",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①, ②",
+            "name": "A/B 항온 장치 온도 제어기",
+            "desc": "A/B 항온 장치 온도 제어",
+            "defaultPartCodes": [
+              "P0049"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "분석부 가열기",
+            "desc": "분석부의 온도 유지를 위한 가열기",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 4,
+            "circle": "④",
+            "name": "펌프 (좌→우: 1 · 3 · 5 · 4 · 2)",
+            "desc": "중간 1개(#14) · 좌우 2개씩 4개(#16) → 펌프튜브 2종 필요",
+            "defaultPartCodes": [
+              "P0070",
+              "P0071"
+            ],
+            "subItems": [
+              {
+                "circle": "펌프1",
+                "name": "센서 A 시료 공급",
+                "desc": "#16 (P0071 / P0068)"
+              },
+              {
+                "circle": "펌프3",
+                "name": "센서 A 배양액 공급",
+                "desc": "#16 (P0071 / P0068)"
+              },
+              {
+                "circle": "펌프5",
+                "name": "센서 A·B 증류수 공급 (중앙)",
+                "desc": "#14 (P0070 / P0157)"
+              },
+              {
+                "circle": "펌프4",
+                "name": "센서 B 배양액 공급",
+                "desc": "#16 (P0071 / P0068)"
+              },
+              {
+                "circle": "펌프2",
+                "name": "센서 B 시료 공급",
+                "desc": "#16 (P0071 / P0068)"
+              }
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "펌프 연결 피팅",
+            "desc": "펌프 연결용 피팅",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 6,
+            "circle": "⑥",
+            "name": "온도 센서",
+            "desc": "분석부 가열기③를 제어하는 온도 센서",
+            "defaultPartCodes": [
+              "P0047"
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑦, ⑫, ⑬",
+            "name": "항온장치 연결 · A/B 시료 피팅",
+            "desc": "항온 장치 연결 및 시료 피팅",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 8,
+            "circle": "⑧~⑪",
+            "name": "A/B 센서 · 항온 장치 신호 연결 단자",
+            "desc": "A/B 센서 및 항온 장치 신호 연결 단자",
+            "defaultPartCodes": [
+              "P0242F"
+            ]
+          },
+          {
+            "no": 14,
+            "circle": "⑭, ⑮",
+            "name": "A/B 항온 장치 (내부 구성)",
+            "desc": "A/B 센서의 항온 유지 (33~37℃)",
+            "defaultPartCodes": [
+              "P0171",
+              "P0082",
+              "P0040",
+              "P0168",
+              "P0139",
+              "P0006",
+              "P0050"
+            ],
+            "subItems": [
+              {
+                "circle": "항온부",
+                "name": "쿨러 · 열전소자(P0006) · 워터자켓(P0050)",
+                "desc": "시료/증류수 항온 유지 · 워터자켓 3개월 세척"
+              },
+              {
+                "circle": "센서부",
+                "name": "미생물연료전지(P0040) · 이온교환막(P0139)",
+                "desc": "음극/양극 사이 이온교환막 6개월 주기 교체"
+              },
+              {
+                "circle": "내부튜브",
+                "name": "우레탄 튜브 4×2 (P0213)",
+                "desc": "항온장치 내부 연결 · 3개월 주기 교체"
+              }
+            ]
+          }
+        ],
+        "sharedParts": [
+          {
+            "partCode": "P0068",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          },
+          {
+            "partCode": "P0157",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          },
+          {
+            "partCode": "P0213",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑤",
+              "⑦",
+              "⑫",
+              "⑬"
+            ],
+            "calloutNos": [
+              5,
+              7
+            ]
+          },
+          {
+            "partCode": "P0007",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑤",
+              "⑦",
+              "⑫",
+              "⑬"
+            ],
+            "calloutNos": [
+              5,
+              7
+            ]
+          },
+          {
+            "partCode": "P0111",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑤",
+              "⑦"
+            ],
+            "calloutNos": [
+              5,
+              7
+            ]
+          },
+          {
+            "partCode": "P0150",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑤"
+            ],
+            "calloutNos": [
+              5
+            ]
+          },
+          {
+            "partCode": "P0078",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑦",
+              "⑫",
+              "⑬"
+            ],
+            "calloutNos": [
+              7
+            ]
+          },
+          {
+            "partCode": "P0079",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑦",
+              "⑫",
+              "⑬"
+            ],
+            "calloutNos": [
+              7
+            ]
+          },
+          {
+            "partCode": "P0176",
+            "group": "기타",
+            "usedBadges": [
+              "세척/주입"
+            ],
+            "calloutNos": []
+          }
+        ]
+      },
+      {
+        "id": "rear",
+        "stepNo": "3.5",
+        "title": "3.5. 분석부 후면",
+        "pageNo": "p.7",
+        "imageSrc": "./images/hatox-2000-rear.png",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①, ②",
+            "name": "펌프 · 장치 연결 단자",
+            "desc": "각각의 펌프 및 장치 연결 케이블을 번호에 맞게 연결",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "펌프 모터",
+            "desc": "각각의 펌프를 가동하는 모터",
+            "defaultPartCodes": [
+              "P0108",
+              "P0104",
+              "P0106",
+              "P0039",
+              "P0086"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④",
+            "name": "펌프 연결 피팅",
+            "desc": "펌프로 연결되는 피팅",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 5,
+            "circle": "⑤, ⑥, ⑫",
+            "name": "밸브 B / A / 1",
+            "desc": "센서 A, B 시료 유출 제어 및 생물 경보 시 시료 채취용 밸브",
+            "defaultPartCodes": [
+              "P0005"
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑦",
+            "name": "항온 장치 연결 피팅",
+            "desc": "항온 장치로 연결되는 피팅",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 8,
+            "circle": "⑧, ⑨",
+            "name": "B/A센서 신호 연결 단자",
+            "desc": "A, B센서의 신호를 제어부로 연결",
+            "defaultPartCodes": [
+              "P0242"
+            ]
+          },
+          {
+            "no": 10,
+            "circle": "⑩, ⑪",
+            "name": "혼합기 2 / 1",
+            "desc": "센서 A, B로 공급될 시료와 배양액 혼합조",
+            "defaultPartCodes": [
+              "P0263",
+              "P0201",
+              "P0084"
+            ]
+          },
+          {
+            "no": 13,
+            "circle": "⑬",
+            "name": "공기 펌프",
+            "desc": "증류수에 공기를 공급하는 펌프",
+            "defaultPartCodes": [
+              "P0154"
+            ]
+          },
+          {
+            "no": 14,
+            "circle": "⑭, ⑮",
+            "name": "B/A 항온 장치",
+            "desc": "A, B 센서의 항온 유지",
+            "defaultPartCodes": [
+              "P0171",
+              "P0006",
+              "P0050",
+              "P0082"
+            ]
+          },
+          {
+            "no": 16,
+            "circle": "⑯",
+            "name": "감지센서",
+            "desc": "각 센서로 공급되는 시료의 유무를 감지하는 센서",
+            "defaultPartCodes": [
+              "P0155",
+              "P0191"
+            ]
+          }
+        ],
+        "sharedParts": [
+          {
+            "partCode": "P0213",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "④",
+              "⑦"
+            ],
+            "calloutNos": [
+              4,
+              7
+            ]
+          },
+          {
+            "partCode": "P0007",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "④",
+              "⑦"
+            ],
+            "calloutNos": [
+              4,
+              7
+            ]
+          },
+          {
+            "partCode": "P0111",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "④",
+              "⑦"
+            ],
+            "calloutNos": [
+              4,
+              7
+            ]
+          },
+          {
+            "partCode": "P0150",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          },
+          {
+            "partCode": "P0058",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          },
+          {
+            "partCode": "P0059",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          },
+          {
+            "partCode": "P0062",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑩",
+              "⑪"
+            ],
+            "calloutNos": [
+              10
+            ]
+          },
+          {
+            "partCode": "P0177",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pretreatment",
+        "stepNo": "3.6",
+        "title": "3.6. 전처리부(시약 저장부)",
+        "pageNo": "p.8",
+        "imageSrc": "./images/hatox-2000-pretreatment.png",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "증류수 저장조",
+            "desc": "센서 양극부 공급 · 30일~2개월 교체 (5~25℃, 우물물/심층수 금지)",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 2,
+            "circle": "②",
+            "name": "배양액 저장조",
+            "desc": "선택사양 · 2주일 교체 (글루코오스 1g+글루타민산 1g/20L, pH 6.8~7.2) · UV램프 밝기 점검",
+            "defaultPartCodes": [
+              "P0281"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "시료 채취조",
+            "desc": "생물 경보 발생 시 분석용 시료 보관",
+            "defaultPartCodes": []
+          }
+        ]
+      }
+    ]
+  },
+  "HATA-4000": {
+    "label": "HATA-4000",
+    "partsMaster": [
+      {
+        "partCode": "P0320",
+        "name": "TUBE(시료및시약튜브)",
+        "qty": 10,
+        "unit": "m",
+        "unitPrice": 49000,
+        "isAnnualStandard": true,
+        "spec": "테프론 튜브 I.D. Ø1.6 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "P0068-3",
+        "name": "PUMP TUBE(시료 및 인산공급튜브)",
+        "qty": 4,
+        "unit": "Pack",
+        "unitPrice": 50000,
+        "isAnnualStandard": true,
+        "spec": "펌프 1 (#16) · 점검 1개월 / 교체 3개월"
+      },
+      {
+        "partCode": "P0157",
+        "name": "PUMP TUBE(과황산나트륨 주입)",
+        "qty": 2,
+        "unit": "Pack",
+        "unitPrice": 50000,
+        "isAnnualStandard": true,
+        "spec": "펌프 2 (#14) · 점검 1개월 / 교체 6개월",
+        "altPart": "[Masterflex] 정밀 정량 펌프용 튜빙 (PharMed BPT, LS14, 6508-14)"
+      },
+      {
+        "partCode": "P0068-4",
+        "name": "PUMP TUBE(시료배액)",
+        "qty": 2,
+        "unit": "Pack",
+        "unitPrice": 50000,
+        "isAnnualStandard": true,
+        "spec": "펌프 3 (#16) · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "P0291",
+        "name": "TUBE(시료시약이송 및 배액튜브)",
+        "qty": 4,
+        "unit": "m",
+        "unitPrice": 15000,
+        "isAnnualStandard": true,
+        "spec": "타이곤 튜브 I.D. Ø2.4 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "P0292",
+        "name": "소다석회(Sodalime)",
+        "qty": 1,
+        "unit": "SET",
+        "unitPrice": 285000,
+        "isAnnualStandard": true,
+        "spec": "대기중 CO2 제거 · 점검 2주 / 교체 6개월"
+      },
+      {
+        "partCode": "P0293",
+        "name": "Copper wool package",
+        "qty": 1,
+        "unit": "SET",
+        "unitPrice": 360000,
+        "isAnnualStandard": true,
+        "spec": "할로겐 제거(구리선) · 점검 2주 / 교체 6개월"
+      },
+      {
+        "partCode": "P0176",
+        "name": "주사기(세척용)",
+        "qty": 2,
+        "unit": "EA",
+        "spec": "유로 세척용"
+      },
+      {
+        "partCode": "P0374",
+        "name": "이송가스(N2 Gas)",
+        "qty": 8,
+        "unit": "EA",
+        "spec": "N2 99.99% 이상 · 교체 6개월"
+      },
+      {
+        "partCode": "P0324",
+        "name": "유입수 연결 피팅 ( 1/4*1/8)",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 12000,
+        "isAnnualStandard": true
+      },
+      {
+        "partCode": "P0472",
+        "name": "T자 연결 피팅",
+        "qty": 1,
+        "unit": "EA",
+        "unitPrice": 21000,
+        "isAnnualStandard": true,
+        "spec": "5/16\""
+      },
+      {
+        "partCode": "P0076",
+        "name": "일자피팅(무기탄소, 할로겐 케이스용)",
+        "qty": 2,
+        "unit": "EA",
+        "unitPrice": 18000,
+        "isAnnualStandard": true
+      },
+      {
+        "partCode": "P0151",
+        "name": "UNF ㄱ자 피팅",
+        "qty": 2,
+        "unit": "EA",
+        "unitPrice": 18000,
+        "isAnnualStandard": true
+      },
+      {
+        "partCode": "P0080",
+        "name": "UNF 일자 피팅",
+        "qty": 2,
+        "unit": "EA",
+        "unitPrice": 12000,
+        "isAnnualStandard": true
+      },
+      {
+        "partCode": "P0322",
+        "name": "패럴피팅",
+        "qty": 2,
+        "unit": "EA",
+        "unitPrice": 23000,
+        "isAnnualStandard": true
+      },
+      {
+        "partCode": "P0322P",
+        "name": "패럴",
+        "qty": 20,
+        "unit": "EA",
+        "unitPrice": 12000,
+        "isAnnualStandard": true
+      },
+      {
+        "partCode": "P0164",
+        "name": "솔레노이드 밸브",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "가스제어용 솔레노이드 밸브"
+      },
+      {
+        "partCode": "P0300",
+        "name": "Micro pump (24V)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "에어 펌프 (무기탄소 제거용 가스 생성)"
+      },
+      {
+        "partCode": "P0296",
+        "name": "Flowmeter",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "전자식 유속계"
+      },
+      {
+        "partCode": "P0298",
+        "name": "습기제거장치",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "산화 과정 생성 습기 제거"
+      },
+      {
+        "partCode": "P0210",
+        "name": "3-WAY VALVE(24V-6606)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "UV 반응조 하단 V3-5 (고온·강산화제용 Bürkert 6606)"
+      },
+      {
+        "partCode": "P0204",
+        "name": "2-WAY VALVE(24V-R9)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "다채널밸브(SV1~SV5) 분배용"
+      },
+      {
+        "partCode": "P0205",
+        "name": "3-WAY VALVE(24V-R9)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "Sparger · 샘플루프 상·하단 V3-1~V3-4 (4개)"
+      },
+      {
+        "partCode": "P0205C",
+        "name": "3-WAY VALVE(24V-R9) Cable",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "3-Way 밸브 연결 케이블"
+      },
+      {
+        "partCode": "P0466-2",
+        "name": "기액분리관",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "시료 액체/이송가스 분리"
+      },
+      {
+        "partCode": "P0437",
+        "name": "기액분리탱크",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "기액분리부"
+      },
+      {
+        "partCode": "P0371-2",
+        "name": "콘덴서홀더",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "유리 콘덴서 고정 홀더"
+      },
+      {
+        "partCode": "P0294",
+        "name": "UV LAMP",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "시료 산화용 UV 램프 · 교체 2~3년"
+      },
+      {
+        "partCode": "P0442",
+        "name": "소다석회(Sodalime) Case",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "소다석회 충전 케이스"
+      },
+      {
+        "partCode": "P0443",
+        "name": "copper wool Case",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "할로겐 필터(구리선) 케이스"
+      },
+      {
+        "partCode": "미터링",
+        "name": "미터링밸브",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "이송가스 미세 유속조절기"
+      }
+    ],
+    "sections": [
+      {
+        "id": "front",
+        "stepNo": "3.4",
+        "title": "3.4. 분석부 정면",
+        "pageNo": "p.4",
+        "imageSrc": "./images/hata-4000-front.jpg",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①~③",
+            "name": "모니터 · 컴퓨터/측정기 전원 스위치",
+            "desc": "8인치 LCD 터치스크린 및 제어부/측정기 전원 스위치",
+            "defaultPartCodes": [],
+            "subItems": [
+              {
+                "circle": "①",
+                "name": "모니터",
+                "desc": "8인치 LCD 터치스크린"
+              },
+              {
+                "circle": "②",
+                "name": "컴퓨터 전원 스위치",
+                "desc": "제어부 컴퓨터 전원 공급"
+              },
+              {
+                "circle": "③",
+                "name": "측정기 스위치",
+                "desc": "측정기 전원 공급"
+              }
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④, ⑤",
+            "name": "샘플루프 챔버 · Sparger",
+            "desc": "측정시료 정량 챔버 및 무기탄소(TIC) 제거용 챔버 (V3-1~V3-4)",
+            "defaultPartCodes": [
+              "P0205",
+              "P0205C"
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "⑥",
+            "name": "소다석회",
+            "desc": "대기중의 CO2 제거를 위한 장치 (2주 점검 / 6개월 교체)",
+            "defaultPartCodes": [
+              "P0292",
+              "P0442"
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑦~⑨",
+            "name": "펌프 1 · 2 · 3 (시료/인산 · 과황산 · 배액)",
+            "desc": "펌프1(#16, 3개월) · 펌프2(#14, 6개월) · 펌프3(#16, 6개월)",
+            "defaultPartCodes": [],
+            "subItems": [
+              {
+                "circle": "⑦",
+                "name": "펌프 1 (시료·인산·세정액)",
+                "desc": "#16 튜브 (P0068-3 · 3개월 교체)"
+              },
+              {
+                "circle": "⑧",
+                "name": "펌프 2 (과황산나트륨)",
+                "desc": "#14 튜브 (P0157 · 6개월 교체)"
+              },
+              {
+                "circle": "⑨",
+                "name": "펌프 3 (시료 배액)",
+                "desc": "#16 튜브 (P0068-4 · 6개월 교체)"
+              }
+            ]
+          },
+          {
+            "no": 10,
+            "circle": "⑩",
+            "name": "다채널밸브 (6-포트)",
+            "desc": "시료, 시약, 인산의 분배 (점검 3개월 / 교체 2~3년)",
+            "defaultPartCodes": [
+              "P0204"
+            ]
+          },
+          {
+            "no": 11,
+            "circle": "⑪",
+            "name": "유량감지센서",
+            "desc": "용액 공급 여부 확인 (6-포트 밸브 OUT 라인 근접센서)",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 12,
+            "circle": "⑫, ⑬",
+            "name": "UV 램프 · 광량 검출기",
+            "desc": "시료 산화용 UV 램프(80℃ 고온 산화) 및 광량 측정",
+            "defaultPartCodes": [
+              "P0294"
+            ]
+          },
+          {
+            "no": 14,
+            "circle": "⑭",
+            "name": "유리 콘덴서",
+            "desc": "NDIR 센서 내부의 수분 응결 방지",
+            "defaultPartCodes": [
+              "P0371-2"
+            ]
+          },
+          {
+            "no": 15,
+            "circle": "⑮",
+            "name": "기액분리관",
+            "desc": "UV 반응조에서 나온 시료의 액체 부분을 이송가스로부터 분리",
+            "defaultPartCodes": [
+              "P0466-2",
+              "P0437"
+            ]
+          },
+          {
+            "no": 16,
+            "circle": "⑯",
+            "name": "밸브 (UV 반응조 하단 V3-5)",
+            "desc": "24VDC 3-Way 밸브 (고온·강산화제 배액/전환)",
+            "defaultPartCodes": [
+              "P0210"
+            ]
+          }
+        ],
+        "sharedParts": [
+          {
+            "partCode": "P0068-3",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "⑦"
+            ],
+            "calloutNos": [
+              7
+            ]
+          },
+          {
+            "partCode": "P0157",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "⑧"
+            ],
+            "calloutNos": [
+              7
+            ]
+          },
+          {
+            "partCode": "P0068-4",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "⑨"
+            ],
+            "calloutNos": [
+              7
+            ]
+          },
+          {
+            "partCode": "P0320",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "전면 테프론"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0291",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "배액 타이곤"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0324",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "유입수"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0472",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "T자"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0076",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑥",
+              "케이스"
+            ],
+            "calloutNos": [
+              6
+            ]
+          },
+          {
+            "partCode": "P0151",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "UNF ㄱ자"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0080",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "UNF 일자"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0322",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "패럴피팅"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0322P",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "패럴"
+            ],
+            "calloutNos": []
+          },
+          {
+            "partCode": "P0176",
+            "group": "기타",
+            "usedBadges": [
+              "세척용"
+            ],
+            "calloutNos": []
+          }
+        ]
+      },
+      {
+        "id": "rear",
+        "stepNo": "3.5",
+        "title": "3.5. 분석부 후면",
+        "pageNo": "p.5",
+        "imageSrc": "./images/hata-4000-rear.jpg",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "습기제거 장치",
+            "desc": "산화 과정에서 생성되는 습기를 제거하는 장치",
+            "defaultPartCodes": [
+              "P0298"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②",
+            "name": "할로겐 필터",
+            "desc": "염소·이산화물에 의한 부식 방지 (구리선 2주 점검 / 6개월 교체)",
+            "defaultPartCodes": [
+              "P0293",
+              "P0443"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "Flow Meter",
+            "desc": "전자식 유속계 (이송가스 유속 확인)",
+            "defaultPartCodes": [
+              "P0296"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④",
+            "name": "NDIR 센서",
+            "desc": "비분산적외선 방식의 이산화탄소(CO2) 검출 센서",
+            "defaultPartCodes": []
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "소다석회",
+            "desc": "대기중의 CO2 제거를 위한 장치 (2주 점검 / 6개월 교체)",
+            "defaultPartCodes": [
+              "P0292",
+              "P0442"
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "⑥",
+            "name": "에어 펌프",
+            "desc": "외부 공기를 압축하여 무기탄소 제거용 가스 생성",
+            "defaultPartCodes": [
+              "P0300"
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑦",
+            "name": "솔레노이드 밸브",
+            "desc": "가스제어용 솔레노이드 밸브",
+            "defaultPartCodes": [
+              "P0164"
+            ]
+          },
+          {
+            "no": 8,
+            "circle": "⑧",
+            "name": "Metering 밸브 · 이송가스(N2)",
+            "desc": "이송가스 미세 유속조절기 및 N2 가스(99.99% 이상, 6개월 교체)",
+            "defaultPartCodes": [
+              "미터링",
+              "P0374"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "stepNo": "6.2",
+        "title": "6.2. 제어부 구성",
+        "pageNo": "p.32",
+        "imageSrc": "./images/hata-4000-control.jpg",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "A~J",
+            "name": "제어부 내부 구성 (전원 · 보드 · SMPS · 릴레이)",
+            "desc": "AC 220V 전원 입력, 12V/24V SMPS, 메인보드, 릴레이보드, UV 전원공급장치",
+            "defaultPartCodes": [],
+            "subItems": [
+              {
+                "circle": "A",
+                "name": "주 전원",
+                "desc": "AC 220V 50/60Hz 입력 단자"
+              },
+              {
+                "circle": "B",
+                "name": "단자대",
+                "desc": "주 전원 분배용 단자대"
+              },
+              {
+                "circle": "C",
+                "name": "12V SMPS",
+                "desc": "메인보드 및 릴레이보드 DC 12V 공급"
+              },
+              {
+                "circle": "D",
+                "name": "24V SMPS",
+                "desc": "릴레이보드 및 UV-램프 전원공급장치 DC 24V 공급"
+              },
+              {
+                "circle": "E",
+                "name": "메인보드",
+                "desc": "분석부 입출력 제어 보드"
+              },
+              {
+                "circle": "F",
+                "name": "릴레이보드",
+                "desc": "상단 LED 점등 여부로 수동작동 점검"
+              },
+              {
+                "circle": "G",
+                "name": "팬",
+                "desc": "제어부 내부 환기팬 (AC 220V)"
+              },
+              {
+                "circle": "H",
+                "name": "릴레이",
+                "desc": "DC→DC 릴레이 (UV 램프 전원 제어)"
+              },
+              {
+                "circle": "I",
+                "name": "DC→DC CONVERTER",
+                "desc": "UV Detector 전원 공급"
+              },
+              {
+                "circle": "J",
+                "name": "UV 램프 전원 공급장치",
+                "desc": "UV 램프 전원 공급"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "HATA-2000": {
+    "label": "HATA-2000",
+    "partsMaster": [
+      {
+        "partCode": "TA2-T01",
+        "name": "연동 펌프 튜브 (PS/PO/PA/PP/PC)",
+        "qty": 5,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "모터 M1(6rpm)·M2(1rpm)·M3(10rpm) 연동펌프용 · 주기 점검(PUMP count days)"
+      },
+      {
+        "partCode": "TA2-T02",
+        "name": "시료펌프 주입 튜브 (Fast-loop Reservoir)",
+        "qty": 1,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "외부 시료조 연결 및 Liquid Zero 교정용"
+      },
+      {
+        "partCode": "TA2-F01",
+        "name": "소다석회 필터 (FD)",
+        "qty": 1,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "이송가스(대기 중 공기) CO2 제거 필터"
+      },
+      {
+        "partCode": "TA2-F02",
+        "name": "홀딩 필터 (FA)",
+        "qty": 1,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "NDIR 검출기 전단 보호 필터"
+      },
+      {
+        "partCode": "TA2-L01",
+        "name": "UV 반응조 (UVR)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "자외선 과황산 산화 반응조"
+      },
+      {
+        "partCode": "TA2-L02",
+        "name": "UV 램프 제어기 (LS)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "UV 반응조 램프 구동 제어기"
+      },
+      {
+        "partCode": "TA2-L03",
+        "name": "산화 Scrubber (OS) / Scrubber (S)",
+        "qty": 2,
+        "unit": "EA",
+        "spec": "무기탄소(TIC) 제거 및 산화 스크러버"
+      },
+      {
+        "partCode": "TA2-L04",
+        "name": "기액 분리기 (U)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "반응 후 CO2 가스·폐액 분리"
+      },
+      {
+        "partCode": "TA2-L05",
+        "name": "Glass Condenser (CV) & Gas Drier (TD)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "검출기 유입 가스 응축·제습"
+      },
+      {
+        "partCode": "TA2-L06",
+        "name": "정량 주입펌프 헤드 (PS/PO/PA/PP/PC)",
+        "qty": 5,
+        "unit": "EA",
+        "spec": "시료(PS)·산화(PO)·인산(PA)·과황산(PP)·표준/세척(PC)"
+      },
+      {
+        "partCode": "TA2-E01",
+        "name": "적외선 검출기 (IR / NDIR)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "비분산 적외선 CO2 검출기"
+      },
+      {
+        "partCode": "TA2-E02",
+        "name": "공기 압축기 (AC)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "이송가스 및 TIC 폭기용 공기 공급"
+      },
+      {
+        "partCode": "TA2-E03",
+        "name": "디지털 유량계 (DF) & 압력 게이지 (GA)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "이송가스 유량·압력 모니터링"
+      },
+      {
+        "partCode": "TA2-E04",
+        "name": "바이패스 밸브 (EV) & 압력 조절기 (PR)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "가스 라인 압력 조절 및 바이패스 제어"
+      },
+      {
+        "partCode": "TA2-E05",
+        "name": "압력센서 (PS)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "전장부 공압 라인 압력 감지"
+      },
+      {
+        "partCode": "TA2-E06",
+        "name": "펌프 모터 어셈블리 (M1 / M2 / M3)",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "M1(6rpm, 위) · M2(1rpm, 중간) · M3(10rpm, 아래)"
+      },
+      {
+        "partCode": "TA2-E07",
+        "name": "μPROCESSOR PCB 어셈블리 (MP) & 전원공급장치 (AL)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "메인 제어 보드 및 전원부 (TB1/TB2 터미널 블록 포함)"
+      }
+    ],
+    "sections": [
+      {
+        "id": "front",
+        "stepNo": "3.2",
+        "title": "Liquid enclosure (유체부)",
+        "imageSrc": "./images/hata-2000-front.jpg",
+        "pageNo": "p.6",
+        "sharedParts": [
+          {
+            "partCode": "TA2-T01",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "PS",
+              "PO",
+              "PA",
+              "PP",
+              "PC"
+            ],
+            "calloutNos": [
+              6,
+              7
+            ]
+          },
+          {
+            "partCode": "TA2-T02",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "PS"
+            ],
+            "calloutNos": [
+              6
+            ]
+          }
+        ],
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "UVR",
+            "name": "UV 반응조",
+            "desc": "자외선과 과황산나트륨으로 유기탄소를 CO2로 산화하는 반응조",
+            "defaultPartCodes": [
+              "TA2-L01"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "LS",
+            "name": "UV 램프 제어기",
+            "desc": "UV 반응조 램프 전원 및 점등 제어",
+            "defaultPartCodes": [
+              "TA2-L02"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "OS·S",
+            "name": "산화 Scrubber (OS) / Scrubber (S)",
+            "desc": "무기탄소(TIC) 폭기 제거 및 산화 가스 스크러버",
+            "defaultPartCodes": [
+              "TA2-L03"
+            ],
+            "subItems": [
+              {
+                "circle": "OS",
+                "name": "산화 Scrubber",
+                "desc": "산화 라인 스크러버"
+              },
+              {
+                "circle": "S",
+                "name": "scrubber",
+                "desc": "무기탄소(TIC) 제거 스크러버"
+              }
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "U",
+            "name": "기액 분리기",
+            "desc": "산화 완료된 시료에서 CO2 가스와 폐액을 분리",
+            "defaultPartCodes": [
+              "TA2-L04"
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "CV·TD",
+            "name": "Glass Condenser (CV) & Gas Drier (TD)",
+            "desc": "NDIR 검출기 유입 전 수분 응축 및 가스 건조",
+            "defaultPartCodes": [
+              "TA2-L05"
+            ],
+            "subItems": [
+              {
+                "circle": "CV",
+                "name": "Glass condenser",
+                "desc": "유리 응축기"
+              },
+              {
+                "circle": "TD",
+                "name": "Gas Drier",
+                "desc": "가스 제습기"
+              }
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "PS·PO",
+            "name": "시료·산화 주입펌프 (M1 구동, 6 rpm)",
+            "desc": "상단 모터 M1(6 rev/min)에 연결된 시료 및 산화시료 주입펌프",
+            "defaultPartCodes": [
+              "TA2-L06"
+            ],
+            "subItems": [
+              {
+                "circle": "PS",
+                "name": "시료주입펌프",
+                "desc": "외부 시료조에서 시료 공급"
+              },
+              {
+                "circle": "PO",
+                "name": "산화시료 주입펌프",
+                "desc": "산화 시료 라인 이송"
+              }
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "PA·PP·PC",
+            "name": "시약·표준액 주입펌프 (M2 / M3 구동)",
+            "desc": "중단 M2(1 rpm: 인산·과황산) 및 하단 M3(10 rpm: 표준/세척) 주입펌프",
+            "defaultPartCodes": [
+              "TA2-L06"
+            ],
+            "subItems": [
+              {
+                "circle": "PA",
+                "name": "인산주입펌프",
+                "desc": "M2(1 rpm) 구동 · 85% 인산 희석액 주입"
+              },
+              {
+                "circle": "PP",
+                "name": "과황산나트륨 주입펌프",
+                "desc": "M2(1 rpm) 구동 · 산화제 주입"
+              },
+              {
+                "circle": "PC",
+                "name": "표준용액 주입펌프",
+                "desc": "M3(10 rpm) 구동 · 자동교정/세척용"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "stepNo": "3.3",
+        "title": "Electrical enclosure (제어·전장부)",
+        "imageSrc": "./images/hata-2000-control.jpg",
+        "pageNo": "p.7",
+        "sharedParts": [
+          {
+            "partCode": "TA2-F01",
+            "group": "기타",
+            "usedBadges": [
+              "FD"
+            ],
+            "calloutNos": [
+              3
+            ]
+          },
+          {
+            "partCode": "TA2-F02",
+            "group": "기타",
+            "usedBadges": [
+              "FA"
+            ],
+            "calloutNos": [
+              3
+            ]
+          }
+        ],
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "IR",
+            "name": "적외선 검출기 (NDIR)",
+            "desc": "산화 생성된 CO2 농도를 비분산 적외선 방식으로 검출",
+            "defaultPartCodes": [
+              "TA2-E01"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "AC",
+            "name": "공기 압축기",
+            "desc": "이송가스 및 스크러버용 압축공기 공급",
+            "defaultPartCodes": [
+              "TA2-E02"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "FD·FA",
+            "name": "소다석회 필터 (FD) & 홀딩 필터 (FA)",
+            "desc": "대기 중 CO2 제거(FD) 및 검출기 보호용 홀딩 필터(FA)",
+            "defaultPartCodes": [
+              "TA2-F01",
+              "TA2-F02"
+            ],
+            "subItems": [
+              {
+                "circle": "FD",
+                "name": "소다석회 필터",
+                "desc": "이송가스(대기 공기) CO2 제거"
+              },
+              {
+                "circle": "FA",
+                "name": "홀딩 필터",
+                "desc": "검출기 유입 전 이물질 차단"
+              }
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "DF·GA·PR·EV·PS",
+            "name": "유량·압력 제어 및 밸브류",
+            "desc": "디지털 유량계, 압력 게이지, 레귤레이터, 바이패스 밸브, 압력센서",
+            "defaultPartCodes": [
+              "TA2-E03",
+              "TA2-E04",
+              "TA2-E05"
+            ],
+            "subItems": [
+              {
+                "circle": "DF",
+                "name": "디지털 유량계",
+                "desc": "이송가스 유량 측정"
+              },
+              {
+                "circle": "GA",
+                "name": "압력 게이지",
+                "desc": "공압 라인 압력 지시"
+              },
+              {
+                "circle": "PR",
+                "name": "PRESSURE REG",
+                "desc": "공압 레귤레이터"
+              },
+              {
+                "circle": "EV",
+                "name": "바이패스 밸브",
+                "desc": "가스 라인 바이패스 제어"
+              },
+              {
+                "circle": "PS",
+                "name": "압력센서",
+                "desc": "전장부 공압 압력 감지"
+              }
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "M",
+            "name": "펌프 모터 (M1 / M2 / M3)",
+            "desc": "유체부 정량펌프 3단 구동 모터 어셈블리",
+            "defaultPartCodes": [
+              "TA2-E06"
+            ],
+            "subItems": [
+              {
+                "circle": "M1",
+                "name": "상단 모터 (6 rev/min)",
+                "desc": "PS(시료) / PO(산화) / PD(희석)"
+              },
+              {
+                "circle": "M2",
+                "name": "중단 모터 (1 rev/min)",
+                "desc": "PA(인산) / PP(과황산염)"
+              },
+              {
+                "circle": "M3",
+                "name": "하단 모터 (10 rev/min)",
+                "desc": "PC(교정/검증/세척)"
+              }
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "MP·AL·A·B",
+            "name": "제어 보드 · 전원 · 터미널 블록",
+            "desc": "μPROCESSOR PCB 어셈블리, 전원공급장치, TB1/TB2 단자대",
+            "defaultPartCodes": [
+              "TA2-E07"
+            ],
+            "subItems": [
+              {
+                "circle": "MP",
+                "name": "μPROCESSOR PCB 어셈블리",
+                "desc": "메인 제어 PCB"
+              },
+              {
+                "circle": "AL",
+                "name": "전원 공급장치",
+                "desc": "시스템 전원 공급"
+              },
+              {
+                "circle": "A",
+                "name": "TB1 터미널 블록",
+                "desc": "터미널 단자대 1"
+              },
+              {
+                "circle": "B",
+                "name": "TB2 터미널 블록",
+                "desc": "터미널 단자대 2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pretreatment",
+        "stepNo": "3.1",
+        "title": "HATA-2000 유로도",
+        "imageSrc": "./images/hata-2000-flow.jpg",
+        "pageNo": "p.6",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "시료·시약 주입 라인 (T1~T5)",
+            "desc": "SAMPLE INLET → PS → T1/T5 → S(TIC 제거) → U → UVR / ACID(PA)·PERSOL(PP)·DILWATER(PD) 합류",
+            "defaultPartCodes": [
+              "TA2-T01",
+              "TA2-T02"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②",
+            "name": "산화·기액분리·검출 라인",
+            "desc": "UVR → CV(응축) → U(폐액 DRAIN) / TD(제습) → EV → FA → IR(NDIR 검출) → VENT",
+            "defaultPartCodes": [
+              "TA2-L01",
+              "TA2-L05",
+              "TA2-E01"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "이송가스(공기) 공급 라인",
+            "desc": "AC1/AC2 → FD(소다석회 필터) → DF(유량계) → GAUGE → S 및 T3 공급",
+            "defaultPartCodes": [
+              "TA2-E02",
+              "TA2-F01"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "HATN-4000": {
+    "label": "HATN-4000",
+    "partsMaster": [
+      {
+        "partCode": "TN4-T01",
+        "name": "펌프 튜브 (펌프 1 · 시료공급 #14)",
+        "qty": 4,
+        "unit": "Pack",
+        "isAnnualStandard": true,
+        "spec": "시료공급 펌프튜브 #14 · 점검 1개월 / 교체 3개월",
+        "altPart": "[Masterflex] 정밀 정량 펌프용 튜빙 (PharMed BPT, LS14, 6508-14)"
+      },
+      {
+        "partCode": "TN4-T02",
+        "name": "펌프 튜브 (펌프 2 #16)",
+        "qty": 2,
+        "unit": "Pack",
+        "isAnnualStandard": true,
+        "spec": "펌프 2 (#16) · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TN4-T03",
+        "name": "펌프 튜브 (펌프 3 #16)",
+        "qty": 2,
+        "unit": "Pack",
+        "isAnnualStandard": true,
+        "spec": "펌프 3 (#16) · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TN4-T04",
+        "name": "TUBE (시료이송 1 · 테프론 I.D. Ø1.6)",
+        "qty": 10,
+        "unit": "m",
+        "isAnnualStandard": true,
+        "spec": "테프론 튜브 I.D. Ø1.6 · 점검 1개월 / 교체 3개월"
+      },
+      {
+        "partCode": "TN4-T05",
+        "name": "TUBE (광학셀 연결 · 타이곤 I.D. Ø3.2)",
+        "qty": 4,
+        "unit": "m",
+        "isAnnualStandard": true,
+        "spec": "타이곤 튜브 I.D. Ø3.2 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TN4-T06",
+        "name": "내부 배관 튜브 (Ø4 튜브)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "Ø4 튜브 · 점검 1주일 / 교체 6개월"
+      },
+      {
+        "partCode": "TN4-O01",
+        "name": "광원용 램프 (UV-D2)",
+        "qty": 1,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "220nm / 275nm · 수시 점검 / 교체 12개월"
+      },
+      {
+        "partCode": "TN4-O02",
+        "name": "광학검출기 (석영셀 & 광센서)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "석영셀·광센서 수시 점검 / 이상 시 교체"
+      },
+      {
+        "partCode": "TN4-V01",
+        "name": "7-포트 다채널 밸브",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "시료·N표준·과황산·염산·영점·세정수·공기 선택 · 점검 3개월 / 교체 2~3년"
+      },
+      {
+        "partCode": "TN4-V02",
+        "name": "3-WAY 밸브 (1, 2, 3)",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "유로 분배·연결 및 배액라인 전환 밸브"
+      },
+      {
+        "partCode": "TN4-V03",
+        "name": "솔레노이드 밸브 (가열분해조 가압용)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "가열분해조 120℃ 고온·고압 유지용"
+      },
+      {
+        "partCode": "TN4-V04",
+        "name": "2-WAY 밸브 (세정수 보충용)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "세정수 저장조(20L) 자동 보충 · 점검 1주 / 교체 2~3년"
+      },
+      {
+        "partCode": "TN4-M01",
+        "name": "펌프 모터 (펌프 1, 2, 3)",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "점검 6개월 / 교체 3~4년"
+      },
+      {
+        "partCode": "TN4-S01",
+        "name": "감지센서 (시료·시약 유무 감지)",
+        "qty": 2,
+        "unit": "EA",
+        "spec": "7-포트 밸브와 펌프 1 사이 유량감지 센서"
+      },
+      {
+        "partCode": "TN4-R01",
+        "name": "가열분해조 & 봉형 히터 & 온도센서",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "120℃ 산화분해 · 히터 교체 3~4년 / 온도센서 교체 3년"
+      },
+      {
+        "partCode": "TN4-R02",
+        "name": "혼합조 & 혼합기 모터",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "혼합기 모터 점검 6개월 / 교체 1~2년"
+      },
+      {
+        "partCode": "TN4-C01",
+        "name": "냉각팬 (광원 냉각) & 환기팬 (제어부)",
+        "qty": 2,
+        "unit": "EA",
+        "spec": "환기팬 점검 6개월 / 교체 3~4년"
+      }
+    ],
+    "sections": [
+      {
+        "id": "front",
+        "stepNo": "3.3",
+        "title": "분석부 전면",
+        "imageSrc": "./images/hatn-4000-front.jpg",
+        "pageNo": "p.8",
+        "sharedParts": [
+          {
+            "partCode": "TN4-T01",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          },
+          {
+            "partCode": "TN4-T02",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "②"
+            ],
+            "calloutNos": [
+              2
+            ]
+          },
+          {
+            "partCode": "TN4-T03",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "⑪"
+            ],
+            "calloutNos": [
+              11
+            ]
+          },
+          {
+            "partCode": "TN4-T04",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "④",
+              "⑥"
+            ],
+            "calloutNos": [
+              4,
+              6
+            ]
+          },
+          {
+            "partCode": "TN4-T05",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              9,
+              11
+            ]
+          },
+          {
+            "partCode": "TN4-T06",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "①",
+              "③",
+              "⑬"
+            ],
+            "calloutNos": [
+              1,
+              3,
+              13
+            ]
+          },
+          {
+            "partCode": "TN4-V04",
+            "group": "기타",
+            "usedBadges": [
+              "⑥"
+            ],
+            "calloutNos": [
+              6
+            ]
+          }
+        ],
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "3-WAY 밸브 2",
+            "desc": "밸브 1 → 가열분해조(펌프 1) / 가열분해조 → 혼합조(펌프 2) 유로 전환",
+            "defaultPartCodes": [
+              "TN4-V02"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②",
+            "name": "펌프 2",
+            "desc": "가열분해조에서 혼합조로 시료 이송 (#16 펌프튜브)",
+            "defaultPartCodes": [
+              "TN4-M01"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "3-WAY 밸브 1",
+            "desc": "펌프 1에서 공급된 시료·시약을 가열분해조 또는 혼합조로 분배",
+            "defaultPartCodes": [
+              "TN4-V02"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④",
+            "name": "펌프 1",
+            "desc": "시료 및 시약 공급용 정량 펌프 (#14 펌프튜브)",
+            "defaultPartCodes": [
+              "TN4-M01"
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "감지센서",
+            "desc": "시료 및 시약의 유무를 감지하는 유량감지 센서",
+            "defaultPartCodes": [
+              "TN4-S01"
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "⑥",
+            "name": "7-포트 밸브",
+            "desc": "시료·N표준·과황산칼륨·염산·영점·세정수·공기 유로 선택 제어",
+            "defaultPartCodes": [
+              "TN4-V01"
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑦, ⑧",
+            "name": "온도센서 & 히터 (봉형)",
+            "desc": "가열 분해조 온도 측정 센서(⑦) 및 가열용 봉형 히터(⑧)",
+            "defaultPartCodes": [
+              "TN4-R01"
+            ],
+            "subItems": [
+              {
+                "circle": "⑦",
+                "name": "온도센서",
+                "desc": "가열 분해조 온도 측정"
+              },
+              {
+                "circle": "⑧",
+                "name": "히터",
+                "desc": "가열 분해조 가열용 봉형 히터"
+              }
+            ]
+          },
+          {
+            "no": 9,
+            "circle": "⑨",
+            "name": "광학검출기",
+            "desc": "UV-D2 램프(220nm/275nm) 및 석영셀 흡광도 검출부",
+            "defaultPartCodes": [
+              "TN4-O01",
+              "TN4-O02"
+            ]
+          },
+          {
+            "no": 10,
+            "circle": "⑩",
+            "name": "가열분해조",
+            "desc": "질소화합물을 120℃ 고온·고압으로 질산 이온 산화",
+            "defaultPartCodes": [
+              "TN4-R01"
+            ]
+          },
+          {
+            "no": 11,
+            "circle": "⑪",
+            "name": "펌프 3",
+            "desc": "혼합조에서 광학검출기로 시료 이송 (#16 펌프튜브)",
+            "defaultPartCodes": [
+              "TN4-M01"
+            ]
+          },
+          {
+            "no": 12,
+            "circle": "⑫",
+            "name": "혼합조",
+            "desc": "흡광도 측정을 위해 시료와 염산(1+9)을 혼합",
+            "defaultPartCodes": [
+              "TN4-R02"
+            ]
+          },
+          {
+            "no": 13,
+            "circle": "⑬",
+            "name": "3-WAY 밸브 3",
+            "desc": "혼합조 → 검출기(정방향) / 검출기 → 배액라인(역방향) 전환",
+            "defaultPartCodes": [
+              "TN4-V02"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "rear",
+        "stepNo": "3.4",
+        "title": "분석부 후면",
+        "imageSrc": "./images/hatn-4000-rear.jpg",
+        "pageNo": "p.9",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "냉각팬",
+            "desc": "광학검출기의 UV-D2 광원을 냉각하기 위한 냉각팬",
+            "defaultPartCodes": [
+              "TN4-C01"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②, ⑥, ⑨",
+            "name": "펌프 1 · 2 · 3 모터",
+            "desc": "전면 정량 펌프 3대 구동용 모터",
+            "defaultPartCodes": [
+              "TN4-M01"
+            ],
+            "subItems": [
+              {
+                "circle": "②",
+                "name": "펌프 3 모터",
+                "desc": "혼합조 → 광학검출기 이송"
+              },
+              {
+                "circle": "⑥",
+                "name": "펌프 2 모터",
+                "desc": "가열분해조 → 혼합조 이송"
+              },
+              {
+                "circle": "⑨",
+                "name": "펌프 1 모터",
+                "desc": "시료 및 시약 공급"
+              }
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "감지센서",
+            "desc": "시료 및 시약 유무 감지 센서 (좌·우 2개소)",
+            "defaultPartCodes": [
+              "TN4-S01"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④, ⑦, ⑧",
+            "name": "3-WAY 밸브 1 · 2 · 3",
+            "desc": "유로 분배 및 배액 전환용 3-WAY 밸브 후면 구동부",
+            "defaultPartCodes": [
+              "TN4-V02"
+            ],
+            "subItems": [
+              {
+                "circle": "④",
+                "name": "3-WAY 밸브 3",
+                "desc": "검출기·배액라인 전환"
+              },
+              {
+                "circle": "⑦",
+                "name": "3-WAY 밸브 2",
+                "desc": "가열분해조 유로 전환"
+              },
+              {
+                "circle": "⑧",
+                "name": "3-WAY 밸브 1",
+                "desc": "분해조·혼합조 분배"
+              }
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "솔레노이드 밸브",
+            "desc": "가열분해조 가압을 위한 솔레노이드 밸브",
+            "defaultPartCodes": [
+              "TN4-V03"
+            ]
+          },
+          {
+            "no": 10,
+            "circle": "⑩",
+            "name": "7-포트 밸브",
+            "desc": "시료 및 시약 공급 유로 선택 제어용 다채널 밸브",
+            "defaultPartCodes": [
+              "TN4-V01"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "HATN-2000": {
+    "label": "HATN-2000",
+    "partsMaster": [
+      {
+        "partCode": "TN2-T01",
+        "name": "펌프 배관 (PUMP 1, 2, 3)",
+        "qty": 3,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "3롤러 정량펌프용 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TN2-T02",
+        "name": "내부 배관 튜브 (Ø6 튜브)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "Ø6 튜브 · 점검 1주일 / 교체 6개월"
+      },
+      {
+        "partCode": "TN2-T03",
+        "name": "우레탄 배관 (Zero-표준액 등)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "우레탄 튜브 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TN2-T04",
+        "name": "테플론 배관 (후면부·과황산칼륨·염산)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "테프론 튜브 · 점검 1개월 / 교체 3~6개월"
+      },
+      {
+        "partCode": "TN2-T05",
+        "name": "타이곤 튜브 (전면부·시약통 연결)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "타이곤 튜브 · 교체 3~6개월 (시약통 6개월)"
+      },
+      {
+        "partCode": "TN2-F01",
+        "name": "유니온 피팅 세트 (클립1 + 오링 + 클립2)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "테프론 튜브 체결 시 클립 사이 오링 삽입"
+      },
+      {
+        "partCode": "TN2-A01",
+        "name": "가열기 온도 조절기",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "가열 분해조 온도 제어 · 수시 점검 / 교체 3년"
+      },
+      {
+        "partCode": "TN2-A02",
+        "name": "냉각기 온도 조절기 & 냉온소자/쿨러",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "온도제어기 교체 3년 / 냉온소자·쿨러 점검 3개월·교체 2~3년"
+      },
+      {
+        "partCode": "TN2-A03",
+        "name": "정량 펌프 모터 (PUMP 1, 2, 3)",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "점검 6개월 / 교체 3~4년"
+      },
+      {
+        "partCode": "TN2-A04",
+        "name": "가열 분해조 & 가열선 (히터) & 온도 센서",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "반응기 200mL · 가열기 480mL(Oil BATH 점검 3개월) · 히터 교체 3~4년"
+      },
+      {
+        "partCode": "TN2-A05",
+        "name": "혼합조 & 혼합기 모터",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "혼합기 모터 점검 6개월 / 교체 1~2년"
+      },
+      {
+        "partCode": "TN2-A06",
+        "name": "광원용 램프 (UV-D2 램프)",
+        "qty": 1,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "220nm / 275nm 2파장 · 점검 6개월(수시) / 교체 1년"
+      },
+      {
+        "partCode": "TN2-A07",
+        "name": "광학부 셀 & 광센서 (센서 1, 2)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "흡광도 측정용 광학셀·광센서 · 수시 점검 / 이상 시 교체"
+      },
+      {
+        "partCode": "TN2-A08",
+        "name": "7-PORT 다채널 밸브 & 2WAY/3WAY 밸브",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "7PORT 밸브 점검 3개월·교체 2~3년 / 2WAY 밸브 점검 1주·교체 2~3년"
+      },
+      {
+        "partCode": "TN2-C01",
+        "name": "냉각팬 (제어부 2개, 외함 1개) & 환기팬",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "냉각팬 점검 4주·교체 3년 / 환기팬 점검 6개월·교체 3~4년"
+      },
+      {
+        "partCode": "TN2-C02",
+        "name": "제어부 연결 케이블 (6P 펌프·16P 장치·BNC 센서)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "펌프 6핀 3개 · 장치 16핀 3개 · 센서 BNC 케이블"
+      }
+    ],
+    "sections": [
+      {
+        "id": "front",
+        "stepNo": "3.4",
+        "title": "분석부",
+        "imageSrc": "./images/hatn-2000-front.jpg",
+        "pageNo": "p.9",
+        "sharedParts": [
+          {
+            "partCode": "TN2-T01",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "③",
+              "④",
+              "⑤"
+            ],
+            "calloutNos": [
+              3,
+              4,
+              5
+            ]
+          },
+          {
+            "partCode": "TN2-T02",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑧",
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "partCode": "TN2-T03",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "③"
+            ],
+            "calloutNos": [
+              3
+            ]
+          },
+          {
+            "partCode": "TN2-T04",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑧",
+              "⑨"
+            ],
+            "calloutNos": [
+              7,
+              8
+            ]
+          },
+          {
+            "partCode": "TN2-T05",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "③",
+              "⑧",
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              3,
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "partCode": "TN2-F01",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑧",
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "partCode": "TN2-A08",
+            "group": "기타",
+            "usedBadges": [
+              "③"
+            ],
+            "calloutNos": [
+              3
+            ]
+          }
+        ],
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "가열기 온도 조절기",
+            "desc": "가열 분해조의 온도 제어",
+            "defaultPartCodes": [
+              "TN2-A01"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②",
+            "name": "냉각기 온도 조절기",
+            "desc": "시료 냉각기(냉온소자·쿨러)의 온도 제어",
+            "defaultPartCodes": [
+              "TN2-A02"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "펌프 1",
+            "desc": "시료 및 시약 공급을 위한 정량 펌프",
+            "defaultPartCodes": [
+              "TN2-A03"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④",
+            "name": "펌프 2",
+            "desc": "가열 분해조에서 혼합조로 시료 이송을 위한 펌프",
+            "defaultPartCodes": [
+              "TN2-A03"
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "펌프 3",
+            "desc": "혼합조에서 센서부로의 시료 이송을 위한 펌프",
+            "defaultPartCodes": [
+              "TN2-A03"
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "⑥, ⑦",
+            "name": "온도 센서 & 가열선",
+            "desc": "가열 분해조 온도 측정 센서(⑥) 및 가열용 히터선(⑦)",
+            "defaultPartCodes": [
+              "TN2-A04"
+            ],
+            "subItems": [
+              {
+                "circle": "⑥",
+                "name": "온도 센서",
+                "desc": "가열 분해조 온도 측정"
+              },
+              {
+                "circle": "⑦",
+                "name": "가열선",
+                "desc": "가열 분해조 가열용 히터"
+              }
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑧",
+            "name": "가열 분해조",
+            "desc": "질소화합물을 질산 이온으로 산화시키는 반응조 (반응기 200mL / 가열기 480mL)",
+            "defaultPartCodes": [
+              "TN2-A04"
+            ]
+          },
+          {
+            "no": 8,
+            "circle": "⑨",
+            "name": "혼합조",
+            "desc": "흡광도 측정을 위해 시료와 염산을 혼합시키는 반응조",
+            "defaultPartCodes": [
+              "TN2-A05"
+            ]
+          },
+          {
+            "no": 9,
+            "circle": "⑩, ⑪",
+            "name": "센서 1, 2 & 센서부 (광학부)",
+            "desc": "UV-D2 램프(220nm/275nm) 및 흡광도 측정 광학셀·광센서",
+            "defaultPartCodes": [
+              "TN2-A06",
+              "TN2-A07"
+            ],
+            "subItems": [
+              {
+                "circle": "⑩",
+                "name": "센서 1, 2",
+                "desc": "시료 흡광도 측정 광센서"
+              },
+              {
+                "circle": "⑪",
+                "name": "센서부",
+                "desc": "D2 램프 및 광학셀(광학부)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "stepNo": "3.3",
+        "title": "제어부 후면",
+        "imageSrc": "./images/hatn-2000-control.jpg",
+        "pageNo": "p.8",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①~⑧",
+            "name": "PC 전원 · 통신 · 모니터 단자부",
+            "desc": "AC 220V 전원, PS2, COM(RS-232), VGA, USB, LAN, 모니터, UPS 연결 단자",
+            "defaultPartCodes": [
+              "TN2-C01"
+            ],
+            "subItems": [
+              {
+                "circle": "①",
+                "name": "컴퓨터 전원 연결부",
+                "desc": "전원 코드 연결용 (AC 220V)"
+              },
+              {
+                "circle": "②",
+                "name": "마우스/키보드 연결 단자",
+                "desc": "PS2 연결용"
+              },
+              {
+                "circle": "③",
+                "name": "시리얼 포트 연결 단자",
+                "desc": "RS-232 통신용 COM 포트"
+              },
+              {
+                "circle": "④",
+                "name": "컴퓨터 VGA 단자",
+                "desc": "모니터 연결용"
+              },
+              {
+                "circle": "⑤",
+                "name": "컴퓨터 USB 단자",
+                "desc": "제어 신호 전달 USB 연결"
+              },
+              {
+                "circle": "⑥",
+                "name": "LAN 단자",
+                "desc": "TCP/IP LAN 연결용"
+              },
+              {
+                "circle": "⑦",
+                "name": "모니터 연결 단자",
+                "desc": "터치 모니터 연결용"
+              },
+              {
+                "circle": "⑧",
+                "name": "UPS 연결 단자",
+                "desc": "정전 시 안전 종료용 UPS 연결"
+              }
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "⑨~⑮",
+            "name": "제어부 펌프 · 장치 · 센서 · 전원 단자",
+            "desc": "6핀 펌프 케이블, 16핀 장치 케이블, BNC 센서 케이블, 4~20mA/수위 외부출력, 제어부 전원",
+            "defaultPartCodes": [
+              "TN2-C02"
+            ],
+            "subItems": [
+              {
+                "circle": "⑨",
+                "name": "펌프 연결 단자",
+                "desc": "PUMP 1~5 (분석부 6핀 3개 연결)"
+              },
+              {
+                "circle": "⑩",
+                "name": "장치 연결 단자",
+                "desc": "CON 1~3 (분석부 16핀 3개 연결)"
+              },
+              {
+                "circle": "⑪",
+                "name": "센서 연결 단자",
+                "desc": "SIGNAL 1, 2 (BNC 케이블)"
+              },
+              {
+                "circle": "⑫",
+                "name": "컴퓨터 USB 단자",
+                "desc": "제어부 USB 포트"
+              },
+              {
+                "circle": "⑬",
+                "name": "외부출력단자 1",
+                "desc": "4~20mA / 1~10V 출력"
+              },
+              {
+                "circle": "⑭",
+                "name": "외부출력단자 2",
+                "desc": "LEVEL 1·2, P.LEVEL, POWER OFF"
+              },
+              {
+                "circle": "⑮",
+                "name": "제어부 전원 연결부",
+                "desc": "AC 220V 전원 코드 연결"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "HATP-4000": {
+    "label": "HATP-4000",
+    "partsMaster": [
+      {
+        "partCode": "TP4-T01",
+        "name": "펌프 튜브 (펌프 1 · 시료공급 #14)",
+        "qty": 4,
+        "unit": "Pack",
+        "isAnnualStandard": true,
+        "spec": "시료공급 펌프튜브 #14 · 점검 1개월 / 교체 3개월",
+        "altPart": "[Masterflex] 정밀 정량 펌프용 튜빙 (PharMed BPT, LS14, 6508-14)"
+      },
+      {
+        "partCode": "TP4-T02",
+        "name": "펌프 튜브 (펌프 2 #16)",
+        "qty": 2,
+        "unit": "Pack",
+        "isAnnualStandard": true,
+        "spec": "펌프 2 (#16) · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TP4-T03",
+        "name": "펌프 튜브 (펌프 3 #16)",
+        "qty": 2,
+        "unit": "Pack",
+        "isAnnualStandard": true,
+        "spec": "펌프 3 (#16) · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TP4-T04",
+        "name": "TUBE (시료이송 1 · 테프론 I.D. Ø1.6)",
+        "qty": 10,
+        "unit": "m",
+        "isAnnualStandard": true,
+        "spec": "테프론 튜브 I.D. Ø1.6 · 점검 1개월 / 교체 3개월"
+      },
+      {
+        "partCode": "TP4-T05",
+        "name": "TUBE (광학셀 연결 · 타이곤 I.D. Ø3.2)",
+        "qty": 4,
+        "unit": "m",
+        "isAnnualStandard": true,
+        "spec": "타이곤 튜브 I.D. Ø3.2 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TP4-T06",
+        "name": "내부 배관 튜브 (Ø4 튜브 · 후면 우레탄/테프론)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "Ø4 튜브 · 점검 1주일 / 교체 3~6개월"
+      },
+      {
+        "partCode": "TP4-F01",
+        "name": "가열분해조·혼합조 피팅 (PTFE I/L형 · PEEK · O-RING)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "분해조 PTFE I/L형 피팅 · 혼합조 PEEK 피팅 · 유니온 O-RING"
+      },
+      {
+        "partCode": "TP4-O01",
+        "name": "광원용 램프 (텅스텐 램프)",
+        "qty": 1,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "880nm / 710nm 측정 · 수시 점검 / 교체 6개월"
+      },
+      {
+        "partCode": "TP4-O02",
+        "name": "광학검출기 (석영 사각셀 10mm · 880/710nm 필터 · 스플리터)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "석영셀 10mm · 50/50 스플리터 · 포토다이오드 · 이상 시 교체"
+      },
+      {
+        "partCode": "TP4-V01",
+        "name": "7-포트 다채널 밸브",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "시료·P표준·과황산·몰리브덴산·아스코르빈산·세정수 · 점검 3개월 / 교체 2~3년"
+      },
+      {
+        "partCode": "TP4-V02",
+        "name": "3-WAY 밸브 (1, 2, 3)",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "분해조·혼합조 분배 및 검출기·배액 전환 밸브"
+      },
+      {
+        "partCode": "TP4-V03",
+        "name": "솔레노이드 밸브 (가열분해조 가압용)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "가열분해조 가압 제어용"
+      },
+      {
+        "partCode": "TP4-V04",
+        "name": "2-WAY 밸브 (세정수 보충용)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "세정수 저장조(20L) 자동 보충 · 점검 1주 / 교체 2~3년"
+      },
+      {
+        "partCode": "TP4-M01",
+        "name": "펌프 스텝모터 & 고무 커플링 & 리드스위치",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "펌프 1~3 스텝모터 · 점검 6개월 / 교체 3~4년"
+      },
+      {
+        "partCode": "TP4-S01",
+        "name": "유량감지 센서 (감지센서)",
+        "qty": 2,
+        "unit": "EA",
+        "spec": "7-포트 밸브 OUT 라인 시료·시약 유무 감지"
+      },
+      {
+        "partCode": "TP4-R01",
+        "name": "가열분해조 (SUS/PTFE) & 봉형 히터 & 온도센서 & 과승방지",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "히터 교체 3~4년 / 온도센서 교체 3년 / PEEK 커버"
+      },
+      {
+        "partCode": "TP4-R02",
+        "name": "혼합조 & 마그네틱 바 & 교반기 모터",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "혼합기 모터 점검 6개월 / 교체 1~2년 (본문 4~5년)"
+      },
+      {
+        "partCode": "TP4-C01",
+        "name": "센서 냉각팬 & 제어부 환기팬 & PC CPU 팬",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "환기팬 교체 3~4년 / PC CPU 팬 수명 2~3년"
+      }
+    ],
+    "sections": [
+      {
+        "id": "front",
+        "stepNo": "3.4",
+        "title": "분석부 전면",
+        "imageSrc": "./images/hatp-4000-front.jpg",
+        "pageNo": "p.8",
+        "sharedParts": [
+          {
+            "partCode": "TP4-T01",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "④"
+            ],
+            "calloutNos": [
+              4
+            ]
+          },
+          {
+            "partCode": "TP4-T02",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "②"
+            ],
+            "calloutNos": [
+              2
+            ]
+          },
+          {
+            "partCode": "TP4-T03",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "⑪"
+            ],
+            "calloutNos": [
+              11
+            ]
+          },
+          {
+            "partCode": "TP4-T04",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "④",
+              "⑥"
+            ],
+            "calloutNos": [
+              4,
+              6
+            ]
+          },
+          {
+            "partCode": "TP4-T05",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              9,
+              11
+            ]
+          },
+          {
+            "partCode": "TP4-T06",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "①",
+              "③",
+              "⑬"
+            ],
+            "calloutNos": [
+              1,
+              3,
+              13
+            ]
+          },
+          {
+            "partCode": "TP4-F01",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑩",
+              "⑫"
+            ],
+            "calloutNos": [
+              10,
+              12
+            ]
+          },
+          {
+            "partCode": "TP4-V04",
+            "group": "기타",
+            "usedBadges": [
+              "⑥"
+            ],
+            "calloutNos": [
+              6
+            ]
+          }
+        ],
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "3-WAY 밸브 2",
+            "desc": "밸브 1 → 가열분해조(펌프 1) / 가열분해조 → 혼합조(펌프 2) 유로 전환",
+            "defaultPartCodes": [
+              "TP4-V02"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②",
+            "name": "펌프 2",
+            "desc": "가열분해조에서 혼합조로 시료 이송 (#16 펌프튜브)",
+            "defaultPartCodes": [
+              "TP4-M01"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "3-WAY 밸브 1",
+            "desc": "펌프 1에서 공급된 시료·시약을 가열분해조 또는 혼합조로 분배",
+            "defaultPartCodes": [
+              "TP4-V02"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④",
+            "name": "펌프 1",
+            "desc": "시료 및 시약 공급용 정량 펌프 (#14 펌프튜브)",
+            "defaultPartCodes": [
+              "TP4-M01"
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "감지센서",
+            "desc": "시료 및 시약 유무 감지 (7-포트 밸브 OUT 라인)",
+            "defaultPartCodes": [
+              "TP4-S01"
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "⑥",
+            "name": "7-포트 밸브",
+            "desc": "과황산칼륨·P표준·몰리브덴산암모늄·아스코르빈산·세정수 유로 선택",
+            "defaultPartCodes": [
+              "TP4-V01"
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑦, ⑧",
+            "name": "온도센서 & 히터 (봉형)",
+            "desc": "가열 분해조 온도 측정 센서(⑦) 및 가열용 봉형 히터(⑧)",
+            "defaultPartCodes": [
+              "TP4-R01"
+            ],
+            "subItems": [
+              {
+                "circle": "⑦",
+                "name": "온도센서",
+                "desc": "가열 분해조 온도 측정"
+              },
+              {
+                "circle": "⑧",
+                "name": "히터",
+                "desc": "가열 분해조 가열용 봉형 히터"
+              }
+            ]
+          },
+          {
+            "no": 9,
+            "circle": "⑨",
+            "name": "광학검출기",
+            "desc": "텅스텐 램프, 880/710nm 필터, 50/50 스플리터, 10mm 석영 사각셀",
+            "defaultPartCodes": [
+              "TP4-O01",
+              "TP4-O02"
+            ]
+          },
+          {
+            "no": 10,
+            "circle": "⑩",
+            "name": "가열분해조",
+            "desc": "인화합물을 인산 이온으로 산화분해 (SUS/PTFE, PEEK 커버, 과승방지 스위치)",
+            "defaultPartCodes": [
+              "TP4-R01"
+            ]
+          },
+          {
+            "no": 11,
+            "circle": "⑪",
+            "name": "펌프 3",
+            "desc": "혼합조에서 광학검출기로 시료 이송 (#16 펌프튜브)",
+            "defaultPartCodes": [
+              "TP4-M01"
+            ]
+          },
+          {
+            "no": 12,
+            "circle": "⑫",
+            "name": "혼합조",
+            "desc": "시료와 발색 시약 혼합 (마그네틱 바, PEEK 피팅, 교반기 모터)",
+            "defaultPartCodes": [
+              "TP4-R02"
+            ]
+          },
+          {
+            "no": 13,
+            "circle": "⑬",
+            "name": "3-WAY 밸브 3",
+            "desc": "혼합조 → 검출기(정방향) / 검출기 → 배액라인(역방향) 전환",
+            "defaultPartCodes": [
+              "TP4-V02"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "rear",
+        "stepNo": "3.5",
+        "title": "분석부 후면",
+        "imageSrc": "./images/hatp-4000-rear.jpg",
+        "pageNo": "p.9",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "냉각팬",
+            "desc": "광학검출기 텅스텐 램프 냉각용 팬",
+            "defaultPartCodes": [
+              "TP4-C01"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②, ⑥, ⑨",
+            "name": "펌프 1 · 2 · 3 모터 (스텝모터)",
+            "desc": "고무 커플링·자석·리드스위치 포함 정량 펌프 구동 모터",
+            "defaultPartCodes": [
+              "TP4-M01"
+            ],
+            "subItems": [
+              {
+                "circle": "②",
+                "name": "펌프 3 모터",
+                "desc": "혼합조 → 광학검출기 이송"
+              },
+              {
+                "circle": "⑥",
+                "name": "펌프 2 모터",
+                "desc": "가열분해조 → 혼합조 이송"
+              },
+              {
+                "circle": "⑨",
+                "name": "펌프 1 모터",
+                "desc": "시료 및 시약 공급"
+              }
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "감지센서",
+            "desc": "시료 및 시약 유무 감지 센서 (좌·우 2개소)",
+            "defaultPartCodes": [
+              "TP4-S01"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④, ⑦, ⑧",
+            "name": "3-WAY 밸브 1 · 2 · 3",
+            "desc": "유로 분배 및 배액 전환용 3-WAY 밸브 후면 구동부",
+            "defaultPartCodes": [
+              "TP4-V02"
+            ],
+            "subItems": [
+              {
+                "circle": "④",
+                "name": "3-WAY 밸브 3",
+                "desc": "검출기·배액라인 전환"
+              },
+              {
+                "circle": "⑦",
+                "name": "3-WAY 밸브 2",
+                "desc": "가열분해조 유로 전환"
+              },
+              {
+                "circle": "⑧",
+                "name": "3-WAY 밸브 1",
+                "desc": "분해조·혼합조 분배"
+              }
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "솔레노이드 밸브",
+            "desc": "가열분해조 가압을 위한 솔레노이드 밸브",
+            "defaultPartCodes": [
+              "TP4-V03"
+            ]
+          },
+          {
+            "no": 10,
+            "circle": "⑩",
+            "name": "7-포트 밸브",
+            "desc": "시료 및 시약 공급 유로 선택 제어용 다채널 밸브",
+            "defaultPartCodes": [
+              "TP4-V01"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "stepNo": "6.1.1",
+        "title": "PC부 구성",
+        "imageSrc": "./images/hatp-4000-control.jpg",
+        "pageNo": "p.33",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①~⑦",
+            "name": "PC부 전원 · 시리얼 · USB · LAN 포트",
+            "desc": "PC 전원 제어, RS-232C 모니터링 통신, 메인보드 LAN 연결 포트",
+            "defaultPartCodes": [
+              "TP4-C01"
+            ],
+            "subItems": [
+              {
+                "circle": "①",
+                "name": "전원스위치",
+                "desc": "PC 전원 ON/OFF 스위치"
+              },
+              {
+                "circle": "②",
+                "name": "CPU S/W 연결포트",
+                "desc": "전원 스위치 및 전원 LED 연결"
+              },
+              {
+                "circle": "③",
+                "name": "시리얼 포트 (COM2)",
+                "desc": "RS-232C 모니터링 연결"
+              },
+              {
+                "circle": "④",
+                "name": "시리얼 포트 (COM1)",
+                "desc": "RS-232C 모니터링 연결"
+              },
+              {
+                "circle": "⑤",
+                "name": "전원 어댑터 연결포트",
+                "desc": "PC 전원 연결"
+              },
+              {
+                "circle": "⑥",
+                "name": "USB 포트",
+                "desc": "USB 장비 연결"
+              },
+              {
+                "circle": "⑦",
+                "name": "LAN 포트",
+                "desc": "메인보드와 PC 연결"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "HATP-2000": {
+    "label": "HATP-2000",
+    "partsMaster": [
+      {
+        "partCode": "TP2-T01",
+        "name": "펌프 튜브 (시료공급 펌프 튜브 #16)",
+        "qty": 3,
+        "unit": "Pack",
+        "isAnnualStandard": true,
+        "spec": "펌프 1~3 (#16) · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TP2-T02",
+        "name": "TUBE (시료이송 1 · 우레탄 I.D. Ø4)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "우레탄 튜브 I.D. Ø4 · 점검 1개월 / 교체 3개월"
+      },
+      {
+        "partCode": "TP2-T03",
+        "name": "TUBE (시료이송 2 · 테프론 I.D. Ø4)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "테프론 튜브 I.D. Ø4 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TP2-T04",
+        "name": "TUBE (시료이송 3 · 테프론 I.D. Ø1.6)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "테프론 튜브 I.D. Ø1.6 · 점검 1개월 / 교체 12개월"
+      },
+      {
+        "partCode": "TP2-T05",
+        "name": "TUBE (시료이송 4 · 타이곤 I.D. Ø3.2)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "타이곤 튜브 I.D. Ø3.2 · 점검 1개월 / 교체 6개월"
+      },
+      {
+        "partCode": "TP2-T06",
+        "name": "내부 배관 튜브 (Ø6 튜브)",
+        "qty": 1,
+        "unit": "SET",
+        "isAnnualStandard": true,
+        "spec": "Ø6 튜브 · 점검 1주일 / 교체 6개월"
+      },
+      {
+        "partCode": "TP2-F01",
+        "name": "유니온 피팅 세트 (클립1 + 오링 + 클립2)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "테프론 튜브 체결 시 클립 사이 오링 삽입"
+      },
+      {
+        "partCode": "TP2-O01",
+        "name": "광원용 램프 (텅스텐 램프)",
+        "qty": 1,
+        "unit": "EA",
+        "isAnnualStandard": true,
+        "spec": "880nm / 710nm 측정 · 수시 점검 / 교체 6개월 (정기점검표 1년)"
+      },
+      {
+        "partCode": "TP2-O02",
+        "name": "광학검출기 (셀 & 광센서 1, 2)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "880nm / 710nm 포토다이오드 · 수시 점검 / 이상 시 교체"
+      },
+      {
+        "partCode": "TP2-A01",
+        "name": "가열기 온도 조절기",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "가열 분해조 온도 제어 · 수시 점검 / 교체 3년"
+      },
+      {
+        "partCode": "TP2-A02",
+        "name": "냉각기 온도 조절기 & 냉온소자/쿨러",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "온도제어기 교체 3년 / 냉온소자·쿨러 점검 3개월·교체 2~3년"
+      },
+      {
+        "partCode": "TP2-A03",
+        "name": "정량 펌프 모터 (PUMP 1, 2, 3)",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "점검 6개월 / 교체 3~4년"
+      },
+      {
+        "partCode": "TP2-A04",
+        "name": "가열 분해조 & 가열선 & 온도 센서",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "반응기 90mL · 가열기(Oil BATH) 400mL · 히터 교체 3~4년"
+      },
+      {
+        "partCode": "TP2-A05",
+        "name": "혼합조 & 혼합기 모터",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "혼합기 모터 점검 6개월 / 교체 1~2년"
+      },
+      {
+        "partCode": "TP2-A06",
+        "name": "7-PORT 다채널 밸브 & 2WAY 밸브",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "7PORT 점검 3개월·교체 2~3년 / 2WAY 점검 1주·교체 2~3년"
+      },
+      {
+        "partCode": "TP2-R01",
+        "name": "시약 냉장고 (아스코르빈산 보관)",
+        "qty": 1,
+        "unit": "EA",
+        "spec": "점검 1개월 / 교체 3년"
+      },
+      {
+        "partCode": "TP2-C01",
+        "name": "냉각팬 (제어부 2, 외함 1) & 환기팬",
+        "qty": 3,
+        "unit": "EA",
+        "spec": "냉각팬 점검 4주·교체 3년 / 환기팬 점검 6개월·교체 3~4년"
+      },
+      {
+        "partCode": "TP2-C02",
+        "name": "제어부 연결 케이블 (6P 펌프·16P 장치·센서·RS-232C)",
+        "qty": 1,
+        "unit": "SET",
+        "spec": "펌프 6핀 3개 · 장치 16핀 3개 · 온도조절기 RS-232C"
+      }
+    ],
+    "sections": [
+      {
+        "id": "front",
+        "stepNo": "3.4",
+        "title": "분석부",
+        "imageSrc": "./images/hatp-2000-front.jpg",
+        "pageNo": "p.10",
+        "sharedParts": [
+          {
+            "partCode": "TP2-T01",
+            "group": "펌프 튜브",
+            "usedBadges": [
+              "③",
+              "④",
+              "⑤"
+            ],
+            "calloutNos": [
+              3,
+              4,
+              5
+            ]
+          },
+          {
+            "partCode": "TP2-T02",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "③"
+            ],
+            "calloutNos": [
+              3
+            ]
+          },
+          {
+            "partCode": "TP2-T03",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑧",
+              "⑨"
+            ],
+            "calloutNos": [
+              7,
+              8
+            ]
+          },
+          {
+            "partCode": "TP2-T04",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "③",
+              "⑧"
+            ],
+            "calloutNos": [
+              3,
+              7
+            ]
+          },
+          {
+            "partCode": "TP2-T05",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              8,
+              9
+            ]
+          },
+          {
+            "partCode": "TP2-T06",
+            "group": "시료이송 튜브",
+            "usedBadges": [
+              "⑧",
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "partCode": "TP2-F01",
+            "group": "피팅 · 유니온 벌크헤드",
+            "usedBadges": [
+              "⑧",
+              "⑨",
+              "⑪"
+            ],
+            "calloutNos": [
+              7,
+              8,
+              9
+            ]
+          },
+          {
+            "partCode": "TP2-A06",
+            "group": "기타",
+            "usedBadges": [
+              "③"
+            ],
+            "calloutNos": [
+              3
+            ]
+          }
+        ],
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①",
+            "name": "가열기 온도 조절기",
+            "desc": "가열 분해조의 온도 제어",
+            "defaultPartCodes": [
+              "TP2-A01"
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "②",
+            "name": "냉각기 온도 조절기",
+            "desc": "냉각기(냉온소자·쿨러)의 온도 제어",
+            "defaultPartCodes": [
+              "TP2-A02"
+            ]
+          },
+          {
+            "no": 3,
+            "circle": "③",
+            "name": "펌프 1",
+            "desc": "시료 및 시약 공급을 위한 정량 펌프 (#16 펌프튜브)",
+            "defaultPartCodes": [
+              "TP2-A03"
+            ]
+          },
+          {
+            "no": 4,
+            "circle": "④",
+            "name": "펌프 2",
+            "desc": "가열 분해조에서 혼합조로 시료 이송을 위한 펌프",
+            "defaultPartCodes": [
+              "TP2-A03"
+            ]
+          },
+          {
+            "no": 5,
+            "circle": "⑤",
+            "name": "펌프 3",
+            "desc": "혼합조에서 광학검출기로의 시료 이송을 위한 펌프",
+            "defaultPartCodes": [
+              "TP2-A03"
+            ]
+          },
+          {
+            "no": 6,
+            "circle": "⑥, ⑦",
+            "name": "온도 센서 & 가열선",
+            "desc": "가열 분해조 온도 측정 센서(⑥) 및 가열용 히터선(⑦)",
+            "defaultPartCodes": [
+              "TP2-A04"
+            ],
+            "subItems": [
+              {
+                "circle": "⑥",
+                "name": "온도 센서",
+                "desc": "가열 분해조 온도 측정"
+              },
+              {
+                "circle": "⑦",
+                "name": "가열선",
+                "desc": "가열 분해조 가열용 히터"
+              }
+            ]
+          },
+          {
+            "no": 7,
+            "circle": "⑧",
+            "name": "가열 분해조",
+            "desc": "인화합물을 인산염으로 분해하는 반응조 (반응기 90mL / 가열기 400mL)",
+            "defaultPartCodes": [
+              "TP2-A04"
+            ]
+          },
+          {
+            "no": 8,
+            "circle": "⑨",
+            "name": "혼합조",
+            "desc": "흡광도 측정을 위해 시료와 발색 시약을 혼합시키는 반응조",
+            "defaultPartCodes": [
+              "TP2-A05"
+            ]
+          },
+          {
+            "no": 9,
+            "circle": "⑩, ⑪",
+            "name": "센서 1, 2 & 광학검출기",
+            "desc": "텅스텐 램프 및 880nm/710nm 흡광도 측정 광학부",
+            "defaultPartCodes": [
+              "TP2-O01",
+              "TP2-O02"
+            ],
+            "subItems": [
+              {
+                "circle": "⑩",
+                "name": "센서 1, 2",
+                "desc": "880nm / 710nm 광센서"
+              },
+              {
+                "circle": "⑪",
+                "name": "광학검출기",
+                "desc": "텅스텐 램프 및 광학셀"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "stepNo": "3.3",
+        "title": "제어부 후면",
+        "imageSrc": "./images/hatp-2000-control.jpg",
+        "pageNo": "p.9",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①~⑨",
+            "name": "PC 전원 · 통신 · PCI 단자부",
+            "desc": "AC 220V 전원, PS2, COM, VGA, USB, LAN, 모니터, RS-232C(온도조절기), PCI 카드",
+            "defaultPartCodes": [
+              "TP2-C01"
+            ],
+            "subItems": [
+              {
+                "circle": "①",
+                "name": "컴퓨터 전원 연결부",
+                "desc": "AC 220V 전원 코드"
+              },
+              {
+                "circle": "②",
+                "name": "마우스/키보드 단자",
+                "desc": "PS2 연결용"
+              },
+              {
+                "circle": "③",
+                "name": "시리얼 포트 단자",
+                "desc": "모니터/통신 연결용"
+              },
+              {
+                "circle": "④",
+                "name": "컴퓨터 VGA 단자",
+                "desc": "모니터 출력"
+              },
+              {
+                "circle": "⑤",
+                "name": "컴퓨터 USB 단자",
+                "desc": "제어 신호 USB"
+              },
+              {
+                "circle": "⑥",
+                "name": "LAN 단자",
+                "desc": "네트워크 연결"
+              },
+              {
+                "circle": "⑦",
+                "name": "모니터 연결 단자",
+                "desc": "터치 모니터 연결"
+              },
+              {
+                "circle": "⑧",
+                "name": "통신 연결 단자",
+                "desc": "RS-232C 온도 조절기 연결"
+              },
+              {
+                "circle": "⑨",
+                "name": "PCI 카드 연결 단자",
+                "desc": "PCI 카드 연결용"
+              }
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "⑩~⑯",
+            "name": "제어부 펌프 · 장치 · 센서 · 전원 단자",
+            "desc": "PUMP 1~6(6P), CNL 1~3(16P), SIGNAL 1~2, PCI 케이블, 외부출력 1·2, 제어부 전원",
+            "defaultPartCodes": [
+              "TP2-C02"
+            ],
+            "subItems": [
+              {
+                "circle": "⑩",
+                "name": "펌프 연결 단자",
+                "desc": "PUMP 1~6 (6핀 3개 연결)"
+              },
+              {
+                "circle": "⑪",
+                "name": "장치 연결 단자",
+                "desc": "CNL 1~3 (16핀 3개 연결)"
+              },
+              {
+                "circle": "⑫",
+                "name": "센서 연결 단자",
+                "desc": "SIGNAL 1, 2"
+              },
+              {
+                "circle": "⑬",
+                "name": "컴퓨터 PCI 연결 케이블",
+                "desc": "제어 신호 전달 PCI 케이블"
+              },
+              {
+                "circle": "⑭",
+                "name": "외부출력단자 1",
+                "desc": "4~20mA / Alarm / 1~10V"
+              },
+              {
+                "circle": "⑮",
+                "name": "외부출력단자 2",
+                "desc": "Level1(감지센서) / Level2(세정수 수위)"
+              },
+              {
+                "circle": "⑯",
+                "name": "제어부 전원 연결부",
+                "desc": "AC 220V 전원 코드"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pretreatment",
+        "stepNo": "3.5",
+        "title": "시약부",
+        "imageSrc": "./images/hatp-2000-reagent.jpg",
+        "pageNo": "p.11",
+        "callouts": [
+          {
+            "no": 1,
+            "circle": "①~⑤",
+            "name": "시약 및 세정수 저장조 (5종)",
+            "desc": "7-port 밸브 2~6번 포트에 테프론/타이곤 튜브로 연결 (튜브 교체 6개월)",
+            "defaultPartCodes": [
+              "TP2-T04",
+              "TP2-T05"
+            ],
+            "subItems": [
+              {
+                "circle": "①",
+                "name": "P 표준액 저장조",
+                "desc": "인산염 인 표준액 (2L)"
+              },
+              {
+                "circle": "②",
+                "name": "전처리 용액 저장조",
+                "desc": "과황산칼륨 (5L · 교체 15~20일)"
+              },
+              {
+                "circle": "③",
+                "name": "L-아스코르빈산 저장조",
+                "desc": "2L · 냉장 보관 (교체 15~20일)"
+              },
+              {
+                "circle": "④",
+                "name": "몰리브덴산 암모늄 저장조",
+                "desc": "2L · 발색 시약 (교체 15~20일)"
+              },
+              {
+                "circle": "⑤",
+                "name": "세정수 저장조",
+                "desc": "희석·세정수 (20L)"
+              }
+            ]
+          },
+          {
+            "no": 2,
+            "circle": "⑥",
+            "name": "시약 냉장고",
+            "desc": "L-아스코르빈산(및 몰리브덴산암모늄) 안정 보관용 냉장고",
+            "defaultPartCodes": [
+              "TP2-R01"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+};

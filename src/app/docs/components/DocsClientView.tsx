@@ -197,15 +197,15 @@ export default function DocsClientView({
 				<div className="flex items-center gap-3 min-w-0">
 					<Link
 						href="/dashboard"
-						className="w-9 h-9 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
+						className="w-8 h-8 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 border border-[#d7dfe9] dark:border-[#2a2a32] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
 						title="대시보드로 돌아가기"
 						aria-label="대시보드로 돌아가기"
 					>
-						<ArrowLeft size={18} />
+						<ArrowLeft size={16} />
 					</Link>
 					<div className="flex items-center gap-2 min-w-0">
-						<div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-							<BookOpen size={16} strokeWidth={2.4} />
+						<div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+							<BookOpen size={15} strokeWidth={2.4} />
 						</div>
 						<div className="min-w-0">
 							<h1 className="text-sm font-bold text-[#0f172a] dark:text-white tracking-tight truncate break-keep">
@@ -221,7 +221,7 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => setActiveModal("download")}
-						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+						className="h-8 px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 					>
 						<FolderDown
 							size={14}
@@ -232,18 +232,15 @@ export default function DocsClientView({
 					<button
 						type="button"
 						onClick={() => setActiveModal("video")}
-						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+						className="h-8 px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 					>
-						<Video
-							size={14}
-							className="text-indigo-500 dark:text-indigo-400"
-						/>
+						<Video size={14} className="text-indigo-500 dark:text-indigo-400" />
 						<span>동영상</span>
 					</button>
 					<button
 						type="button"
 						onClick={() => setActiveModal("reagent")}
-						className="h-9 px-3 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+						className="h-8 px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#d7dfe9] dark:border-[#2a2a32] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
 					>
 						<FlaskConical
 							size={14}
@@ -256,7 +253,7 @@ export default function DocsClientView({
 						onClick={() => {
 							setIsNavOpen(true);
 						}}
-						className="h-9 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs text-white transition-all flex items-center gap-1.5 whitespace-nowrap font-bold shadow-[0_0_15px_rgba(37,99,235,0.25)] active:scale-95 tabular-nums"
+						className="h-8 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs text-white transition-all flex items-center gap-1.5 whitespace-nowrap font-bold shadow-[0_0_15px_rgba(37,99,235,0.25)] active:scale-95 tabular-nums"
 					>
 						<FolderTree size={14} />
 						<span>목차 ({totalDocsCount})</span>
@@ -272,7 +269,6 @@ export default function DocsClientView({
 			{/* 메인 콘텐츠 영역 (window 스크롤 구조) */}
 			<div className="flex-1 w-full relative z-10 pb-28 sm:pb-12">
 				<div className="max-w-5xl mx-auto px-4 sm:px-6 pt-4 sm:pt-6 space-y-6">
-
 					{/* 카테고리 탭 (M3 Pill Tabs) - 데스크톱에서만 노출, 모바일은 하단바 활용 */}
 					<nav
 						aria-label="카테고리 선택"

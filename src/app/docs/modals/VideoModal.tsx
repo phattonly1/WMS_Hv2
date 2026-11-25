@@ -1,12 +1,6 @@
 "use client";
 
-import {
-	Download,
-	Film,
-	PlayCircle,
-	QrCode,
-	Video,
-} from "lucide-react";
+import { Download, Film, PlayCircle, QrCode, Video } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -33,11 +27,15 @@ export default function VideoModal({
 	const [isQROpen, setIsQROpen] = useState<boolean>(false);
 	const qrRef = useRef<HTMLDivElement>(null);
 
+	const origin =
+		typeof window !== "undefined" &&
+		window.location.hostname !== "localhost" &&
+		window.location.hostname !== "127.0.0.1"
+			? window.location.origin
+			: process.env.NEXT_PUBLIC_APP_URL || "https://wmshv2.vercel.app";
 	const qrUrl =
 		process.env.NEXT_PUBLIC_QR_GATE_URL ||
-		(typeof window !== "undefined"
-			? `${window.location.origin}/docs?modal=video`
-			: "");
+		`${origin}/docs?modal=video&quicklink=true`;
 
 	const downloadQR = () => {
 		if (!qrRef.current) return;
@@ -107,33 +105,40 @@ export default function VideoModal({
 	}, [selectedCategory, isSearching, sharedSearchQuery]);
 
 	return (
-		<>
-			<Modal
-				isOpen={isOpen}
-				onClose={() => {
-					setSelectedVideo(null);
-					setSelectedCategory(null);
-					onClose();
-				}}
-				title={
-					selectedVideo
+		<Modal
+			isOpen={isOpen}
+			onClose={() => {
+				setIsQROpen(false);
+				setSelectedVideo(null);
+				setSelectedCategory(null);
+				onClose();
+			}}
+			title={
+				isQROpen
+					? "QR 코드 발급"
+					: selectedVideo
 						? selectedVideo.title
 						: selectedCategory
 							? selectedCategory
 							: "동영상"
-				}
-				subtitle={
-					selectedVideo?.category ??
-					(isSearching
-						? `${filteredVideos.length}건`
-						: selectedCategory
-							? `${filteredVideos.length}편`
-							: undefined)
-				}
-				icon={Video}
-				maxWidth={selectedVideo ? "max-w-3xl" : "max-w-4xl"}
-				size="half"
-				headerAction={
+			}
+			subtitle={
+				isQROpen
+					? "동영상 매뉴얼"
+					: (selectedVideo?.category ??
+						(isSearching
+							? `${filteredVideos.length}건`
+							: selectedCategory
+								? `${filteredVideos.length}편`
+								: undefined))
+			}
+			icon={isQROpen ? QrCode : Video}
+			maxWidth={
+				isQROpen ? "max-w-xs" : selectedVideo ? "max-w-3xl" : "max-w-4xl"
+			}
+			size={isQROpen ? "standard" : "half"}
+			headerAction={
+				!isQROpen ? (
 					<div className="flex items-center gap-1.5">
 						{!selectedCategory && !selectedVideo && (
 							<span className="text-[10px] font-semibold tabular-nums px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-[#64748b] dark:text-[#a1a1aa]">
@@ -150,15 +155,56 @@ export default function VideoModal({
 							<span>QR</span>
 						</button>
 					</div>
-				}
-				onBack={
-					selectedVideo
+				) : undefined
+			}
+			onBack={
+				isQROpen
+					? () => setIsQROpen(false)
+					: selectedVideo
 						? () => setSelectedVideo(null)
 						: selectedCategory
 							? () => setSelectedCategory(null)
 							: undefined
-				}
-			>
+			}
+		>
+			{isQROpen ? (
+				<div className="text-center space-y-3">
+					<div className="relative inline-block">
+						<div
+							ref={qrRef}
+							className="relative bg-white p-4 rounded-2xl border border-white/20 shadow-2xl flex items-center justify-center mx-auto"
+						>
+							<QRCodeSVG
+								value={qrUrl}
+								size={180}
+								level="H"
+								includeMargin={false}
+							/>
+						</div>
+					</div>
+
+					<p className="text-[11px] text-[#64748b] dark:text-[#64748b] break-keep">
+						스캔 시 동영상 매뉴얼 즉시 오픈
+					</p>
+
+					<div className="flex gap-2 pt-1">
+						<button
+							type="button"
+							onClick={() => setIsQROpen(false)}
+							className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#d7dfe9] dark:border-[#2a2a32] whitespace-nowrap shrink-0"
+						>
+							닫기
+						</button>
+						<button
+							type="button"
+							onClick={downloadQR}
+							className="flex-[1.5] h-10 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] whitespace-nowrap shrink-0"
+						>
+							<Download size={14} /> PNG 다운로드
+						</button>
+					</div>
+				</div>
+			) : (
 				<DocsPinGate title="동영상 매뉴얼 보안 코드 입력">
 					{selectedVideo ? (
 						/* 비디오 재생 뷰 */
@@ -295,54 +341,7 @@ export default function VideoModal({
 						</div>
 					)}
 				</DocsPinGate>
-			</Modal>
-
-			{/* 동영상 매뉴얼 QR 코드 모달 (소모품 QR 모달과 동일한 규격) */}
-			<Modal
-				isOpen={isQROpen}
-				onClose={() => setIsQROpen(false)}
-				title="QR 코드 발급"
-				subtitle="동영상 매뉴얼"
-				icon={QrCode}
-				maxWidth="max-w-xs"
-			>
-				<div className="text-center space-y-3">
-					<div className="relative inline-block">
-						<div
-							ref={qrRef}
-							className="relative bg-white p-4 rounded-2xl border border-white/20 shadow-2xl flex items-center justify-center mx-auto"
-						>
-							<QRCodeSVG
-								value={qrUrl}
-								size={180}
-								level="H"
-								includeMargin={false}
-							/>
-						</div>
-					</div>
-
-					<p className="text-[11px] text-[#64748b] dark:text-[#64748b]">
-						스캔 시 동영상 매뉴얼 즉시 오픈
-					</p>
-
-					<div className="flex gap-2 pt-1">
-						<button
-							type="button"
-							onClick={() => setIsQROpen(false)}
-							className="flex-1 h-10 rounded-xl bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-black/5 dark:hover:bg-white/10 text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white font-bold text-xs transition-all border border-[#d7dfe9] dark:border-[#2a2a32]"
-						>
-							닫기
-						</button>
-						<button
-							type="button"
-							onClick={downloadQR}
-							className="flex-[1.5] h-10 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)]"
-						>
-							<Download size={14} /> PNG 다운로드
-						</button>
-					</div>
-				</div>
-			</Modal>
-		</>
+			)}
+		</Modal>
 	);
 }
