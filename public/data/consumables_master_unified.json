@@ -93,7 +93,8 @@
     "cycle": "1년",
     "price25": null,
     "price26": 1980000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 1752528
   },
   {
     "id": 7,
@@ -109,7 +110,8 @@
     "cycle": "",
     "price25": null,
     "price26": 1185000,
-    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 1048861
   },
   {
     "id": 8,
@@ -125,7 +127,8 @@
     "cycle": "",
     "price25": null,
     "price26": 825000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 730220
   },
   {
     "id": 9,
@@ -141,7 +144,8 @@
     "cycle": "",
     "price25": null,
     "price26": 54000,
-    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 47796
   },
   {
     "id": 10,
@@ -157,7 +161,8 @@
     "cycle": "",
     "price25": null,
     "price26": 47000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 41157
   },
   {
     "id": 11,
@@ -173,7 +178,8 @@
     "cycle": "",
     "price25": null,
     "price26": 131000,
-    "note": "5개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "5개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 115507
   },
   {
     "id": 12,
@@ -205,7 +211,8 @@
     "cycle": "",
     "price25": null,
     "price26": 405000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 358471
   },
   {
     "id": 14,
@@ -221,7 +228,8 @@
     "cycle": "",
     "price25": null,
     "price26": 900000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 796603
   },
   {
     "id": 15,
@@ -237,7 +245,8 @@
     "cycle": "",
     "price25": null,
     "price26": 840000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 743496
   },
   {
     "id": 16,
@@ -253,7 +262,8 @@
     "cycle": "",
     "price25": null,
     "price26": 53000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 46468
   },
   {
     "id": 17,
@@ -269,7 +279,8 @@
     "cycle": "",
     "price25": null,
     "price26": 327000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 289432
   },
   {
     "id": 18,
@@ -285,7 +296,8 @@
     "cycle": "",
     "price25": null,
     "price26": 429000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 379714
   },
   {
     "id": 19,
@@ -301,7 +313,8 @@
     "cycle": "",
     "price25": null,
     "price26": 26000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 22570
   },
   {
     "id": 20,
@@ -317,7 +330,8 @@
     "cycle": "",
     "price25": null,
     "price26": 18000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 15932
   },
   {
     "id": 21,
@@ -333,7 +347,8 @@
     "cycle": "",
     "price25": null,
     "price26": 24000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 21242
   },
   {
     "id": 22,
@@ -349,7 +364,8 @@
     "cycle": "",
     "price25": null,
     "price26": 21000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 18587
   },
   {
     "id": 23,
@@ -365,7 +381,8 @@
     "cycle": "",
     "price25": null,
     "price26": 12000,
-    "note": "6개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "6개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 9957
   },
   {
     "id": 24,
@@ -381,7 +398,8 @@
     "cycle": "",
     "price25": null,
     "price26": 18000,
-    "note": "6개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "6개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 15932
   },
   {
     "id": 25,
@@ -397,7 +415,8 @@
     "cycle": "",
     "price25": null,
     "price26": 24000,
-    "note": "5개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "5개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 21242
   },
   {
     "id": 26,
@@ -413,7 +432,8 @@
     "cycle": "",
     "price25": null,
     "price26": 18000,
-    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 15932
   },
   {
     "id": 27,
@@ -429,7 +449,8 @@
     "cycle": "",
     "price25": null,
     "price26": 12000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 9957
   },
   {
     "id": 28,
@@ -445,7 +466,8 @@
     "cycle": "",
     "price25": null,
     "price26": 6000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 5310
   },
   {
     "id": 29,
@@ -957,7 +979,8 @@
     "cycle": "",
     "price25": null,
     "price26": 18000,
-    "note": "4개 기기 공용 (부품코드표 기준)"
+    "note": "4개 기기 공용 (부품코드표 기준)",
+    "bidPrice": 15932
   },
   {
     "id": 61,
@@ -1133,7 +1156,8 @@
     "cycle": "1년",
     "price25": null,
     "price26": 522000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 462030
   },
   {
     "id": 72,
@@ -1149,7 +1173,8 @@
     "cycle": "",
     "price25": null,
     "price26": 38000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 33191
   },
   {
     "id": 73,
@@ -1165,7 +1190,8 @@
     "cycle": "",
     "price25": null,
     "price26": 900000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 796603
   },
   {
     "id": 74,
@@ -1325,7 +1351,8 @@
     "cycle": "",
     "price25": null,
     "price26": 525000,
-    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 464685
   },
   {
     "id": 84,
@@ -1341,7 +1368,8 @@
     "cycle": "",
     "price25": null,
     "price26": 546000,
-    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 483272
   },
   {
     "id": 85,
@@ -1357,7 +1385,8 @@
     "cycle": "",
     "price25": null,
     "price26": 390000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 345194
   },
   {
     "id": 86,
@@ -1373,7 +1402,8 @@
     "cycle": "",
     "price25": null,
     "price26": 900000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 796603
   },
   {
     "id": 87,
@@ -1389,7 +1419,8 @@
     "cycle": "",
     "price25": null,
     "price26": 53000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 46468
   },
   {
     "id": 88,
@@ -1405,7 +1436,8 @@
     "cycle": "",
     "price25": null,
     "price26": 473000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 418216
   },
   {
     "id": 89,
@@ -1421,7 +1453,8 @@
     "cycle": "",
     "price25": null,
     "price26": 870000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 770050
   },
   {
     "id": 90,
@@ -1437,7 +1470,8 @@
     "cycle": "",
     "price25": null,
     "price26": 23000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 19915
   },
   {
     "id": 91,
@@ -1469,7 +1503,8 @@
     "cycle": "",
     "price25": null,
     "price26": 23000,
-    "note": "부품코드표 기준"
+    "note": "부품코드표 기준",
+    "bidPrice": 19915
   },
   {
     "id": 93,
@@ -1485,7 +1520,8 @@
     "cycle": "",
     "price25": null,
     "price26": 23000,
-    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 19915
   },
   {
     "id": 94,
@@ -1501,7 +1537,8 @@
     "cycle": "",
     "price25": null,
     "price26": 12000,
-    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 9957
   },
   {
     "id": 95,
@@ -1517,7 +1554,8 @@
     "cycle": "",
     "price25": null,
     "price26": 8000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 6638
   },
   {
     "id": 96,
@@ -1533,7 +1571,8 @@
     "cycle": "",
     "price25": null,
     "price26": 18000,
-    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 15268
   },
   {
     "id": 97,
@@ -1549,7 +1588,8 @@
     "cycle": "",
     "price25": null,
     "price26": 23000,
-    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "3개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 19915
   },
   {
     "id": 98,
@@ -1565,7 +1605,8 @@
     "cycle": "",
     "price25": null,
     "price26": 29000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 25225
   },
   {
     "id": 99,
@@ -1581,7 +1622,8 @@
     "cycle": "",
     "price25": null,
     "price26": 12000,
-    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "4개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 10621
   },
   {
     "id": 100,
@@ -1597,7 +1639,8 @@
     "cycle": "",
     "price25": null,
     "price26": 14000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 11949
   },
   {
     "id": 101,
@@ -1613,7 +1656,8 @@
     "cycle": "",
     "price25": null,
     "price26": 11000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 9692
   },
   {
     "id": 102,
@@ -1629,7 +1673,8 @@
     "cycle": "",
     "price25": null,
     "price26": 17000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 14471
   },
   {
     "id": 103,
@@ -1709,7 +1754,8 @@
     "cycle": "",
     "price25": null,
     "price26": 1035000,
-    "note": "4개 기기 공용 (부품코드표 기준)"
+    "note": "4개 기기 공용 (부품코드표 기준)",
+    "bidPrice": 916094
   },
   {
     "id": 108,
@@ -1725,7 +1771,8 @@
     "cycle": "",
     "price25": null,
     "price26": 218000,
-    "note": "2개 기기 공용 (부품코드표 기준)"
+    "note": "2개 기기 공용 (부품코드표 기준)",
+    "bidPrice": 192513
   },
   {
     "id": 109,
@@ -2109,7 +2156,8 @@
     "cycle": "",
     "price25": null,
     "price26": 900000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 796603
   },
   {
     "id": 133,
@@ -2125,7 +2173,8 @@
     "cycle": "",
     "price25": null,
     "price26": 840000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 743496
   },
   {
     "id": 134,
@@ -2269,7 +2318,8 @@
     "cycle": "6개월",
     "price25": null,
     "price26": 285000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 252257
   },
   {
     "id": 143,
@@ -2285,7 +2335,8 @@
     "cycle": "",
     "price25": null,
     "price26": 360000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 318641
   },
   {
     "id": 144,
@@ -2301,7 +2352,8 @@
     "cycle": "",
     "price25": null,
     "price26": 21000,
-    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))"
+    "note": "2개 기기 공용 (A안 통합(부품코드표+26.03.24 HSK 견적))",
+    "bidPrice": 17790
   },
   {
     "id": 145,
@@ -2317,7 +2369,8 @@
     "cycle": "",
     "price25": null,
     "price26": 4000,
-    "note": "3개 기기 공용 (부품코드표 기준)"
+    "note": "3개 기기 공용 (부품코드표 기준)",
+    "bidPrice": 3369
   },
   {
     "id": 146,
@@ -2365,7 +2418,8 @@
     "cycle": "",
     "price25": null,
     "price26": 1770000,
-    "note": "2개 기기 공용 (부품코드표 기준)"
+    "note": "2개 기기 공용 (부품코드표 기준)",
+    "bidPrice": 1566654
   },
   {
     "id": 149,
@@ -2509,7 +2563,8 @@
     "cycle": "6개월",
     "price25": null,
     "price26": 570000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 504515
   },
   {
     "id": 158,
@@ -2525,7 +2580,8 @@
     "cycle": "",
     "price25": null,
     "price26": 36000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 31873
   },
   {
     "id": 159,
@@ -2541,7 +2597,8 @@
     "cycle": "",
     "price25": null,
     "price26": 24000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 20977
   },
   {
     "id": 160,
@@ -2557,7 +2614,8 @@
     "cycle": "",
     "price25": null,
     "price26": 42000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 36511
   },
   {
     "id": 161,
@@ -2573,7 +2631,8 @@
     "cycle": "",
     "price25": null,
     "price26": 24000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 20446
   },
   {
     "id": 162,
@@ -2589,7 +2648,8 @@
     "cycle": "",
     "price25": null,
     "price26": 518000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 458047
   },
   {
     "id": 163,
@@ -2877,7 +2937,8 @@
     "cycle": "6개월 (2ea/6개월)",
     "price25": null,
     "price26": 750000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 663836
   },
   {
     "id": 181,
@@ -2893,7 +2954,8 @@
     "cycle": "1년 (1ea/1년)",
     "price25": null,
     "price26": 180000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 159320
   },
   {
     "id": 182,
@@ -3149,7 +3211,8 @@
     "cycle": "",
     "price25": null,
     "price26": 5250000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 4646855
   },
   {
     "id": 198,
@@ -3229,7 +3292,8 @@
     "cycle": "",
     "price25": null,
     "price26": 20000,
-    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)"
+    "note": "A안 통합(부품코드표+26.03.24 HSK 견적)",
+    "bidPrice": 21242
   },
   {
     "id": 203,
@@ -3245,7 +3309,8 @@
     "cycle": "",
     "price25": null,
     "price26": 55000,
-    "note": "26.03.24 HSK 견적서(MPA2603-197-2) 반영"
+    "note": "26.03.24 HSK 견적서(MPA2603-197-2) 반영",
+    "bidPrice": 58562
   },
   {
     "id": 204,
@@ -3257,11 +3322,12 @@
     "name": "전도도 (Electrical Conductivity)",
     "spec": "범위: 0~100 mS/cm 이상, 정확도: ±1% 이하, 분리능: 0.001 mS/cm 이하",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "5",
     "cycle": "",
-    "price25": null,
-    "price26": 1120000,
-    "note": "26.10.12 기술과환경 견적 반영"
+    "price25": 1127700,
+    "price26": 1288000,
+    "note": "기술과환경 26년 견적서 반영",
+    "bidPrice": 1127700
   },
   {
     "id": 205,
@@ -3273,11 +3339,12 @@
     "name": "pH",
     "spec": "범위: 0~14 units 이상, 정확도: ±0.2 units 이하, 분리능: 0.001 units 이하",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "15",
     "cycle": "",
-    "price25": null,
-    "price26": 830000,
-    "note": "26.10.12 기술과환경 견적 반영"
+    "price25": 840250,
+    "price26": 955000,
+    "note": "기술과환경 26년 견적서 반영",
+    "bidPrice": 840250
   },
   {
     "id": 206,
@@ -3285,15 +3352,16 @@
     "partGroup": "일반소모품",
     "category": "일반항목(다항목)",
     "model": "M-1000U",
-    "partNumber": "",
+    "partNumber": "D02",
     "name": "DO (용존산소, Dissolved Oxygen)",
     "spec": "범위: 0~20 mg/L 이상, 정확도: ±0.2 mg/L 이하, 분리능: 0.001 mg/L 이하",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "5",
     "cycle": "",
-    "price25": null,
+    "price25": 1127700,
     "price26": null,
-    "note": "M-1000U 규격서"
+    "note": "M-1000U 규격서",
+    "bidPrice": 1127700
   },
   {
     "id": 207,
@@ -3301,15 +3369,16 @@
     "partGroup": "일반소모품",
     "category": "일반항목(다항목)",
     "model": "M-1000U",
-    "partNumber": "",
+    "partNumber": "MSEN11",
     "name": "센서 모듈 (Sensor Module)",
     "spec": "측정항목: 온도, 전도도, pH, DO, 탁도",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "5",
     "cycle": "",
-    "price25": null,
+    "price25": 2100630,
     "price26": null,
-    "note": "M-1000U 규격서"
+    "note": "M-1000U 규격서",
+    "bidPrice": 2100630
   },
   {
     "id": 208,
@@ -3317,15 +3386,16 @@
     "partGroup": "일반소모품",
     "category": "일반항목(다항목)",
     "model": "M-1000U",
-    "partNumber": "",
+    "partNumber": "TU05",
     "name": "탁도 (Turbidity)",
     "spec": "범위: 0~1,000 NTU 이상, 정확도: ±3% 이하, 분리능: 0.001 NTU 이하",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "5",
     "cycle": "",
-    "price25": null,
-    "price26": null,
-    "note": "M-1000U 규격서"
+    "price25": 3925350,
+    "price26": 4485000,
+    "note": "기술과환경 26년 견적서 반영 (Turbidity Probe 1000 NTU)",
+    "bidPrice": 3925350
   },
   {
     "id": 209,
@@ -3333,15 +3403,16 @@
     "partGroup": "일반소모품",
     "category": "일반항목(다항목)",
     "model": "M-1000U",
-    "partNumber": "",
+    "partNumber": "MC02-5",
     "name": "필드 케이블 (Field Cable)",
     "spec": "역할: 센서와 데이터 수집 장치 연결",
     "unit": "ea",
     "baseQty": "1",
     "cycle": "",
-    "price25": null,
-    "price26": null,
-    "note": "M-1000U 규격서"
+    "price25": 741230,
+    "price26": 840000,
+    "note": "기술과환경 26년 견적서 반영 (Field Cable 5 Meter)",
+    "bidPrice": 741230
   },
   {
     "id": 210,
@@ -3349,15 +3420,16 @@
     "partGroup": "일반소모품",
     "category": "일반항목(다항목)",
     "model": "M-1000U",
-    "partNumber": "",
+    "partNumber": "ST03",
     "name": "교반 장치 (Stirring Device)",
     "spec": "역할: DO 측정 시 일정한 유속 유지하여 정확도 향상",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "5",
     "cycle": "",
-    "price25": null,
-    "price26": null,
-    "note": "M-1000U 규격서"
+    "price25": 840250,
+    "price26": 955000,
+    "note": "기술과환경 26년 견적서 반영 (Stirring System M-1000U)",
+    "bidPrice": 840250
   },
   {
     "id": 211,
@@ -3369,11 +3441,12 @@
     "name": "DO 캡 멤브레인 (DO Cap Membrane)",
     "spec": "역할: DO 센서 보호 및 정확한 용존산소 측정 지원",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "10",
     "cycle": "",
-    "price25": null,
-    "price26": 198000,
-    "note": "26.10.12 기술과환경 견적 반영"
+    "price25": 199100,
+    "price26": 228000,
+    "note": "기술과환경 26년 견적서 반영",
+    "bidPrice": 199100
   },
   {
     "id": 212,
@@ -3381,15 +3454,16 @@
     "partGroup": "일반소모품",
     "category": "일반항목(다항목)",
     "model": "M-1000U",
-    "partNumber": "",
+    "partNumber": "A/S-Turbi01",
     "name": "탁도 와이퍼 (Turbidity Wiper)",
     "spec": "역할: 탁도 센서 표면 청소하여 측정 정확도 유지",
     "unit": "ea",
     "baseQty": "1",
     "cycle": "",
-    "price25": null,
+    "price25": 199100,
     "price26": null,
-    "note": "M-1000U 규격서"
+    "note": "M-1000U 규격서",
+    "bidPrice": 199100
   },
   {
     "id": 213,
@@ -3397,15 +3471,16 @@
     "partGroup": "제어/보드부",
     "category": "일반항목(다항목)",
     "model": "M-1000U",
-    "partNumber": "",
+    "partNumber": "A/S-mainboard",
     "name": "M-1000U 메인보드 (M-1000U Mainboard)",
     "spec": "역할: 센서 데이터 수집 및 연산 처리",
     "unit": "ea",
     "baseQty": "1",
     "cycle": "",
-    "price25": null,
-    "price26": null,
-    "note": "M-1000U 규격서"
+    "price25": 2321040,
+    "price26": 3565000,
+    "note": "기술과환경 26년 견적서 반영 (M-1000U mainboard)",
+    "bidPrice": 2321040
   },
   {
     "id": 214,
@@ -3417,11 +3492,12 @@
     "name": "10방 다채널 밸브 로터",
     "spec": "Valcon E2 rotor",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 218000,
     "price26": 225000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 218500
   },
   {
     "id": 215,
@@ -3433,11 +3509,12 @@
     "name": "10방 다채널 밸브 스테이터",
     "spec": "1/8\" Tubing, 1.5mm 10 Port",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 1131000,
     "price26": 1167000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1132910
   },
   {
     "id": 216,
@@ -3449,11 +3526,12 @@
     "name": "10방 다채널 밸브 모터부(스태핑)",
     "spec": "전압 DC 12V, 홀딩토크 2.02Nm, 정격토크 1.01Nm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 1560000,
     "price26": 1606000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1559810
   },
   {
     "id": 217,
@@ -3465,11 +3543,12 @@
     "name": "스위칭 밸브 로터",
     "spec": "Valcon E2 rotor",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 218000,
     "price26": 225000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 218500
   },
   {
     "id": 218,
@@ -3481,11 +3560,12 @@
     "name": "스위칭 밸브 스테이터",
     "spec": "1/8\" Tubing, 1.5mm 10 Port",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 1056000,
     "price26": 1089000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1057130
   },
   {
     "id": 219,
@@ -3497,11 +3577,12 @@
     "name": "스위칭 밸브 모터부(스태핑)",
     "spec": "전압 DC 12V, 홀딩토크 2.02Nm, 정격토크 1.01Nm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 1560000,
     "price26": 1606000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1559810
   },
   {
     "id": 220,
@@ -3513,11 +3594,12 @@
     "name": "정량펌프 모터부(아크릴)",
     "spec": "DC12V, 11W, 280rpm, 기어30:1, 포토인터럽트, 커플러",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 1619000,
     "price26": 1664000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1616640
   },
   {
     "id": 221,
@@ -3529,11 +3611,12 @@
     "name": "정량펌프 모터",
     "spec": "DC12V, 11W, 280rpm, 기어30:1",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 592000,
     "price26": 610000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 593610
   },
   {
     "id": 222,
@@ -3561,11 +3644,12 @@
     "name": "정량펌프 헤드부(아크릴)",
     "spec": "세라믹펌프헤드, 1회전시 0.1ml",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 1183000,
     "price26": 1220000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1184690
   },
   {
     "id": 224,
@@ -3577,11 +3661,12 @@
     "name": "반응부 TP",
     "spec": "26mm*120mm(2.8t), 파이렉스 유리",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 221000,
     "price26": 228000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 221030
   },
   {
     "id": 225,
@@ -3593,11 +3678,12 @@
     "name": "반응조캡 (Top/Bottom)",
     "spec": "PEEK",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 208000,
     "price26": 215000,
-    "note": "Top/Bottom 각 208,000원"
+    "note": "Top/Bottom 각 208,000원",
+    "bidPrice": 208400
   },
   {
     "id": 226,
@@ -3625,11 +3711,12 @@
     "name": "테프론반응부",
     "spec": "25mm*102mm(2.3t), 테프론",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 468000,
     "price26": 481000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 467310
   },
   {
     "id": 228,
@@ -3673,11 +3760,12 @@
     "name": "원형셀 BODY-TN",
     "spec": "Ø9mm*50mm, 석영",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 325000,
     "price26": 336000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 325850
   },
   {
     "id": 231,
@@ -3689,11 +3777,12 @@
     "name": "TN 원형셀 캡(Top/Bottom)",
     "spec": "PEEK",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 156000,
     "price26": 162000,
-    "note": "Top/Bottom 각 156,000원"
+    "note": "Top/Bottom 각 156,000원",
+    "bidPrice": 156610
   },
   {
     "id": 232,
@@ -3705,11 +3794,12 @@
     "name": "원형셀 BODY-TP",
     "spec": "Ø9mm*50mm, 유리",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 254000,
     "price26": 260000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 252600
   },
   {
     "id": 233,
@@ -3721,11 +3811,12 @@
     "name": "TP원형셀 캡(Top/Bottom)",
     "spec": "PEEK",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 156000,
     "price26": 162000,
-    "note": "Top/Bottom 각 156,000원"
+    "note": "Top/Bottom 각 156,000원",
+    "bidPrice": 156610
   },
   {
     "id": 234,
@@ -3737,11 +3828,12 @@
     "name": "버블감지센서",
     "spec": "1/8\" Tubing 투과형센서",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 390000,
     "price26": 400000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 378900
   },
   {
     "id": 235,
@@ -3753,11 +3845,12 @@
     "name": "측정기 메인보드",
     "spec": "140×115mm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 4160000,
     "price26": 4300000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 4174710
   },
   {
     "id": 236,
@@ -3769,11 +3862,12 @@
     "name": "UV 램프",
     "spec": "Aperture size 1.0mm, Spectral 200~1100nm, 157*55*37mm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 3559000,
     "price26": 3666000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 3561660
   },
   {
     "id": 237,
@@ -3785,11 +3879,12 @@
     "name": "포토다이오드-TP",
     "spec": "2.29x2.29mm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 761000,
     "price26": 784000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 761590
   },
   {
     "id": 238,
@@ -3801,11 +3896,12 @@
     "name": "포토다이오드-TN",
     "spec": "2.29x2.29mm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 761000,
     "price26": 784000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 761590
   },
   {
     "id": 239,
@@ -3817,11 +3913,12 @@
     "name": "LED-TP",
     "spec": "4v, 880nm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 72000,
     "price26": 75000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 71990
   },
   {
     "id": 240,
@@ -3833,11 +3930,12 @@
     "name": "스터러모터부",
     "spec": "DC 24V, 7W, 6360rpm",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 312000,
     "price26": 323000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 313220
   },
   {
     "id": 241,
@@ -3849,11 +3947,12 @@
     "name": "밸브피팅",
     "spec": "1/4\" Nut, PEEK",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 19000,
     "price26": 19000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 18310
   },
   {
     "id": 242,
@@ -3865,11 +3964,12 @@
     "name": "밸브패럴",
     "spec": "1/8\" Tubing, PFA",
     "unit": "ea",
-    "baseQty": "1",
+    "baseQty": "2",
     "cycle": "",
     "price25": 8500,
     "price26": 9000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 8460
   },
   {
     "id": 243,
@@ -3885,7 +3985,8 @@
     "cycle": "",
     "price25": 43000,
     "price26": 43000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 41680
   },
   {
     "id": 244,
@@ -3901,7 +4002,8 @@
     "cycle": "",
     "price25": 1098000,
     "price26": 1131000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1098810
   },
   {
     "id": 245,
@@ -3917,7 +4019,8 @@
     "cycle": "",
     "price25": 218000,
     "price26": 225000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 218500
   },
   {
     "id": 246,
@@ -3933,7 +4036,8 @@
     "cycle": "",
     "price25": 310000,
     "price26": 325000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 315750
   },
   {
     "id": 247,
@@ -3949,7 +4053,8 @@
     "cycle": "",
     "price25": 310000,
     "price26": 325000,
-    "note": "각 310,000원"
+    "note": "각 310,000원",
+    "bidPrice": 315750
   },
   {
     "id": 248,
@@ -3965,7 +4070,8 @@
     "cycle": "",
     "price25": 520000,
     "price26": 546000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 530460
   },
   {
     "id": 249,
@@ -3981,7 +4087,8 @@
     "cycle": "",
     "price25": 114000,
     "price26": 117000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 113670
   },
   {
     "id": 250,
@@ -3997,7 +4104,8 @@
     "cycle": "",
     "price25": 390000,
     "price26": 430000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 416790
   },
   {
     "id": 251,
@@ -4013,7 +4121,8 @@
     "cycle": "",
     "price25": 52000,
     "price26": 52000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 50520
   },
   {
     "id": 252,
@@ -4029,7 +4138,8 @@
     "cycle": "",
     "price25": 16000,
     "price26": 16000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 15160
   },
   {
     "id": 253,
@@ -4045,7 +4155,8 @@
     "cycle": "",
     "price25": 7200,
     "price26": 8000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 6950
   },
   {
     "id": 254,
@@ -4061,7 +4172,8 @@
     "cycle": "",
     "price25": 23000,
     "price26": 23000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 21470
   },
   {
     "id": 255,
@@ -4077,7 +4189,8 @@
     "cycle": "",
     "price25": 89000,
     "price26": 90000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 88410
   },
   {
     "id": 256,
@@ -4093,7 +4206,8 @@
     "cycle": "",
     "price25": 780000,
     "price26": 780000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 757800
   },
   {
     "id": 257,
@@ -4109,7 +4223,8 @@
     "cycle": "",
     "price25": 1469000,
     "price26": 1470000,
-    "note": "25년 입찰가 + 26.04.10 견적가"
+    "note": "25년 입찰가 + 26.04.10 견적가",
+    "bidPrice": 1427190
   },
   {
     "id": 258,
@@ -4139,9 +4254,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "4년",
-    "price25": null,
+    "price25": 4314768,
     "price26": 4890000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 확정단가 반영"
   },
   {
     "id": 260,
@@ -4155,9 +4270,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "4년",
-    "price25": null,
+    "price25": 1619200,
     "price26": 1840000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 규격: 599828"
   },
   {
     "id": 261,
@@ -4171,9 +4286,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "6개월",
-    "price25": null,
+    "price25": 484000,
     "price26": 550000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 확정단가 반영"
   },
   {
     "id": 262,
@@ -4187,9 +4302,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "4년",
-    "price25": null,
+    "price25": 5112800,
     "price26": 5810000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 확정단가 반영"
   },
   {
     "id": 263,
@@ -4203,9 +4318,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "2년",
-    "price25": null,
+    "price25": 519200,
     "price26": 590000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 확정단가 반영"
   },
   {
     "id": 264,
@@ -4219,9 +4334,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "4년",
-    "price25": null,
+    "price25": 4716800,
     "price26": 5360000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 확정단가 반영"
   },
   {
     "id": 265,
@@ -4235,9 +4350,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "4년",
-    "price25": null,
+    "price25": 3194400,
     "price26": 3630000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 확정단가 반영"
   },
   {
     "id": 266,
@@ -4251,9 +4366,9 @@
     "unit": "ea",
     "baseQty": "1",
     "cycle": "1년",
-    "price25": null,
+    "price25": 176000,
     "price26": 200000,
-    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적"
+    "note": "물품식별번호: 22470285 / 26.04.01 동문이엔티 본견적 / 25년 단가계약 확정단가 반영"
   },
   {
     "id": 267,
@@ -5006,5 +5121,647 @@
     "price25": null,
     "price26": null,
     "note": "브로셔 기준"
+  },
+  {
+    "id": 314,
+    "manufacturer": "새론이엔아이",
+    "partGroup": "제어/보드부",
+    "category": "소규모 TOC·NO3-N",
+    "model": "G2 Interface (TriOS)",
+    "partNumber": "11C000000",
+    "name": "TriOS G2 Interface Box",
+    "spec": "G2 Interface (TriOS)",
+    "unit": "EA",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 980000,
+    "note": "새론이엔아이 견적서 (VAT별도)"
+  },
+  {
+    "id": 315,
+    "manufacturer": "KNR",
+    "partGroup": "일반소모품",
+    "category": "VOCs",
+    "model": "APK2950W",
+    "partNumber": "",
+    "name": "Column",
+    "spec": "APK2950W Overhaul Parts",
+    "unit": "ea",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 2300000,
+    "note": "KNR 견적서 (주요 소모품)"
+  },
+  {
+    "id": 316,
+    "manufacturer": "KNR",
+    "partGroup": "일반소모품",
+    "category": "VOCs",
+    "model": "APK2950W",
+    "partNumber": "",
+    "name": "Rotor (Sampling & Injection Valve Assembly)",
+    "spec": "Sampling & Injection Valve",
+    "unit": "ea",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 900000,
+    "note": "KNR 견적서 (주요 소모품)"
+  },
+  {
+    "id": 317,
+    "manufacturer": "KNR",
+    "partGroup": "일반소모품",
+    "category": "VOCs",
+    "model": "APK2950W",
+    "partNumber": "",
+    "name": "Valve Head (Sampling & Injection Valve Assembly)",
+    "spec": "Sampling & Injection Valve",
+    "unit": "ea",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 2000000,
+    "note": "KNR 견적서"
+  },
+  {
+    "id": 318,
+    "manufacturer": "KNR",
+    "partGroup": "일반소모품",
+    "category": "VOCs",
+    "model": "APK2950W",
+    "partNumber": "",
+    "name": "Gas Dryer",
+    "spec": "APK2950W Overhaul Parts",
+    "unit": "ea",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 1500000,
+    "note": "KNR 견적서"
+  },
+  {
+    "id": 319,
+    "manufacturer": "KNR",
+    "partGroup": "제어/보드부",
+    "category": "VOCs",
+    "model": "APK2950W",
+    "partNumber": "",
+    "name": "Peltier Module",
+    "spec": "APK2950W Overhaul Parts",
+    "unit": "set",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 4500000,
+    "note": "KNR 견적서"
+  },
+  {
+    "id": 320,
+    "manufacturer": "KNR",
+    "partGroup": "튜브",
+    "category": "VOCs",
+    "model": "APK2950W",
+    "partNumber": "",
+    "name": "Water & Gas Line (1/8\" & 6mm Teflon & Sus Tubing) & Fittings",
+    "spec": "1/8\" & 6mm Teflon & Sus Tubing & Fittings",
+    "unit": "set",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 450000,
+    "note": "KNR 견적서 (주요 소모품)"
+  },
+  {
+    "id": 321,
+    "manufacturer": "KNR",
+    "partGroup": "일반소모품",
+    "category": "VOCs",
+    "model": "APK2950W",
+    "partNumber": "",
+    "name": "Sol. Valve (Drain & Over Flow & Water In 3ea/set)",
+    "spec": "Drain & Over Flow & Water In 3ea/set",
+    "unit": "set",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 900000,
+    "note": "KNR 견적서 (주요 소모품)"
+  },
+  {
+    "id": 322,
+    "manufacturer": "EasyChem",
+    "partGroup": "일반소모품",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "STA-M103-34",
+    "name": "Pump head with motor 38ml/m TOX",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "4",
+    "cycle": "",
+    "price25": null,
+    "price26": 100000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 323,
+    "manufacturer": "EasyChem",
+    "partGroup": "일반소모품",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "STA-TSNS-01",
+    "name": "TEMPERATURE SENSOR LM35",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "4",
+    "cycle": "",
+    "price25": null,
+    "price26": 200000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 324,
+    "manufacturer": "EasyChem",
+    "partGroup": "일반소모품",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "STA-OPB493T11Z-B",
+    "name": "LIMIT SENSOR TYPE OPB493",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "4",
+    "cycle": "",
+    "price25": null,
+    "price26": 200000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 325,
+    "manufacturer": "EasyChem",
+    "partGroup": "제어/보드부",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "SYM-XPIO-01",
+    "name": "Peltier driver board",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 990000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 326,
+    "manufacturer": "EasyChem",
+    "partGroup": "제어/보드부",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "SYM-NEDL-02",
+    "name": "SYM-NEDL-02 BOARD",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "4",
+    "cycle": "",
+    "price25": null,
+    "price26": 400000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 327,
+    "manufacturer": "EasyChem",
+    "partGroup": "일반소모품",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "ES_07018-A",
+    "name": "Reaction cells pack CF/200",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 1000000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 328,
+    "manufacturer": "EasyChem",
+    "partGroup": "일반소모품",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "TOX-NEEDLE-06",
+    "name": "sampling needle",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "4",
+    "cycle": "",
+    "price25": null,
+    "price26": 100000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 329,
+    "manufacturer": "EasyChem",
+    "partGroup": "튜브",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "178-0539-14",
+    "name": "PUMP TUBE NORPRENE, MICRO, GRN/GRN",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 300000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 330,
+    "manufacturer": "EasyChem",
+    "partGroup": "튜브",
+    "category": "생물독성(Bio)",
+    "model": "Easychem tox ew",
+    "partNumber": "178-0539-15",
+    "name": "PUMP TUBE NORPRENE, MICRO, PUR/PUR",
+    "spec": "Easychem tox ew 소모품",
+    "unit": "ea",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 300000,
+    "note": "동문이엔티(EasyChem 독점) 견적서"
+  },
+  {
+    "id": 331,
+    "manufacturer": "티아이시스템",
+    "partGroup": "일반소모품",
+    "category": "소규모 NH4-N",
+    "model": "NH4 소모품",
+    "partNumber": "71072574",
+    "name": "Membrane kit ammonium",
+    "spec": "NH4 소모품",
+    "unit": "SET",
+    "baseQty": "3",
+    "cycle": "",
+    "price25": null,
+    "price26": 1020000,
+    "note": "티아이시스템 견적서 (26.11.25 · 납기 6주 이내)"
+  },
+  {
+    "id": 332,
+    "manufacturer": "티아이시스템",
+    "partGroup": "일반소모품",
+    "category": "소규모 NH4-N",
+    "model": "NH4 소모품",
+    "partNumber": "71072576",
+    "name": "Membrane kit potassium",
+    "spec": "NH4 소모품",
+    "unit": "SET",
+    "baseQty": "3",
+    "cycle": "",
+    "price25": null,
+    "price26": 1080000,
+    "note": "티아이시스템 견적서 (26.11.25 · 납기 6주 이내)"
+  },
+  {
+    "id": 333,
+    "manufacturer": "티아이시스템",
+    "partGroup": "일반소모품",
+    "category": "소규모 NH4-N",
+    "model": "NH4 소모품",
+    "partNumber": "CPS11-1AS2GSA",
+    "name": "PH electrode",
+    "spec": "Model: CPS11-1AS2GSA (120mm, Pg13.5)",
+    "unit": "EA",
+    "baseQty": "3",
+    "cycle": "",
+    "price25": null,
+    "price26": 680000,
+    "note": "티아이시스템 견적서 (26.11.25 · 납기 6주 이내)"
+  },
+  {
+    "id": 334,
+    "manufacturer": "HSKorea",
+    "partGroup": "일반소모품",
+    "category": "총질소(TN)",
+    "model": "HATN-4000",
+    "partNumber": "N4VS1",
+    "name": "TN4000-가압밸브 SET",
+    "spec": "SOLENOID, 24V, 1500kPa / 가압용",
+    "unit": "SET",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": null,
+    "bidPrice": 630644,
+    "note": "디오르마 26.07.27 HSKorea 단가 내역서"
+  },
+  {
+    "id": 335,
+    "manufacturer": "HSKorea",
+    "partGroup": "일반소모품",
+    "category": "총인(TP)",
+    "model": "HATP-4000",
+    "partNumber": "P4VS1",
+    "name": "TP4000-가압밸브 SET",
+    "spec": "DC 24V, 9W",
+    "unit": "SET",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": null,
+    "bidPrice": 209772,
+    "note": "디오르마 26.07.27 HSKorea 단가 내역서"
+  },
+  {
+    "id": 336,
+    "manufacturer": "스펙스",
+    "partGroup": "일반소모품",
+    "category": "증류수기(필터)",
+    "model": "Ultra Clear TP UV TM",
+    "partNumber": "W3T197694",
+    "name": "Polishing Module MFIIID",
+    "spec": "EVOQUA Consumables",
+    "unit": "EA",
+    "baseQty": "3",
+    "cycle": "6~12개월",
+    "price25": null,
+    "price26": 1250000,
+    "note": "스펙스 26.08.21 견적서 (Nego 680만 · VAT포함 748만)"
+  },
+  {
+    "id": 337,
+    "manufacturer": "스펙스",
+    "partGroup": "일반소모품",
+    "category": "증류수기(필터)",
+    "model": "Ultra Clear TP UV TM",
+    "partNumber": "W3T197621",
+    "name": "Deionization Module DTO",
+    "spec": "EVOQUA Consumables",
+    "unit": "EA",
+    "baseQty": "3",
+    "cycle": "6~12개월",
+    "price25": null,
+    "price26": 620000,
+    "note": "스펙스 26.08.21 견적서 (Nego 680만 · VAT포함 748만)"
+  },
+  {
+    "id": 338,
+    "manufacturer": "스펙스",
+    "partGroup": "일반소모품",
+    "category": "증류수기(필터)",
+    "model": "Ultra Clear TP UV TM",
+    "partNumber": "W3T199209",
+    "name": "Sterile filter 0.2µm",
+    "spec": "EVOQUA Consumables",
+    "unit": "EA",
+    "baseQty": "3",
+    "cycle": "3~6개월",
+    "price25": null,
+    "price26": 420000,
+    "note": "스펙스 26.08.21 견적서 (Nego 680만 · VAT포함 748만)"
+  },
+  {
+    "id": 339,
+    "manufacturer": "제이엠이엔비",
+    "partGroup": "일반소모품",
+    "category": "생물독성(물벼룩)·클로로필",
+    "model": "Algae Torch / Daphnia",
+    "partNumber": "AT0001-003",
+    "name": "통신케이블",
+    "spec": "",
+    "unit": "EA",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 200000,
+    "note": "제이엠이엔비 26.08.31 견적서 (VAT포함 44만)"
+  },
+  {
+    "id": 340,
+    "manufacturer": "BL프로세스",
+    "partGroup": "일반소모품",
+    "category": "평택 TOC·TN·TP·페놀",
+    "model": "TNP",
+    "partNumber": "1600-101",
+    "name": "Syringe motor",
+    "spec": "",
+    "unit": "EA",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 1650000,
+    "note": "BL프로세스 본견적 (VAT포함 7,460,860원)"
+  },
+  {
+    "id": 341,
+    "manufacturer": "BL프로세스",
+    "partGroup": "일반소모품",
+    "category": "평택 TOC·TN·TP·페놀",
+    "model": "TNP",
+    "partNumber": "3100-101",
+    "name": "UV-Reactor_TNP",
+    "spec": "",
+    "unit": "EA",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 1210000,
+    "note": "BL프로세스 본견적 (VAT포함 7,460,860원)"
+  },
+  {
+    "id": 342,
+    "manufacturer": "BL프로세스",
+    "partGroup": "일반소모품",
+    "category": "평택 TOC·TN·TP·페놀",
+    "model": "TNP",
+    "partNumber": "3300-101",
+    "name": "Heating collar",
+    "spec": "",
+    "unit": "EA",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 159500,
+    "note": "BL프로세스 본견적 (VAT포함 7,460,860원)"
+  },
+  {
+    "id": 343,
+    "manufacturer": "BL프로세스",
+    "partGroup": "일반소모품",
+    "category": "평택 TOC·TN·TP·페놀",
+    "model": "TNP",
+    "partNumber": "3300-102",
+    "name": "Temperature sensor 100Ω",
+    "spec": "",
+    "unit": "EA",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 34300,
+    "note": "BL프로세스 본견적 (VAT포함 7,460,860원)"
+  },
+  {
+    "id": 344,
+    "manufacturer": "BL프로세스",
+    "partGroup": "튜브",
+    "category": "평택 TOC·TN·TP·페놀",
+    "model": "TNP",
+    "partNumber": "1100-104",
+    "name": "Pump tube DT 12-P",
+    "spec": "",
+    "unit": "EA",
+    "baseQty": "4",
+    "cycle": "",
+    "price25": null,
+    "price26": 103400,
+    "note": "BL프로세스 본견적 (VAT포함 7,460,860원)"
+  },
+  {
+    "id": 345,
+    "manufacturer": "BL프로세스",
+    "partGroup": "튜브",
+    "category": "평택 TOC·TN·TP·페놀",
+    "model": "TNP",
+    "partNumber": "6100-102A",
+    "name": "Tubing std 5호 (10m)",
+    "spec": "",
+    "unit": "SET",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": null,
+    "price26": 130700,
+    "note": "BL프로세스 본견적 (VAT포함 7,460,860원)"
+  },
+  {
+    "id": 346,
+    "manufacturer": "HSKorea",
+    "partGroup": "튜브",
+    "category": "자동채수기",
+    "model": "자동채수기",
+    "partNumber": "",
+    "name": "TUBE (시료이송 튜브) - 우레탄 8Ø",
+    "spec": "우레탄 8Ø",
+    "unit": "m",
+    "baseQty": "10",
+    "cycle": "",
+    "price25": null,
+    "price26": 4000,
+    "note": "자동채수기 소모품 견적 기준"
+  },
+  {
+    "id": 347,
+    "manufacturer": "HSKorea",
+    "partGroup": "일반소모품",
+    "category": "자동채수기",
+    "model": "자동채수기",
+    "partNumber": "",
+    "name": "스트레이너",
+    "spec": "",
+    "unit": "ea",
+    "baseQty": "1",
+    "cycle": "",
+    "price25": null,
+    "price26": 54000,
+    "note": "자동채수기 소모품 견적 기준"
+  },
+  {
+    "id": 348,
+    "manufacturer": "YSI",
+    "partGroup": "일반소모품",
+    "category": "일반항목",
+    "model": "YSI 6 series",
+    "partNumber": "6561",
+    "name": "pH probe",
+    "spec": "",
+    "unit": "ea",
+    "baseQty": "6",
+    "cycle": "",
+    "price25": 1050000,
+    "price26": null,
+    "note": "2025 한강수계 YSI·EXO 측정기기 소모품 단가 구매 기준"
+  },
+  {
+    "id": 349,
+    "manufacturer": "YSI",
+    "partGroup": "일반소모품",
+    "category": "일반항목",
+    "model": "YSI 6 series",
+    "partNumber": "6562",
+    "name": "DO probe",
+    "spec": "",
+    "unit": "ea",
+    "baseQty": "5",
+    "cycle": "",
+    "price25": 2330000,
+    "price26": null,
+    "note": "2025 한강수계 YSI·EXO 측정기기 소모품 단가 구매 기준"
+  },
+  {
+    "id": 350,
+    "manufacturer": "YSI",
+    "partGroup": "일반소모품",
+    "category": "일반항목",
+    "model": "YSI 6 series",
+    "partNumber": "6560",
+    "name": "Cond./Temp. probe",
+    "spec": "",
+    "unit": "ea",
+    "baseQty": "3",
+    "cycle": "",
+    "price25": 2330000,
+    "price26": null,
+    "note": "2025 한강수계 YSI·EXO 측정기기 소모품 단가 구매 기준"
+  },
+  {
+    "id": 351,
+    "manufacturer": "YSI",
+    "partGroup": "일반소모품",
+    "category": "일반항목",
+    "model": "YSI 6 series",
+    "partNumber": "6136",
+    "name": "Turbidity probe",
+    "spec": "",
+    "unit": "ea",
+    "baseQty": "2",
+    "cycle": "",
+    "price25": 6600000,
+    "price26": null,
+    "note": "2025 한강수계 YSI·EXO 측정기기 소모품 단가 구매 기준"
+  },
+  {
+    "id": 352,
+    "manufacturer": "YSI",
+    "partGroup": "일반소모품",
+    "category": "일반항목",
+    "model": "YSI 6 series",
+    "partNumber": "5775",
+    "name": "DO Membrane kit",
+    "spec": "",
+    "unit": "ea",
+    "baseQty": "5",
+    "cycle": "",
+    "price25": 150000,
+    "price26": null,
+    "note": "2025 한강수계 YSI·EXO 측정기기 소모품 단가 구매 기준"
+  },
+  {
+    "id": 353,
+    "manufacturer": "YSI",
+    "partGroup": "일반소모품",
+    "category": "일반항목",
+    "model": "YSI 6 series",
+    "partNumber": "6570",
+    "name": "Maintenance kit",
+    "spec": "",
+    "unit": "ea",
+    "baseQty": "5",
+    "cycle": "",
+    "price25": 400000,
+    "price26": null,
+    "note": "2025 한강수계 YSI·EXO 측정기기 소모품 단가 구매 기준"
   }
 ]

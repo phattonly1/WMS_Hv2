@@ -168,6 +168,82 @@ export const LAUNCHER_UTILS_JS = `
         };
     };
 
+    // 런처 모달 좌측 도킹 토글 (팝업과 나란히 진행사항 확인용)
+    const setLauncherSideBySide = (active) => {
+        const modalEl = document.getElementById('wms-instant-modal');
+        const cardEl = document.getElementById('wms-instant-card');
+        if (!modalEl || !cardEl) return;
+        if (active) {
+            modalEl.style.justifyContent = 'flex-start';
+            modalEl.style.paddingLeft = '16px';
+            cardEl.style.transition = 'width 0.2s ease, max-width 0.2s ease';
+            cardEl.style.width = '520px';
+            cardEl.style.maxWidth = '42vw';
+            cardEl.style.minWidth = '400px';
+        } else {
+            modalEl.style.justifyContent = 'center';
+            modalEl.style.paddingLeft = '0';
+            cardEl.style.width = '96vw';
+            cardEl.style.maxWidth = '1600px';
+            cardEl.style.minWidth = '';
+        }
+    };
+
+    // 런처 우측에 겹치지 않게 팝업 위치/크기 계산
+    const getSidePopupFeatures = (preferredWidth = 1120, preferredHeight = 900) => {
+        const availW = (window.screen && window.screen.availWidth) || window.screen.width || 1920;
+        const availH = (window.screen && window.screen.availHeight) || window.screen.height || 1080;
+        const availLeft = (window.screen && window.screen.availLeft) || 0;
+        const availTop = (window.screen && window.screen.availTop) || 0;
+        const launcherReserve = Math.min(550, Math.floor(availW * 0.32));
+        const width = Math.min(preferredWidth, Math.max(760, availW - launcherReserve - 24));
+        const height = Math.min(preferredHeight, Math.max(640, availH - 60));
+        const left = availLeft + Math.max(0, availW - width - 12);
+        const top = availTop + Math.max(0, Math.floor((availH - height) / 2));
+        return \`width=\${width},height=\${height},top=\${top},left=\${left},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no\`;
+    };
+
+    // 팝업 내 사용자 조작 원천 차단 (스크립트 자동 조작은 통과, 실제 사용자 입력만 차단)
+    const installPopupInputLock = (targetWin, label = '자동 조회 진행 중 — 조작이 잠겨 있습니다') => {
+        if (!targetWin || targetWin.closed) return () => {};
+        let targetDoc;
+        try { targetDoc = targetWin.document; } catch(e) { return () => {}; }
+        if (!targetDoc || !targetDoc.body) return () => {};
+
+        const LOCK_ID = 'wms-popup-input-lock';
+        const oldLock = targetDoc.getElementById(LOCK_ID);
+        if (oldLock) oldLock.remove();
+
+        const lockEl = targetDoc.createElement('div');
+        lockEl.id = LOCK_ID;
+        lockEl.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,0.14);cursor:not-allowed;pointer-events:all;display:flex;align-items:flex-start;justify-content:center;padding-top:14px;user-select:none;';
+        lockEl.innerHTML = \`<div style="background:rgba(15,23,42,0.88);color:#f8fafc;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;box-shadow:0 8px 20px rgba(0,0,0,0.28);border:1px solid rgba(148,163,184,0.35);letter-spacing:-0.01em;">🔒 \${label}</div>\`;
+        targetDoc.body.appendChild(lockEl);
+
+        const blockUserEvent = (e) => {
+            if (!e.isTrusted) return;
+            e.preventDefault();
+            e.stopPropagation();
+            if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+            return false;
+        };
+
+        const events = ['mousedown', 'mouseup', 'click', 'dblclick', 'contextmenu', 'wheel', 'keydown', 'keyup', 'keypress', 'touchstart'];
+        events.forEach((evt) => {
+            try { targetDoc.addEventListener(evt, blockUserEvent, { capture: true, passive: false }); } catch(e) {}
+        });
+
+        return () => {
+            events.forEach((evt) => {
+                try { targetDoc.removeEventListener(evt, blockUserEvent, { capture: true }); } catch(e) {}
+            });
+            try {
+                const el = targetDoc.getElementById(LOCK_ID);
+                if (el) el.remove();
+            } catch(e) {}
+        };
+    };
+
     // 안정적인 동시성 제어 큐
     const runWithConcurrency = async (items, workerFn, concurrency = 6, isCancelRequested = () => false) => {
         const results = [];

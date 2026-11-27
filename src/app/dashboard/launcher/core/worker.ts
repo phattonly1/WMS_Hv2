@@ -6,6 +6,7 @@
 export const LAUNCHER_WORKER_JS = `
     let sharedWorkerWin = null;
     let sharedWorkerCleanupBypass = null;
+    let sharedWorkerCleanupLock = null;
     let activeWorkerCtx = { win: window, doc: document, $: window.$ || window.jQuery, isWorker: false };
 
     const waitForConditionInWin = async (checkFn, maxWaitMs = 15000, stepMs = 300) => {
@@ -19,6 +20,10 @@ export const LAUNCHER_WORKER_JS = `
     };
 
     const cleanupWorkerWindow = () => {
+        if (typeof sharedWorkerCleanupLock === 'function') {
+            try { sharedWorkerCleanupLock(); } catch(e) {}
+            sharedWorkerCleanupLock = null;
+        }
         if (typeof sharedWorkerCleanupBypass === 'function') {
             try { sharedWorkerCleanupBypass(); } catch(e) {}
             sharedWorkerCleanupBypass = null;
@@ -28,6 +33,7 @@ export const LAUNCHER_WORKER_JS = `
             sharedWorkerWin = null;
         }
         activeWorkerCtx = { win: window, doc: document, $: window.$ || window.jQuery, isWorker: false };
+        if (typeof setLauncherSideBySide === 'function') setLauncherSideBySide(false);
         try { window.focus(); } catch(e) {}
     };
 
@@ -65,27 +71,31 @@ export const LAUNCHER_WORKER_JS = `
             } catch(e) {}
         }
 
+        if (typeof sharedWorkerCleanupLock === 'function') {
+            try { sharedWorkerCleanupLock(); } catch(e) {}
+            sharedWorkerCleanupLock = null;
+        }
         if (typeof sharedWorkerCleanupBypass === 'function') {
             try { sharedWorkerCleanupBypass(); } catch(e) {}
             sharedWorkerCleanupBypass = null;
         }
 
-        const width = 1280;
-        const height = 900;
-        const left = Math.max(0, (window.screen.width - width) / 2);
-        const top = Math.max(0, (window.screen.height - height) / 2);
+        if (typeof setLauncherSideBySide === 'function') setLauncherSideBySide(true);
+
+        const popupFeatures = (typeof getSidePopupFeatures === 'function')
+            ? getSidePopupFeatures(1120, 900)
+            : 'width=1120,height=900,top=40,left=560,resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no';
 
         sharedWorkerWin = window.open(
             targetUrl,
             'wms_smart_worker_window',
-            \`width=\${width},height=\${height},top=\${top},left=\${left},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no\`
+            popupFeatures
         );
 
         if (!sharedWorkerWin) {
+            if (typeof setLauncherSideBySide === 'function') setLauncherSideBySide(false);
             throw new Error('팝업 차단이 감지되었습니다. 브라우저 주소창 우측에서 팝업을 허용해주세요.');
         }
-
-        sharedWorkerWin.focus();
 
         const isReady = await waitForConditionInWin(() => {
             if (!sharedWorkerWin || sharedWorkerWin.closed || !sharedWorkerWin.location) return false;
@@ -106,7 +116,7 @@ export const LAUNCHER_WORKER_JS = `
             await delay(1500);
         }
 
-        // 워커 창의 confirm/alert 및 조회 기간 경고 팝업 자동 우회 설정
+        // 워커 창의 confirm/alert 우회 및 사용자 조작 잠금 오버레이 적용
         try {
             sharedWorkerCleanupBypass = setupPopupBypass('wms_worker_bypass', sharedWorkerWin);
             sharedWorkerWin.confirm = () => true;
@@ -114,6 +124,9 @@ export const LAUNCHER_WORKER_JS = `
                 console.log('🔇 [워커] 알림 자동 우회:', msg);
                 return true;
             };
+            if (typeof installPopupInputLock === 'function') {
+                sharedWorkerCleanupLock = installPopupInputLock(sharedWorkerWin, \`\${statusLabel} — 조작이 잠겨 있습니다\`);
+            }
         } catch(e) {}
 
         activeWorkerCtx = {

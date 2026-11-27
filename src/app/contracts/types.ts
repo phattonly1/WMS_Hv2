@@ -12,6 +12,7 @@ export interface ConsumableItem {
 	cycle: string;
 	price25: number | null;
 	price26: number | null;
+	bidPrice?: number | null;
 	note: string;
 }
 
@@ -58,10 +59,17 @@ export interface BomModelData {
 
 export type BomDataset = Record<string, BomModelData>;
 
+export type BudgetAccount = "maintenance" | "material";
+
 export interface PlanLineEntry {
 	selected: boolean;
 	qty: number;
 	customPrice?: number | null;
+	bidPrice?: number | null;
+	q1Qty?: number;
+	q2Qty?: number;
+	q3Qty?: number;
+	budgetAccount?: BudgetAccount;
 	memo?: string;
 }
 
@@ -87,6 +95,13 @@ export const MANUFACTURERS = [
 	"시마즈",
 	"YSI",
 	"기술과환경",
+	"새론이엔아이",
+	"KNR",
+	"EasyChem",
+	"티아이시스템",
+	"스펙스",
+	"제이엠이엔비",
+	"BL프로세스",
 ] as const;
 
 export const PART_GROUPS = [
@@ -109,6 +124,19 @@ export const MANUFACTURER_BADGE: Record<string, string> = {
 	YSI: "bg-[#06b6d4]/15 text-[#0284c7] dark:text-[#06b6d4] border-[#06b6d4]/30",
 	시마즈:
 		"bg-[#2563eb]/15 text-[#2563eb] dark:text-[#93c5fd] border-[#2563eb]/40",
+	새론이엔아이:
+		"bg-[#10b981]/15 text-[#059669] dark:text-[#34d399] border-[#10b981]/30",
+	KNR: "bg-[#f59e0b]/15 text-[#f59e0b] dark:text-[#fbbf24] border-[#f59e0b]/30",
+	EasyChem:
+		"bg-[#f59e0b]/15 text-[#f59e0b] dark:text-[#fbbf24] border-[#f59e0b]/30",
+	티아이시스템:
+		"bg-[#10b981]/15 text-[#059669] dark:text-[#34d399] border-[#10b981]/30",
+	스펙스:
+		"bg-[#06b6d4]/15 text-[#0284c7] dark:text-[#06b6d4] border-[#06b6d4]/30",
+	제이엠이엔비:
+		"bg-[#38bdf8]/15 text-[#0284c7] dark:text-[#38bdf8] border-[#38bdf8]/30",
+	BL프로세스:
+		"bg-[#2563eb]/15 text-[#2563eb] dark:text-[#60a5fa] border-[#2563eb]/30",
 };
 
 export const GROUP_BADGE: Record<string, string> = {
@@ -277,6 +305,36 @@ export function resolveUnitPrice(
 		return { price: item.price25, source: "25" };
 	}
 	return { price: null, source: "none" };
+}
+
+const MATERIAL_KEYWORDS = [
+	"표준용액",
+	"표준액",
+	"시약",
+	"전해액",
+	"배지",
+	"물벼룩",
+	"standard",
+	"solution",
+	"buffer",
+	"reagent",
+	"electrolyte",
+	"daphnia",
+	"질소가스",
+	"초순수",
+	"증류수",
+];
+
+/** 품목의 예산과목(시설장비유지비 / 재료비) 결정 — 사용자 지정값 우선, 미지정 시 품명·규격 키워드로 자동 분류 */
+export function resolveBudgetAccount(
+	item: ConsumableItem,
+	entry?: PlanLineEntry,
+): BudgetAccount {
+	if (entry?.budgetAccount) return entry.budgetAccount;
+	const haystack = `${item.name} ${item.spec}`.toLowerCase();
+	return MATERIAL_KEYWORDS.some((kw) => haystack.includes(kw))
+		? "material"
+		: "maintenance";
 }
 
 export function createDefaultPlanState(

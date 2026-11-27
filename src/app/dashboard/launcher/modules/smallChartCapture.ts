@@ -19,6 +19,7 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
             try { wmsChartPopupWin.close(); } catch(e) {}
         }
         wmsChartPopupWin = null;
+        if (typeof setLauncherSideBySide === 'function') setLauncherSideBySide(false);
     }
 
     async function captureWmsChartStrip(st, isPre, yyyymm) {
@@ -31,11 +32,18 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
         
         console.log(\`[WMS 차트 캡처] 📸 [\${cleanStName}] \${typeLabel} 팝업 호출: \${popupUrl}\`);
 
+        // 런처 좌측 도킹 + 팝업 우측 배치로 진행사항과 차트 팝업 동시 표시
+        if (typeof setLauncherSideBySide === 'function') setLauncherSideBySide(true);
+        const popupFeatures = (typeof getSidePopupFeatures === 'function')
+            ? getSidePopupFeatures(1280, 960)
+            : 'width=1280,height=960,top=40,left=560,resizable=yes,scrollbars=yes';
+
         // 단일 팝업 이름('wms_chart_popup') 사용으로 브라우저 팝업 누적/차단 방지
-        const popup = window.open(popupUrl, 'wms_chart_popup', 'width=1280,height=1000');
+        const popup = window.open(popupUrl, 'wms_chart_popup', popupFeatures);
         wmsChartPopupWin = popup;
 
         if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+            if (typeof setLauncherSideBySide === 'function') setLauncherSideBySide(false);
             console.error(\`❌ [\${st.name}] 팝업이 차단되었습니다! 브라우저 주소창에서 팝업을 허용해주세요.\`);
             alert('⚠️ 팝업이 브라우저에 의해 차단되었습니다!\\n브라우저 주소창 오른쪽에서 [항상 팝업 허용]을 설정하고 다시 시도해주세요.');
             return null;
@@ -69,15 +77,18 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
                 return null;
             }
 
+            // 팝업 내 사용자 조작 잠금 오버레이 적용 (Canvas 직접 추출이므로 캡처 이미지에는 영향 없음)
+            if (typeof installPopupInputLock === 'function') {
+                installPopupInputLock(popup, \`[\${cleanStName}] \${typeLabel} 차트 캡처 중 — 조작이 잠겨 있습니다\`);
+            }
+
             // 2단계: 차트 렌더링 대기
-            const cleanStName = st.name.replace(/\\(소규모\\)|\\(국가망\\)|\\s/g, '').trim();
             const isNH3 = ['S01035', 'S01032', 'S01039'].includes(st.value) || 
                           ['원주천', '금사천', '조종천'].includes(cleanStName);
             const isOil = ['S01030', 'S01040', 'S01044'].includes(st.value) || 
                           ['전천', '왕숙천', '송전천'].includes(cleanStName);
             const expectedCount = (isNH3 || isOil) ? 8 : 7;
 
-            try { popup.focus(); } catch(e) {}
             console.log(\`  ⏳ [\${cleanStName}] \${typeLabel} 차트 렌더링 감지 시작 (최대 30초)...\`);
 
             let prevSignatures = '';
@@ -93,8 +104,6 @@ export const UNIFIED_SMALL_CHART_CAPTURE_JS = `
                     closeWmsChartPopup();
                     return null;
                 }
-
-                try { popup.focus(); } catch(e) {}
 
                 // 항목별 캔버스 탐색 (chart0 ~ chart11)
                 const docCurrent = popup.document;

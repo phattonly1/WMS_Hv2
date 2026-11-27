@@ -11,11 +11,16 @@ export type ProcessActor =
 	| "조달청"
 	| "업체";
 
+export type AccountingStage = "품의" | "원인행위" | "결의" | "자금집행";
+export type ProcessStepStatus = "active" | "conditional" | "skipped";
+
 export interface ProcessStep {
 	stepNo: number;
 	actor: ProcessActor;
 	action: string;
 	detail: string;
+	accountingStage?: AccountingStage;
+	status?: ProcessStepStatus;
 	flexClass?: string;
 }
 
@@ -60,9 +65,13 @@ export interface CompetitiveTier {
 	keyPoints: string[];
 }
 
+export type ManufacturerCategory = "국가망" | "소규모" | "부대장비·기타";
+
 export interface ManufacturerContractRow {
 	id: string;
 	name: string;
+	category: ManufacturerCategory;
+	isExclusive?: boolean;
 	equipment: string;
 	maintenanceItems: string;
 	materialItems: string;
@@ -92,40 +101,49 @@ export const PURCHASE_TYPES: PurchaseTypeRule[] = [
 			{
 				stepNo: 1,
 				actor: "사업부서",
-				action: "예산확인 · 견적 요청",
-				detail: "예산잔액 확인 · 2개사 비교견적 (독점·직접정비는 1인)",
-				flexClass: "flex-[1.25]",
+				action: "MIS 발주계획 등록",
+				detail: "2,200만 원 이하 미대상 (생략)",
+				status: "skipped",
 			},
 			{
 				stepNo: 2,
 				actor: "사업부서",
-				action: "내부결재 상신(부장)",
-				detail: "계획(안) · 견적서 첨부",
-				flexClass: "flex-[0.95]",
+				action: "예산확인 · 견적 요청",
+				detail: "예산잔액 확인 · 2개사 비교견적 (독점·직접정비는 1인)",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 3,
 				actor: "사업부서",
-				action: "발주 · 납품 · 검수결재(부장)",
-				detail: "검수조서 작성(납품 후 7일내)",
-				flexClass: "flex-[1.15]",
+				action: "내부결재 상신(부장)",
+				detail: "계획(안)·견적서 첨부 · 자체 발주(계약부서 생략)",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 4,
-				actor: "사업부서",
-				action: "지출품의 · 원인행위 · 지출결의",
-				detail: "거래명세서 · 세금계산서 · 통장사본",
-				flexClass: "flex-[1.2]",
+				actor: "계약부서",
+				action: "공고 · 계약체결",
+				detail: "계약부서 절차 없음 (사업부서 자체 발주)",
+				accountingStage: "원인행위",
+				status: "skipped",
 			},
 			{
 				stepNo: 5,
+				actor: "사업부서",
+				action: "납품 · 검수결재(부장) · 직접 결의",
+				detail: "검수조서(7일내) · 사업부서 품의·원인·결의",
+				accountingStage: "결의",
+			},
+			{
+				stepNo: 6,
 				actor: "지출부서",
 				action: "대금지급",
 				detail: "자금집행(통장잔액확인)",
-				flexClass: "flex-[0.75]",
+				accountingStage: "자금집행",
 			},
 		],
-		cautionNote: "",
+		cautionNote:
+			"공공요금·여비·법인카드 등 계약 불필요 건은 원인행위 없이 바로 지출결의",
 		accentClass:
 			"bg-[#10b981]/15 text-[#059669] dark:text-[#34d399] border-[#10b981]/30",
 	},
@@ -145,38 +163,44 @@ export const PURCHASE_TYPES: PurchaseTypeRule[] = [
 			{
 				stepNo: 1,
 				actor: "사업부서",
-				action: "예산확인 · 견적 요청",
-				detail: "예산잔액 확인 · 견적서 · 독점대리점계약서(해당 시)",
+				action: "MIS 발주계획 등록",
+				detail: "2,200만 초과(독점·수리) 시 필수 · 품명 10자리",
+				status: "conditional",
 			},
 			{
 				stepNo: 2,
 				actor: "사업부서",
-				action: "내부결재 상신(처장)",
-				detail: "계획(안·납품기한 기재) · 수의계약 필수서류 · 예산 조정배정",
+				action: "예산확인 · 견적 요청",
+				detail: "예산잔액 확인 · 견적서 · 독점대리점계약서(해당 시)",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 3,
 				actor: "사업부서",
-				action: "구매요청 (MIS · 협조문)",
-				detail: "총액·단가 → MIS / 분할 → 협조문(표준계약)",
+				action: "내부결재(처장) · 구매요청",
+				detail: "납품기한·수의필수 · 총액은 조정배정(단가 자체집행)",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 4,
 				actor: "계약부서",
 				action: "승낙사항 · 계약체결",
 				detail: "접수 · 가격검토 · 승낙사항/표준계약서 발송",
+				accountingStage: "원인행위",
 			},
 			{
 				stepNo: 5,
 				actor: "사업부서",
 				action: "납품 · 검수결재(부장) · 지급요청",
-				detail: "MIS 검수조서에서 지급요청(7일내) · 4대보험 완납증명서",
+				detail: "MIS 검수조서 요청(7일내)·4대보험 → 계약부서 결의",
+				accountingStage: "결의",
 			},
 			{
 				stepNo: 6,
 				actor: "지출부서",
 				action: "대금지급",
 				detail: "자금집행(통장잔액확인)",
+				accountingStage: "자금집행",
 			},
 		],
 		cautionNote:
@@ -200,41 +224,47 @@ export const PURCHASE_TYPES: PurchaseTypeRule[] = [
 			{
 				stepNo: 1,
 				actor: "사업부서",
-				action: "MIS 발주계획 입력",
+				action: "MIS 발주계획 등록",
 				detail: "연간(12/20)·분기(3·6·9월 15일)·수시 · 품명 10자리",
 			},
 			{
 				stepNo: 2,
 				actor: "사업부서",
-				action: "내부결재 상신(처장)",
-				detail: "계획(안) · 입찰 필수서류 3종 · 자가점검표 · 예산 조정배정",
+				action: "예산확인 · 설계견적 요청",
+				detail: "예산잔액 확인 · 기초금액 견적 · 입찰 필수서류 3종",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 3,
 				actor: "사업부서",
-				action: "MIS 품의 · 계약의뢰",
-				detail: "계약품의조회 → 계약의뢰관리(소상공인 제한)",
+				action: "내부결재(처장) · 계약의뢰",
+				detail: "입찰3종·자가점검 · 총액은 조정배정(단가 자체집행)",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 4,
 				actor: "계약부서",
-				action: "나라장터 견적공고",
-				detail: "사전규격(5일) → 본공고(3일·하한88%)",
+				action: "나라장터 견적공고 · 체결",
+				detail: "사전규격(5일) → 본공고(3일·하한88%) · 체결",
+				accountingStage: "원인행위",
 			},
 			{
 				stepNo: 5,
 				actor: "사업부서",
 				action: "납품 · 검수결재(부장) · 지급요청",
-				detail: "MIS 체결 · 검사(14일내) · 대금지급관리",
+				detail: "검사(14일내) · MIS 대금지급관리 → 계약부서 결의",
+				accountingStage: "결의",
 			},
 			{
 				stepNo: 6,
 				actor: "지출부서",
 				action: "대금지급",
 				detail: "자금집행(통장잔액확인)",
+				accountingStage: "자금집행",
 			},
 		],
-		cautionNote: "입찰 필수서류 3종: 규격서 · 내역서 · 과업내용서",
+		cautionNote:
+			"입찰 필수서류 3종: 규격서 · 내역서 · 과업내용서 · 단가계약은 조정배정 없이 자체예산 집행",
 		accentClass:
 			"bg-[#06b6d4]/15 text-[#0284c7] dark:text-[#06b6d4] border-[#06b6d4]/30",
 	},
@@ -254,38 +284,43 @@ export const PURCHASE_TYPES: PurchaseTypeRule[] = [
 			{
 				stepNo: 1,
 				actor: "사업부서",
-				action: "MIS 발주계획 · 규격확정",
-				detail: "연간(12/20)·분기(3·6·9월 15일) · 품명 10자리",
+				action: "MIS 발주계획 등록",
+				detail: "연간(12/20)·분기(3·6·9월 15일)·수시 · 품명 10자리",
 			},
 			{
 				stepNo: 2,
 				actor: "사업부서",
-				action: "내부결재 상신(처장)",
-				detail: "계획(안) · 입찰 필수서류 3종 · 예산 조정배정",
+				action: "예산확인 · 설계견적 요청",
+				detail: "예산잔액 확인 · 기초금액 견적 · 입찰 필수서류 3종",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 3,
 				actor: "사업부서",
-				action: "MIS 품의 · 계약의뢰",
-				detail: "중앙조달(조달청) 계약의뢰 등록",
+				action: "내부결재(처장) · 중앙조달 의뢰",
+				detail: "입찰3종 · 단가계약은 자체예산 집행(조정배정 없음)",
+				accountingStage: "품의",
 			},
 			{
 				stepNo: 4,
 				actor: "조달청",
-				action: "입찰공고 · 적격심사",
-				detail: "사전규격(5일) → 본공고(7일) → 계약체결",
+				action: "입찰공고 · 적격심사 체결",
+				detail: "사전규격(5일) → 본공고(7일) → 적격심사·계약",
+				accountingStage: "원인행위",
 			},
 			{
 				stepNo: 5,
 				actor: "사업부서",
-				action: "납품 · 검수결재(부장) · 지급요청",
-				detail: "분할발주 · 검사(14일내) · MIS 대금지급관리",
+				action: "분할검수(부장) · 지급요청",
+				detail: "분할발주·검사(14일내) · MIS 대금지급관리 → 결의",
+				accountingStage: "결의",
 			},
 			{
 				stepNo: 6,
 				actor: "지출부서",
 				action: "대금지급",
 				detail: "자금집행(통장잔액확인)",
+				accountingStage: "자금집행",
 			},
 		],
 		cautionNote:
@@ -344,7 +379,7 @@ export const SOLE_SOURCE_CRITERIA: SoleSourceCriterion[] = [
 		amountRangeVat: "2,200만~1억 원",
 		targetScope: "독점대리점계약서 보유 2개사 (입찰 가능하면 독점 불가)",
 		legalBasis: "국가계약법 시행령 제26조 제1항 제2호 (1인 수의)",
-		requiredDocs: ["독점대리점계약서(LOA)", "수의계약 필수서류"],
+		requiredDocs: ["독점대리점계약서", "수의계약 필수서류"],
 		note: "2,200만 원 초과로 MIS 발주계획 선행 필수",
 	},
 	{
@@ -431,6 +466,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-hsk",
 		name: "HSKorea",
+		category: "국가망",
 		equipment: "TOC·TN·TP·Bio·자동채수기 (HATA·HATN·HATP·HATOX)",
 		maintenanceItems: "펌프·밸브·보드·모듈 등 장비 수리·교체 부품",
 		materialItems: "-",
@@ -439,6 +475,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-ysi",
 		name: "동문이엔티",
+		category: "국가망",
 		equipment: "일반항목 (EXO2 · YSI600XL · 6600EDS)",
 		maintenanceItems: "EXO 센서 모듈·와이퍼·본체 수리·교정",
 		materialItems: "표준물질",
@@ -447,6 +484,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-shimadzu",
 		name: "시마즈",
+		category: "국가망",
 		equipment: "TOC (TOC-4200 · TOC-4110)",
 		maintenanceItems: "연소관·검출기·시린지 펌프 등 정비·수리",
 		materialItems: "-",
@@ -455,6 +493,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-baeknyeon",
 		name: "백년기술",
+		category: "국가망",
 		equipment: "TN·TP·자동채수기 (Robochem A2/A4 · TN-2060 · TP-2002)",
 		maintenanceItems: "장비 고장 수리 및 주요 부품 교체",
 		materialItems: "-",
@@ -463,6 +502,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-kisul",
 		name: "기술과환경",
+		category: "국가망",
 		equipment: "일반항목 (M-1000U · 평택 3개소 M-3000U 예정)",
 		maintenanceItems: "장비 고장 수리 및 주요 부품 교체",
 		materialItems: "-",
@@ -471,22 +511,27 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-easychem",
 		name: "동문이엔티",
+		category: "국가망",
+		isExclusive: true,
 		equipment: "Bio (EasyChem 생물독성)",
 		maintenanceItems: "장비 정비·수리 부품 (제조사·독점 대리점)",
 		materialItems: "박테리아 및 배양액",
-		note: "독점대리점계약서(LOA) 보유 · 12월 말 만료",
+		note: "독점대리점계약서 보유 · 12월 말 만료",
 	},
 	{
 		id: "mfg-itox",
 		name: "엘엠비",
+		category: "국가망",
+		isExclusive: true,
 		equipment: "Bio (microLAN iTOXcontrol 생물독성)",
 		maintenanceItems: "장비 정비·수리 부품 (제조사·독점 대리점)",
 		materialItems: "박테리아 및 배양액",
-		note: "독점대리점계약서(LOA) 보유 · 10월 중 만료(사전 발주 주의)",
+		note: "독점대리점계약서 보유 · 10월 중 만료(사전 발주 주의)",
 	},
 	{
 		id: "mfg-knr",
 		name: "KNR",
+		category: "국가망",
 		equipment: "VOCs · VOC 자동채수기",
 		maintenanceItems: "VOCs·VOC 자동채수기 정비·수리 및 주요 부품 교체",
 		materialItems: "-",
@@ -495,6 +540,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-blprocess",
 		name: "BL프로세스",
+		category: "국가망",
 		equipment: "평택 TOC·TN·TP·페놀 (Star TOCk 등)",
 		maintenanceItems: "장비 정비·수리 및 주요 부품 교체",
 		materialItems: "-",
@@ -503,6 +549,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-jmenv",
 		name: "제이엠이엔비",
+		category: "국가망",
 		equipment: "생물독성(물벼룩) · 클로로필",
 		maintenanceItems: "물벼룩·클로로필 측정기 정비·수리 부품",
 		materialItems: "-",
@@ -510,7 +557,8 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	},
 	{
 		id: "mfg-saerom",
-		name: "새롬이앤아이",
+		name: "새론이엔아이",
+		category: "소규모",
 		equipment: "소규모 TOC · NO3-N",
 		maintenanceItems: "소규모 측정기 정비·수리 및 부품 교체",
 		materialItems: "-",
@@ -518,15 +566,17 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	},
 	{
 		id: "mfg-tieng",
-		name: "티아이이앤지",
+		name: "티아이시스템",
+		category: "소규모",
 		equipment: "소규모 NH4-N",
 		maintenanceItems: "소규모 측정기 정비·수리 및 부품 교체",
 		materialItems: "-",
-		note: "소규모 측정소 NH4-N 장비",
+		note: "소규모 측정소 NH4-N 장비 (납기 발주 후 6주 이내)",
 	},
 	{
 		id: "mfg-yeoui",
 		name: "여의시스템",
+		category: "부대장비·기타",
 		equipment: "데이터로거 (자료수집장치)",
 		maintenanceItems: "데이터로거 본체·통신모듈·전원부 수리·교체",
 		materialItems: "-",
@@ -535,6 +585,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-miraest",
 		name: "미래에스티",
+		category: "부대장비·기타",
 		equipment: "증류수기 (초순수 제조장치)",
 		maintenanceItems: "증류수기 정비·수리 부품",
 		materialItems: "필터",
@@ -543,6 +594,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-spex",
 		name: "스펙스",
+		category: "부대장비·기타",
 		equipment: "증류수기 (초순수 제조장치)",
 		maintenanceItems: "증류수기 정비·수리 부품",
 		materialItems: "필터",
@@ -551,6 +603,7 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-enco",
 		name: "엔코",
+		category: "부대장비·기타",
 		equipment: "수질분석용 시약",
 		maintenanceItems: "-",
 		materialItems: "제조시약",
@@ -559,22 +612,16 @@ export const MANUFACTURER_CONTRACT_LIST: ManufacturerContractRow[] = [
 	{
 		id: "mfg-hansung",
 		name: "한성플랜트/에어존",
+		category: "부대장비·기타",
 		equipment: "채수시설 관련 공사",
 		maintenanceItems: "채수시설 배관·펌프·부대설비 보수 및 공사",
 		materialItems: "-",
 		note: "측정소 채수시설 관련 각종 보수·공사 지원",
 	},
 	{
-		id: "mfg-kukje",
-		name: "국제과학",
-		equipment: "채수·실험 소모품",
-		maintenanceItems: "-",
-		materialItems: "무균채수병",
-		note: "뉴국제과학상사 · 수질 시료 채취용 무균채수병(1L·2L 등)",
-	},
-	{
 		id: "mfg-wilo",
 		name: "윌로펌프",
+		category: "부대장비·기타",
 		equipment: "채수·이송 펌프",
 		maintenanceItems: "펌프",
 		materialItems: "-",

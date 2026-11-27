@@ -3,11 +3,15 @@
 import {
 	AlertTriangle,
 	ArrowLeft,
+	BookOpen,
 	ClipboardList,
 	Download,
 	FileSpreadsheet,
+	Layers,
 	Monitor,
 	PackageCheck,
+	Scale,
+	Search,
 	Upload,
 	Wallet,
 } from "lucide-react";
@@ -16,7 +20,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import BomDiagramGuideTab from "./components/BomDiagramGuideTab";
-import ContractsSidebar from "./components/ContractsSidebar";
 import HandoverBriefingTab from "./components/HandoverBriefingTab";
 import ProcurementWorkspaceTab, {
 	type ListScopeFilter,
@@ -30,6 +33,8 @@ import {
 	createDefaultPlanState,
 	formatWon,
 	type HandoverPlanState,
+	MANUFACTURERS,
+	PART_GROUPS,
 	type PlanLineEntry,
 	parseBaseQty,
 	resolveUnitPrice,
@@ -254,22 +259,6 @@ export default function ContractsPage() {
 		[commitPlan, items],
 	);
 
-	const handleResetDefaults = useCallback(() => {
-		if (
-			!window.confirm(
-				"품목 선택 여부와 계획수량을 초기 추천 기준으로 되돌리시겠습니까? (작성한 총괄 메모는 유지됩니다)",
-			)
-		) {
-			return;
-		}
-		const fresh = createDefaultPlanState(items);
-		commitPlan((prev) => ({
-			...prev,
-			entries: fresh.entries,
-		}));
-		toast.success("초기 추천 발주 수량으로 복원되었습니다.");
-	}, [commitPlan, items]);
-
 	const handleImportJson = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => {
 			const file = e.target.files?.[0];
@@ -438,14 +427,14 @@ export default function ContractsPage() {
 			/>
 
 			{/* /items, /docs 정식 규격 상단 고정 내비게이션 헤더 (h-14 + 블러 + 2px 진행률 게이지) */}
-			<header className="sticky top-0 h-14 px-4 lg:px-6 border-b border-[#e2e8f0] dark:border-[#222228] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between gap-3 shrink-0 z-30 transition-colors">
+			<header className="sticky top-0 h-14 px-4 lg:px-6 border-b border-[#e2e8f0] dark:border-[#222228] bg-white/80 dark:bg-[#111115]/80 backdrop-blur-md flex items-center justify-between gap-2 shrink-0 z-30 transition-colors overflow-x-hidden">
 				<div
 					className="absolute bottom-0 left-0 h-0.5 bg-[#2563eb] dark:bg-[#60a5fa] transition-all duration-150 ease-out pointer-events-none"
 					style={{ width: `${scrollProgress}%` }}
 				/>
 
 				{/* 좌측: 대시보드 복귀 아이콘 버튼 + 페이지 아이콘 배지 + 타이틀 */}
-				<div className="flex items-center gap-3 min-w-0">
+				<div className="flex items-center gap-2.5 min-w-0 shrink-0">
 					<Link
 						href="/dashboard"
 						className="w-8 h-8 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] hover:bg-[#e2e8f0] dark:hover:bg-[#222228] border border-[#e2e8f0] dark:border-[#222228] flex items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-all active:scale-95 shrink-0"
@@ -464,6 +453,35 @@ export default function ContractsPage() {
 					</div>
 				</div>
 
+				{/* 중앙: 3개 워크스페이스 탭 전환 */}
+				<nav className="flex items-center gap-1 rounded-lg bg-[#f1f5f9] dark:bg-[#09090b] p-1 border border-[#e2e8f0] dark:border-[#222228] min-w-0">
+					{(
+						[
+							{ id: "briefing", label: "계약 기준 · 브리핑", icon: Scale },
+							{ id: "procurement", label: "구매 · 예산 산출", icon: Layers },
+							{ id: "bom", label: "HSKorea 장비 도해", icon: BookOpen },
+						] as const
+					).map((tab) => {
+						const Icon = tab.icon;
+						const active = activeTab === tab.id;
+						return (
+							<button
+								key={tab.id}
+								type="button"
+								onClick={() => setActiveTab(tab.id)}
+								className={`inline-flex h-7 items-center gap-1.5 rounded-md px-2.5 text-xs font-bold transition-all whitespace-nowrap ${
+									active
+										? "bg-white dark:bg-[#16161c] text-[#2563eb] dark:text-[#60a5fa] shadow-xs"
+										: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
+							>
+								<Icon size={13} />
+								<span>{tab.label}</span>
+							</button>
+						);
+					})}
+				</nav>
+
 				{/* 우측: 백업/불러오기 + 엑셀 다운로드 + 테마 토글 */}
 				<div className="flex items-center gap-1.5 shrink-0">
 					<ThemeToggle />
@@ -471,11 +489,11 @@ export default function ContractsPage() {
 					<a
 						href="/data/consumables_master_unified.csv"
 						download="consumables_master_unified.csv"
-						className="h-8 px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors inline-flex items-center gap-1.5 whitespace-nowrap"
+						className="h-8 px-2 xl:px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors inline-flex items-center gap-1.5 whitespace-nowrap"
 						title="원본 마스터 CSV 다운로드"
 					>
 						<Download size={14} className="text-[#f59e0b]" />
-						<span>원본 CSV</span>
+						<span className="hidden xl:inline">원본 CSV</span>
 					</a>
 
 					<input
@@ -490,145 +508,127 @@ export default function ContractsPage() {
 						type="button"
 						onClick={() => fileInputRef.current?.click()}
 						disabled={!plan}
-						className="h-8 px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors inline-flex items-center gap-1.5 whitespace-nowrap disabled:opacity-50"
+						className="h-8 px-2 xl:px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors inline-flex items-center gap-1.5 whitespace-nowrap disabled:opacity-50"
 						title="인계받은 JSON 작업본 불러오기"
 					>
 						<Upload size={14} className="text-[#38bdf8]" />
-						<span>불러오기</span>
+						<span className="hidden xl:inline">불러오기</span>
 					</button>
 
 					<button
 						type="button"
 						onClick={() => plan && exportHandoverJson(plan)}
 						disabled={!plan}
-						className="h-8 px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors inline-flex items-center gap-1.5 whitespace-nowrap disabled:opacity-50"
+						className="h-8 px-2 xl:px-2.5 rounded-lg bg-[#f1f5f9] dark:bg-[#16161c] border border-[#e2e8f0] dark:border-[#222228] text-xs font-semibold text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white transition-colors inline-flex items-center gap-1.5 whitespace-nowrap disabled:opacity-50"
 						title="선택 수량과 메모를 JSON 파일로 백업"
 					>
 						<Download size={14} className="text-[#10b981]" />
-						<span>백업(.json)</span>
+						<span className="hidden xl:inline">백업</span>
 					</button>
 
 					<button
 						type="button"
 						onClick={() => plan && downloadContractsXlsx(items, plan)}
 						disabled={!plan || items.length === 0}
-						className="h-8 px-3 rounded-lg bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs inline-flex items-center gap-1.5 transition-all active:scale-95 whitespace-nowrap disabled:opacity-50"
+						className="h-8 px-2.5 xl:px-3 rounded-lg bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs inline-flex items-center gap-1.5 transition-all active:scale-95 whitespace-nowrap disabled:opacity-50"
 						title="선정 구매내역서 + 업체별 요약 + 마스터 단가표 3시트 엑셀 내보내기"
 					>
 						<FileSpreadsheet size={14} />
-						<span>설계내역서(.xlsx)</span>
+						<span className="hidden lg:inline">설계내역서</span>
 					</button>
 				</div>
 			</header>
 
-			{/* /items와 동일한 max-w-7xl + 좌측 240px 고정 사이드바 + 우측 본문 2단 레이아웃 */}
-			<div className="flex-1 max-w-7xl mx-auto w-full flex items-start pt-4 px-4 gap-5 relative z-10">
-				<ContractsSidebar
-					activeTab={activeTab}
-					setActiveTab={setActiveTab}
-					items={items}
-					bomData={bomData}
-					query={query}
-					onChangeQuery={setQuery}
-					selectedMfg={selectedMfg}
-					onSelectMfg={setSelectedMfg}
-					selectedGroup={selectedGroup}
-					onSelectGroup={setSelectedGroup}
-					selectedModel={selectedModel}
-					onSelectModel={setSelectedModel}
-					scopeFilter={scopeFilter}
-					onChangeScopeFilter={setScopeFilter}
-					activeBomModel={activeBomModel}
-					onSelectBomModel={(m) => {
-						setActiveBomModel(m);
-						setHighlightPartCode(null);
-					}}
-					kpi={kpi}
-					onResetDefaults={handleResetDefaults}
-				/>
-
-				<main className="flex-1 min-w-0 pb-12 space-y-4">
-					{/* 상단 컴팩트 KPI 요약 바 */}
-					<section className="grid grid-cols-4 gap-3">
-						<div className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 shadow-sm">
-							<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
-								<span>발주 선정 품목</span>
-								<PackageCheck
-									size={14}
-									className="text-[#2563eb] dark:text-[#60a5fa]"
-								/>
+			{/* 풀와이드 max-w-7xl 본문 레이아웃 (사이드바 제거) */}
+			<div className="flex-1 max-w-7xl mx-auto w-full pt-4 px-4 relative z-10">
+				<main className="min-w-0 pb-24 space-y-4">
+					{/* 상단 컴팩트 KPI 요약 바 (구매 · 예산 산출 탭 전용) */}
+					{activeTab === "procurement" && (
+						<section className="grid grid-cols-4 gap-3">
+							<div className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 shadow-sm">
+								<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
+									<span>발주 선정 품목</span>
+									<PackageCheck
+										size={14}
+										className="text-[#2563eb] dark:text-[#60a5fa]"
+									/>
+								</div>
+								<p className="mt-1.5 tabular-nums text-lg font-bold text-[#0f172a] dark:text-white">
+									{kpi.selectedCount.toLocaleString("ko-KR")}
+									<span className="ml-1 text-xs font-normal text-[#64748b] dark:text-[#a1a1aa]">
+										/ {items.length}종
+									</span>
+								</p>
 							</div>
-							<p className="mt-1.5 font-mono text-lg font-bold text-[#0f172a] dark:text-white">
-								{kpi.selectedCount.toLocaleString("ko-KR")}
-								<span className="ml-1 text-xs font-normal text-[#64748b] dark:text-[#a1a1aa]">
-									/ {items.length}종
-								</span>
-							</p>
-						</div>
 
-						<div className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 shadow-sm">
-							<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
-								<span>예상 공급가액 (VAT별도)</span>
-								<Wallet
-									size={14}
-									className="text-[#059669] dark:text-[#34d399]"
-								/>
+							<div className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 shadow-sm">
+								<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
+									<span>예상 공급가액 (VAT별도)</span>
+									<Wallet
+										size={14}
+										className="text-[#059669] dark:text-[#34d399]"
+									/>
+								</div>
+								<p className="mt-1.5 tabular-nums text-lg font-bold text-[#059669] dark:text-[#34d399] truncate">
+									{kpi.supplyTotal === 0 ? "0원" : formatWon(kpi.supplyTotal)}
+								</p>
 							</div>
-							<p className="mt-1.5 font-mono text-lg font-bold text-[#059669] dark:text-[#34d399] truncate">
-								{formatWon(kpi.supplyTotal)}
-							</p>
-						</div>
 
-						<div className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 shadow-sm">
-							<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
-								<span>총 계약예상액 (VAT포함)</span>
-								<span className="font-mono text-[10px] text-[#2563eb] dark:text-[#60a5fa] font-bold">
-									26년단가 {kpi.priced26Total}종
-								</span>
+							<div className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 shadow-sm">
+								<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
+									<span>총 계약예상액 (VAT포함)</span>
+									<span className="tabular-nums text-[10px] text-[#2563eb] dark:text-[#60a5fa] font-bold">
+										26년단가 {kpi.priced26Total}종
+									</span>
+								</div>
+								<p className="mt-1.5 tabular-nums text-lg font-bold text-[#0f172a] dark:text-white truncate">
+									{kpi.vatIncludedTotal === 0
+										? "0원"
+										: formatWon(kpi.vatIncludedTotal)}
+								</p>
 							</div>
-							<p className="mt-1.5 font-mono text-lg font-bold text-[#0f172a] dark:text-white truncate">
-								{formatWon(kpi.vatIncludedTotal)}
-							</p>
-						</div>
 
-						<button
-							type="button"
-							onClick={() => {
-								setSelectedMfg("전체");
-								setSelectedGroup("전체");
-								setSelectedModel("전체");
-								setScopeFilter(
-									kpi.unpricedSelectedCount > 0 ? "unpricedSelected" : "priced",
-								);
-								setActiveTab("procurement");
-							}}
-							className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 text-left shadow-sm transition-colors hover:border-[#2563eb]/50"
-						>
-							<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
-								<span>선정분 미단가 점검</span>
-								<AlertTriangle
-									size={14}
-									className={
+							<button
+								type="button"
+								onClick={() => {
+									setSelectedMfg("전체");
+									setSelectedGroup("전체");
+									setSelectedModel("전체");
+									setScopeFilter(
 										kpi.unpricedSelectedCount > 0
-											? "text-[#f43f5e]"
-											: "text-[#10b981]"
-									}
-								/>
-							</div>
-							<p
-								className={`mt-1.5 font-mono text-lg font-bold ${
-									kpi.unpricedSelectedCount > 0
-										? "text-[#f43f5e] dark:text-[#f87171]"
-										: "text-[#059669] dark:text-[#34d399]"
-								}`}
+											? "unpricedSelected"
+											: "priced",
+									);
+									setActiveTab("procurement");
+								}}
+								className="rounded-2xl border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] p-3.5 text-left shadow-sm transition-colors hover:border-[#2563eb]/50"
 							>
-								{kpi.unpricedSelectedCount}
-								<span className="ml-1 text-xs font-normal text-[#64748b] dark:text-[#a1a1aa]">
-									건 {kpi.unpricedSelectedCount > 0 ? "(확인 →)" : "(완료)"}
-								</span>
-							</p>
-						</button>
-					</section>
+								<div className="flex items-center justify-between text-[11px] font-semibold text-[#64748b] dark:text-[#a1a1aa]">
+									<span>선정분 미단가 점검</span>
+									<AlertTriangle
+										size={14}
+										className={
+											kpi.unpricedSelectedCount > 0
+												? "text-[#f43f5e]"
+												: "text-[#10b981]"
+										}
+									/>
+								</div>
+								<p
+									className={`mt-1.5 tabular-nums text-lg font-bold ${
+										kpi.unpricedSelectedCount > 0
+											? "text-[#f43f5e] dark:text-[#f87171]"
+											: "text-[#059669] dark:text-[#34d399]"
+									}`}
+								>
+									{kpi.unpricedSelectedCount}
+									<span className="ml-1 text-xs font-normal text-[#64748b] dark:text-[#a1a1aa]">
+										건 {kpi.unpricedSelectedCount > 0 ? "(확인 →)" : "(완료)"}
+									</span>
+								</p>
+							</button>
+						</section>
+					)}
 
 					{/* 본문 콘텐츠 */}
 					{loading || !plan ? (
@@ -682,6 +682,115 @@ export default function ContractsPage() {
 					)}
 				</main>
 			</div>
+
+			{/* 하단 플로팅 검색·필터 바텀바 (구매·예산 산출 / 장비 도해 탭 전용) */}
+			{activeTab === "procurement" && (
+				<div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[min(960px,calc(100%-2rem))] rounded-2xl border border-[#cbd5e1] dark:border-[#27272a] bg-white/90 dark:bg-[#111115]/90 backdrop-blur-md px-3.5 py-2.5 shadow-lg flex items-center justify-between gap-2.5">
+					<div className="flex items-center gap-2 flex-1 min-w-0">
+						<div className="relative flex-1 max-w-60">
+							<Search
+								size={13}
+								className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#94a3b8]"
+							/>
+							<input
+								type="text"
+								value={query}
+								onChange={(e) => setQuery(e.target.value)}
+								placeholder="품명·코드·규격 검색..."
+								className="h-8 w-full rounded-lg border border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#09090b] pl-8 pr-2.5 text-xs text-[#0f172a] dark:text-white placeholder:text-[#94a3b8] dark:placeholder:text-[#71717a] focus:border-[#2563eb] focus:outline-none"
+							/>
+						</div>
+
+						<select
+							aria-label="제조사 필터"
+							value={selectedMfg}
+							onChange={(e) => setSelectedMfg(e.target.value)}
+							className="h-8 rounded-lg border border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#09090b] px-2 text-xs font-semibold text-[#0f172a] dark:text-white focus:border-[#2563eb] focus:outline-none"
+						>
+							{MANUFACTURERS.map((m) => (
+								<option key={m} value={m}>
+									{m === "전체" ? "제조사: 전체" : m}
+								</option>
+							))}
+						</select>
+
+						<select
+							aria-label="부품 구분 필터"
+							value={selectedGroup}
+							onChange={(e) => setSelectedGroup(e.target.value)}
+							className="h-8 rounded-lg border border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#09090b] px-2 text-xs font-semibold text-[#0f172a] dark:text-white focus:border-[#2563eb] focus:outline-none"
+						>
+							{PART_GROUPS.map((g) => (
+								<option key={g} value={g}>
+									{g === "전체" ? "구분: 전체" : g}
+								</option>
+							))}
+						</select>
+
+						<div className="flex items-center gap-0.5 rounded-lg bg-[#f1f5f9] dark:bg-[#09090b] p-0.5 border border-[#e2e8f0] dark:border-[#222228]">
+							{(
+								[
+									["all", "전체"],
+									["selected", "선정"],
+									["unpricedSelected", "미단가"],
+								] as const
+							).map(([val, label]) => (
+								<button
+									key={val}
+									type="button"
+									onClick={() => setScopeFilter(val)}
+									className={`rounded-md px-2 py-1 text-[11px] font-bold transition-colors whitespace-nowrap ${
+										scopeFilter === val
+											? "bg-white dark:bg-[#16161c] text-[#2563eb] dark:text-[#60a5fa] shadow-xs"
+											: "text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+									}`}
+								>
+									{label}
+								</button>
+							))}
+						</div>
+					</div>
+
+					<div className="shrink-0 flex items-center gap-2 border-l border-[#e2e8f0] dark:border-[#222228] pl-3 text-xs tabular-nums">
+						<span className="font-semibold text-[#64748b] dark:text-[#a1a1aa]">
+							선정 {kpi.selectedCount}건
+						</span>
+						<span className="font-extrabold text-[#2563eb] dark:text-[#60a5fa]">
+							{kpi.vatIncludedTotal === 0
+								? "0원"
+								: formatWon(kpi.vatIncludedTotal)}
+						</span>
+					</div>
+				</div>
+			)}
+
+			{activeTab === "bom" && Object.keys(bomData).length > 0 && (
+				<div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 rounded-2xl border border-[#cbd5e1] dark:border-[#27272a] bg-white/90 dark:bg-[#111115]/90 backdrop-blur-md px-3.5 py-2 shadow-lg flex items-center gap-1.5">
+					<span className="text-[11px] font-bold text-[#64748b] dark:text-[#a1a1aa] mr-1 whitespace-nowrap">
+						HSKorea 기기:
+					</span>
+					{Object.keys(bomData).map((modelKey) => {
+						const active = activeBomModel === modelKey;
+						return (
+							<button
+								key={modelKey}
+								type="button"
+								onClick={() => {
+									setActiveBomModel(modelKey);
+									setHighlightPartCode(null);
+								}}
+								className={`rounded-lg px-2.5 py-1 tabular-nums text-xs font-bold transition-colors whitespace-nowrap ${
+									active
+										? "bg-[#2563eb] text-white"
+										: "bg-[#f1f5f9] dark:bg-[#16161c] text-[#475569] dark:text-[#d4d4d8] hover:text-[#0f172a] dark:hover:text-white"
+								}`}
+							>
+								{modelKey}
+							</button>
+						);
+					})}
+				</div>
+			)}
 		</div>
 	);
 }

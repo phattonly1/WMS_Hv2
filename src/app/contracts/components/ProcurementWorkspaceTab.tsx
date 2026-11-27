@@ -13,13 +13,12 @@ import { useMemo } from "react";
 import {
 	type BomPartItem,
 	type ConsumableItem,
-	calcDiffPercent,
 	formatWon,
-	GROUP_BADGE,
 	type HandoverPlanState,
 	MANUFACTURER_BADGE,
 	type PlanLineEntry,
 	parseBaseQty,
+	resolveBudgetAccount,
 	resolveUnitPrice,
 	splitModels,
 } from "../types";
@@ -215,9 +214,11 @@ export default function ProcurementWorkspaceTab({
 					)}
 				</div>
 
-				<div className="font-mono text-xs font-bold text-[#2563eb] dark:text-[#60a5fa] shrink-0">
+				<div className="tabular-nums text-xs font-bold text-[#2563eb] dark:text-[#60a5fa] shrink-0">
 					현재 목록 선정 {filteredSummary.selCount}건:{" "}
-					{formatWon(filteredSummary.selWon)}{" "}
+					{filteredSummary.selWon === 0
+						? "0원"
+						: formatWon(filteredSummary.selWon)}{" "}
 					<span className="text-[11px] font-normal text-[#64748b] dark:text-[#a1a1aa]">
 						(VAT별도)
 					</span>
@@ -238,30 +239,26 @@ export default function ProcurementWorkspaceTab({
 						<table className="w-full border-collapse text-left text-xs">
 							<thead>
 								<tr className="border-b border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#16161c] text-[11px] font-bold text-[#475569] dark:text-[#a1a1aa]">
-									<th className="px-2.5 py-3 text-center whitespace-nowrap">
+									<th className="px-2 py-2.5 text-center whitespace-nowrap">
 										포함
 									</th>
-									<th className="px-3 py-3 whitespace-nowrap">제조사/구분</th>
-									<th className="px-3 py-3 whitespace-nowrap">
-										적용장비 / 항목
+									<th className="px-2.5 py-2.5 whitespace-nowrap">
+										제조사 · 적용장비
 									</th>
-									<th className="px-3 py-3 whitespace-nowrap">
+									<th className="px-2.5 py-2.5 whitespace-nowrap">
 										품명 · 규격 · 호환대체품
 									</th>
-									<th className="px-2.5 py-3 whitespace-nowrap text-center">
-										교체주기
+									<th className="px-2.5 py-2.5 whitespace-nowrap text-right">
+										최초견적 / 입찰가
 									</th>
-									<th className="px-3 py-3 whitespace-nowrap text-center">
-										계획수량
+									<th className="px-2 py-2.5 whitespace-nowrap text-center">
+										계약량
 									</th>
-									<th className="px-3 py-3 whitespace-nowrap text-right">
-										단가 (25→26년)
+									<th className="px-2 py-2.5 whitespace-nowrap text-center">
+										기성량 (1차 · 2차 · 3차)
 									</th>
-									<th className="px-3 py-3 whitespace-nowrap text-right">
-										예상금액
-									</th>
-									<th className="px-3 py-3 whitespace-nowrap">
-										견적근거 및 인계 메모
+									<th className="px-2.5 py-2.5 whitespace-nowrap text-right">
+										지출금액 / 계약액
 									</th>
 								</tr>
 							</thead>
@@ -273,10 +270,23 @@ export default function ProcurementWorkspaceTab({
 										memo: "",
 									};
 									const isSelected = entry.selected;
-									const diff = calcDiffPercent(item.price25, item.price26);
-									const { price, source } = resolveUnitPrice(item, entry);
+									const { price } = resolveUnitPrice(item, entry);
+									const resolvedBidPrice =
+										entry.bidPrice !== undefined
+											? entry.bidPrice
+											: (item.bidPrice ?? null);
+									const effectivePrice =
+										resolvedBidPrice !== null ? resolvedBidPrice : price;
 									const lineTotal =
-										isSelected && price !== null ? price * entry.qty : null;
+										isSelected && effectivePrice !== null
+											? effectivePrice * entry.qty
+											: null;
+									const q1 = entry.q1Qty ?? 0;
+									const q2 = entry.q2Qty ?? 0;
+									const q3 = entry.q3Qty ?? 0;
+									const progressQty = q1 + q2 + q3;
+									const spentTotal =
+										effectivePrice !== null ? effectivePrice * progressQty : 0;
 
 									const badgeClass =
 										MANUFACTURER_BADGE[item.manufacturer] ??
@@ -301,87 +311,100 @@ export default function ProcurementWorkspaceTab({
 													: "hover:bg-[#f8fafc] dark:hover:bg-[#16161c]"
 											}`}
 										>
-											<td className="px-2.5 py-2.5 align-top text-center">
+											<td className="px-2 py-2 align-middle text-center">
 												<button
 													type="button"
 													aria-label={`${item.name} 발주 포함 토글`}
 													onClick={() =>
 														onUpdateEntry(item.id, { selected: !isSelected })
 													}
-													className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-lg text-[#2563eb] dark:text-[#60a5fa] hover:bg-[#2563eb]/10"
+													className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#2563eb] dark:text-[#60a5fa] hover:bg-[#2563eb]/10"
 												>
 													{isSelected ? (
-														<CheckSquare size={17} />
+														<CheckSquare size={16} />
 													) : (
 														<Square
-															size={17}
+															size={16}
 															className="text-[#94a3b8] dark:text-[#52525b]"
 														/>
 													)}
 												</button>
 											</td>
 
-											<td className="px-3 py-2.5 align-top">
-												<div className="flex flex-col items-start gap-1">
+											<td className="px-2.5 py-2 align-middle max-w-44">
+												<div className="flex items-center gap-1 flex-wrap">
 													<span
-														className={`inline-flex items-center rounded-lg border px-2 py-0.5 text-[11px] font-bold whitespace-nowrap ${badgeClass}`}
+														className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-bold whitespace-nowrap ${badgeClass}`}
 													>
 														{item.manufacturer}
 													</span>
-													<span
-														className={`inline-flex items-center rounded-lg border px-1.5 py-0.5 text-[10px] font-medium whitespace-nowrap ${
-															GROUP_BADGE[item.partGroup] ??
-															"bg-[#f1f5f9] dark:bg-[#222228] text-[#334155] dark:text-[#d4d4d8] border-[#cbd5e1] dark:border-[#3f3f46]"
-														}`}
-													>
+													{(() => {
+														const acct = resolveBudgetAccount(item, entry);
+														const isMat = acct === "material";
+														return (
+															<button
+																type="button"
+																onClick={() =>
+																	onUpdateEntry(item.id, {
+																		budgetAccount: isMat
+																			? "maintenance"
+																			: "material",
+																	})
+																}
+																title="클릭하여 시설장비유지비 ↔ 재료비 전환"
+																className={`inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-bold whitespace-nowrap transition-colors ${
+																	isMat
+																		? "bg-[#10b981]/15 text-[#059669] dark:text-[#34d399] border-[#10b981]/30 hover:bg-[#10b981]/25"
+																		: "bg-[#f1f5f9] dark:bg-[#16161c] text-[#64748b] dark:text-[#a1a1aa] border-[#e2e8f0] dark:border-[#222228] hover:border-[#2563eb]/40"
+																}`}
+															>
+																{isMat ? "재료비" : "유지비"}
+															</button>
+														);
+													})()}
+													<span className="text-[10px] font-medium text-[#64748b] dark:text-[#a1a1aa] whitespace-nowrap">
 														{item.partGroup}
 													</span>
 												</div>
-											</td>
-
-											<td className="px-3 py-2.5 align-top max-w-44">
-												<div className="flex flex-wrap gap-1">
-													{splitModels(item.model).map((m) => (
-														<span
-															key={m}
-															className="rounded bg-[#f1f5f9] dark:bg-[#18181b] border border-[#e2e8f0] dark:border-[#27272a] px-1.5 py-0.5 font-mono text-[10px] text-[#334155] dark:text-[#d4d4d8] whitespace-nowrap"
+												{(() => {
+													const models = splitModels(item.model);
+													const first = models[0] ?? "-";
+													const extra =
+														models.length > 1 ? ` 외 ${models.length - 1}` : "";
+													return (
+														<div
+															className="mt-1 tabular-nums text-[11px] font-semibold text-[#334155] dark:text-[#d4d4d8] whitespace-nowrap truncate"
+															title={models.join(", ")}
 														>
-															{m}
-														</span>
-													))}
-												</div>
-												{item.category && (
-													<div className="mt-1 text-[10px] text-[#64748b] dark:text-[#a1a1aa] break-keep">
-														{item.category}
-													</div>
-												)}
+															{first}
+															{extra && (
+																<span className="text-[#64748b] dark:text-[#a1a1aa] font-normal">
+																	{extra}
+																</span>
+															)}
+														</div>
+													);
+												})()}
 											</td>
 
-											<td className="px-3 py-2.5 align-top min-w-56">
+											<td className="px-2.5 py-2 align-middle">
 												<div className="flex flex-wrap items-center gap-1.5">
 													{item.partNumber && (
-														<span className="font-mono text-[11px] font-bold text-[#0284c7] dark:text-[#38bdf8]">
+														<span className="tabular-nums text-[11px] font-bold text-[#0284c7] dark:text-[#38bdf8]">
 															[{item.partNumber}]
 														</span>
 													)}
 													<span className="text-xs font-bold text-[#0f172a] dark:text-white break-keep">
 														{item.name}
 													</span>
-												</div>
-												{item.spec && (
-													<p className="mt-0.5 text-[11px] text-[#64748b] dark:text-[#a1a1aa] break-keep">
-														{item.spec}
-													</p>
-												)}
-												{altPartText && (
-													<div className="mt-1 inline-flex items-center gap-1 rounded-md bg-[#10b981]/10 border border-[#10b981]/30 px-2 py-0.5 text-[10px] font-semibold text-[#059669] dark:text-[#34d399] break-keep">
-														<span>대체품: {altPartText}</span>
-													</div>
-												)}
-												{item.manufacturer === "HSKorea" &&
-													item.partNumber &&
-													bomModels[0] && (
-														<div className="mt-1">
+													{item.cycle && (
+														<span className="rounded bg-[#f1f5f9] dark:bg-[#16161c] px-1.5 py-0.5 text-[10px] font-medium text-[#64748b] dark:text-[#a1a1aa] whitespace-nowrap">
+															{item.cycle}
+														</span>
+													)}
+													{item.manufacturer === "HSKorea" &&
+														item.partNumber &&
+														bomModels[0] && (
 															<button
 																type="button"
 																onClick={() =>
@@ -390,153 +413,207 @@ export default function ProcurementWorkspaceTab({
 																		item.partNumber,
 																	)
 																}
-																className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#2563eb] dark:text-[#60a5fa] hover:underline"
+																className="inline-flex items-center gap-0.5 rounded bg-[#2563eb]/15 px-1.5 py-0.5 text-[10px] font-bold text-[#2563eb] dark:text-[#60a5fa] hover:bg-[#2563eb]/25 whitespace-nowrap"
 															>
-																<BookOpen size={11} />
-																<span>장비 도해 위치 확인</span>
+																<BookOpen size={10} />
+																<span>도해</span>
 															</button>
+														)}
+												</div>
+												{(item.spec || altPartText || item.note) && (
+													<div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-[11px]">
+														{item.spec && (
+															<span
+																className="text-[#64748b] dark:text-[#a1a1aa] truncate max-w-56"
+																title={item.spec}
+															>
+																{item.spec}
+															</span>
+														)}
+														{altPartText && (
+															<span
+																className="inline-flex items-center rounded bg-[#10b981]/15 px-1.5 py-0.5 text-[10px] font-semibold text-[#059669] dark:text-[#34d399] truncate max-w-56"
+																title={`대체품: ${altPartText}`}
+															>
+																대체: {altPartText}
+															</span>
+														)}
+													</div>
+												)}
+											</td>
+
+											{/* 최초견적 / 산출내역서(입찰가) — 화살표 없음 */}
+											<td className="px-2.5 py-2 align-middle text-right whitespace-nowrap">
+												<div className="flex flex-col items-end gap-1">
+													{item.price26 === null && item.price25 === null ? (
+														<input
+															type="text"
+															inputMode="numeric"
+															placeholder="최초견적"
+															aria-label={`${item.name} 최초견적 단가`}
+															value={
+																entry.customPrice
+																	? entry.customPrice.toLocaleString("ko-KR")
+																	: ""
+															}
+															onChange={(e) => {
+																const cleaned = e.target.value.replace(
+																	/[^0-9]/g,
+																	"",
+																);
+																onUpdateEntry(item.id, {
+																	customPrice: cleaned
+																		? Number.parseInt(cleaned, 10)
+																		: null,
+																});
+															}}
+															className="h-7 w-24 rounded-md border border-[#cbd5e1] dark:border-[#27272a] bg-[#f8fafc] dark:bg-[#09090b] px-2 text-right tabular-nums text-[11px] text-[#0f172a] dark:text-white focus:border-[#2563eb] focus:outline-none"
+														/>
+													) : (
+														<div className="tabular-nums text-xs font-bold text-[#0f172a] dark:text-white">
+															{formatWon(item.price26 ?? item.price25)}
 														</div>
 													)}
+													<input
+														type="text"
+														inputMode="numeric"
+														placeholder="입찰가(낙찰)"
+														aria-label={`${item.name} 산출내역서 입찰가`}
+														value={
+															resolvedBidPrice
+																? resolvedBidPrice.toLocaleString("ko-KR")
+																: ""
+														}
+														onChange={(e) => {
+															const cleaned = e.target.value.replace(
+																/[^0-9]/g,
+																"",
+															);
+															onUpdateEntry(item.id, {
+																bidPrice: cleaned
+																	? Number.parseInt(cleaned, 10)
+																	: null,
+															});
+														}}
+														className="h-6 w-24 rounded-md border border-[#e2e8f0] dark:border-[#222228] bg-white dark:bg-[#111115] px-2 text-right tabular-nums text-[10px] font-semibold text-[#059669] dark:text-[#34d399] placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b] focus:border-[#10b981] focus:outline-none"
+													/>
+												</div>
 											</td>
 
-											<td className="px-2.5 py-2.5 align-top text-center whitespace-nowrap">
-												<span className="text-[11px] text-[#334155] dark:text-[#d4d4d8]">
-													{item.cycle || "-"}
-												</span>
-											</td>
-
-											<td className="px-3 py-2.5 align-top">
+											{/* 계약량 */}
+											<td className="px-2 py-2 align-middle">
 												<div className="flex flex-col items-center gap-0.5">
-													<div className="inline-flex items-center rounded-xl border border-[#cbd5e1] dark:border-[#27272a] bg-[#f8fafc] dark:bg-[#09090b]">
+													<div className="inline-flex items-center rounded-lg border border-[#cbd5e1] dark:border-[#27272a] bg-[#f8fafc] dark:bg-[#09090b]">
 														<button
 															type="button"
-															aria-label="수량 감소"
+															aria-label="계약량 감소"
 															onClick={() =>
 																onUpdateEntry(item.id, {
 																	selected: true,
 																	qty: Math.max(0, (entry.qty ?? 1) - 1),
 																})
 															}
-															className="inline-flex min-h-10 min-w-8 items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+															className="inline-flex h-7 w-6 items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 														>
-															<Minus size={12} />
+															<Minus size={11} />
 														</button>
 														<input
-															type="number"
-															min={0}
-															aria-label={`${item.name} 계획수량`}
+															type="text"
+															inputMode="numeric"
+															aria-label={`${item.name} 계약량`}
 															value={entry.qty}
 															onChange={(e) => {
-																const v = Math.max(
-																	0,
-																	Number.parseInt(e.target.value || "0", 10) ||
-																		0,
+																const cleaned = e.target.value.replace(
+																	/[^0-9]/g,
+																	"",
 																);
+																const v = cleaned
+																	? Number.parseInt(cleaned, 10)
+																	: 0;
 																onUpdateEntry(item.id, {
 																	selected: v > 0 ? true : entry.selected,
 																	qty: v,
 																});
 															}}
-															className="w-10 bg-transparent text-center font-mono text-xs font-bold text-[#0f172a] dark:text-white focus:outline-none"
+															className="w-9 bg-transparent text-center tabular-nums text-xs font-bold text-[#0f172a] dark:text-white focus:outline-none"
 														/>
 														<button
 															type="button"
-															aria-label="수량 증가"
+															aria-label="계약량 증가"
 															onClick={() =>
 																onUpdateEntry(item.id, {
 																	selected: true,
 																	qty: (entry.qty ?? 0) + 1,
 																})
 															}
-															className="inline-flex min-h-10 min-w-8 items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
+															className="inline-flex h-7 w-6 items-center justify-center text-[#64748b] dark:text-[#a1a1aa] hover:text-[#0f172a] dark:hover:text-white"
 														>
-															<Plus size={12} />
+															<Plus size={11} />
 														</button>
 													</div>
-													<span className="font-mono text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
+													<span className="tabular-nums text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
 														기준 {item.baseQty || "-"} {item.unit}
 													</span>
 												</div>
 											</td>
 
-											<td className="px-3 py-2.5 align-top text-right whitespace-nowrap">
-												<div className="font-mono text-xs font-bold text-[#0f172a] dark:text-white">
-													{formatWon(item.price26)}
-												</div>
-												{item.price25 !== null && (
-													<div className="font-mono text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
-														25년: {formatWon(item.price25)}
+											{/* 1차(5월) · 2차(8월) · 3차(11월) 기성량 */}
+											<td className="px-2 py-2 align-middle">
+												<div className="flex flex-col items-center gap-1">
+													<div className="flex items-center gap-1">
+														{(
+															[
+																["q1Qty", "1차"],
+																["q2Qty", "2차"],
+																["q3Qty", "3차"],
+															] as const
+														).map(([field, label]) => (
+															<input
+																key={field}
+																type="text"
+																inputMode="numeric"
+																aria-label={`${item.name} ${label} 기성량`}
+																placeholder={label}
+																value={entry[field] ? String(entry[field]) : ""}
+																onChange={(e) => {
+																	const cleaned = e.target.value.replace(
+																		/[^0-9]/g,
+																		"",
+																	);
+																	onUpdateEntry(item.id, {
+																		[field]: cleaned
+																			? Number.parseInt(cleaned, 10)
+																			: 0,
+																	});
+																}}
+																className="h-7 w-11 rounded-md border border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#09090b] px-1 text-center tabular-nums text-[11px] font-semibold text-[#0f172a] dark:text-white placeholder:text-[#94a3b8] dark:placeholder:text-[#52525b] focus:border-[#2563eb] focus:outline-none"
+															/>
+														))}
 													</div>
-												)}
-												{diff && (
-													<div
-														className={`font-mono text-[10px] font-semibold ${
-															diff.isUp
-																? "text-[#f59e0b] dark:text-[#fbbf24]"
-																: "text-[#059669] dark:text-[#34d399]"
-														}`}
-													>
-														{diff.label}
-													</div>
-												)}
-												{source === "25" && (
-													<span className="mt-0.5 inline-block rounded bg-[#f59e0b]/15 px-1.5 py-0.5 text-[10px] font-semibold text-[#f59e0b] dark:text-[#fbbf24]">
-														25년단가 대체
+													<span className="tabular-nums text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
+														누계 {progressQty} / 잔여{" "}
+														{Math.max(0, entry.qty - progressQty)}
 													</span>
-												)}
-												{item.price26 === null && item.price25 === null && (
-													<div className="mt-1 flex items-center justify-end">
-														<input
-															type="number"
-															min={0}
-															step={1000}
-															placeholder="가견적 입력"
-															aria-label={`${item.name} 가견적 단가`}
-															value={entry.customPrice ?? ""}
-															onChange={(e) => {
-																const raw = e.target.value.trim();
-																onUpdateEntry(item.id, {
-																	customPrice:
-																		raw === "" ? null : Number(raw) || 0,
-																});
-															}}
-															className="min-h-10 w-24 rounded-lg border border-[#cbd5e1] dark:border-[#27272a] bg-[#f8fafc] dark:bg-[#09090b] px-2 text-right font-mono text-[11px] text-[#0f172a] dark:text-white focus:border-[#2563eb] focus:outline-none"
-														/>
-													</div>
-												)}
+												</div>
 											</td>
 
-											<td className="px-3 py-2.5 align-top text-right whitespace-nowrap">
-												{!isSelected ? (
-													<span className="font-mono text-[11px] text-[#94a3b8] dark:text-[#52525b]">
-														미포함
-													</span>
-												) : lineTotal !== null ? (
-													<div className="font-mono text-xs font-bold text-[#2563eb] dark:text-[#60a5fa]">
-														{formatWon(lineTotal)}
-													</div>
-												) : (
-													<span className="inline-flex items-center gap-1 font-mono text-[11px] font-semibold text-[#f43f5e] dark:text-[#f87171]">
-														<AlertCircle size={12} />
-														견적필요
-													</span>
-												)}
-											</td>
-
-											<td className="px-3 py-2.5 align-top min-w-44">
-												<div className="text-[10px] text-[#64748b] dark:text-[#a1a1aa] break-keep">
-													{item.note || "-"}
+											{/* 지출금액 / 계약예상액 */}
+											<td className="px-2.5 py-2 align-middle text-right whitespace-nowrap">
+												<div className="tabular-nums text-xs font-extrabold text-[#059669] dark:text-[#34d399]">
+													{spentTotal > 0 ? formatWon(spentTotal) : "0원"}
 												</div>
-												<input
-													type="text"
-													value={entry.memo ?? ""}
-													onChange={(e) =>
-														onUpdateEntry(item.id, { memo: e.target.value })
-													}
-													placeholder="수량 산출근거 / 메모..."
-													aria-label={`${item.name} 인수인계 메모`}
-													className="mt-1 min-h-10 w-full rounded-lg border border-[#e2e8f0] dark:border-[#222228] bg-[#f8fafc] dark:bg-[#09090b] px-2.5 text-xs text-[#0f172a] dark:text-white placeholder-[#94a3b8] dark:placeholder-[#71717a] focus:border-[#2563eb] focus:outline-none"
-												/>
+												<div className="tabular-nums text-[10px] text-[#64748b] dark:text-[#a1a1aa]">
+													{!isSelected ? (
+														"미포함"
+													) : lineTotal !== null ? (
+														<span>계약 {formatWon(lineTotal)}</span>
+													) : (
+														<span className="inline-flex items-center gap-0.5 text-[#f43f5e] dark:text-[#f87171] font-semibold">
+															<AlertCircle size={10} />
+															견적필요
+														</span>
+													)}
+												</div>
 											</td>
 										</tr>
 									);
